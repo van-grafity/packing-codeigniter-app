@@ -155,7 +155,7 @@
 
                             <div class="form-group">
                                 <label>Category</label>
-                                <select name="product_category" class="form-control">
+                                <select name="product_category" class="form-control product_category">
                                     <option value="" disabled>-Select-</option>
                                     <?php foreach ($category as $row) : ?>
                                         <option value="<?= $row->category_id; ?>"><?= $row->category_name; ?></option>
