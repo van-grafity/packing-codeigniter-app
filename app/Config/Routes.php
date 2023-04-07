@@ -57,3 +57,5 @@ $routes->get('/buyer/(:any)', 'Buyer::detail/$1');
 if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
     require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
+
+
