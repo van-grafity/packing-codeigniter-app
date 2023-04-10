@@ -1,0 +1,11 @@
+    .table>tbody>tr>* {
+        vertical-align: middle;
+    }
+
+    .table>thead {
+        text-align: center;
+    }
+
+    .gambar {
+        width: 90px;
+    }

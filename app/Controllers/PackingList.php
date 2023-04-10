@@ -8,7 +8,7 @@ class PackingList extends BaseController
     {
 
         $data = [
-            'title' => 'PO List'
+            'title' => 'Packing List'
         ];
         return view('pl/index', $data);
     }
