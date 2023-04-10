@@ -35,7 +35,11 @@
     <link rel="stylesheet" href="css/adminlte.min.css">
 
     <!-- Own DataTable style -->
+<<<<<<< HEAD
     <link rel="stylesheet" href="css/scanpack.css">
+=======
+    <!-- <link rel="stylesheet" href="css/scanpack.css"> -->
+>>>>>>> 84492b9d5fdc715ef6433cc2f2d1bc856902fb89
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
