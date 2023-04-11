@@ -7,6 +7,11 @@ use CodeIgniter\Model;
 class POModel extends Model
 {
     protected $useTimestamps = true;
+    protected $allowedFields = [
+        'PO_No', 'PO_buyer_id',
+        'PO_product_id', 'shipdate',
+        'unit_price', 'PO_qty', 'PO_amount'
+    ];
 
     public function getBuyer()
     {
