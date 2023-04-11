@@ -45,8 +45,8 @@
                                             <td class="text-right"><?= $row->PO_qty; ?></td>
                                             <td class="text-right"><?= number_to_currency($row->unit_price * $row->PO_qty, 'USD', 'en_US', 2); ?></td>
                                             <td>
-                                                <a class="btn btn-success btn-sm btn-detail" data-id="<?= $row->id; ?>" data-buyer_id="<?= $row->PO_buyer_id; ?>" data-po_no="<?= $row->PO_No; ?>" data-name="<?= $row->product_name; ?>" data-style="<?= $row->style; ?>" data-unit_price="<?= $row->unit_price; ?>" data-po_qty="<?= $row->PO_qty; ?>">Details</a>
-                                                <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $row->id; ?>" data-buyer_id="<?= $row->PO_buyer_id; ?>" data-po_no="<?= $row->PO_No; ?>" data-name="<?= $row->product_name; ?>" data-style="<?= $row->style; ?>" data-unit_price="<?= $row->unit_price; ?>" data-po_qty="<?= $row->PO_qty; ?>">Edit</a>
+                                                <a class="btn btn-success btn-sm btn-detail" data-id="<?= $row->id; ?>" data-buyer_id="<?= $row->PO_buyer_id; ?>" data-po_no="<?= $row->PO_No; ?>" data-name="<?= $row->product_name; ?>" data-style="<?= $row->style; ?>" data-unit_price="<?= $row->unit_price; ?>" data-po_qty="<?= $row->PO_qty; ?>" data-buyer_name="<?= $row->buyer_name; ?>">Details</a>
+                                                <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $row->id; ?>" data-buyer_id="<?= $row->PO_buyer_id; ?>" data-po_no="<?= $row->PO_No; ?>" data-name="<?= $row->product_name; ?>" data-style="<?= $row->style; ?>" data-unit_price="<?= $row->unit_price; ?>" data-po_qty="<?= $row->PO_qty; ?>" data-buyer_name="<?= $row->buyer_name; ?>">Edit</a>
                                                 <a class="btn btn-danger btn-sm btn-delete">Delete</a>
                                             </td>
                                         </tr>
@@ -73,7 +73,7 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Buyer</label>
-                                <select name="buyer_name" class="form-control">
+                                <select name="buyer_name" class="form-control buyer_name">
                                     <option value="" disabled>-Select-</option>
                                     <?php foreach ($buyer as $row) : ?>
                                         <option value="<?= $row->buyer_id; ?>"><?= $row->buyer_name; ?></option>
@@ -182,20 +182,22 @@
                 $('.btn-detail').on('click', function() {
                     // get data from button detail
                     const id = $(this).data('id');
-                    const PO_buyer_id = $(this).data('PO_buyer_id');
+                    const buyer_name = $(this).data('buyer_id');
                     const po_no = $(this).data('po_no');
                     const name = $(this).data('name');
                     const style = $(this).data('style');
                     const unit_price = $(this).data('unit_price');
                     const po_qty = $(this).data('po_qty');
+                    
                     // Set data to Form Detail
                     $('.id').val(id);
                     $('.po_no').val(po_no);
-                    $('.PO_buyer_id').val(PO_buyer_id);
+                    $('.buyer_name').val(buyer_name).trigger('change');
                     $('.name').val(name);
                     $('.style').val(style);
                     $('.unit_price').val(unit_price);
                     $('.po_qty').val(po_qty);
+                    
                     // Call Modal Detail
                     $('#detailModal').modal('show');
                 });
@@ -203,7 +205,7 @@
                 $('.btn-edit').on('click', function() {
                     // get data from button edit
                     const id = $(this).data('id');
-                    const PO_buyer_id = $(this).data('PO_buyer_id');
+                    const buyer_name = $(this).data('buyer_id');
                     const po_no = $(this).data('po_no');
                     const name = $(this).data('name');
                     const style = $(this).data('style');
@@ -212,7 +214,7 @@
                     // Set data to Form Edit
                     $('.id').val(id);
                     $('.po_no').val(po_no);
-                    $('.PO_buyer_id').val(PO_buyer_id);
+                    $('.buyer_name').val(buyer_name).trigger('change');
                     $('.name').val(name);
                     $('.style').val(style);
                     $('.unit_price').val(unit_price);
