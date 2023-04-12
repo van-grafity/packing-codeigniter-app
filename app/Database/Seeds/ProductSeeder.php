@@ -1,0 +1,151 @@
+<?php
+
+namespace App\Database\Seeds;
+
+use CodeIgniter\Database\Seeder;
+
+class ProductSeeder extends Seeder
+{
+
+    private $table = 'tblproduct';
+
+    private const DATA = [
+        [
+            'product_id' => 1,
+            'product_code' => '195111263922',
+            'product_asin_id' => 'B08J66XGYV',
+            'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
+            'product_name' => 'Amazon Essential Disney Star Wars Men\'s Fleece Pullover Hoodie Sweatshirts, Marvel Spider-Man 1',
+            'product_price' => 10.80,
+            'product_category_id' => 1,
+            'created_at' => '2023-04-29 10:46:01',
+            'updated_at' => '2023-04-29 10:46:01',
+        ],
+        [
+            'product_id' => 2,
+            'product_code' => '195111263923',
+            'product_asin_id' => 'B08J66XGYV',
+            'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
+            'product_name' => 'Amazon Essential Disney Star Wars Men\'s Fleece Pullover Hoodie Sweatshirts, Marvel Spider-Man 2',
+            'product_price' => 10.80,
+            'product_category_id' => 1,
+            'created_at' => '2023-04-29 10:46:01',
+            'updated_at' => '2023-04-29 10:46:01',
+        ],
+        [
+            'product_id' => 3,
+            'product_code' => '195111263924',
+            'product_asin_id' => 'B08J66XGYV',
+            'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
+            'product_name' => 'Amazon Essential Disney Star Wars Men\'s Fleece Pullover Hoodie Sweatshirts, Marvel Spider-Man 3',
+            'product_price' => 10.80,
+            'product_category_id' => 1,
+            'created_at' => '2023-04-29 10:46:01',
+            'updated_at' => '2023-04-29 10:46:01',
+        ],
+        [
+            'product_id' => 4,
+            'product_code' => '195111263922',
+            'product_asin_id' => 'B08J66XGYV',
+            'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
+            'product_name' => 'Amazon Essential Disney Star Wars Men\'s Fleece Pullover Hoodie Sweatshirts, Marvel Spider-Man 1',
+            'product_price' => 10.80,
+            'product_category_id' => 1,
+            'created_at' => '2023-04-29 10:46:01',
+            'updated_at' => '2023-04-29 10:46:01',
+        ],
+        [
+            'product_id' => 5,
+            'product_code' => '195111263923',
+            'product_asin_id' => 'B08J66XGYV',
+            'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
+            'product_name' => 'Amazon Essential Disney Star Wars Men\'s Fleece Pullover Hoodie Sweatshirts, Marvel Spider-Man 2',
+            'product_price' => 10.80,
+            'product_category_id' => 1,
+            'created_at' => '2023-04-29 10:46:01',
+            'updated_at' => '2023-04-29 10:46:01',
+        ],
+        [
+            'product_id' => 6,
+            'product_code' => '195111263924',
+            'product_asin_id' => 'B08J66XGYV',
+            'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
+            'product_name' => 'Amazon Essential Disney Star Wars Men\'s Fleece Pullover Hoodie Sweatshirts, Marvel Spider-Man 3',
+            'product_price' => 10.80,
+            'product_category_id' => 1,
+            'created_at' => '2023-04-29 10:46:01',
+            'updated_at' => '2023-04-29 10:46:01',
+        ],
+        [
+            'product_id' => 7,
+            'product_code' => '195111263922',
+            'product_asin_id' => 'B08J66XGYV',
+            'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
+            'product_name' => 'Amazon Essential Disney Star Wars Men\'s Fleece Pullover Hoodie Sweatshirts, Marvel Spider-Man 1',
+            'product_price' => 10.80,
+            'product_category_id' => 1,
+            'created_at' => '2023-04-29 10:46:01',
+            'updated_at' => '2023-04-29 10:46:01',
+        ],
+        [
+            'product_id' => 8,
+            'product_code' => '195111263923',
+            'product_asin_id' => 'B08J66XGYV',
+            'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
+            'product_name' => 'Amazon Essential Disney Star Wars Men\'s Fleece Pullover Hoodie Sweatshirts, Marvel Spider-Man 2',
+            'product_price' => 10.80,
+            'product_category_id' => 1,
+            'created_at' => '2023-04-29 10:46:01',
+            'updated_at' => '2023-04-29 10:46:01',
+        ],
+        [
+            'product_id' => 9,
+            'product_code' => '195111263924',
+            'product_asin_id' => 'B08J66XGYV',
+            'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
+            'product_name' => 'Amazon Essential Disney Star Wars Men\'s Fleece Pullover Hoodie Sweatshirts, Marvel Spider-Man 3',
+            'product_price' => 10.80,
+            'product_category_id' => 1,
+            'created_at' => '2023-04-29 10:46:01',
+            'updated_at' => '2023-04-29 10:46:01',
+        ],
+        [
+            'product_id' => 10,
+            'product_code' => '195111263922',
+            'product_asin_id' => 'B08J66XGYV',
+            'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
+            'product_name' => 'Amazon Essential Disney Star Wars Men\'s Fleece Pullover Hoodie Sweatshirts, Marvel Spider-Man 1',
+            'product_price' => 10.80,
+            'product_category_id' => 1,
+            'created_at' => '2023-04-29 10:46:01',
+            'updated_at' => '2023-04-29 10:46:01',
+        ],
+        [
+            'product_id' => 11,
+            'product_code' => '195111263923',
+            'product_asin_id' => 'B08J66XGYV',
+            'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
+            'product_name' => 'Amazon Essential Disney Star Wars Men\'s Fleece Pullover Hoodie Sweatshirts, Marvel Spider-Man 2',
+            'product_price' => 10.80,
+            'product_category_id' => 1,
+            'created_at' => '2023-04-29 10:46:01',
+            'updated_at' => '2023-04-29 10:46:01',
+        ],
+        [
+            'product_id' => 12,
+            'product_code' => '195111263924',
+            'product_asin_id' => 'B08J66XGYV',
+            'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
+            'product_name' => 'Amazon Essential Disney Star Wars Men\'s Fleece Pullover Hoodie Sweatshirts, Marvel Spider-Man 3',
+            'product_price' => 10.80,
+            'product_category_id' => 1,
+            'created_at' => '2023-04-29 10:46:01',
+            'updated_at' => '2023-04-29 10:46:01',
+        ],
+    ];
+
+    public function run()
+    {
+        $this->db->table($this->table)->insertBatch(self::DATA);
+    }
+}
