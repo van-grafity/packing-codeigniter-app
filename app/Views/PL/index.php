@@ -96,11 +96,29 @@
                             </table>
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-footer">
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h1>BARIS 1</h1>
+                            <h2>Baris 2</h2>
+                            <h5>Baris 3</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div> 
+    </section>
 
-        <style type="text/css">
+    <style type="text/css">
             .table {
                 border-collapse: collapse;
                 width: 100%;
@@ -115,6 +133,5 @@
                 font-weight: bold;
             }
         </style>
-    </section>
 </div>
 <?= $this->endSection(); ?>

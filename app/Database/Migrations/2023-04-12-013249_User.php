@@ -4,12 +4,6 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-// CREATE TABLE `users` (
-//     `id` int NOT NULL COMMENT 'Primary Key',
-//     `name` varchar(100) NOT NULL COMMENT 'Name',
-//     `email` varchar(255) NOT NULL COMMENT 'Email Address'
-//   ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='datatable demo table';
-
 class User extends Migration
 {
     public function up()

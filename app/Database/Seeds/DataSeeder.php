@@ -9,6 +9,7 @@ class DataSeeder extends Seeder
     public function run()
     {
         $this->call('BuyerSeeder');
+        $this->call('GLSeeder');
         $this->call('CategorySeeder');
         $this->call('FactorySeeder');
         $this->call('ProductSeeder');
