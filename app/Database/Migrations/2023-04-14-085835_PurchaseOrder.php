@@ -18,15 +18,7 @@ class PurchaseOrder extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 35,
             ],
-            'PL_No' => [
-                'type' => 'VARCHAR',
-                'constraint' => 35,
-            ],
             'gl_id' => [
-                'type' => 'BIGINT',
-                'unsigned' => true,
-            ],
-            'PO_product_id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
@@ -60,7 +52,6 @@ class PurchaseOrder extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('gl_id', 'tblgl', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('PO_product_id', 'tblproduct', 'product_id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('factory_id', 'tblfactory', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblpo');
     }
