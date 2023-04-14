@@ -120,15 +120,10 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="chartjs" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Packing Plan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/flot.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Item Scan</p>
+                                    <a href="../index.php/cartonbarcode" class="nav-link">
+                                        <i class="far fa-boxes-packing nav-icon"></i>
+                                        <i class="fa-solid fa-boxes-packing nav-icon"></i>
+                                        <p>Carton Barcode & Rasio</p>
                                     </a>
                                 </li>
                             </ul>
