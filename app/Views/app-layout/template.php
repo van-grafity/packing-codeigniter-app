@@ -102,8 +102,8 @@
                                         <p>Buyer PO</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="../index.php/packinglist" class="nav-link">
+                                <li class="nav-item" <?php if ($title == 'Factory Packing List') echo 'active' ?>>
+                                    <a class="nav-link" href="<?php echo base_url('packinglist') ?>">
                                         <i class="nav-icon far fa-file text-info"></i>
                                         <p>Packing List</p>
                                     </a>
