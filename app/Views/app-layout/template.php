@@ -121,8 +121,7 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="../index.php/cartonbarcode" class="nav-link">
-                                        <i class="far fa-boxes-packing nav-icon"></i>
-                                        <i class="fa-solid fa-boxes-packing nav-icon"></i>
+                                        <i class="nav-icon fas fa-box-open"></i>
                                         <p>Carton Barcode & Rasio</p>
                                     </a>
                                 </li>
