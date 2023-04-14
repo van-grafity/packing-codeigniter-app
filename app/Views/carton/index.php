@@ -21,19 +21,43 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <form>
+                <form class="form-horizontal">
                     <div class="card-body">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Packing List</label>
-                            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                        <div class="form-group row">
+                            <label for="packinglistnumber" class="col-sm-1 col-form-label">Packing List</label>
+                            <div class="col-sm-10">
+                                <select class="form-control packingListNumber" style="width: 100%;">
+                                    <option selected="selected">Select Packing List No</option>
+                                    <option>PL-GLA-001</option>
+                                    <option>PL-GLA-002</option>
+                                    <option>PL-GLA-003</option>
+                                    <option>PL-GLA-004</option>
+                                    <option>PL-GLA-005</option>
+                                    <option>PL-GLA-006</option>
+                                    <option>PL-GLA-007</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Carton No</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        <div class="form-group row">
+                            <label for="carton_number" class="col-sm-1 col-form-label">Carton No</label>
+                            <div class="col-sm-10">
+                                <select class="form-control packingListNumber" style="width: 100%;">
+                                    <option selected="selected">Select Carton No</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Barcode</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        <div class="form-group row">
+                            <label for="barcodenumber" class="col-sm-1 col-form-label">Barcode</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="InputBarcodeNumber" placeholder="Carton Barcode Number">
+                            </div>
                         </div>
                     </div>
                     <!-- /.card-body -->
@@ -76,14 +100,14 @@
                                 <td class="text-center align-middle" scope="col"></td>
                                 <td class="text-center align-middle" scope="col">8X8WFHBM</td>
                                 <td class="text-center align-middle" scope="col">2</td>
-                                <td class="text-center align-middle" scope="col">118111887766</td>
+                                <td class="text-center align-middle" scope="col">118111887767</td>
                             </tr>
                             <tr>
                                 <td class="text-center align-middle" scope="col">3</td>
                                 <td class="text-center align-middle" scope="col"></td>
                                 <td class="text-center align-middle" scope="col">8X8WFHBM</td>
                                 <td class="text-center align-middle" scope="col">3</td>
-                                <td class="text-center align-middle" scope="col">787111887766</td>
+                                <td class="text-center align-middle" scope="col">787111887768</td>
                             </tr>
                         </table>
                     </div>
@@ -99,6 +123,8 @@
                         <table class="table table-bordered table-striped">
                             <tr class="table-primary">
                                 <th class="text-center align-middle" scope="col">SN</th>
+                                <th class="text-center align-middle" scope="col">PL No</th>
+                                <th class="text-center align-middle" scope="col">PO No</th>
                                 <th class="text-center align-middle" scope="col">Carton No</th>
                                 <th class="text-center align-middle" scope="col">XS</th>
                                 <th class="text-center align-middle" scope="col">S</th>
@@ -108,6 +134,8 @@
                             </tr>
                             <tr>
                                 <td class="text-center align-middle" scope="col">1</td>
+                                <th class="text-center align-middle" scope="col"></th>
+                                <th class="text-center align-middle" scope="col">8X8WFHBM</th>
                                 <td class="text-center align-middle" scope="col">1</td>
                                 <td class="text-center align-middle" scope="col">1</td>
                                 <td class="text-center align-middle" scope="col">2</td>
@@ -117,6 +145,8 @@
                             </tr>
                             <tr>
                                 <td class="text-center align-middle" scope="col">2</td>
+                                <th class="text-center align-middle" scope="col"></th>
+                                <th class="text-center align-middle" scope="col">8X8WFHBM</th>
                                 <td class="text-center align-middle" scope="col">2</td>
                                 <td class="text-center align-middle" scope="col">1</td>
                                 <td class="text-center align-middle" scope="col">1</td>
@@ -126,6 +156,8 @@
                             </tr>
                             <tr>
                                 <td class="text-center align-middle" scope="col">3</td>
+                                <th class="text-center align-middle" scope="col"></th>
+                                <th class="text-center align-middle" scope="col">8X8WFHBM</th>
                                 <td class="text-center align-middle" scope="col">3</td>
                                 <td class="text-center align-middle" scope="col">1</td>
                                 <td class="text-center align-middle" scope="col">1</td>
