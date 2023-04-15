@@ -18,9 +18,9 @@
                         <tr class="table-primary">
                             <th class="text-center align-middle" width="5%">SN</th>
                             <th class="text-center align-middle" width="15%">Buyer Name</th>
-                            <th class="text-center align-middle" width="30%">Office Address</th>
+                            <th class="text-center align-middle" width="25%">Office Address</th>
                             <th class="text-center align-middle" width="35%">Ship Address</th>
-                            <th class="text-center align-middle" width="15%">Action</th>
+                            <th class="text-center align-middle" width="20%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
