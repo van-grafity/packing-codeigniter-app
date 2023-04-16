@@ -113,30 +113,6 @@ class PurchaseOrderSeeder extends Seeder
             'created_at' => '2023-04-03 03:02:42',
             'updated_at' => NULL,
         ],
-        [
-            'id' => 9,
-            'PO_No' => '8X8WFHBM',
-            'gl_id' => 1,
-            'factory_id' => 1,
-            'shipdate' => '2022-10-29',
-            'unit_price' => 10.80,
-            'PO_qty' => 269,
-            'PO_amount' => 2905,
-            'created_at' => '2023-04-03 03:02:52',
-            'updated_at' => NULL,
-        ],
-        [
-            'id' => 10,
-            'PO_No' => '8X8WFHBM',
-            'gl_id' => 1,
-            'factory_id' => 1,
-            'shipdate' => '2022-10-29',
-            'unit_price' => 10.80,
-            'PO_qty' => 269,
-            'PO_amount' => 2905,
-            'created_at' => '2023-04-03 03:03:02',
-            'updated_at' => NULL,
-        ],
     ];
 
     public function run()

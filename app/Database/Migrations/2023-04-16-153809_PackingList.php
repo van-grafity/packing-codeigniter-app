@@ -4,7 +4,8 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class PurchaseOrder extends Migration
+// packing list by purchase order
+class PackingList extends Migration
 {
     public function up()
     {
@@ -14,55 +15,42 @@ class PurchaseOrder extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'PO_No' => [
+            'packinglist_no' => [
                 'type' => 'VARCHAR',
                 'constraint' => 35,
             ],
-            'PL_No' => [
-                'type' => 'VARCHAR',
-                'constraint' => 35,
-            ],
-            'gl_id' => [
-                'type' => 'BIGINT',
-                'unsigned' => true,
-            ],
-            'PO_product_id' => [
-                'type' => 'BIGINT',
-                'unsigned' => true,
-            ],
-            'factory_id' => [
-                'type' => 'BIGINT',
-                'unsigned' => true,
-            ],
-            'shipdate' => [
+            'packinglist_date' => [
                 'type' => 'DATE',
             ],
-            'unit_price' => [
-                'type' => 'DECIMAL',
-                'constraint' => '10,2',
+            'packinglist_po_id' => [
+                'type' => 'BIGINT',
+                'unsigned' => true,
             ],
-            'PO_qty' => [
+            'packinglist_product_id' => [
+                'type' => 'BIGINT',
+                'unsigned' => true,
+            ],
+            'packinglist_qty' => [
                 'type' => 'INT',
                 'constraint' => 11,
             ],
-            'PO_amount' => [
+            'packinglist_amount' => [
                 'type' => 'INT',
                 'constraint' => 11,
             ],
-            'created_at' => [
+            'packinglist_created_at' => [
                 'type' => 'TIMESTAMP',
                 'null' => true,
             ],
-            'updated_at' => [
+            'packinglist_updated_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('gl_id', 'tblgl', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('PO_product_id', 'tblproduct', 'product_id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('factory_id', 'tblfactory', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('tblpo');
+        $this->forge->addForeignKey('packinglist_po_id', 'tblpo', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('packinglist_product_id', 'tblproduct', 'product_id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('tbl_packinglist');
     }
 
     public function down()
