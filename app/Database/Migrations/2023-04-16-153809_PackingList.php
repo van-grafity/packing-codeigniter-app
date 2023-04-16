@@ -4,7 +4,6 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-// packing list by purchase order
 class PackingList extends Migration
 {
     public function up()
