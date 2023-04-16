@@ -112,16 +112,16 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <i class="nav-icon fas fa-box-open"></i>
                                 <p>
-                                    Pack & Scan
+                                    Carton & Ratio
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="../index.php/cartonbarcode" class="nav-link">
-                                        <i class="nav-icon fas fa-box-open"></i>
+                                        <i class="nav-icon far fa-circle"></i>
                                         <p>Carton Barcode & Rasio</p>
                                     </a>
                                 </li>
@@ -131,21 +131,49 @@
                             <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-tree"></i>
                                 <p>
-                                    Shipment
+                                    Scan & Pack
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="pages/UI/general.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                    <a href="" class="nav-link">
+                                        <i class="nav-icon far fa-circle"></i>
                                         <p>Shipment Scan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="pages/UI/icons.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                    <a href="" class="nav-link">
+                                        <i class="nav-icon far fa-circle"></i>
                                         <p>Print Shipment Report</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fas fa-ship"></i>
+                                <p>Shipment Reports
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nva nav-treeview">
+                                <li class="nav-item">
+                                    <a href="" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-success"></i>
+                                        <p>Total PO</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-success"></i>
+                                        <p>Total Packing List</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link">
+                                        <i class="nav-icon far fa-circle text-success"></i>
+                                        <p>Total Carton Shipped</p>
                                     </a>
                                 </li>
                             </ul>

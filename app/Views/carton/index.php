@@ -10,22 +10,14 @@
             <!-- card-header -->
             <div class="card-header">
                 <h3 class="card-title">Carton Barcode Setup</h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
                 <form class="form-horizontal">
                     <div class="card-body">
                         <div class="form-group row">
-                            <label for="packinglistnumber" class="col-sm-1 col-form-label">Packing List</label>
-                            <div class="col-sm-10">
+                            <label for="packinglistnumber" class="col-sm-2 col-form-label">Packing List</label>
+                            <div class="col-sm-4">
                                 <select class="form-control packingListNumber" style="width: 100%;">
                                     <option selected="selected">Select Packing List No</option>
                                     <option>PL-GLA-001</option>
@@ -39,8 +31,8 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="carton_number" class="col-sm-1 col-form-label">Carton No</label>
-                            <div class="col-sm-10">
+                            <label for="carton_number" class="col-sm-2 col-form-label">Carton No</label>
+                            <div class="col-sm-3">
                                 <select class="form-control packingListNumber" style="width: 100%;">
                                     <option selected="selected">Select Carton No</option>
                                     <option>1</option>
@@ -54,16 +46,16 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="barcodenumber" class="col-sm-1 col-form-label">Barcode</label>
-                            <div class="col-sm-10">
+                            <label for="barcodenumber" class="col-sm-2 col-form-label">Barcode</label>
+                            <div class="col-sm-4">
                                 <input type="text" class="form-control" id="InputBarcodeNumber" placeholder="Carton Barcode Number">
+                                <button type="button" class="btn btn-primary my-2" data-toggle="modal" data-target="#ratioModal">Carton Ratio</button>
                             </div>
                         </div>
                     </div>
                     <!-- /.card-body -->
-
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
             </div>
@@ -170,7 +162,52 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal Ratio Carton Ratio-->
+        <form action="" method="post">
+            <div class="modal fade" id="ratioModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalLabel">Carton Ratio</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Carton No</label>
+                                <input disabled type="text" class="form-control carton_no" name="carton_n0" placeholder="Carton Number (diambil dari input sebelumnya)">
+                            </div>
+                            <div class="form-group">
+                                <label>Size</label>
+                                <select class="form-control size" style="width: 100%;">
+                                    <option selected="selected">Size</option>
+                                    <option>XS</option>
+                                    <option>S</option>
+                                    <option>M</option>
+                                    <option>L</option>
+                                    <option>XL</option>
+                                    <option>XXL</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="text" class="form-control quantity" name="quantity" placeholder="Quantity">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="product_id" class="product_id">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- End Modal Carton Ratio-->
     </section>
     <!-- /.content -->
+
+
 </div>
 <?= $this->endSection('content'); ?>
