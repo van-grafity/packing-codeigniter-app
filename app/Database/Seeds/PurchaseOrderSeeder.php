@@ -6,14 +6,13 @@ use CodeIgniter\Database\Seeder;
 
 class PurchaseOrderSeeder extends Seeder
 {
-    private $table = 'tblpo';
+    private $table = 'tblpurchaseorder';
 
     private const DATA = [
         [
             'id' => 1,
             'PO_No' => '8X8WFHBM',
             'gl_id' => 1,
-            'PO_product_id' => 1,
             'factory_id' => 1,
             'shipdate' => '2022-11-03',
             'unit_price' => 10.80,
@@ -26,7 +25,6 @@ class PurchaseOrderSeeder extends Seeder
             'id' => 2,
             'PO_No' => '8X8WFHBM',
             'gl_id' => 1,
-            'PO_product_id' => 2,
             'factory_id' => 1,
             'shipdate' => '2022-10-18',
             'unit_price' => 10.80,
@@ -39,7 +37,6 @@ class PurchaseOrderSeeder extends Seeder
             'id' => 3,
             'PO_No' => '8X8WFHBM',
             'gl_id' => 1,
-            'PO_product_id' => 3,
             'factory_id' => 1,
             'shipdate' => '2022-10-29',
             'unit_price' => 10.80,
@@ -52,7 +49,6 @@ class PurchaseOrderSeeder extends Seeder
             'id' => 4,
             'PO_No' => '8X8WFHBM',
             'gl_id' => 1,
-            'PO_product_id' => 4,
             'factory_id' => 1,
             'shipdate' => '2022-10-29',
             'unit_price' => 10.80,
@@ -65,7 +61,6 @@ class PurchaseOrderSeeder extends Seeder
             'id' => 5,
             'PO_No' => '8X8WFHBM',
             'gl_id' => 1,
-            'PO_product_id' => 5,
             'factory_id' => 1,
             'shipdate' => '2022-10-29',
             'unit_price' => 10.80,
@@ -78,7 +73,6 @@ class PurchaseOrderSeeder extends Seeder
             'id' => 6,
             'PO_No' => '8X8WFHBM',
             'gl_id' => 1,
-            'PO_product_id' => 6,
             'factory_id' => 1,
             'shipdate' => '2022-10-29',
             'unit_price' => 10.80,
@@ -91,7 +85,6 @@ class PurchaseOrderSeeder extends Seeder
             'id' => 7,
             'PO_No' => '8X8WFHBM',
             'gl_id' => 1,
-            'PO_product_id' => 7,
             'factory_id' => 1,
             'shipdate' => '2022-10-29',
             'unit_price' => 10.80,
@@ -104,7 +97,6 @@ class PurchaseOrderSeeder extends Seeder
             'id' => 8,
             'PO_No' => '8X8WFHBM',
             'gl_id' => 1,
-            'PO_product_id' => 8,
             'factory_id' => 1,
             'shipdate' => '2022-10-29',
             'unit_price' => 10.80,

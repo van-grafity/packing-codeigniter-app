@@ -34,9 +34,9 @@ class PurchaseOrderDetail extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('order_id', 'tblpo', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('order_id', 'tblpurchaseorder', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('product_id', 'tblproduct', 'product_id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('tbl_po_detail');
+        $this->forge->createTable('tblpurchaseorderdetail');
     }
 
     public function down()

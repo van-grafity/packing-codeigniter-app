@@ -6,7 +6,7 @@ use CodeIgniter\Database\Seeder;
 
 class PackingListSeeder extends Seeder
 {
-    private $table = 'tbl_packinglist';
+    private $table = 'tblpackinglist';
 
     private const DATA = [
         [

@@ -47,9 +47,9 @@ class PackingList extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('packinglist_po_id', 'tblpo', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('packinglist_po_id', 'tblpurchaseorder', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('packinglist_product_id', 'tblproduct', 'product_id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('tbl_packinglist');
+        $this->forge->createTable('tblpackinglist');
     }
 
     public function down()

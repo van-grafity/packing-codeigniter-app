@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class PurchaseOrderModel extends Model
 {
-    protected $table = 'tblpo';
+    protected $table = 'tblpurchaseorder';
     protected $primaryKey = 'id';
     protected $allowedFields = [
         'PO_No',
@@ -24,11 +24,10 @@ class PurchaseOrderModel extends Model
 
     public function getPO()
     {
-        $builder = $this->db->table('tblPO');
+        $builder = $this->db->table('tblpurchaseorder');
         $builder->select('*');
-        $builder->join('tblgl', 'tblgl.id = tblPO.gl_id');
-        $builder->join('tblproduct', 'tblproduct.product_id = tblPO.PO_product_id');
-        $builder->join('tblfactory', 'tblfactory.id = tblPO.factory_id');
+        $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id');
+        $builder->join('tblfactory', 'tblfactory.id = tblpurchaseorder.factory_id');
         return $builder->get();
     }
 
@@ -40,7 +39,7 @@ class PurchaseOrderModel extends Model
 
     public function saveProduct($data)
     {
-        $query = $this->db->table('tblPO')->insert($data);
+        $query = $this->db->table('tblpurchaseorder')->insert($data);
         return $query;
     }
 }

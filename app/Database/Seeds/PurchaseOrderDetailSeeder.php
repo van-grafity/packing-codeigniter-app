@@ -6,7 +6,7 @@ use CodeIgniter\Database\Seeder;
 
 class PurchaseOrderDetailSeeder extends Seeder
 {
-    private $table = 'tbl_po_detail';
+    private $table = 'tblpurchaseorderdetail';
 
     private const DATA = [
         [
