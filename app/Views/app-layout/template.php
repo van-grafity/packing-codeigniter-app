@@ -97,7 +97,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="../index.php/po" class="nav-link">
+                                    <a href="../index.php/purchaseorder" class="nav-link">
                                         <i class="nav-icon far fa-file text-warning"></i>
                                         <p>Buyer PO</p>
                                     </a>

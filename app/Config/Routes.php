@@ -40,6 +40,8 @@ $routes->get('/buyer/update/(:segment)', 'Buyer::update/$1');
 $routes->delete('buyer/(:num)', 'Buyer::delete/$1');
 $routes->get('/buyer/(:any)', 'Buyer::detail/$1');
 
+$routes->get('/purchaseorder', 'PurchaseOrder::index');
+
 $routes->get('/packinglist', 'PackingList::index');
 
 /*
