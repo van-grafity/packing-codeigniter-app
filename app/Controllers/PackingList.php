@@ -4,30 +4,26 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 
-use App\Models\PurchaseOrderModel;
-use App\Models\PurchaseOrderDetailModel;
 use App\Models\PackingListModel;
-use App\Models\GLModel;
-use App\Models\BuyerModel;
 
 class PackingList extends BaseController
 {
-    protected $po, $pod, $pl, $gl, $buyer;
+    protected $pl;
 
     public function __construct()
     {
-        $this->po = new PurchaseOrderModel();
         $this->pl = new PackingListModel();
-        $this->gl = new GLModel();
-        $this->buyer = new BuyerModel();
     }
+
     public function index()
     {
         $data = [
             'title' => 'Factory Packing List',
-            'menu' => 'packinglist',
-            'submenu' => 'packinglist',
-            'content' => 'pl/index',
+            'pl' => $this->pl->getPackingList()->getResult(),
+            'pl' => $this->pl->select('tblpackinglist.*, tblpurchaseorder.PO_No')
+                ->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id')
+                ->findAll(),
+            'validation' => \Config\Services::validation()
         ];
         return view('pl/index', $data);
     }
