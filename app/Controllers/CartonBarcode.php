@@ -20,8 +20,7 @@ class CartonBarcode extends BaseController
             'title' => 'Carton Barcode Setup',
             'carton' => $this->CartonBarcodeModel->getCartonBarcode()->getResult()
         ];
-        //$carton = $this->CartonBarcodeModel->getCartonBarcode()->getResult();
-        //dd($carton);
+
         return view('carton/index', $data);
     }
 }

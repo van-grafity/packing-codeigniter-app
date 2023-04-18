@@ -8,7 +8,6 @@ class ProductModel extends Model
 {
     protected $useTimestamps = true;
     protected $allowedFields = [
-        'product_id',
         'product_code',
         'product_asin_id',
         'style',
@@ -27,7 +26,7 @@ class ProductModel extends Model
     {
         $builder = $this->db->table('tblproduct');
         $builder->select('*');
-        $builder->join('tblcategory', 'id = product_category_id', 'left');
+        $builder->join('tblcategory', 'tblcategory.id = product_category_id', 'left');
         return $builder->get();
     }
 

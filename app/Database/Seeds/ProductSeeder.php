@@ -11,7 +11,7 @@ class ProductSeeder extends Seeder
 
     private const DATA = [
         [
-            'product_id' => 1,
+            'id' => 1,
             'product_code' => '195111263922',
             'product_asin_id' => 'B08J66XGYV',
             'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
@@ -22,7 +22,7 @@ class ProductSeeder extends Seeder
             'updated_at' => '2023-04-29 10:46:01',
         ],
         [
-            'product_id' => 2,
+            'id' => 2,
             'product_code' => '195111263923',
             'product_asin_id' => 'B08J66XGYV',
             'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
@@ -33,7 +33,7 @@ class ProductSeeder extends Seeder
             'updated_at' => '2023-04-29 10:46:01',
         ],
         [
-            'product_id' => 3,
+            'id' => 3,
             'product_code' => '195111263924',
             'product_asin_id' => 'B08J66XGYV',
             'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
@@ -44,7 +44,7 @@ class ProductSeeder extends Seeder
             'updated_at' => '2023-04-29 10:46:01',
         ],
         [
-            'product_id' => 4,
+            'id' => 4,
             'product_code' => '195111263922',
             'product_asin_id' => 'B08J66XGYV',
             'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
@@ -55,7 +55,7 @@ class ProductSeeder extends Seeder
             'updated_at' => '2023-04-29 10:46:01',
         ],
         [
-            'product_id' => 5,
+            'id' => 5,
             'product_code' => '195111263923',
             'product_asin_id' => 'B08J66XGYV',
             'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
@@ -66,7 +66,7 @@ class ProductSeeder extends Seeder
             'updated_at' => '2023-04-29 10:46:01',
         ],
         [
-            'product_id' => 6,
+            'id' => 6,
             'product_code' => '195111263924',
             'product_asin_id' => 'B08J66XGYV',
             'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
@@ -77,7 +77,7 @@ class ProductSeeder extends Seeder
             'updated_at' => '2023-04-29 10:46:01',
         ],
         [
-            'product_id' => 7,
+            'id' => 7,
             'product_code' => '195111263922',
             'product_asin_id' => 'B08J66XGYV',
             'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
@@ -88,7 +88,7 @@ class ProductSeeder extends Seeder
             'updated_at' => '2023-04-29 10:46:01',
         ],
         [
-            'product_id' => 8,
+            'id' => 8,
             'product_code' => '195111263923',
             'product_asin_id' => 'B08J66XGYV',
             'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
@@ -99,7 +99,7 @@ class ProductSeeder extends Seeder
             'updated_at' => '2023-04-29 10:46:01',
         ],
         [
-            'product_id' => 9,
+            'id' => 9,
             'product_code' => '195111263924',
             'product_asin_id' => 'B08J66XGYV',
             'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
@@ -110,7 +110,7 @@ class ProductSeeder extends Seeder
             'updated_at' => '2023-04-29 10:46:01',
         ],
         [
-            'product_id' => 10,
+            'id' => 10,
             'product_code' => '195111263922',
             'product_asin_id' => 'B08J66XGYV',
             'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
@@ -121,7 +121,7 @@ class ProductSeeder extends Seeder
             'updated_at' => '2023-04-29 10:46:01',
         ],
         [
-            'product_id' => 11,
+            'id' => 11,
             'product_code' => '195111263923',
             'product_asin_id' => 'B08J66XGYV',
             'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',
@@ -132,7 +132,7 @@ class ProductSeeder extends Seeder
             'updated_at' => '2023-04-29 10:46:01',
         ],
         [
-            'product_id' => 12,
+            'id' => 12,
             'product_code' => '195111263924',
             'product_asin_id' => 'B08J66XGYV',
             'style' => 'AE-M-FW20-SHR-1270-Micon-X-Small',

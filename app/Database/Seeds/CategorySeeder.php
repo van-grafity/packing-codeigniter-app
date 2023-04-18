@@ -11,23 +11,23 @@ class CategorySeeder extends Seeder
 
     private const DATA = [
         [
-            'category_id' => 1,
+            'id' => 1,
             'category_name' => 'T-Shirt',
         ],
         [
-            'category_id' => 2,
+            'id' => 2,
             'category_name' => 'Polo Shirt',
         ],
         [
-            'category_id' => 3,
+            'id' => 3,
             'category_name' => 'Leggings',
         ],
         [
-            'category_id' => 4,
+            'id' => 4,
             'category_name' => 'Dress',
         ],
         [
-            'category_id' => 5,
+            'id' => 5,
             'category_name' => 'Jacket',
         ],
     ];

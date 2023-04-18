@@ -9,7 +9,7 @@ class Category extends Migration
     public function up()
     {
         $this->forge->addField([
-            'category_id' => [
+            'id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
                 'auto_increment' => true
@@ -28,7 +28,7 @@ class Category extends Migration
                 'null' => true,
             ],
         ]);
-        $this->forge->addKey('category_id', true);
+        $this->forge->addKey('id', true);
         $this->forge->createTable('tblcategory');
     }
 
