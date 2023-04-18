@@ -258,12 +258,14 @@
     <script>
         $(function() {
             $("#table1").DataTable({
-                "buttons": ["copy", "excel", "pdf", "print"],
+                "buttons": ["excel", "pdf", "print"],
                 "lengthMenu": [
                     [10, 20, 50, 100, -1],
                     [10, 20, 50, 100, 'All'],
                 ],
-                dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>",
+                dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>" +
+                    "<'row'<'col-md-12'tr>>" +
+                    "<'row'<'col-md-5'i><'col-md-7'p>>",
                 "responsive": true,
                 "paging": true,
                 "lengthChange": true,
