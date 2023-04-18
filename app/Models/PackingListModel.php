@@ -6,8 +6,8 @@ use CodeIgniter\Model;
 
 class PackingListModel extends Model
 {
+    protected $useTimestamps = true;
     protected $table = 'tblpackinglist';
-    protected $primaryKey = 'id';
     protected $allowedFields = [
         'packinglist_no',
         'packinglist_date',
@@ -15,9 +15,6 @@ class PackingListModel extends Model
         'packinglist_qty',
         'packinglist_amount',
     ];
-    protected $useTimestamps = true;
-    protected $createdField = 'packinglist_created_at';
-    protected $updatedField = 'packinglist_updated_at';
 
     public function getPackingList()
     {

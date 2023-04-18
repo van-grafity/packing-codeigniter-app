@@ -6,17 +6,13 @@ use CodeIgniter\Model;
 
 class GLModel extends Model
 {
+    protected $useTimestamps = true;
     protected $table = 'tblgl';
-    protected $primaryKey = 'id';
     protected $allowedFields = [
         'gl_number',
         'season',
         'size_order',
-        'buyer_id',
     ];
-    protected $useTimestamps = true;
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
 
     public function getGL()
     {

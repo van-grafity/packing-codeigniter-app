@@ -34,6 +34,14 @@ class Employees extends Migration
                 'constraint'     => ['sudah', 'belum'],
                 'default'        => 'belum',
             ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
         ]);
 
         // Membuat primary key

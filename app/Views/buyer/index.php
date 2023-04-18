@@ -25,16 +25,16 @@
                     </thead>
                     <tbody>
                         <?php $i = 1; ?>
-                        <?php foreach ($buyer as $row) : ?>
+                        <?php foreach ($buyer as $b) : ?>
                             <tr>
                                 <th class="text-center" scope="row"><?= $i++; ?></th>
-                                <td><?= $row->buyer_name; ?></td>
-                                <td><?= $row->offadd; ?></td>
-                                <td><?= $row->shipadd; ?></td>
+                                <td><?= $b->buyer_name; ?></td>
+                                <td><?= $b->offadd; ?></td>
+                                <td><?= $b->shipadd; ?></td>
                                 <td>
-                                    <a class="btn btn-success btn-sm btn-detail" data-id="<?= $row->buyer_id; ?>" data-name="<?= $row->buyer_name; ?>" data-offadd="<?= $row->offadd; ?>" data-shipadd="<?= $row->shipadd; ?>" data-country="<?= $row->country; ?>">Details</a>
-                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $row->buyer_id; ?>" data-name="<?= $row->buyer_name; ?>" data-offadd="<?= $row->offadd; ?>" data-shipadd="<?= $row->shipadd; ?>" data-country="<?= $row->country; ?>">Edit</a>
-                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $row->buyer_id; ?>">Delete</a>
+                                    <a class="btn btn-success btn-sm btn-detail" data-id="<?= $b->id; ?>" data-name="<?= $b->buyer_name; ?>" data-offadd="<?= $b->offadd; ?>" data-shipadd="<?= $b->shipadd; ?>" data-country="<?= $b->country; ?>">Details</a>
+                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $b->id; ?>" data-name="<?= $b->buyer_name; ?>" data-offadd="<?= $b->offadd; ?>" data-shipadd="<?= $b->shipadd; ?>" data-country="<?= $b->country; ?>">Edit</a>
+                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $b->id; ?>">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

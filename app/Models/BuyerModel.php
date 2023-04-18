@@ -8,7 +8,6 @@ class BuyerModel extends Model
 {
     protected $table = 'tblBuyer';
     protected $useTimestamps = true;
-    //protected $primaryKey = 'id';
     protected $allowedFields = [
         'buyer_name',
         'code',
@@ -27,13 +26,13 @@ class BuyerModel extends Model
 
     public function updateBuyer($data, $id)
     {
-        $query = $this->db->table('tblbuyer')->update($data, array('buyer_id' => $id));
+        $query = $this->db->table('tblbuyer')->update($data, array('id' => $id));
         return $query;
     }
 
     public function deleteBuyer($id)
     {
-        $query = $this->db->table('tblBuyer')->delete(array('buyer_id' => $id));
+        $query = $this->db->table('tblBuyer')->delete(array('id' => $id));
         return $query;
     }
 }

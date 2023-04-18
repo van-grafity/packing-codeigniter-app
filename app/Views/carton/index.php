@@ -64,11 +64,16 @@
         <!-- /.card -->
         <div class="row">
             <div class="col-lg-6">
-                <div class="card card-primary card-outline">
+                <div class="card card-success">
                     <div class="card-header">
-                        <h5 class="m-0">List of Carton Barcode</h5>
+                        <h5 class="card-title">List of Carton Barcode</h5>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
                     </div>
-
+                    <!-- /.card-header -->
                     <div class="card-body">
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -80,44 +85,43 @@
                                     <th class="text-center align-middle" scope="col">Carton Barcode</th>
                                 </tr>
                             </thead>
-                            <tr>
-                                <td class="text-center align-middle" scope="col">1</td>
-                                <td class="text-center align-middle" scope="col"></td>
-                                <td class="text-center align-middle" scope="col">8X8WFHBM</td>
-                                <td class="text-center align-middle" scope="col">1</td>
-                                <td class="text-center align-middle" scope="col">909111887766</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center align-middle" scope="col">2</td>
-                                <td class="text-center align-middle" scope="col"></td>
-                                <td class="text-center align-middle" scope="col">8X8WFHBM</td>
-                                <td class="text-center align-middle" scope="col">2</td>
-                                <td class="text-center align-middle" scope="col">118111887767</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center align-middle" scope="col">3</td>
-                                <td class="text-center align-middle" scope="col"></td>
-                                <td class="text-center align-middle" scope="col">8X8WFHBM</td>
-                                <td class="text-center align-middle" scope="col">3</td>
-                                <td class="text-center align-middle" scope="col">787111887768</td>
-                            </tr>
+                            <tbody>
+                                <?php $i = 1; ?>
+                                <?php foreach ($carton as $c) : ?>
+                                    <tr>
+                                        <th class="text-center" scope="row"><?= $i++; ?></th>
+                                        <td><?= $c->packinglist_no; ?></td>
+                                        <td><?= $c->PO_No; ?></td>
+                                        <td class="text-center"><?= $c->carton_no; ?></td>
+                                        <td class="text-center"><?= $c->carton_barcode; ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
                         </table>
                     </div>
                 </div><!-- /.card -->
             </div>
             <!-- /.col-md-6 -->
             <div class="col-lg-6">
-                <div class="card card-primary card-outline">
+                <div class="card card-secondary">
                     <div class="card-header">
-                        <h5 class="m-0">List of Carton Rasio</h5>
+                        <h5 class="card-title">List of Carton Rasio</h5>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered table-striped">
                             <tr class="table-primary">
-                                <th class="text-center align-middle" scope="col">SN</th>
-                                <th class="text-center align-middle" scope="col">PL No</th>
-                                <th class="text-center align-middle" scope="col">PO No</th>
-                                <th class="text-center align-middle" scope="col">Carton No</th>
+                                <th rowspan="2" class="text-center align-middle" scope="col">SN</th>
+                                <th rowspan="2" class="text-center align-middle" scope="col">PL No</th>
+                                <th rowspan="2" class="text-center align-middle" scope="col">PO No</th>
+                                <th rowspan="2" class="text-center align-middle" scope="col">Carton No</th>
+                                <th colspan="5" class="text-center align-middle">Size</th>
+                            </tr>
+                            <tr>
                                 <th class="text-center align-middle" scope="col">XS</th>
                                 <th class="text-center align-middle" scope="col">S</th>
                                 <th class="text-center align-middle" scope="col">M</th>
@@ -199,6 +203,7 @@
                         <div class="modal-footer">
                             <input type="hidden" name="product_id" class="product_id">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </div>

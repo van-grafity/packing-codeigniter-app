@@ -6,12 +6,9 @@ use CodeIgniter\Model;
 
 class PackingListModel extends Model
 {
-    protected $table = 'tblpackinglist';
-    protected $primaryKey = 'id';
-    protected $allowedFields = ['packinglist_no', 'packinglist_date', 'packinglist_po_id', 'packinglist_qty', 'packinglist_amount', 'packinglist_created_at', 'packinglist_updated_at'];
     protected $useTimestamps = true;
-    protected $createdField = 'packinglist_created_at';
-    protected $updatedField = 'packinglist_updated_at';
+    protected $table = 'tblpackinglist';
+    protected $allowedFields = ['packinglist_no', 'packinglist_date', 'packinglist_po_id', 'packinglist_qty', 'packinglist_amount'];
     protected $returnType = 'App\Entities\PackingList';
     protected $useSoftDeletes = false;
     protected $skipValidation = false;

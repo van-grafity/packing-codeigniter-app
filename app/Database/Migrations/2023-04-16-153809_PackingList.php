@@ -41,6 +41,14 @@ class PackingList extends Migration
                 'type' => 'DATETIME',
                 'null' => true,
             ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('packinglist_po_id', 'tblpurchaseorder', 'id', 'CASCADE', 'CASCADE');

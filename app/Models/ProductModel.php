@@ -7,6 +7,15 @@ use CodeIgniter\Model;
 class ProductModel extends Model
 {
     protected $useTimestamps = true;
+    protected $allowedFields = [
+        'product_id',
+        'product_code',
+        'product_asin_id',
+        'style',
+        'product_name',
+        'product_price',
+        'product_category_id'
+    ];
 
     public function getCategory()
     {
@@ -18,7 +27,7 @@ class ProductModel extends Model
     {
         $builder = $this->db->table('tblproduct');
         $builder->select('*');
-        $builder->join('tblcategory', 'category_id = product_category_id', 'left');
+        $builder->join('tblcategory', 'id = product_category_id', 'left');
         return $builder->get();
     }
 

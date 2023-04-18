@@ -2,14 +2,26 @@
 
 namespace App\Controllers;
 
-class Cartonbarcode extends BaseController
+use App\Models\CartonBarcodeModel;
+
+class CartonBarcode extends BaseController
 {
+    protected $CartonBarcodeModel;
+
+    public function __construct()
+    {
+        $this->CartonBarcodeModel = new CartonBarcodeModel();
+    }
+
     public function index()
     {
 
         $data = [
-            'title' => 'Carton Barcode Setup'
+            'title' => 'Carton Barcode Setup',
+            'carton' => $this->CartonBarcodeModel->getCartonBarcode()->getResult()
         ];
+        //$carton = $this->CartonBarcodeModel->getCartonBarcode()->getResult();
+        //dd($carton);
         return view('carton/index', $data);
     }
 }

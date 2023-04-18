@@ -6,7 +6,14 @@ use CodeIgniter\Model;
 
 class Employee_model extends Model
 {
+    protected $useTimestamps = true;
     protected $table = 'employees';
+    protected $allowedFields = [
+        'nama_karyawan',
+        'usia',
+        'status_vaksin_1',
+        'status_vaksin_2'
+    ];
 
     public function getKaryawan($id = false)
     {

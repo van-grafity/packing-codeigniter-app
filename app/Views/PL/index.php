@@ -5,7 +5,7 @@
     <section class="content-header">
     </section>
 
-     <section class="content">
+    <section class="content">
         <div class="container-fluid">
             <h1 class="mt-4"><i class="fas fa-server"></i>FactoryPacking List</h1>
             <ol class="breadcrumb mb-4">
@@ -43,6 +43,7 @@
             td {
                 cursor: pointer;
             }
+        </style>
     </section>
 </div>
 <?= $this->endSection(); ?>

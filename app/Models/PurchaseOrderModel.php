@@ -6,8 +6,8 @@ use CodeIgniter\Model;
 
 class PurchaseOrderModel extends Model
 {
+    protected $useTimestamps = true;
     protected $table = 'tblpurchaseorder';
-    protected $primaryKey = 'id';
     protected $allowedFields = [
         'PO_No',
         'gl_id',
@@ -18,9 +18,6 @@ class PurchaseOrderModel extends Model
         'PO_qty',
         'PO_amount',
     ];
-    protected $useTimestamps = true;
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
 
     public function getPO()
     {

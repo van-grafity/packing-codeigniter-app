@@ -9,7 +9,7 @@ class Buyer extends Migration
     public function up()
     {
         $this->forge->addField([
-            'buyer_id' => [
+            'id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
                 'auto_increment' => true
@@ -43,12 +43,11 @@ class Buyer extends Migration
                 'null' => true,
             ],
         ]);
-        $this->forge->addKey('buyer_id', true);
+        $this->forge->addKey('id', true);
         $this->forge->createTable('tblbuyer');
     }
 
     public function down()
     {
-        
     }
 }
