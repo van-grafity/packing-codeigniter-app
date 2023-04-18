@@ -74,7 +74,7 @@
 
                     <div class="form-group">
                         <label>Style</label>
-                        <input type="text" disabled class="form-control style" name="style" placeholder="Product Style">
+                        <input type="text" class="form-control style" name="style" placeholder="Product Style">
                     </div>
 
                     <div class="form-group">
