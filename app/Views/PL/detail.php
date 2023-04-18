@@ -11,12 +11,12 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h3>Factory Packing List</h3>
+                            <h3><?= $title ?></h3>
                             <table>
                                 <table width="100%">
                                     <tr>
                                         <td width="20%">Order No.</td>
-                                        <td width="16%">62358</td>
+                                        <td width="16%"><?= esc($pl['packinglist_date']); ?></td>
                                         <td width="16%">Measurements</td>
                                         <td>Below</td>
                                     </tr>

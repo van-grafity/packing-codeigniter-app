@@ -43,6 +43,7 @@ $routes->get('/buyer/(:any)', 'Buyer::detail/$1');
 $routes->get('/purchaseorder', 'PurchaseOrder::index');
 
 $routes->get('/packinglist', 'PackingList::index');
+$routes->get('/packinglist/(:any)', 'PackingList::detail/$1');
 
 /*
  * --------------------------------------------------------------------

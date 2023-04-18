@@ -21,14 +21,22 @@
                                     <tr>
                                         <th>PL No.</th>
                                         <th>PO No.</th>
+                                        <th>Buyer</th>
+                                        <th>GL No.</th>
+                                        <th>Season</th>
+                                        <th>Size Order</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     <?php foreach ($pl as $pl) : ?>
                                         <tr>
-                                            <td><?= esc($pl['packinglist_no']); ?></td>
+                                            <td><a href="<?= base_url('index.php/packinglist/' . $pl['packinglist_no']); ?>"><?= esc($pl['packinglist_no']); ?></a></td>
                                             <td onClick="window.location.href='<?= base_url('index.php/home'); ?>'"><?= esc($pl['PO_No']); ?></td>
+                                            <td><?= esc($pl['buyer_name']); ?></td>
+                                            <td><?= esc($pl['gl_number']); ?></td>
+                                            <td><?= esc($pl['season']); ?></td>
+                                            <td><?= esc($pl['size_order']); ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
