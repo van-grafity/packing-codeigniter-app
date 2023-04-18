@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\PurchaseOrderModel;
 use App\Models\GLModel;
+
 helper('number');
 
 class PurchaseOrder extends BaseController
@@ -22,7 +23,7 @@ class PurchaseOrder extends BaseController
             'title'     => 'Buyer Purchase Order',
             'buyerPO'   => $this->PurchaseOrderModel->select('tblpurchaseorder.*, tblgl.gl_number, tblgl.season, tblgl.size_order, tblbuyer.buyer_name')
                 ->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id')
-                ->join('tblbuyer', 'tblbuyer.buyer_id = tblgl.buyer_id')
+                ->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id')
                 ->findAll(),
             'validation' => \Config\Services::validation()
 

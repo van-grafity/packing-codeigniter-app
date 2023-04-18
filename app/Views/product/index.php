@@ -36,9 +36,9 @@
                                 <td class="text-right"><?= number_to_currency($p->product_price, 'USD', 'en_US', 2); ?></td>
                                 <td><?= $p->category_name; ?></td>
                                 <td>
-                                    <a class="btn btn-success btn-sm btn-detail" data-id="<?= $p->product_id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-style="<?= $p->style; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>" data-category_id="<?= $p->product_category_id; ?>">Details</a>
-                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $p->product_id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-style="<?= $p->style; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>" data-category_id="<?= $p->product_category_id; ?>">Edit</a>
-                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $p->product_id; ?>">Delete</a>
+                                    <a class="btn btn-success btn-sm btn-detail" data-id="<?= $p->id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-style="<?= $p->style; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>" data-category_id="<?= $p->product_category_id; ?>">Details</a>
+                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $p->id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-style="<?= $p->style; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>" data-category_id="<?= $p->product_category_id; ?>">Edit</a>
+                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $p->id; ?>">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

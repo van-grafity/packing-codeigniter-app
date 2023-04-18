@@ -258,14 +258,18 @@
     <script>
         $(function() {
             $("#table1").DataTable({
-                "buttons": ["excel", "pdf", "print"],
+                "buttons": ["copy", "excel", "pdf", "print"],
                 "lengthMenu": [
                     [10, 20, 50, 100, -1],
                     [10, 20, 50, 100, 'All'],
                 ],
                 dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>",
                 "responsive": true,
+                "paging": true,
                 "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
                 "autoWidth": true
             }).buttons().container().appendTo('#table1_wrapper .col-md-6:eq(0)');
         });

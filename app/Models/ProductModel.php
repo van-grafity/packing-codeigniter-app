@@ -38,13 +38,13 @@ class ProductModel extends Model
 
     public function updateProduct($data, $id)
     {
-        $query = $this->db->table('tblproduct')->update($data, array('product_id' => $id));
+        $query = $this->db->table('tblproduct')->update($data, array('id' => $id));
         return $query;
     }
 
     public function deleteProduct($id)
     {
-        $query = $this->db->table('tblproduct')->delete(array('product_id' => $id));
+        $query = $this->db->table('tblproduct')->delete(array('id' => $id));
         return $query;
     }
 }

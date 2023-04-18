@@ -22,7 +22,7 @@ class PackingList extends BaseController
             'pl' => $this->pl->select('tblpackinglist.*, tblpurchaseorder.PO_No, tblbuyer.buyer_name, tblgl.gl_number, tblgl.season, tblgl.size_order')
                 ->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id')
                 ->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id')
-                ->join('tblbuyer', 'tblbuyer.buyer_id = tblgl.buyer_id')
+                ->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id')
                 ->findAll(),
             'validation' => \Config\Services::validation()
         ];
@@ -34,7 +34,7 @@ class PackingList extends BaseController
         $data = [
             'title' => 'Factory Packing List',
             'pl' => $this->pl->select('tblpackinglist.*')
-                
+
                 ->where('packinglist_no', $packinglist_no)
                 ->first(),
             'validation' => \Config\Services::validation()
