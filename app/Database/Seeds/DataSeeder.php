@@ -18,6 +18,8 @@ class DataSeeder extends Seeder
         $this->call('PurchaseOrderSeeder');
         $this->call('PurchaseOrderDetailSeeder');
         $this->call('PackingListSeeder');
+        $this->call('SizeSeeder');
         $this->call('CartonBarcodeSeeder');
+        $this->call('CartonRatioSeeder');
     }
 }

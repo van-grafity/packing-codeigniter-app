@@ -10,6 +10,7 @@ class PackingListSeeder extends Seeder
 
     private const DATA = [
         [
+            'id' => 1,
             'packinglist_no' => 'PL-0001',
             'packinglist_date' => '2021-04-16',
             'packinglist_po_id' => 1,
@@ -19,6 +20,7 @@ class PackingListSeeder extends Seeder
             'packinglist_updated_at' => '2021-04-16 15:38:09',
         ],
         [
+            'id' => 2,
             'packinglist_no' => 'PL-0002',
             'packinglist_date' => '2021-04-16',
             'packinglist_po_id' => 2,
@@ -28,6 +30,7 @@ class PackingListSeeder extends Seeder
             'packinglist_updated_at' => '2021-04-16 15:38:09',
         ],
         [
+            'id' => 3,
             'packinglist_no' => 'PL-0003',
             'packinglist_date' => '2021-04-16',
             'packinglist_po_id' => 3,
@@ -37,6 +40,7 @@ class PackingListSeeder extends Seeder
             'packinglist_updated_at' => '2021-04-16 15:38:09',
         ],
         [
+            'id' => 4,
             'packinglist_no' => 'PL-0004',
             'packinglist_date' => '2021-04-16',
             'packinglist_po_id' => 4,

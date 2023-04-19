@@ -18,30 +18,20 @@
                         <div class="form-group row">
                             <label for="packinglistnumber" class="col-sm-2 col-form-label">Packing List</label>
                             <div class="col-sm-4">
-                                <select class="form-control packingListNumber" style="width: 100%;">
+                                <select name="packingList" class="form-control packingListNumber" style="width: 100%;">
                                     <option selected="selected">Select Packing List No</option>
-                                    <option>PL-GLA-001</option>
-                                    <option>PL-GLA-002</option>
-                                    <option>PL-GLA-003</option>
-                                    <option>PL-GLA-004</option>
-                                    <option>PL-GLA-005</option>
-                                    <option>PL-GLA-006</option>
-                                    <option>PL-GLA-007</option>
+                                    <?php foreach ($packinglist as $pl) : ?>
+                                        <option><?= $pl->packinglist_no; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="carton_number" class="col-sm-2 col-form-label">Carton No</label>
                             <div class="col-sm-3">
-                                <select class="form-control packingListNumber" style="width: 100%;">
+                                <select class="form-control packingCartonNumber" style="width: 100%;">
                                     <option selected="selected">Select Carton No</option>
                                     <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
                                 </select>
                             </div>
                         </div>

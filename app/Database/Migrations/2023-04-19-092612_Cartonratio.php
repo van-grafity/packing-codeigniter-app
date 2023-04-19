@@ -4,11 +4,11 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CartonBarcode extends Migration
+class Cartonratio extends Migration
 {
     public function up()
     {
-        //Membuat kolom/field untuk tabel CartonBarcode
+        //Membuat kolom/field untuk tabel Carton Ratio
         $this->forge->addField([
             'id'          => [
                 'type'           => 'BIGINT',
@@ -21,11 +21,15 @@ class CartonBarcode extends Migration
             ],
             'carton_no' => [
                 'type' => 'INT',
-                'constraint' => 11,
+                'unsigned' => true,
             ],
-            'carton_barcode' => [
+            'size_id' => [
                 'type' => 'BIGINT',
-                'constraint' => 50,
+                'unsigned' => true,
+            ],
+            'ratio' => [
+                'type' => 'INT',
+                'constraint' => 2,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -38,12 +42,13 @@ class CartonBarcode extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('carton_pl_id', 'tblpackinglist', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('tblcartonbarcode');
+        $this->forge->addForeignKey('size_id', 'tblsizes', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('tblcartonratio');
     }
 
     public function down()
     {
-        //menghapus tabel cartonbarcode
-        $this->forge->dropTable('tblcartonbarcode');
+        //menghapus tabel cartonratio
+        $this->forge->dropTable('tblcartonratio');
     }
 }
