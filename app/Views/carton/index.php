@@ -104,53 +104,30 @@
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered table-striped">
-                            <tr class="table-primary">
-                                <th rowspan="2" class="text-center align-middle" scope="col">SN</th>
-                                <th rowspan="2" class="text-center align-middle" scope="col">PL No</th>
-                                <th rowspan="2" class="text-center align-middle" scope="col">PO No</th>
-                                <th rowspan="2" class="text-center align-middle" scope="col">Carton No</th>
-                                <th colspan="5" class="text-center align-middle">Size</th>
-                            </tr>
-                            <tr>
-                                <th class="text-center align-middle" scope="col">XS</th>
-                                <th class="text-center align-middle" scope="col">S</th>
-                                <th class="text-center align-middle" scope="col">M</th>
-                                <th class="text-center align-middle" scope="col">L</th>
-                                <th class="text-center align-middle" scope="col">XL</th>
-                            </tr>
-                            <tr>
-                                <td class="text-center align-middle" scope="col">1</td>
-                                <th class="text-center align-middle" scope="col"></th>
-                                <th class="text-center align-middle" scope="col">8X8WFHBM</th>
-                                <td class="text-center align-middle" scope="col">1</td>
-                                <td class="text-center align-middle" scope="col">1</td>
-                                <td class="text-center align-middle" scope="col">2</td>
-                                <td class="text-center align-middle" scope="col">2</td>
-                                <td class="text-center align-middle" scope="col">2</td>
-                                <td class="text-center align-middle" scope="col">1</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center align-middle" scope="col">2</td>
-                                <th class="text-center align-middle" scope="col"></th>
-                                <th class="text-center align-middle" scope="col">8X8WFHBM</th>
-                                <td class="text-center align-middle" scope="col">2</td>
-                                <td class="text-center align-middle" scope="col">1</td>
-                                <td class="text-center align-middle" scope="col">1</td>
-                                <td class="text-center align-middle" scope="col">1</td>
-                                <td class="text-center align-middle" scope="col">2</td>
-                                <td class="text-center align-middle" scope="col">1</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center align-middle" scope="col">3</td>
-                                <th class="text-center align-middle" scope="col"></th>
-                                <th class="text-center align-middle" scope="col">8X8WFHBM</th>
-                                <td class="text-center align-middle" scope="col">3</td>
-                                <td class="text-center align-middle" scope="col">1</td>
-                                <td class="text-center align-middle" scope="col">1</td>
-                                <td class="text-center align-middle" scope="col">3</td>
-                                <td class="text-center align-middle" scope="col">2</td>
-                                <td class="text-center align-middle" scope="col">1</td>
-                            </tr>
+                            <thead>
+                                <tr class="table-primary">
+                                    <th rowspan="2" class="text-center align-middle" scope="col">SN</th>
+                                    <th rowspan="2" class="text-center align-middle" scope="col">PL No</th>
+                                    <th rowspan="2" class="text-center align-middle" scope="col">PO No</th>
+                                    <th rowspan="2" class="text-center align-middle" scope="col">Carton No</th>
+                                    <th colspan="5" class="text-center align-middle">Size</th>
+                                </tr>
+                                <tr>
+                                    <?php foreach ($ratio as $r) : ?>
+                                        <th class="text-center align-middle" scope="col"><?= $r->size; ?></th>
+                                    <?php endforeach; ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <?php $i = 1; ?>
+                                    <?php foreach ($carton as $c) : ?>
+                                        <td class="text-center" scope="row"><?= $i++; ?></td>
+                                        <td class="text-center align-middle" scope="col"><?= $c->packinglist_no; ?></td>
+
+                                    <?php endforeach; ?>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>

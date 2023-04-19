@@ -22,4 +22,13 @@ class CartonBarcodeModel extends Model
         $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = packinglist_po_id', 'left');
         return $builder->get();
     }
+
+    public function getCartonRatio()
+    {
+        $builder = $this->db->table('tblcartonratio');
+        $builder->select('*');
+        $builder->join('tblcartonbarcode', 'tblcartonbarcode.id = carton_no_id', 'left');
+        $builder->join('tblsizes', 'tblsizes.id = size_id', 'left');
+        return $builder->get();
+    }
 }
