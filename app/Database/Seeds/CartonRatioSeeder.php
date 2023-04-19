@@ -11,7 +11,7 @@ class CartonRatioSeeder extends Seeder
     public const DATA = [
         [
             'id' => 1,
-            'carton_no' => 1,
+            'cartonbarcode_id' => 1,
             'size_id' => 1,
             'ratio' => 1,
             'created_at' => '2023-04-19 17:30:01',
@@ -19,7 +19,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 2,
-            'carton_no' => 1,
+            'cartonbarcode_id' => 1,
             'size_id' => 2,
             'ratio' => 2,
             'created_at' => '2023-04-19 17:30:02',
@@ -27,7 +27,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 3,
-            'carton_no' => 1,
+            'cartonbarcode_id' => 1,
             'size_id' => 3,
             'ratio' => 2,
             'created_at' => '2023-04-19 17:30:03',
@@ -35,7 +35,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 4,
-            'carton_no' => 1,
+            'cartonbarcode_id' => 1,
             'size_id' => 4,
             'ratio' => 2,
             'created_at' => '2023-04-19 17:30:04',
@@ -43,7 +43,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 5,
-            'carton_no' => 1,
+            'cartonbarcode_id' => 1,
             'size_id' => 5,
             'ratio' => 1,
             'created_at' => '2023-04-19 17:30:05',
@@ -51,7 +51,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 6,
-            'carton_no' => 2,
+            'cartonbarcode_id' => 2,
             'size_id' => 1,
             'ratio' => 1,
             'created_at' => '2023-04-19 17:30:06',
@@ -59,7 +59,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 7,
-            'carton_no' => 2,
+            'cartonbarcode_id' => 2,
             'size_id' => 12,
             'ratio' => 1,
             'created_at' => '2023-04-19 17:30:07',
@@ -67,7 +67,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 8,
-            'carton_no' => 2,
+            'cartonbarcode_id' => 2,
             'size_id' => 3,
             'ratio' => 1,
             'created_at' => '2023-04-19 17:30:08',
@@ -75,7 +75,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 9,
-            'carton_no' => 2,
+            'cartonbarcode_id' => 2,
             'size_id' => 4,
             'ratio' => 2,
             'created_at' => '2023-04-19 17:30:09',
@@ -83,7 +83,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 10,
-            'carton_no_id' => 2,
+            'cartonbarcode_id' => 2,
             'size_id' => 5,
             'ratio' => 1,
             'created_at' => '2023-04-19 17:30:10',
@@ -91,7 +91,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 11,
-            'carton_no_id' => 3,
+            'cartonbarcode_id' => 3,
             'size_id' => 1,
             'ratio' => 1,
             'created_at' => '2023-04-19 17:30:11',
@@ -99,7 +99,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 12,
-            'carton_no_id' => 3,
+            'cartonbarcode_id' => 3,
             'size_id' => 2,
             'ratio' => 1,
             'created_at' => '2023-04-19 17:30:12',
@@ -107,7 +107,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 13,
-            'carton_no_id' => 3,
+            'cartonbarcode_id' => 3,
             'size_id' => 3,
             'ratio' => 3,
             'created_at' => '2023-04-19 17:30:13',
@@ -115,7 +115,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 14,
-            'carton_no_id' => 3,
+            'cartonbarcode_id' => 3,
             'size_id' => 4,
             'ratio' => 2,
             'created_at' => '2023-04-19 17:30:14',
@@ -123,7 +123,7 @@ class CartonRatioSeeder extends Seeder
         ],
         [
             'id' => 15,
-            'carton_no_id' => 3,
+            'cartonbarcode_id' => 3,
             'size_id' => 5,
             'ratio' => 1,
             'created_at' => '2023-04-19 17:30:15',

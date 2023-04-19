@@ -15,8 +15,8 @@ class Cartonratio extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true
             ],
-            'carton_no_id' => [
-                'type' => 'INT',
+            'cartonbarcode_id' => [
+                'type' => 'BIGINT',
                 'unsigned' => true,
             ],
             'size_id' => [
@@ -37,7 +37,7 @@ class Cartonratio extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('carton_no_id', 'tblcartonbarcode', 'carton_no', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('cartonbarcode_id', 'tblcartonbarcode', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('size_id', 'tblsizes', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblcartonratio');
     }
