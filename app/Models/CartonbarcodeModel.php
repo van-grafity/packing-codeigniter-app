@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class CartonBarcodeModel extends Model
 {
     protected $useTimestamps = true;
-    protected $table = 'tblCarton_Barcode';
+    protected $table = 'tblcartonbarcode';
     protected $allowedFields = [
         'carton_pl_id',
         'carton_no',
@@ -16,7 +16,7 @@ class CartonBarcodeModel extends Model
 
     public function getCartonBarcode()
     {
-        $builder = $this->db->table('tblcarton_barcode');
+        $builder = $this->db->table('tblcartonbarcode');
         $builder->select('*');
         $builder->join('tblpackinglist', 'tblpackinglist.id = carton_pl_id', 'left');
         $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id', 'left');

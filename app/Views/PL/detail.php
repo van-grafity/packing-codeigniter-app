@@ -119,14 +119,14 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php foreach ($plsize as $key => $value) : ?>
+                                                <?php foreach ($plsizes as $key => $value) : ?>
                                                     <tr>
-                                                        <td><?= $value['size_name']; ?></td>
+                                                        <td><?= $value['size']; ?></td>
                                                         <td><?= $value['packinglistsize_qty']; ?></td>
                                                         <td><?= $value['packinglistsize_amount']; ?></td>
                                                         <td>
-                                                            <a href="<?= base_url('packinglistsize/edit/' . $value['id']); ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                                                            <a href="<?= base_url('packinglistsize/delete/' . $value['id']); ?>" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                                                            <a href="<?= base_url('#' . $value['id']); ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                            <a href="<?= base_url('#' . $value['id']); ?>" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
