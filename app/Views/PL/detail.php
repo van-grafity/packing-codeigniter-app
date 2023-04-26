@@ -95,27 +95,55 @@
                                 <tbody></tbody>
                             </table>
                         </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-footer">
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                                    <i class="fas fa-times"></i>
-                                </button>
+                        <!-- /.card -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-success">
+                                    <div class="card-header">
+                                        <h5 class="card-title">List of Packing List Size</h5>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr class="table-primary">
+                                                    <th>Size</th>
+                                                    <th>Qty</th>
+                                                    <th>Amount</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($plsize as $key => $value) : ?>
+                                                    <tr>
+                                                        <td><?= $value['size_name']; ?></td>
+                                                        <td><?= $value['packinglistsize_qty']; ?></td>
+                                                        <td><?= $value['packinglistsize_amount']; ?></td>
+                                                        <td>
+                                                            <a href="<?= base_url('packinglistsize/edit/' . $value['id']); ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                            <a href="<?= base_url('packinglistsize/delete/' . $value['id']); ?>" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
                             </div>
+                            <!-- /.col-md-6 -->
                         </div>
-                        <div class="card-body">
-                            <h1>BARIS 1</h1>
-                            <h2>Baris 2</h2>
-                            <h5>Baris 3</h5>
-                        </div>
+                        <!-- /.row -->
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </section>
 
     <style type="text/css">
