@@ -75,6 +75,12 @@ class GLSeeder extends Seeder
             'size_order' => 'XXL',
             'buyer_id' => 2,
         ],
+        [
+            'gl_number' => 'GL-012',
+            'season' => 'SS22',
+            'size_order' => 'XXL',
+            'buyer_id' => 2,
+        ],
     ];
 
     public function run()

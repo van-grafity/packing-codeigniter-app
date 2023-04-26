@@ -22,13 +22,17 @@ class Product extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 35,
             ],
-            'style' => [
-                'type' => 'VARCHAR',
-                'constraint' => 50,
+            'style_id' => [
+                'type' => 'BIGINT',
+                'unsigned' => true,
             ],
             'product_name' => [
                 'type' => 'VARCHAR',
                 'constraint' => 100,
+                'null' => true,
+            ],
+            'product_description' => [
+                'type' => 'TEXT',
                 'null' => true,
             ],
             'product_price' => [
@@ -51,11 +55,12 @@ class Product extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('product_category_id', 'tblcategory', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('style_id', 'tblstyles', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblproduct');
     }
 
     public function down()
     {
-        //
+        $this->forge->dropTable('tblproduct');
     }
 }

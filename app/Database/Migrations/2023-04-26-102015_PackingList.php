@@ -29,6 +29,14 @@ class PackingList extends Migration
                 'type' => 'INT',
                 'constraint' => 11,
             ],
+            'packinglist_cutting_qty' => [
+                'type' => 'INT',
+                'constraint' => 11,
+            ],
+            'packinglist_ship_qty' => [
+                'type' => 'INT',
+                'constraint' => 11,
+            ],
             'packinglist_amount' => [
                 'type' => 'INT',
                 'constraint' => 11,

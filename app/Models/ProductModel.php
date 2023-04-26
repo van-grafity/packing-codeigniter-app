@@ -10,8 +10,9 @@ class ProductModel extends Model
     protected $allowedFields = [
         'product_code',
         'product_asin_id',
-        'style',
+        'style_id',
         'product_name',
+        'product_description',
         'product_price',
         'product_category_id'
     ];

@@ -13,6 +13,7 @@ class DataSeeder extends Seeder
         $this->call('BuyerSeeder');
         $this->call('GLSeeder');
         $this->call('CategorySeeder');
+        $this->call('StyleSeeder');
         $this->call('ProductSeeder');
         $this->call('FactorySeeder');
         $this->call('PurchaseOrderSeeder');

@@ -5,6 +5,27 @@
     <section class="content-header">
     </section>
 
+    <!-- public function detail($packinglist_no)
+    {
+        $data = [
+            'title' => 'Factory Packing List',
+            'pl' => $this->pl->select('tblpackinglist.*, tblpurchaseorder.PO_No, tblbuyer.buyer_name, tblgl.gl_number, tblgl.season, tblgl.size_order')
+                ->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id')
+                ->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id')
+                ->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id')
+                ->where('tblpackinglist.packinglist_no', $packinglist_no)
+                ->first(),
+            'plsizes' => $this->plsize->select('tblpackinglistsizes.*, tblsizes.size')
+                ->join('tblsizes', 'tblsizes.id = tblpackinglistsizes.packinglistsize_size_id')
+                ->where('tblpackinglistsizes.packinglistsize_pl_id', $this->pl->select('tblpackinglist.id')
+                    ->where('tblpackinglist.packinglist_no', $packinglist_no)
+                    ->first()['id'])
+                ->findAll(),
+            'validation' => \Config\Services::validation()
+        ];
+        return view('pl/detail', $data);
+    } -->
+
      <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -22,7 +43,7 @@
                                     </tr>
                                     <tr>
                                         <td>Buyer</td>
-                                        <td>AMAZON"PRESSENTIAL"</td>
+                                        <td><?= esc($pl['buyer_name']); ?></td>
                                         <td></td>
                                         <td></td>
                                     </tr>
@@ -46,19 +67,19 @@
                                     </tr>
                                     <tr>
                                         <td>Order Qty.</td>
-                                        <td>395</td>
+                                        <td><?= esc($pl['packinglist_qty']); ?></td>
                                         <td>Description</td>
                                         <td>Amazon Essential Disnay | Marvel | Star Wars | Frozen | Princess</td>
                                     </tr>
                                     <tr>
                                         <td>Cut Qty.</td>
-                                        <td>395</td>
+                                        <td><?= esc($pl['packinglist_cutting_qty']); ?></td>
                                         <td>Destination</td>
                                         <td>LGB1 - Long Beach, CA</td>
                                     </tr>
                                     <tr>
                                         <td>Ship Qty.</td>
-                                        <td>395</td>
+                                        <td><?= esc($pl['packinglist_ship_qty']); ?></td>
                                         <td>Departments</td>
                                         <td>Row 1</td>
                                     </tr>
