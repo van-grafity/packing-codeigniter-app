@@ -9,7 +9,7 @@
         <div class="card card-primary">
             <!-- card-header -->
             <div class="card-header">
-                <h3 class="card-title">Carton Barcode Setup</h3>
+                <h3 class="card-title"><?= $title ?></h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -20,8 +20,8 @@
                             <div class="col-sm-4">
                                 <select name="packingList" class="form-control packingListNumber" style="width: 100%;">
                                     <option selected="selected">Select Packing List No</option>
-                                    <?php foreach ($packinglist as $pl) : ?>
-                                        <option><?= $pl->packinglist_no; ?></option>
+                                    <?php foreach ($carton as $c) : ?>
+                                        <option value="<?= $c['id']; ?>"><?= $c['packinglist_no']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -79,11 +79,11 @@
                                 <?php $i = 1; ?>
                                 <?php foreach ($carton as $c) : ?>
                                     <tr>
-                                        <th class="text-center" scope="row"><?= $i++; ?></th>
-                                        <td><?= $c->packinglist_no; ?></td>
-                                        <td><?= $c->PO_No; ?></td>
-                                        <td class="text-center"><?= $c->carton_no; ?></td>
-                                        <td class="text-center"><?= $c->carton_barcode; ?></td>
+                                        <td class="text-center align-middle"><?= $i++; ?></td>
+                                        <td class="text-center align-middle"><?= $c['packinglist_no']; ?></td>
+                                        <td class="text-center align-middle"><?= $c['PO_No']; ?></td>
+                                        <td class="text-center align-middle"><?= $c['carton_no']; ?></td>
+                                        <td class="text-center align-middle"><?= $c['carton_barcode']; ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -113,20 +113,19 @@
                                     <th colspan="5" class="text-center align-middle">Size</th>
                                 </tr>
                                 <tr>
-                                    <?php foreach ($ratio as $r) : ?>
-                                        <th class="text-center align-middle" scope="col"><?= $r->size; ?></th>
-                                    <?php endforeach; ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <?php $i = 1; ?>
-                                    <?php foreach ($carton as $c) : ?>
-                                        <td class="text-center" scope="row"><?= $i++; ?></td>
-                                        <td class="text-center align-middle" scope="col"><?= $c->packinglist_no; ?></td>
-
-                                    <?php endforeach; ?>
-                                </tr>
+                                <?php $i = 1; ?>
+                                <?php foreach ($ratio as $r) : ?>
+                                    <tr>
+                                        <td class="text-center align-middle"><?= $i++; ?></td>
+                                        <td class="text-center align-middle"><?= $r['packinglist_no']; ?></td>
+                                        <td class="text-center align-middle"><?= $r['PO_No']; ?></td>
+                                        <td class="text-center align-middle"><?= $r['carton_no']; ?></td>
+                                        <td class="text-center align-middle"><?= $r['size_name']; ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>

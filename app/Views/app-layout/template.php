@@ -120,7 +120,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="../index.php/cartonbarcode" class="nav-link">
+                                    <a class="nav-link" href="<?php echo base_url('cartonbarcode') ?>">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>Carton Barcode & Rasio</p>
                                     </a>
