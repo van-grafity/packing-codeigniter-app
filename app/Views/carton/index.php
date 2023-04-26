@@ -31,15 +31,19 @@
                             <div class="col-sm-3">
                                 <select class="form-control packingCartonNumber" style="width: 100%;">
                                     <option selected="selected">Select Carton No</option>
-                                    <option>1</option>
+                                    <?php foreach ($carton as $c) : ?>
+                                        <option value="<?= $c['id']; ?>"><?= $c['carton_no']; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="barcodenumber" class="col-sm-2 col-form-label">Barcode</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="InputBarcodeNumber" placeholder="Carton Barcode Number">
-                                <button type="button" class="btn btn-primary my-2" data-toggle="modal" data-target="#ratioModal">Carton Ratio</button>
+                                <input type="text" class="form-control" id="InputBarcodeNumber" placeholder="Carton Barcode Number" name="barcodeNumber" value="<?= old('barcodeNumber'); ?>">
+                                <!-- pass data to modal -->
+                                <button type="button" class="btn btn-primary my-2" data-toggle="modal" data-target="#ratioModal" data-cartonnumber="<?= old('cartonNumber'); ?>">
+                                    Add List of Carton Ratio
                             </div>
                         </div>
                     </div>
@@ -107,8 +111,6 @@
                             <thead>
                                 <tr class="table-primary">
                                     <th rowspan="2" class="text-center align-middle" scope="col">SN</th>
-                                    <th rowspan="2" class="text-center align-middle" scope="col">PL No</th>
-                                    <th rowspan="2" class="text-center align-middle" scope="col">PO No</th>
                                     <th rowspan="2" class="text-center align-middle" scope="col">Carton No</th>
                                     <th colspan="5" class="text-center align-middle">Size</th>
                                 </tr>
@@ -120,8 +122,6 @@
                                 <?php foreach ($ratio as $r) : ?>
                                     <tr>
                                         <td class="text-center align-middle"><?= $i++; ?></td>
-                                        <td class="text-center align-middle"><?= $r['packinglist_no']; ?></td>
-                                        <td class="text-center align-middle"><?= $r['PO_No']; ?></td>
                                         <td class="text-center align-middle"><?= $r['carton_no']; ?></td>
                                         <td class="text-center align-middle"><?= $r['size_name']; ?></td>
                                     </tr>
@@ -147,18 +147,22 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Carton No</label>
-                                <input disabled type="text" class="form-control carton_no" name="carton_n0" placeholder="Carton Number (diambil dari input sebelumnya)">
+                                <input disabled type="text" class="form-control carton_no" placeholder="Carton Number (diambil dari input sebelumnya)" name="carton_no">
                             </div>
+                            <!-- public function getSize()
+                            {
+                                $builder = $this->db->table('tblsizes');
+                                $builder->select('*');
+                                return $builder->get();
+                            } -->
+
                             <div class="form-group">
                                 <label>Size</label>
                                 <select class="form-control size" style="width: 100%;">
                                     <option selected="selected">Size</option>
-                                    <option>XS</option>
-                                    <option>S</option>
-                                    <option>M</option>
-                                    <option>L</option>
-                                    <option>XL</option>
-                                    <option>XXL</option>
+                                    <?php foreach ($size as $s) : ?>
+                                        <option value="<?= $s['id']; ?>"><?= $s['size']; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="form-group">
