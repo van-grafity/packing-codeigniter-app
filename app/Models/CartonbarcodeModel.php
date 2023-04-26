@@ -33,4 +33,11 @@ class CartonBarcodeModel extends Model
         $builder->join('tblsizes', 'tblsizes.id = size_id', 'left');
         return $builder->get();
     }
+
+    public function getSize()
+    {
+        $builder = $this->db->table('tblsizes');
+        $builder->select('*');
+        return $builder->get();
+    }
 }

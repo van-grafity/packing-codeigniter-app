@@ -20,7 +20,9 @@ class CartonBarcode extends BaseController
         $data = [
             'title' => 'Carton Barcode Setup',
             'carton' => $this->CartonBarcodeModel->getCartonBarcode()->getResultArray(),
-            'ratio' => $this->CartonBarcodeModel->getCartonRatio()->getResultArray()
+            'ratio' => $this->CartonBarcodeModel->getCartonRatio()->getResultArray(),
+            'size' => $this->CartonBarcodeModel->getSize()->getResultArray(),
+            'validation' => \Config\Services::validation()
         ];
 
         return view('carton/index', $data);

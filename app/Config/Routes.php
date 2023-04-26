@@ -45,6 +45,8 @@ $routes->get('/purchaseorder', 'PurchaseOrder::index');
 $routes->get('/packinglist', 'PackingList::index');
 $routes->get('/packinglist/(:any)', 'PackingList::detail/$1');
 
+$routes->get('/cartonbarcode', 'CartonBarcode::index');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
