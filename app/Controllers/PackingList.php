@@ -33,7 +33,7 @@ class PackingList extends BaseController
     {
         $data = [
             'title' => 'Factory Packing List',
-            'pl' => $this->pl->select('tblpackinglist.*')
+            'pl' => $this->pl->select('tblpackinglist.*'),
 
                 ->where('packinglist_no', $packinglist_no)
                 ->first(),

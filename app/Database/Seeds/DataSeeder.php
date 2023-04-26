@@ -21,5 +21,6 @@ class DataSeeder extends Seeder
         $this->call('SizeSeeder');
         $this->call('CartonBarcodeSeeder');
         $this->call('CartonRatioSeeder');
+        $this->call('PackingListSizeSeeder');
     }
 }
