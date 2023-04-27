@@ -33,7 +33,6 @@ $routes->setAutoRoute(true);
 //$routes->get('/', 'Welcome::index');
 //$routes->get('/home', 'Home::index');
 
-$routes->get('/buyer/create', 'Buyer::create');
 $routes->post('buyer/save', 'Buyer::save');
 $routes->get('/buyer/edit/(:segment)', 'Buyer::edit/$1');
 $routes->get('/buyer/update/(:segment)', 'Buyer::update/$1');
