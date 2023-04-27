@@ -139,10 +139,10 @@
 
                     <div class="form-group">
                         <label>Style</label>
-                        <select name="style_id" class="form-control product_style">
+                        <select name="style_id" class="form-control product_style" disabled>
                             <option value="" disabled>-Select-</option>
                             <?php foreach ($style as $s) : ?>
-                                <option value="<?= $s->id; ?>"><?= $s->style_no; ?></option>
+                                <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -159,7 +159,7 @@
 
                     <div class="form-group">
                         <label>Category</label>
-                        <select name="product_category" class="form-control product_category">
+                        <select name="product_category" class="form-control product_category" disabled>
                             <option value="" disabled>-Select-</option>
                             <?php foreach ($category as $cat) : ?>
                                 <option value="<?= $cat->id; ?>"><?= $cat->category_name; ?></option>
