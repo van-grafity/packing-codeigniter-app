@@ -6,15 +6,18 @@ use App\Controllers\BaseController;
 
 use App\Models\PackingListModel;
 use App\Models\PackingListSizeModel;
+use App\Models\BuyerModel;
 
 class PackingList extends BaseController
 {
     protected $pl;
+    protected $buyerModel;
 
     public function __construct()
     {
         $this->pl = new PackingListModel();
-        $this->plsize = new PackingListSizeModel();
+        $this->buyerModel = new BuyerModel();
+        //$this->plsize = new PackingListSizeModel();
     }
 
     public function index()
@@ -26,11 +29,12 @@ class PackingList extends BaseController
                 ->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id')
                 ->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id')
                 ->findAll(),
+            'buyer'  => $this->buyerModel->getBuyer()->getResult(),
             'validation' => \Config\Services::validation()
         ];
         return view('pl/index', $data);
     }
-    
+
     public function detail($packinglist_no)
     {
         $data = [

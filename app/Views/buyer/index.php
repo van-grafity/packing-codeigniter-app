@@ -16,7 +16,7 @@
                 <table id="table1" class="table table-bordered table-striped">
                     <thead>
                         <tr class="table-primary">
-                            <th class="text-center align-middle" width="5%">SN.</th>
+                            <th class="text-center align-middle" width="5%">SN</th>
                             <th class="text-center align-middle" width="15%">Buyer Name</th>
                             <th class="text-center align-middle" width="25%">Office Address</th>
                             <th class="text-center align-middle" width="35%">Ship Address</th>
@@ -31,7 +31,7 @@
                                 <td><?= $b->buyer_name; ?></td>
                                 <td><?= $b->offadd; ?></td>
                                 <td><?= $b->shipadd; ?></td>
-                                <td>
+                                <td class="text-center align-middle">
                                     <a class="btn btn-success btn-sm btn-detail" data-id="<?= $b->id; ?>" data-name="<?= $b->buyer_name; ?>" data-offadd="<?= $b->offadd; ?>" data-shipadd="<?= $b->shipadd; ?>" data-country="<?= $b->country; ?>">Details</a>
                                     <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $b->id; ?>" data-name="<?= $b->buyer_name; ?>" data-offadd="<?= $b->offadd; ?>" data-shipadd="<?= $b->shipadd; ?>" data-country="<?= $b->country; ?>">Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $b->id; ?>">Delete</a>
