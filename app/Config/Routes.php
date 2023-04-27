@@ -40,6 +40,7 @@ $routes->delete('buyer/(:num)', 'Buyer::delete/$1');
 $routes->get('/buyer/(:any)', 'Buyer::detail/$1');
 
 $routes->get('/purchaseorder', 'PurchaseOrder::index');
+$routes->get('/purchaseorder/store', 'PurchaseOrder::store');
 $routes->get('/purchaseorder/(:any)', 'PurchaseOrder::detail/$1');
 
 $routes->get('/packinglist', 'PackingList::index');

@@ -80,43 +80,47 @@
                                     <div class="card-body">
                                         <div class="tab-content" id="custom-tabs-three-tabContent">
                                             <div class="tab-pane fade active show" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
-                                                <div class="card-body">
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">Style No.</th>
-                                                                <th scope="col">Style Description</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php foreach ($purchaseorderstyle as $pos) : ?>
+                                                <div class="col-lg-6">    
+                                                    <div class="card-body">
+                                                        <table class="table table-bordered">
+                                                            <thead>
                                                                 <tr>
-                                                                    <td><?= $pos['style_no']; ?></td>
-                                                                    <td><?= $pos['style_description']; ?></td>
+                                                                    <th scope="col">Style No.</th>
+                                                                    <th scope="col">Style Description</th>
                                                                 </tr>
-                                                            <?php endforeach; ?>
-                                                        </tbody>
-                                                    </table>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php foreach ($purchaseorderstyle as $pos) : ?>
+                                                                    <tr>
+                                                                        <td><?= $pos['style_no']; ?></td>
+                                                                        <td><?= $pos['style_description']; ?></td>
+                                                                    </tr>
+                                                                <?php endforeach; ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
-                                                <div class="card-body">
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">Size</th>
-                                                                <th scope="col">Qty</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php foreach ($purchaseordersize as $pos) : ?>
+                                                <div class="col-lg-6">    
+                                                    <div class="card-body">
+                                                        <table class="table table-bordered">
+                                                            <thead>
                                                                 <tr>
-                                                                    <td><?= $pos['size']; ?></td>
-                                                                    <td><?= $pos['quantity']; ?></td>
+                                                                    <th scope="col">Size</th>
+                                                                    <th scope="col">Qty</th>
                                                                 </tr>
-                                                            <?php endforeach; ?>
-                                                        </tbody>
-                                                    </table>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php foreach ($purchaseordersize as $pos) : ?>
+                                                                    <tr>
+                                                                        <td><?= $pos['size']; ?></td>
+                                                                        <td><?= $pos['quantity']; ?></td>
+                                                                    </tr>
+                                                                <?php endforeach; ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="tab-pane fade" id="custom-tabs-three-other" role="tabpanel" aria-labelledby="custom-tabs-three-other-tab">

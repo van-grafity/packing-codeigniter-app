@@ -17,7 +17,7 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <a href="<?= base_url('index.php/purchaseorder/create'); ?>" class="btn btn-primary mb-3"><i class="fas fa-plus"></i> Create</a>
+                            <a data-toggle="modal" data-target="#createModal" class="btn btn-secondary mb-2" href="#"><i class="fas fa-plus"></i> Add New</a>
                             <a href="<?= base_url('index.php/purchaseorder/import'); ?>" class="btn btn-success mb-3"><i class="fas fa-file-import"></i> Import</a>
                             <a href="<?= base_url('index.php/purchaseorder/export'); ?>" class="btn btn-warning mb-3"><i class="fas fa-file-export"></i> Export</a>
                             <a href="<?= base_url('index.php/purchaseorder/print'); ?>" class="btn btn-info mb-3"><i class="fas fa-print"></i> Print</a>
@@ -58,4 +58,70 @@
         </div>
     </section>
 </div>
+
+<!-- Modal Create -->
+<form action="<?= base_url('index.php/purchaseorder/store'); ?>" method="post">
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Add New Purchase Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="PO_No">PO No.</label>
+                        <input type="text" class="form-control" id="PO_No" name="PO_No" placeholder="PO No.">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id">GL No.</label>
+                        <select class="form-control" id="id" name="id">
+                            <option value="">-- Select GL No. --</option>
+                            <?php foreach ($gl as $g) : ?>
+                                <option value="<?= $g['id']; ?>"><?= $g['gl_number']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id">Factory</label>
+                        <select class="form-control" id="id" name="id">
+                            <option value="">-- Select Factory --</option>
+                            <?php foreach ($factory as $f) : ?>
+                                <option value="<?= $f['id']; ?>"><?= $f['name']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shipdate">Ship Date</label>
+                        <input type="date" class="form-control" id="shipdate" name="shipdate" placeholder="Ship Date">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="unit_price">Unit Price</label>
+                        <input type="text" class="form-control" id="unit_price" name="unit_price" placeholder="Unit Price">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PO_qty">PO Qty</label>
+                        <input type="text" class="form-control" id="PO_qty" name="PO_qty" placeholder="PO Qty">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PO_amount">PO Amount</label>
+                        <input type="text" class="form-control" id="PO_amount" name="PO_amount" placeholder="PO Amount">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Add Purchase Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 <?= $this->endSection(); ?>
