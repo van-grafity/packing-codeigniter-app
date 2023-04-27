@@ -17,7 +17,7 @@ class PackingList extends BaseController
     {
         $this->pl = new PackingListModel();
         $this->buyerModel = new BuyerModel();
-        //$this->plsize = new PackingListSizeModel();
+        $this->plsize = new PackingListSizeModel();
     }
 
     public function index()
