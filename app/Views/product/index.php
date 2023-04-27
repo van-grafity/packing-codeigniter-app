@@ -206,7 +206,7 @@
                         <select name="style_id" class="form-control product_style">
                             <option value="" disabled>-Select-</option>
                             <?php foreach ($style as $s) : ?>
-                                <option value="<?= $s->id; ?>"><?= $s->style_no; ?></option>
+                                <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
