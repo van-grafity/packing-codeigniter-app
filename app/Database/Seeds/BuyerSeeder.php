@@ -11,7 +11,7 @@ class BuyerSeeder extends Seeder
     private const DATA = [
         [
             'id' => 1,
-            'buyer_name' => 'Buyer 1',
+            'buyer_name' => 'AMAZON "ESSENTIALS"',
             'offadd' => 'Office Address 1',
             'shipadd' => 'Shipping Address 1',
             'country' => 'Country 1',

@@ -17,7 +17,11 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-
+                            <a href="<?= base_url('index.php/purchaseorder/create'); ?>" class="btn btn-primary mb-3"><i class="fas fa-plus"></i> Create</a>
+                            <a href="<?= base_url('index.php/purchaseorder/import'); ?>" class="btn btn-success mb-3"><i class="fas fa-file-import"></i> Import</a>
+                            <a href="<?= base_url('index.php/purchaseorder/export'); ?>" class="btn btn-warning mb-3"><i class="fas fa-file-export"></i> Export</a>
+                            <a href="<?= base_url('index.php/purchaseorder/print'); ?>" class="btn btn-info mb-3"><i class="fas fa-print"></i> Print</a>
+                            
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -35,7 +39,7 @@
                                 <tbody>
                                     <?php foreach ($buyerPO as $po) : ?>
                                         <tr>
-                                            <td><?= esc($po['PO_No']); ?></td>
+                                        <td><a href="<?= base_url('index.php/purchaseorder/' . $po['PO_No']); ?>"><?= esc($po['PO_No']); ?></a></td>
                                             <td><?= esc($po['gl_number']); ?></td>
                                             <td><?= esc($po['factory_name']); ?></td>
                                             <td><?= esc($po['shipdate']); ?></td>
