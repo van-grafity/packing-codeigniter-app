@@ -20,7 +20,8 @@ class Product extends BaseController
         $data = [
             'title'     => 'Product List',
             'product'   => $this->ProductModel->getProduct()->getResult(),
-            'category'  => $this->ProductModel->getCategory()->getResult()
+            'category'  => $this->ProductModel->getCategory()->getResult(),
+            'style'     => $this->ProductModel->getStyle()->getResult(),
         ];
         return view('product/index', $data);
     }

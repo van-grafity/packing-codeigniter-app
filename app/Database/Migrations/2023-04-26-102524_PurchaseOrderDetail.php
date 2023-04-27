@@ -49,6 +49,6 @@ class PurchaseOrderDetail extends Migration
 
     public function down()
     {
-        //
+        $this->forge->dropTable('tblpurchaseorderdetail');
     }
 }

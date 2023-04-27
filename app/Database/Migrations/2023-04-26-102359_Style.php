@@ -23,12 +23,12 @@ class Style extends Migration
                 'constraint' => 255,
             ],
             'style_gl_id' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+                'type' => 'BIGINT',
+                'unsigned' => true,
             ],
         ]);
         $this->forge->addKey('id', true);
-        // $this->forge->addForeignKey('style_gl_id', 'tblgl', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('style_gl_id', 'tblgl', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblstyles');
     }
 

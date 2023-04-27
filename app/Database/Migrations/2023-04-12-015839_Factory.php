@@ -40,6 +40,6 @@ class Factory extends Migration
 
     public function down()
     {
-        //
+        $this->forge->dropTable('tblfactory');
     }
 }

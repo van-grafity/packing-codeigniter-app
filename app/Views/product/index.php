@@ -25,6 +25,7 @@
                             <th class="text-center align-middle" scope="col">Action</th>
                         </tr>
                     </thead>
+                    
                     <tbody>
                         <?php $i = 1; ?>
                         <?php foreach ($product as $p) : ?>
@@ -36,8 +37,8 @@
                                 <td class="text-right"><?= number_to_currency($p->product_price, 'USD', 'en_US', 2); ?></td>
                                 <td><?= $p->category_name; ?></td>
                                 <td>
-                                    <a class="btn btn-success btn-sm btn-detail" data-id="<?= $p->id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-style="<?= $p->style; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>" data-category_id="<?= $p->product_category_id; ?>">Details</a>
-                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $p->id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-style="<?= $p->style; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>" data-category_id="<?= $p->product_category_id; ?>">Edit</a>
+                                    <a class="btn btn-success btn-sm btn-detail" data-id="<?= $p->id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-style="<?= $p->style_id; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>" data-category_id="<?= $p->product_category_id; ?>">Details</a>
+                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $p->id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-style="<?= $p->style_id; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>" data-category_id="<?= $p->product_category_id; ?>">Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $p->id; ?>">Delete</a>
                                 </td>
                             </tr>
@@ -74,7 +75,12 @@
 
                     <div class="form-group">
                         <label>Style</label>
-                        <input type="text" class="form-control style" name="style" placeholder="Product Style">
+                        <select name="style_id" class="form-control">
+                            <option value="">-Select-</option>
+                            <?php foreach ($style as $s) : ?>
+                                <option value="<?= $s->id; ?>"><?= $s->style_no; ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -133,7 +139,12 @@
 
                     <div class="form-group">
                         <label>Style</label>
-                        <input type="text" disabled class="form-control style" name="style" placeholder="Product Style">
+                        <select name="style_id" class="form-control product_style">
+                            <option value="" disabled>-Select-</option>
+                            <?php foreach ($style as $s) : ?>
+                                <option value="<?= $s->id; ?>"><?= $s->style_no; ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -192,7 +203,12 @@
 
                     <div class="form-group">
                         <label>Style</label>
-                        <input type="text" class="form-control style" name="style" placeholder="Product Style">
+                        <select name="style_id" class="form-control product_style">
+                            <option value="" disabled>-Select-</option>
+                            <?php foreach ($style as $s) : ?>
+                                <option value="<?= $s->id; ?>"><?= $s->style_no; ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
 
                     <div class="form-group">

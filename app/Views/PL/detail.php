@@ -37,7 +37,7 @@
                                 <table width="100%">
                                     <tr>
                                         <td width="20%">Order No.</td>
-                                        <td width="16%"><?= esc($pl['packinglist_date']); ?></td>
+                                        <td width="16%"><?= esc($pl['packinglist_no']); ?></td>
                                         <td width="16%">Measurements</td>
                                         <td>Below</td>
                                     </tr>
@@ -96,24 +96,6 @@
                                         <td>16 AUG - 24 AUG 2022</td>
                                     </tr>
                                 </table>
-                            </table>
-
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Carton No.</th>
-                                        <th>Carton Qty.</th>
-                                        <th>Carton Size</th>
-                                        <th>Carton Weight</th>
-                                        <th>Carton Volume</th>
-                                        <th>Carton Type</th>
-                                        <th>Carton Color</th>
-                                        <th>Carton Label</th>
-                                        <th>Carton Barcode</th>
-                                        <th>Carton Remark</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
                             </table>
                         </div>
                         <!-- /.card -->

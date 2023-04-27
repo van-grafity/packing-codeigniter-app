@@ -28,6 +28,7 @@ class ProductModel extends Model
         $builder = $this->db->table('tblproduct');
         $builder->select('*');
         $builder->join('tblcategory', 'tblcategory.id = product_category_id', 'left');
+        $builder->join('tblstyles', 'tblstyles.id = style_id', 'left');
         return $builder->get();
     }
 
@@ -47,5 +48,11 @@ class ProductModel extends Model
     {
         $query = $this->db->table('tblproduct')->delete(array('id' => $id));
         return $query;
+    }
+
+    public function getStyle()
+    {
+        $builder = $this->db->table('tblstyles');
+        return $builder->get();
     }
 }
