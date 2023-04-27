@@ -12,6 +12,7 @@
                 <li class="breadcrumb-item"><a href="<?= base_url('index.php/home'); ?>">Dashboard</a></li>
                 <li class="breadcrumb-item active"><?= $title; ?></li>
             </ol>
+            <!-- button Create -->
             <div class="row">
                 <div class="col">
                     <div class="card">
@@ -40,7 +41,7 @@
                                             <td><?= esc($po['shipdate']); ?></td>
                                             <td><?= esc($po['unit_price']); ?></td>
                                             <td><?= esc($po['PO_qty']); ?></td>
-                                            <td><?= esc($po['PO_amount']); ?></td>
+                                            <td><?= esc(number_to_currency($po['PO_amount'], 'IDR')); ?></td>
                                             <td><?= esc($po['created_at']); ?></td>
                                         </tr>
                                     <?php endforeach; ?>
