@@ -27,19 +27,19 @@
                                     <h1><?= esc($pl['packinglist_no']); ?></h1>
                                     <table width="100%">
                                         <tr>
-                                            <td width="20%">Order No.</td>
+                                            <td width="20%"><b>Order No.</b></td>
                                             <td width="16%"><?= esc($pl['packinglist_no']); ?></td>
-                                            <td width="16%">Measurements</td>
+                                            <td width="16%"><b>Measurements</b></td>
                                             <td>Below</td>
                                         </tr>
                                         <tr>
-                                            <td>Buyer</td>
+                                            <td><b>Buyer</b></td>
                                             <td><?= esc($pl['buyer_name']); ?></td>
                                             <td></td>
                                             <td></td>
                                         </tr>
                                         <tr>
-                                            <td>Style No.</td>
+                                            <td><b>Style No.</b></td>
                                             <td>AE-M-FW20-SHR-127</td>
                                             <td></td>
                                             <td></td>
@@ -47,43 +47,43 @@
                                         <tr>
                                             <td></td>
                                             <td></td>
-                                            <td>Master Order No.</td>
+                                            <td><b>Master Order No.</b></td>
                                             <td>8X8WFHBM</td>
                                         </tr>
                                         <tr>
                                             <td></td>
                                             <td></td>
-                                            <td>Purchase Order No.</td>
+                                            <td><b>Purchase Order No.</b></td>
                                             <td>8X8WFHBM</td>
                                         </tr>
                                         <tr>
-                                            <td>Order Qty.</td>
+                                            <td><b>Order Qty.</b></td>
                                             <td><?= esc($pl['packinglist_qty']); ?></td>
-                                            <td>Description</td>
+                                            <td><b>Description</b></td>
                                             <td>Amazon Essential Disnay | Marvel | Star Wars | Frozen | Princess</td>
                                         </tr>
                                         <tr>
-                                            <td>Cut Qty.</td>
+                                            <td><b>Cut Qty.</b></td>
                                             <td><?= esc($pl['packinglist_cutting_qty']); ?></td>
-                                            <td>Destination</td>
+                                            <td><b>Destination</b></td>
                                             <td>LGB1 - Long Beach, CA</td>
                                         </tr>
                                         <tr>
-                                            <td>Ship Qty.</td>
+                                            <td><b>Ship Qty.</b></td>
                                             <td><?= esc($pl['packinglist_ship_qty']); ?></td>
-                                            <td>Departments</td>
+                                            <td><b>Departments</b></td>
                                             <td>Row 1</td>
                                         </tr>
                                         <tr>
-                                            <td>Total Carton</td>
+                                            <td><b>Total Carton</b></td>
                                             <td>21</td>
-                                            <td>Customer</td>
+                                            <td><b>Customer</b></td>
                                             <td>Row 1</td>
                                         </tr>
                                         <tr>
-                                            <td>Percentage Ship</td>
+                                            <td><b>Percentage Ship</b></td>
                                             <td>100.000%</td>
-                                            <td>Ship Date</td>
+                                            <td><b>Ship Date</b></td>
                                             <td>16 AUG - 24 AUG 2022</td>
                                         </tr>
                                     </table>

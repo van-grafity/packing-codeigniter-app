@@ -27,34 +27,33 @@
                                     <h1><?= esc($buyerPO['PO_No']); ?></h1>
                                     <table width="100%">
                                         <tr>
-                                            <td>Buyer</td>
+                                            <td><b>Buyer</b></td>
                                             <td><?= esc($buyerPO['buyer_name']); ?></td>
                                             <td></td>
                                             <td></td>
                                         </tr>
                                         <tr>
-                                            <td>Order Qty.</td>
+                                            <td><b>Order Qty.</b></td>
                                             <td><?= esc($buyerPO['PO_qty']); ?></td>
-                                            <td>Cut Qty.</td>
+                                            <td><b>Cut Qty.</b></td>
                                             <td><?= esc($buyerPO['PO_qty']); ?></td>
                                         </tr>
                                         <tr>
-                                            <td>PO Amount</td>
+                                            <td><b>PO Amount</b></td>
                                             <td><?= esc($buyerPO['PO_amount']); ?></td>
-                                            <td>Size Order</td>
+                                            <td><b>Size Order</b></td>
                                             <td><?= esc($buyerPO['size_order']); ?></td>
                                         </tr>
                                         <tr>
-                                            <td>Ship Date</td>
+                                            <td><b>Ship Date</b></td>
                                             <td><?= esc($buyerPO['shipdate']); ?></td>
-                                            <td>GL Number
-                                            </td>
+                                            <td><b>GL Number</b></td>
                                             <td><?= esc($buyerPO['gl_number']); ?></td>
                                         </tr>
                                         <tr>
-                                            <td>Factory</td>
+                                            <td><b>Factory</b></td>
                                             <td><?= esc($buyerPO['factory_name']); ?></td>
-                                            <td>Factory Code</td>
+                                            <td><b>Factory Code</b></td>
                                             <td><?= esc($buyerPO['factory_id']); ?></td>
                                         </tr>
                                     </table>
