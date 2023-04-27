@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class PurchaseOrderSizeModel extends Model
 {
-    protected $table            = 'purchaseordersizes';
+    protected $table            = 'tblpurchaseordersize';
     protected $allowedFields    = [
         'purchase_order_id',
         'size_id',

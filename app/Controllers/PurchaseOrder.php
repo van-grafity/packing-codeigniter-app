@@ -2,44 +2,6 @@
 
 namespace App\Controllers;
 
-
-// class PurchaseOrderSize extends Migration
-// {
-//     public function up()
-//     {
-//         $this->forge->addField([
-//             'id' => [
-//                 'type' => 'BIGINT',
-//                 'unsigned' => true,
-//                 'auto_increment' => true
-//             ],
-//             'purchase_order_id' => [
-//                 'type' => 'BIGINT',
-//                 'unsigned' => true,
-//             ],
-//             'size_id' => [
-//                 'type' => 'BIGINT',
-//                 'unsigned' => true,
-//             ],
-//             'quantity' => [
-//                 'type' => 'INT',
-//                 'unsigned' => true,
-//             ]
-//         ]);
-
-//         $this->forge->addKey('id', true);
-//         $this->forge->addForeignKey('purchase_order_id', 'tblpurchaseorder', 'id', 'CASCADE', 'CASCADE');
-//         $this->forge->addForeignKey('size_id', 'tblsizes', 'id', 'CASCADE', 'CASCADE');
-//         $this->forge->createTable('tblpurchaseordersize');
-//     }
-
-//     public function down()
-//     {
-//         $this->forge->dropTable('tblpurchaseordersize');
-//     }
-// }
-
-
 use App\Models\PurchaseOrderModel;
 use App\Models\PurchaseOrderStyleModel;
 use App\Models\PurchaseOrderSizeModel;
@@ -68,7 +30,6 @@ class PurchaseOrder extends BaseController
                 ->join('tblfactory', 'tblfactory.id = tblpurchaseorder.factory_id')
                 ->findAll(),
             'validation' => \Config\Services::validation()
-
         ];
 
         return view('purchaseorder/index', $data);
@@ -90,8 +51,13 @@ class PurchaseOrder extends BaseController
                     ->where('tblpurchaseorder.PO_No', $PO_No)
                     ->first()['id'])
                 ->findAll(),
+            'purchaseordersize'  => $this->PurchaseOrderSizeModel->select('tblpurchaseordersize.*, tblsizes.size')
+                ->join('tblsizes', 'tblsizes.id = tblpurchaseordersize.size_id')
+                ->where('tblpurchaseordersize.purchase_order_id', $this->PurchaseOrderModel->select('tblpurchaseorder.id')
+                    ->where('tblpurchaseorder.PO_No', $PO_No)
+                    ->first()['id'])
+                ->findAll(),
             'validation' => \Config\Services::validation()
-
         ];
 
         return view('purchaseorder/detail', $data);

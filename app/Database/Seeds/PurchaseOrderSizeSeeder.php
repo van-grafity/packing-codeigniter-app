@@ -20,7 +20,7 @@ class PurchaseOrderSizeSeeder extends Seeder
             'quantity' => 10
         ],
         [
-            'purchase_order_id' => 2,
+            'purchase_order_id' => 1,
             'size_id' => 2,
             'quantity' => 116
         ],
