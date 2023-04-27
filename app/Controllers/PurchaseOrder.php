@@ -21,9 +21,10 @@ class PurchaseOrder extends BaseController
     {
         $data = [
             'title'     => 'Buyer Purchase Order',
-            'buyerPO'   => $this->PurchaseOrderModel->select('tblpurchaseorder.*, tblgl.gl_number, tblgl.season, tblgl.size_order, tblbuyer.buyer_name')
+            'buyerPO'   => $this->PurchaseOrderModel->select('tblpurchaseorder.*, tblgl.gl_number, tblgl.season, tblgl.size_order, tblbuyer.buyer_name, tblfactory.name as factory_name')
                 ->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id')
                 ->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id')
+                ->join('tblfactory', 'tblfactory.id = tblpurchaseorder.factory_id')
                 ->findAll(),
             'validation' => \Config\Services::validation()
 

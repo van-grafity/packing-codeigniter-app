@@ -16,11 +16,18 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
+
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>PO No.</th>
                                         <th>GL No.</th>
+                                        <th>Factory</th>
+                                        <th>Ship Date</th>
+                                        <th>Unit Price</th>
+                                        <th>PO Qty</th>
+                                        <th>PO Amount</th>
+                                        <th>Created At</th>
                                     </tr>
                                 </thead>
 
@@ -29,6 +36,12 @@
                                         <tr>
                                             <td><?= esc($po['PO_No']); ?></td>
                                             <td><?= esc($po['gl_number']); ?></td>
+                                            <td><?= esc($po['factory_name']); ?></td>
+                                            <td><?= esc($po['shipdate']); ?></td>
+                                            <td><?= esc($po['unit_price']); ?></td>
+                                            <td><?= esc($po['PO_qty']); ?></td>
+                                            <td><?= esc($po['PO_amount']); ?></td>
+                                            <td><?= esc($po['created_at']); ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
