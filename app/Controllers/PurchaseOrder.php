@@ -11,56 +11,6 @@ use App\Models\StyleModel;
 
 helper('number');
 
-// public function up()
-// {
-//     $this->forge->addField([
-//         'id' => [
-//             'type' => 'BIGINT',
-//             'unsigned' => true,
-//             'auto_increment' => true
-//         ],
-//         'style_no' => [
-//             'type' => 'VARCHAR',
-//             'constraint' => 35,
-//         ],
-//         'style_description' => [
-//             'type' => 'VARCHAR',
-//             'constraint' => 255,
-//         ],
-//         'style_gl_id' => [
-//             'type' => 'BIGINT',
-//             'unsigned' => true,
-//         ],
-//     ]);
-//     $this->forge->addKey('id', true);
-//     $this->forge->addForeignKey('style_gl_id', 'tblgl', 'id', 'CASCADE', 'CASCADE');
-//     $this->forge->createTable('tblstyles');
-// }
-
-// public function up()
-// {
-//     $this->forge->addField([
-//         'id' => [
-//             'type' => 'BIGINT',
-//             'unsigned' => true,
-//             'auto_increment' => true
-//         ],
-//         'purchase_order_id' => [
-//             'type' => 'BIGINT',
-//             'unsigned' => true,
-//         ],
-//         'style_id' => [
-//             'type' => 'BIGINT',
-//             'unsigned' => true,
-//         ]
-//     ]);
-
-//     $this->forge->addKey('id', true);
-//     $this->forge->addForeignKey('purchase_order_id', 'tblpurchaseorder', 'id', 'CASCADE', 'CASCADE');
-//     $this->forge->addForeignKey('style_id', 'tblstyles', 'id', 'CASCADE', 'CASCADE');
-//     $this->forge->createTable('tblpurchaseorderstyle');
-// }
-
 class PurchaseOrder extends BaseController
 {
     protected $PurchaseOrderModel;
