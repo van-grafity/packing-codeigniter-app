@@ -33,7 +33,6 @@ $routes->setAutoRoute(true);
 //$routes->get('/', 'Welcome::index');
 //$routes->get('/home', 'Home::index');
 
-$routes->get('/buyer/create', 'Buyer::create');
 $routes->post('buyer/save', 'Buyer::save');
 $routes->get('/buyer/edit/(:segment)', 'Buyer::edit/$1');
 $routes->get('/buyer/update/(:segment)', 'Buyer::update/$1');
@@ -41,6 +40,8 @@ $routes->delete('buyer/(:num)', 'Buyer::delete/$1');
 $routes->get('/buyer/(:any)', 'Buyer::detail/$1');
 
 $routes->get('/purchaseorder', 'PurchaseOrder::index');
+$routes->get('/purchaseorder/store', 'PurchaseOrder::store');
+$routes->get('/purchaseorder/(:any)', 'PurchaseOrder::detail/$1');
 
 $routes->get('/packinglist', 'PackingList::index');
 $routes->get('/packinglist/(:any)', 'PackingList::detail/$1');

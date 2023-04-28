@@ -84,6 +84,12 @@
                                         <p>User List</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="../index.php/style" class="nav-link">
+                                        <i class="nav-icon fas fa-tshirt"></i>
+                                        <p>Style</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
 

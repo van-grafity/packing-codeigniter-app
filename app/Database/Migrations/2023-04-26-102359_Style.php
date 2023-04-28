@@ -26,6 +26,14 @@ class Style extends Migration
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('style_gl_id', 'tblgl', 'id', 'CASCADE', 'CASCADE');

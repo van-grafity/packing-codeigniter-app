@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Factory extends Migration
+class PurchaseOrderSize extends Migration
 {
     public function up()
     {
@@ -14,16 +14,17 @@ class Factory extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'name' => [
-                'type' => 'VARCHAR',
-                'constraint' => 100,
+            'purchase_order_id' => [
+                'type' => 'BIGINT',
+                'unsigned' => true,
             ],
-            'incharge' => [
-                'type' => 'VARCHAR',
-                'constraint' => 50,
+            'size_id' => [
+                'type' => 'BIGINT',
+                'unsigned' => true,
             ],
-            'remarks' => [
-                'type' => 'TEXT',
+            'quantity' => [
+                'type' => 'INT',
+                'unsigned' => true,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -33,17 +34,16 @@ class Factory extends Migration
                 'type' => 'DATETIME',
                 'null' => true,
             ],
-            'deleted_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
-            ],
         ]);
+
         $this->forge->addKey('id', true);
-        $this->forge->createTable('tblfactory');
+        $this->forge->addForeignKey('purchase_order_id', 'tblpurchaseorder', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('size_id', 'tblsizes', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('tblpurchaseordersize');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tblfactory');
+        $this->forge->dropTable('tblpurchaseordersize');
     }
 }
