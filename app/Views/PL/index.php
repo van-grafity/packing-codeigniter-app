@@ -1,16 +1,12 @@
 <?= $this->extend('app-layout/template'); ?>
 
 <?= $this->Section('content'); ?>
-<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Main content -->
     <section class="content">
-        <!-- Default box -->
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title"><?= $title ?></h3>
             </div>
-            <!-- /.card-header -->
             <div class="card-body">
                 <button type="button" class="btn btn-secondary mb-2" data-toggle="modal" data-target="#addModal">Add New</button>
                 <table id="table1" class="table table-bordered table-striped">
@@ -44,7 +40,6 @@
                     </tbody>
                 </table>
             </div>
-            <!-- /.card-body -->
         </div>
     </section>
 </div>
@@ -52,7 +47,7 @@
 <form action=" ../index.php/buyer/save" method="post">
     <?= csrf_field(); ?>
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add New Packing List</h5>
@@ -64,7 +59,7 @@
                     <div class="form-group row">
                         <label for="name" class="col-sm-4 col-form-label">Packing List No :</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="packing_list_no" name="PL_no" autofocus placeholder="Packing List No">
+                            <input type="text" class="form-control" id="packing_list_no" name="packing_list_no" autofocus placeholder="Packing List No">
                         </div>
                     </div>
                     <div class="form-group">
@@ -76,22 +71,74 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
+                    
                     <div class="form-group">
                         <label>PO No </label>
-                        <select name="po_id" class="form-control col-sm-8">
+                        <select name="packinglist_po_id" class="form-control col-sm-8">
                             <option value="">-Select-</option>
+                            <?php foreach ($po as $p) : ?>
+                                <option value="<?= $p->id; ?>"><?= $p->PO_No; ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
+                    
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-4 col-form-label">Packing List Date :</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="packing_list_date" name="packing_list_date" autofocus placeholder="Packing List Date">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-4 col-form-label">Packing List Qty :</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="packing_list_qty" name="packing_list_qty" autofocus placeholder="Packing List Qty">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-4 col-form-label">Packing List Cutting Qty :</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="packing_list_cutting_qty" name="packing_list_cutting_qty" autofocus placeholder="Packing List Cutting Qty">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-4 col-form-label">Packing List Ship Qty :</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="packing_list_ship_qty" name="packing_list_ship_qty" autofocus placeholder="Packing List Ship Qty">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-4 col-form-label">Packing List Amount :</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="packing_list_amount" name="packing_list_amount" autofocus placeholder="Packing List Amount">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-4 col-form-label">Packing List Created At :</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="packing_list_created_at" name="packing_list_created_at" autofocus placeholder="Packing List Created At">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-4 col-form-label">Packing List Updated At :</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="packing_list_updated_at" name="packing_list_updated_at" autofocus placeholder="Packing List Updated At">
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Add Packing List</button>
                 </div>
             </div>
         </div>
     </div>
 </form>
-<!-- End Modal Add Buyer -->
 
 <style>
     td {

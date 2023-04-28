@@ -7,6 +7,7 @@ use App\Controllers\BaseController;
 use App\Models\PackingListModel;
 use App\Models\PackingListSizeModel;
 use App\Models\BuyerModel;
+use App\Models\PurchaseOrderModel;
 
 class PackingList extends BaseController
 {
@@ -18,6 +19,7 @@ class PackingList extends BaseController
         $this->pl = new PackingListModel();
         $this->buyerModel = new BuyerModel();
         $this->plsize = new PackingListSizeModel();
+        $this->po = new PurchaseOrderModel();
     }
 
     public function index()
@@ -30,6 +32,7 @@ class PackingList extends BaseController
                 ->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id')
                 ->findAll(),
             'buyer'  => $this->buyerModel->getBuyer()->getResult(),
+            'po' => $this->po->select('tblpurchaseorder.*')->get()->getResult(),
             'validation' => \Config\Services::validation()
         ];
         return view('pl/index', $data);
@@ -54,5 +57,85 @@ class PackingList extends BaseController
             'validation' => \Config\Services::validation()
         ];
         return view('pl/detail', $data);
+    }
+
+    // store
+    public function store() {
+        // dd($this->request->getVar());
+        // validation
+        if (!$this->validate([
+            'packinglist_no' => [
+                'rules' => 'required|is_unique[tblpackinglist.packinglist_no]',
+                'errors' => [
+                    'required' => 'Packing List No is required',
+                    'is_unique' => 'Packing List No already registered'
+                ]
+            ],
+            'packinglist_po_id' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'PO No is required'
+                ]
+            ],
+            'packing_list_date' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Packing List Date is required'
+                ]
+            ],
+            'packing_list_qty' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Packing List Qty is required'
+                ]
+            ],
+            'packing_list_cutting_qty' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Packing List Cutting Qty is required'
+                ]
+            ],
+            'packing_list_ship_qty' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Packing List Ship Qty is required'
+                ]
+            ],
+            'packing_list_amount' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Packing List Amount is required'
+                ]
+            ],
+            'packing_list_created_at' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Packing List Created At is required'
+                ]
+            ],
+            'packing_list_updated_at' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Packing List Updated At is required'
+                ]
+            ]
+        ])) {
+            return redirect()->to('/packinglist')->withInput();
+        }
+
+        $this->pl->save([
+            'packinglist_no' => $this->request->getVar('packinglist_no'),
+            'packinglist_po_id' => $this->request->getVar('packinglist_po_id'),
+            'packing_list_date' => $this->request->getVar('packing_list_date'),
+            'packing_list_qty' => $this->request->getVar('packing_list_qty'),
+            'packing_list_cutting_qty' => $this->request->getVar('packing_list_cutting_qty'),
+            'packing_list_ship_qty' => $this->request->getVar('packing_list_ship_qty'),
+            'packing_list_amount' => $this->request->getVar('packing_list_amount'),
+            'packing_list_created_at' => $this->request->getVar('packing_list_created_at'),
+            'packing_list_updated_at' => $this->request->getVar('packing_list_updated_at')
+        ]);
+
+        session()->setFlashdata('message', 'Added Successfully !');
+        return redirect()->to('/packinglist');
     }
 }

@@ -9,6 +9,7 @@ class PurchaseOrderModel extends Model
     protected $useTimestamps = true;
     protected $table = 'tblpurchaseorder';
     protected $allowedFields = [
+        'id',
         'PO_No',
         'gl_id',
         'PO_product_id',
