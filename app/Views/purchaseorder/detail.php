@@ -118,6 +118,10 @@
                                                                         <td><?= $pos['quantity']; ?></td>
                                                                     </tr>
                                                                 <?php endforeach; ?>
+                                                                <tr>
+                                                                    <td><b>Total</b></td>
+                                                                    <td><?php echo array_sum(array_column($purchaseordersize, 'quantity')); ?></td>
+                                                                </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>
