@@ -68,14 +68,50 @@
                             <input type="text" class="form-control" id="packing_list_no" name="PL_no" autofocus placeholder="Packing List No">
                         </div>
                     </div>
+
                     <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Buyer :</label>
-                        <select name="buyer_id" class="form-control">
+                        <label for="name" class="col-sm-3 col-form-label">PO No :</label>
+                        <select name="packinglist_po_id" class="form-control">
                             <option value="">-Select-</option>
-                            <?php foreach ($buyer as $b) : ?>
-                                <option value="<?= $b->id; ?>"><?= $b->buyer_name; ?></option>
+                            <?php foreach ($po as $p) : ?>
+                                <option value="<?= $p->id; ?>"><?= $p->PO_No; ?></option>
                             <?php endforeach; ?>
                         </select>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-3 col-form-label">Packing List Date :</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control" id="packing_list_date" name="packing_list_date" autofocus placeholder="Packing List Date">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-3 col-form-label">Packing List Qty :</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="packing_list_qty" name="packing_list_qty" autofocus placeholder="Packing List Qty">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-3 col-form-label">Packing List Cutting Qty :</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="packing_list_cutting_qty" name="packing_list_cutting_qty" autofocus placeholder="Packing List Cutting Qty">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-3 col-form-label">Packing List Ship Qty :</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="packing_list_ship_qty" name="packing_list_ship_qty" autofocus placeholder="Packing List Ship Qty">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-3 col-form-label">Packing List Amount :</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="packing_list_amount" name="packing_list_amount" autofocus placeholder="Packing List Amount">
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
