@@ -13,6 +13,7 @@ class PackingList extends BaseController
 {
     protected $pl;
     protected $buyerModel;
+    protected $plsize;
 
     public function __construct()
     {
