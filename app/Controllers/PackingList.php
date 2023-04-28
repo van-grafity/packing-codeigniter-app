@@ -12,12 +12,13 @@ class PackingList extends BaseController
 {
     protected $pl;
     protected $buyerModel;
+    protected $plsize;
 
     public function __construct()
     {
         $this->pl = new PackingListModel();
         $this->buyerModel = new BuyerModel();
-        //$this->plsize = new PackingListSizeModel();
+        $this->plsize = new PackingListSizeModel();
     }
 
     public function index()

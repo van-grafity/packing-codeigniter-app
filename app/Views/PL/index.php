@@ -49,10 +49,11 @@
     </section>
 </div>
 
+<!-- Modal Add Packing List-->
 <form action=" ../index.php/buyer/save" method="post">
     <?= csrf_field(); ?>
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add New Packing List</h5>
@@ -62,24 +63,18 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label for="name" class="col-sm-4 col-form-label">Packing List No :</label>
-                        <div class="col-sm-8">
+                        <label for="name" class="col-sm-3 col-form-label">Packing List No :</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="packing_list_no" name="PL_no" autofocus placeholder="Packing List No">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Buyer</label>
-                        <select name="buyer_id" class="form-control col-sm-8">
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-3 col-form-label">Buyer :</label>
+                        <select name="buyer_id" class="form-control">
                             <option value="">-Select-</option>
                             <?php foreach ($buyer as $b) : ?>
                                 <option value="<?= $b->id; ?>"><?= $b->buyer_name; ?></option>
                             <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>PO No </label>
-                        <select name="po_id" class="form-control col-sm-8">
-                            <option value="">-Select-</option>
                         </select>
                     </div>
                 </div>
@@ -90,8 +85,9 @@
             </div>
         </div>
     </div>
+    </div>
 </form>
-<!-- End Modal Add Buyer -->
+<!-- End Modal Add Packing List -->
 
 <style>
     td {
