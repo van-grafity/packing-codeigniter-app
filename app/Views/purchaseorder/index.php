@@ -137,10 +137,10 @@
                                     </td>
                                     <td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Qty"></td>
                                     <td style="text-align: center;">
-                                        <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRow(this);" id="btnRemoveRow"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowSize(this);" id="btnRemoveRowSize"></i></button>
                                     </td>
                                     <td style="text-align: center;">
-                                        <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus" href="javascript:void(0);" onclick="addRow();" id="btnAddRow"></i></button>
+                                        <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus" href="javascript:void(0);" onclick="addRowSize();" id="btnAddRowSize"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -150,7 +150,6 @@
                             <thead>
                                 <tr>
                                     <th>Style No.</th>
-                                    <th>Style Description</th>
                                     <th colspan="2" width="15%">Action</th>
                                 </tr>
                             </thead>
@@ -164,20 +163,16 @@
                                                 <option value="<?= $s['id']; ?>"><?= $s['style_no']; ?></option>
                                             <?php endforeach; ?>
                                     </td>
-                                    <td><input type="text" class="form-control" id="style_description[]" name="style_description[]" placeholder="Style Description"></td>
                                     <td style="text-align: center;">
-                                        <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRow(this);" id="btnRemoveRow"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowStyle(this);" id="btnRemoveRowStyle"></i></button>
                                     </td>
                                     <td style="text-align: center;">
-                                        <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus" href="javascript:void(0);" onclick="addRow();" id="btnAddRow"></i></button>
+                                        <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus" href="javascript:void(0);" onclick="addRowStyle();" id="btnAddRowStyle"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-
-                   
-
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Add Purchase Order</button>
@@ -191,17 +186,17 @@
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    function addRow() {
+    function addRowSize() {
         var html = '<tr>';
         html += '<td><select class="form-control" id="size_id[]" name="size_id[]"><option value="">-- Select Size --</option><?php foreach ($purchaseordersize as $s) : ?><option value="<?= $s['id']; ?>"><?= $s['size']; ?></option><?php endforeach; ?></select></td>';
         html += '<td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Qty"></td>';
-        html += '<td><button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRow(this);"></i></button></td>';
-        html += '<th><button type="button" class="btn btn-success btn-sm" onclick="addRow();"><i class="fas fa-plus"></i></button></th>';
+        html += '<td><button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowSize(this);"></i></button></td>';
+        html += '<th><button type="button" class="btn btn-success btn-sm" onclick="addRowSize();"><i class="fas fa-plus"></i></button></th>';
         html += '</tr>';
         $('#item_table tbody').append(html);
     }
 
-    function removeRow(e) {
+    function removeRowSize(e) {
         try {
             var row = $(e).closest('tr');
             row.remove();
@@ -210,7 +205,7 @@
         }
     }
 
-    // function addRow() {
+    // function addRowSize() {
     //     try {
     //         var table = document.getElementById("item_table");
     //         var rowCount = table.rows.length;
@@ -223,16 +218,16 @@
     //         cell2.innerHTML = "<input type='text' class='form-control' id='qty' name='qty' placeholder='Qty'>";
 
     //         var cell3 = row.insertCell(2);
-    //         cell3.innerHTML = "<button type='button' class='btn btn-success btn-sm' onclick='addRow();'><i class='fas fa-plus'></i></button>";
+    //         cell3.innerHTML = "<button type='button' class='btn btn-success btn-sm' onclick='addRowSize();'><i class='fas fa-plus'></i></button>";
 
     //         var cell4 = row.insertCell(3);
-    //         cell4.innerHTML = "<button type='button' class='btn btn-danger btn-sm'><i class='fas fa-minus' href='javascript:void(0);' onclick='removeRow(this);'></i></button>";
+    //         cell4.innerHTML = "<button type='button' class='btn btn-danger btn-sm'><i class='fas fa-minus' href='javascript:void(0);' onclick='removeRowSize(this);'></i></button>";
     //     } catch (e) {
     //         alert(e);
     //     }
     // }
 
-    // function removeRow(oButton) {
+    // function removeRowSize(oButton) {
     //     try {
     //         var table = document.getElementById("item_table");
     //         table.deleteRow(oButton.parentNode.parentNode.rowIndex);
@@ -268,6 +263,23 @@
             calculate();
         });
     });
-    
+
+    function addRowStyle() {
+        var html = '<tr>';
+        html += '<td><select class="form-control" id="style_no[]" name="style_no[]"><option value="">-- Select Style No. --</option><?php foreach ($purchaseorderstyle as $s) : ?><option value="<?= $s['id']; ?>"><?= $s['style_no']; ?></option><?php endforeach; ?></select></td>';
+        html += '<td><button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowStyle(this);"></i></button></td>';
+        html += '<th><button type="button" class="btn btn-success btn-sm" onclick="addRowStyle();"><i class="fas fa-plus"></i></button></th>';
+        html += '</tr>';
+        $('#style_table tbody').append(html);
+    }
+
+    function removeRowStyle(e) {
+        try {
+            var row = $(e).closest('tr');
+            row.remove();
+        } catch (e) {
+            alert(e);
+        }
+    }
 </script>
 <?= $this->endSection(); ?>

@@ -147,8 +147,14 @@ class PurchaseOrder extends BaseController
             ]);
         }
 
-        // $style_no = $this->request->getVar('style_no');
-        // $style_description = $this->request->getVar('style_description');
+        $style_no = $this->request->getVar('style_no');
+        
+        for ($i = 0; $i < count($style_no); $i++) {
+            $this->purchaseOrderStyleModel->save([
+                'purchase_order_id' => $purchase_order_id,
+                'style_id' => $style_no[$i]
+            ]);
+        }
 
         session()->setFlashdata('message', 'Added Successfully!');
         return redirect()->to('/purchaseorder');

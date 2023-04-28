@@ -21,7 +21,15 @@ class PurchaseOrderStyle extends Migration
             'style_id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
-            ]
+            ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
         ]);
 
         $this->forge->addKey('id', true);
