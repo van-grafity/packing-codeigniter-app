@@ -28,9 +28,9 @@
                                     <table width="100%">
                                         <tr>
                                             <td width="20%"><b>Order No.</b></td>
-                                            <td width="16%"><?= esc($pl['packinglist_no']); ?></td>
+                                            <td width="16%"><?= esc($pl['PO_No']); ?></td>
                                             <td width="16%"><b>Measurements</b></td>
-                                            <td>Below</td>
+                                            <td>x</td>
                                         </tr>
                                         <tr>
                                             <td><b>Buyer</b></td>
@@ -40,7 +40,7 @@
                                         </tr>
                                         <tr>
                                             <td><b>Style No.</b></td>
-                                            <td>AE-M-FW20-SHR-127</td>
+                                            <td>x</td>
                                             <td></td>
                                             <td></td>
                                         </tr>
@@ -48,43 +48,43 @@
                                             <td></td>
                                             <td></td>
                                             <td><b>Master Order No.</b></td>
-                                            <td>8X8WFHBM</td>
+                                            <td><?= esc($pl['gl_number']); ?></td>
                                         </tr>
                                         <tr>
                                             <td></td>
                                             <td></td>
                                             <td><b>Purchase Order No.</b></td>
-                                            <td>8X8WFHBM</td>
+                                            <td><?= esc($pl['PO_No']); ?></td>
                                         </tr>
                                         <tr>
                                             <td><b>Order Qty.</b></td>
                                             <td><?= esc($pl['packinglist_qty']); ?></td>
                                             <td><b>Description</b></td>
-                                            <td>Amazon Essential Disnay | Marvel | Star Wars | Frozen | Princess</td>
+                                            <td><?= esc($pl['style_description']); ?></td>
                                         </tr>
                                         <tr>
                                             <td><b>Cut Qty.</b></td>
                                             <td><?= esc($pl['packinglist_cutting_qty']); ?></td>
                                             <td><b>Destination</b></td>
-                                            <td>LGB1 - Long Beach, CA</td>
+                                            <td><?= esc($pl['shipdate']); ?></td>
                                         </tr>
                                         <tr>
                                             <td><b>Ship Qty.</b></td>
                                             <td><?= esc($pl['packinglist_ship_qty']); ?></td>
                                             <td><b>Departments</b></td>
-                                            <td>Row 1</td>
+                                            <td>x</td>
                                         </tr>
                                         <tr>
                                             <td><b>Total Carton</b></td>
-                                            <td>21</td>
+                                            <td><?= esc($pl['packinglist_qty'] / 20); ?></td>
                                             <td><b>Customer</b></td>
-                                            <td>Row 1</td>
+                                            <td>x</td>
                                         </tr>
                                         <tr>
                                             <td><b>Percentage Ship</b></td>
                                             <td>100.000%</td>
                                             <td><b>Ship Date</b></td>
-                                            <td>16 AUG - 24 AUG 2022</td>
+                                            <td><?= esc($pl['shipdate']); ?></td>
                                         </tr>
                                     </table>
                                 </div>

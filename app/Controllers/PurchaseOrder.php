@@ -8,6 +8,7 @@ use App\Models\PurchaseOrderSizeModel;
 use App\Models\GlModel;
 use App\Models\FactoryModel;
 use App\Models\StyleModel;
+use App\Models\PackingListSizeModel;
 
 helper('number');
 
@@ -21,6 +22,9 @@ class PurchaseOrder extends BaseController
         $this->purchaseOrderModel = new PurchaseOrderModel();
         $this->purchaseOrderStyleModel = new PurchaseOrderStyleModel();
         $this->purchaseOrderSizeModel = new PurchaseOrderSizeModel();
+
+        $this->packingListSizeModel = new PackingListSizeModel();
+
         $this->glModel = new GlModel();
         $this->factoryModel = new FactoryModel();
         $this->styleModel = new StyleModel();
