@@ -16,6 +16,7 @@ class PackingList extends BaseController
     protected $pl;
     protected $buyerModel;
     protected $plsize;
+    protected $helpers = ['number', 'form', 'url', 'text'];
 
     public function __construct()
     {
@@ -153,15 +154,50 @@ class PackingList extends BaseController
         return redirect()->to('/packinglist');
     }
 
-    public function getSizeByPoId($po_id) {
-        $sizes = $this->po->select('tblpurchaseorder.*, tblsizes.size')
-            ->join('tblpurchaseorderstyle', 'tblpurchaseorderstyle.purchase_order_id = tblpurchaseorder.id')
-            ->join('tblstyles', 'tblstyles.id = tblpurchaseorderstyle.style_id')
-            ->join('tblstylesizes', 'tblstylesizes.style_id = tblstyles.id')
-            ->join('tblsizes', 'tblsizes.id = tblstylesizes.size_id')
-            ->where('tblpurchaseorder.id', $po_id)
-            ->findAll();
-
-        echo json_encode($sizes);
+    public function getSizeByPoId() {
+        $jsonDummyData = [
+            [
+                'id' => 1,
+                'size' => 'S'
+            ],
+            [
+                'id' => 2,
+                'size' => 'M'
+            ],
+            [
+                'id' => 3,
+                'size' => 'L'
+            ],
+            [
+                'id' => 4,
+                'size' => 'XL'
+            ],
+            [
+                'id' => 5,
+                'size' => 'XXL'
+            ]
+        ];
+        echo json_encode($jsonDummyData);
     }
+
+    // get size by packinglist packinglist_po_id
+    // public function getSizeByPoId() {
+    //     $packinglist_po_id = $this->request->getVar('packinglist_po_id');
+    //     echo json_encode([
+    //         [
+    //             'id' => 1,
+    //             'size' => $packinglist_po_id ? $packinglist_po_id : 'kosong'
+    //         ],
+    //     ]);
+    // }
 }
+
+// public function getSizeByPoId() {
+    //     $check = $this->request->getVar('packinglist_po_id');
+    //     echo json_encode([
+    //             [
+    //                 'id' => 1,
+    //                 'size' => $check
+    //             ],
+    //         ]);
+    // }

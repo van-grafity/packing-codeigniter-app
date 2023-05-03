@@ -42,4 +42,13 @@ class PackingListModel extends Model
         $query = $this->db->table('tblpackinglist')->insert($data);
         return $query;
     }
+
+    public function getSizeByPoId($po_id) {
+        $builder = $this->db->table('tblpurchaseorderstyle');
+        $builder->select('*');
+        $builder->join('tblstyles', 'tblstyles.id = tblpurchaseorderstyle.style_id');
+        $builder->join('tblsizes', 'tblsizes.id = tblpurchaseorderstyle.size_id');
+        $builder->where('tblpurchaseorderstyle.purchase_order_id', $po_id);
+        return $builder->get();
+    }
 }

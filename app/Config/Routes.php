@@ -44,9 +44,10 @@ $routes->get('/purchaseorder/store', 'PurchaseOrder::store');
 $routes->get('/purchaseorder/(:any)', 'PurchaseOrder::detail/$1');
 
 $routes->get('/packinglist', 'PackingList::index');
+$routes->get('/packinglist/get_size_by_po', 'PackingList::getSizeByPoId');
 $routes->get('/packinglist/(:any)', 'PackingList::detail/$1');
 $routes->get('/packinglist/store', 'PackingList::store');
-$routes->get('/packinglist/get_size_by_po/(:num)', 'PackingList::getSizeByPoId/$1');
+
 
 $routes->get('/cartonbarcode', 'CartonBarcode::index');
 

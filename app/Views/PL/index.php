@@ -131,7 +131,7 @@
         return redirect()->to('/packinglist');
     } -->
 
-<form action="<?= base_url('index.php/packinglist/store'); ?>" method="post" enctype="multipart/form-data">
+<form action="<?= base_url('index.php/packinglist/store'); ?>" method="post">
     <?= csrf_field(); ?>
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -245,7 +245,7 @@
             console.log(po_id);
             if (po_id != '') {
                 $.ajax({
-                    url: "<?php echo base_url(); ?>index.php/packinglist/get_size_by_po/" + po_id,
+                    url: "<?php echo base_url(); ?>index.php/packinglist/get_size_by_po/",
                     type: "GET",
                     dataType: "JSON",
                     success: function(data) {
@@ -274,7 +274,6 @@
         });
     });
 </script>
-
 
 </section>
 </div>
