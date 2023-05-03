@@ -35,7 +35,6 @@
                                 <td><?= esc($pl['season']); ?></td>
                                 <td><?= esc($pl['size_order']); ?></td>
                                 <td class="text-center align-middle">
-                                    <a class="btn btn-success btn-sm btn-detail">Details</a>
                                     <a class="btn btn-warning btn-sm btn-edit">Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete">Delete</a>
                                 </td>
@@ -168,30 +167,23 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Packing List Qty :</label>
+                        <label for="name" class="col-sm-3 col-form-label">Order Qty :</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="packinglist_qty" name="packinglist_qty" autofocus placeholder="Packing List Qty">
+                            <input type="text" class="form-control" id="packinglist_qty" name="packinglist_qty" autofocus placeholder="Order Qty">
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Packing List Cutting Qty :</label>
+                        <label for="name" class="col-sm-3 col-form-label">Cutting Qty :</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="packinglist_cutting_qty" name="packinglist_cutting_qty" autofocus placeholder="Packing List Cutting Qty">
+                            <input type="text" class="form-control" id="packinglist_cutting_qty" name="packinglist_cutting_qty" autofocus placeholder="Cutting Qty">
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Packing List Ship Qty :</label>
+                        <label for="name" class="col-sm-3 col-form-label">Ship Qty :</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="packinglist_ship_qty" name="packinglist_ship_qty" autofocus placeholder="Packing List Ship Qty">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Packing List Amount :</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="packinglist_amount" name="packinglist_amount" autofocus placeholder="Packing List Amount">
+                            <input type="text" class="form-control" id="packinglist_ship_qty" name="packinglist_ship_qty" autofocus placeholder="Ship Qty">
                         </div>
                     </div>
 
@@ -201,18 +193,27 @@
                         <div class="col-sm-9">
                             <table class="table table-bordered" id="dynamic_field">
                                 <tr>
-                                    <td>
+                                    <td class="text-center"><b>Size</b>
                                         <input type="text" name="size[]" placeholder="Size" class="form-control name_list" />
                                     </td>
-                                    <td>
+                                    <td class="text-center"><b>Qty per Carton</b>
                                         <input type="text" name="packinglistsize_qty[]" placeholder="Qty" class="form-control name_list" />
                                     </td>
-                                    <td>
+                                    <td class="text-center"><b>Carton</b>
+                                        <input type="text" name="packinglistsize_carton[]" placeholder="Carton" class="form-control name_list" />
+                                    </td>
+                                    <td class="text-center"><b>Amount</b>
                                         <input type="text" name="packinglistsize_amount[]" placeholder="Amount" class="form-control name_list" />
                                     </td>
                                     <td></td>
                                 </tr>
                             </table>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-3 col-form-label">Packing List Amount :</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="packinglist_amount" name="packinglist_amount" autofocus placeholder="Packing List Amount">
                         </div>
                     </div>
                 </div>
@@ -238,7 +239,7 @@
     // onChange size by purchaseordersize to packinglistsize
     // select2 onchange item table by 
     // get_size by packinglist_po_id
-    
+
     $(document).ready(function() {
         $('#packinglist_po_id').change(function() {
             var po_id = $(this).val();
