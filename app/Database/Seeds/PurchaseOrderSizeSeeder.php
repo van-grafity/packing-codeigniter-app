@@ -29,6 +29,31 @@ class PurchaseOrderSizeSeeder extends Seeder
             'size_id' => 2,
             'quantity' => 40
         ],
+        [
+            'purchase_order_id' => 2,
+            'size_id' => 3,
+            'quantity' => 40
+        ],
+        [
+            'purchase_order_id' => 2,
+            'size_id' => 4,
+            'quantity' => 40
+        ],
+        [
+            'purchase_order_id' => 3,
+            'size_id' => 5,
+            'quantity' => 40
+        ],
+        [
+            'purchase_order_id' => 3,
+            'size_id' => 6,
+            'quantity' => 40
+        ],
+        [
+            'purchase_order_id' => 4,
+            'size_id' => 7,
+            'quantity' => 40
+        ]
     ];
 
     public function run()

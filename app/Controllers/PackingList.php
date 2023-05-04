@@ -10,6 +10,7 @@ use App\Models\BuyerModel;
 use App\Models\PurchaseOrderModel;
 use App\Models\PurchaseOrderStyleModel;
 use App\Models\StyleModel;
+use App\Models\PurchaseOrderSizeModel;
 
 class PackingList extends BaseController
 {
@@ -24,8 +25,9 @@ class PackingList extends BaseController
         $this->buyerModel = new BuyerModel();
         $this->plsize = new PackingListSizeModel();
         $this->po = new PurchaseOrderModel();
-        $this->pos = new PurchaseOrderStyleModel();
+        $this->postyle = new PurchaseOrderStyleModel();
         $this->style = new StyleModel();
+        $this->posize = new PurchaseOrderSizeModel();
     }
 
     public function index()
@@ -44,6 +46,7 @@ class PackingList extends BaseController
             'buyer'  => $this->buyerModel->getBuyer()->getResult(),
             'po' => $this->po->select('tblpurchaseorder.*')->get()->getResult(),
             'packinglist_no' => $packinglist_no,
+            'style' => $this->style->select('tblstyles.*')->get()->getResult(),
             'validation' => \Config\Services::validation()
         ];
         return view('pl/index', $data);
@@ -51,6 +54,7 @@ class PackingList extends BaseController
 
     public function detail($packinglist_no)
     {
+        // dd($this->request->getVar());
         $data = [
             'title' => 'Factory Packing List',
             'pl' => $this->pl->select('tblpackinglist.*, tblpurchaseorder.PO_No,tblpurchaseorder.shipdate, tblbuyer.buyer_name, tblgl.gl_number, tblgl.season, tblgl.size_order, tblstyles.style_description')
@@ -71,7 +75,7 @@ class PackingList extends BaseController
         ];
         return view('pl/detail', $data);
     }
-
+    
     public function store() {
         // dd($this->request->getVar());
         if (!$this->validate([
@@ -83,6 +87,12 @@ class PackingList extends BaseController
                 ]
             ],
             'packinglist_po_id' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} packinglist harus diisi.'
+                ]
+            ],
+            'packinglist_style_id' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} packinglist harus diisi.'
@@ -125,6 +135,7 @@ class PackingList extends BaseController
         $this->pl->save([
             'packinglist_no' => $this->request->getVar('packinglist_no'),
             'packinglist_po_id' => $this->request->getVar('packinglist_po_id'),
+            'packinglist_style_id' => $this->request->getVar('packinglist_style_id'),
             'packinglist_date' => $this->request->getVar('packinglist_date'),
             'packinglist_qty' => $this->request->getVar('packinglist_qty'),
             'packinglist_cutting_qty' => $this->request->getVar('packinglist_cutting_qty'),
@@ -138,6 +149,7 @@ class PackingList extends BaseController
 
         $packinglistsize_size_id = $this->request->getVar('packinglistsize_size_id');
         $packinglistsize_qty = $this->request->getVar('packinglistsize_qty');
+        // $packinglistsize_carton = $this->request->getVar('packinglistsize_carton');
         $packinglistsize_amount = $this->request->getVar('packinglistsize_amount');
 
         for ($i = 0; $i < count($packinglistsize_size_id); $i++) {
@@ -145,6 +157,7 @@ class PackingList extends BaseController
                 'packinglistsize_pl_id' => $packinglist_id,
                 'packinglistsize_size_id' => $packinglistsize_size_id[$i],
                 'packinglistsize_qty' => $packinglistsize_qty[$i],
+                // 'packinglistsize_carton' => $packinglistsize_carton[$i],
                 'packinglistsize_amount' => $packinglistsize_amount[$i]
             ]);
         }
@@ -179,25 +192,37 @@ class PackingList extends BaseController
         ];
         echo json_encode($jsonDummyData);
     }
+    public function getByPoId($po_id) {
+        $pl = $this->pl->select('tblpackinglist.*, tblpurchaseorder.PO_qty')
+            ->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id')
+            ->where('tblpackinglist.packinglist_po_id', $po_id)
+            ->first();
+            
+        $data = [
+            // 'pl' => $pl,
+            'postyle' => $this->postyle->select('tblpurchaseorderstyle.*, tblstyles.style_description')
+                ->join('tblstyles', 'tblstyles.id = tblpurchaseorderstyle.style_id')
+                ->where('tblpurchaseorderstyle.purchase_order_id', $po_id)
+                ->findAll(),
+            'po' => $this->po->select('tblpurchaseorder.*, tblpurchaseorderstyle.style_id')
+                ->join('tblpurchaseorderstyle', 'tblpurchaseorderstyle.purchase_order_id = tblpurchaseorder.id')
+                ->where('tblpurchaseorder.id', $po_id)
+                ->first(),
+            'posize' => $this->posize->select('tblpurchaseordersize.*, tblsizes.size')
+                ->join('tblsizes', 'tblsizes.id = tblpurchaseordersize.size_id')
+                ->where('tblpurchaseordersize.purchase_order_id', $po_id)
+                ->findAll(),
+            
+        ];
 
-    // get size by packinglist packinglist_po_id
-    // public function getSizeByPoId() {
-    //     $packinglist_po_id = $this->request->getVar('packinglist_po_id');
-    //     echo json_encode([
-    //         [
-    //             'id' => 1,
-    //             'size' => $packinglist_po_id ? $packinglist_po_id : 'kosong'
-    //         ],
-    //     ]);
-    // }
+        echo json_encode($data);
+    }
+
+    public function getStyleByPoId($po_id) {
+        $data = $this->postyle->select('tblpurchaseorderstyle.*, tblstyles.style_description')
+            ->join('tblstyles', 'tblstyles.id = tblpurchaseorderstyle.style_id')
+            ->where('tblpurchaseorderstyle.purchase_order_id', $po_id)
+            ->findAll();
+        echo json_encode($data ?? []);
+    }
 }
-
-// public function getSizeByPoId() {
-    //     $check = $this->request->getVar('packinglist_po_id');
-    //     echo json_encode([
-    //             [
-    //                 'id' => 1,
-    //                 'size' => $check
-    //             ],
-    //         ]);
-    // }

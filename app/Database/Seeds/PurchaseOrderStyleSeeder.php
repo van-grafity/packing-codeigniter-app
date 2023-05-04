@@ -26,8 +26,33 @@ class PurchaseOrderStyleSeeder extends Seeder
         ],
         [
             'id' => 4,
-            'purchase_order_id' => 4,
+            'purchase_order_id' => 2,
             'style_id' => 4,
+        ],
+        [
+            'id' => 5,
+            'purchase_order_id' => 2,
+            'style_id' => 5,
+        ],
+        [
+            'id' => 6,
+            'purchase_order_id' => 2,
+            'style_id' => 6,
+        ],
+        [
+            'id' => 7,
+            'purchase_order_id' => 3,
+            'style_id' => 7,
+        ],
+        [
+            'id' => 8,
+            'purchase_order_id' => 3,
+            'style_id' => 8,
+        ],
+        [
+            'id' => 9,
+            'purchase_order_id' => 4,
+            'style_id' => 9,
         ]
     ];
 
