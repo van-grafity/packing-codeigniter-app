@@ -160,7 +160,7 @@
                                         <select class="form-control" id="style_no[]" name="style_no[]">
                                             <option value="">-- Select Style No. --</option>
                                             <?php foreach ($purchaseorderstyle as $s) : ?>
-                                                <option value="<?= $s['id']; ?>"><?= $s['style_no']; ?></option>
+                                                <option value="<?= $s['id']; ?>"><?= $s['style_description']; ?></option>
                                             <?php endforeach; ?>
                                     </td>
                                     <td style="text-align: center;">
@@ -266,7 +266,7 @@
 
     function addRowStyle() {
         var html = '<tr>';
-        html += '<td><select class="form-control" id="style_no[]" name="style_no[]"><option value="">-- Select Style No. --</option><?php foreach ($purchaseorderstyle as $s) : ?><option value="<?= $s['id']; ?>"><?= $s['style_no']; ?></option><?php endforeach; ?></select></td>';
+        html += '<td><select class="form-control" id="style_no[]" name="style_no[]"><option value="">-- Select Style No. --</option><?php foreach ($purchaseorderstyle as $s) : ?><option value="<?= $s['id']; ?>"><?= $s['style_description']; ?></option><?php endforeach; ?></select></td>';
         html += '<td><button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowStyle(this);"></i></button></td>';
         html += '<th><button type="button" class="btn btn-success btn-sm" onclick="addRowStyle();"><i class="fas fa-plus"></i></button></th>';
         html += '</tr>';
