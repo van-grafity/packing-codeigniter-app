@@ -9,12 +9,21 @@ class PurchaseOrderDetail extends Migration
     public function up()
     {
         $this->forge->addField([
+            // order, style, size
             'id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
                 'auto_increment' => true
             ],
             'order_id' => [
+                'type' => 'BIGINT',
+                'unsigned' => true,
+            ],
+            'style_id' => [
+                'type' => 'BIGINT',
+                'unsigned' => true,
+            ],
+            'size_id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
@@ -43,6 +52,8 @@ class PurchaseOrderDetail extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('order_id', 'tblpurchaseorder', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('style_id', 'tblstyles', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('size_id', 'tblsizes', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('product_id', 'tblproduct', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblpurchaseorderdetail');
     }

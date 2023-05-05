@@ -14,7 +14,14 @@ class PurchaseOrderDetailModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'order_id',
+        'style_id',
+        'size_id',
+        'product_id',
+        'price',
+        'qty',
+    ];
 
     // Dates
     protected $useTimestamps = true;
