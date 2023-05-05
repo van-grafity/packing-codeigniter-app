@@ -74,9 +74,6 @@
                         <label for="packinglist_style_id" class="col-sm-3 col-form-label">Style :</label>
                         <select id="packinglist_style_id" name="packinglist_style_id" class="form-control">
                             <option value="">-Select-</option>
-                            <?php foreach ($style as $ps) : ?>
-                                <option value="<?= $ps->id; ?>"><?= $ps->style_description; ?></option>
-                            <?php endforeach; ?>
                         </select>
                     </div>
 
@@ -233,6 +230,31 @@
             }
         }
     }
+
+    $(document).ready(function() {
+        $('#packinglist_po_id').change(function() {
+            var packinglist_po_id = $(this).val();
+            $.ajax({
+                url: "<?php echo site_url('packinglist/get_style_by_po/') ?>" + packinglist_po_id,
+                method: "GET",
+                data: {
+                    packinglist_po_id: packinglist_po_id
+                },
+                async: true,
+                dataType: 'json',
+                success: function(data) {
+                    console.log("data style", data);
+                    var html = '';
+                    var i;
+                    for (i = 0; i < data.length; i++) {
+                        html += '<option value=' + data[i].id + '>' + data[i].style_description + '</option>';
+                    }
+                    $('#packinglist_style_id').html(html);
+                }
+            });
+            return false;
+        });
+    });
 </script>
 
 </section>

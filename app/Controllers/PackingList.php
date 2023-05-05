@@ -167,31 +167,6 @@ class PackingList extends BaseController
         return redirect()->to('/packinglist');
     }
 
-    public function getSizeByPoId() {
-        $jsonDummyData = [
-            [
-                'id' => 1,
-                'size' => 'S'
-            ],
-            [
-                'id' => 2,
-                'size' => 'M'
-            ],
-            [
-                'id' => 3,
-                'size' => 'L'
-            ],
-            [
-                'id' => 4,
-                'size' => 'XL'
-            ],
-            [
-                'id' => 5,
-                'size' => 'XXL'
-            ]
-        ];
-        echo json_encode($jsonDummyData);
-    }
     public function getByPoId($po_id) {
         $pl = $this->pl->select('tblpackinglist.*, tblpurchaseorder.PO_qty')
             ->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id')
