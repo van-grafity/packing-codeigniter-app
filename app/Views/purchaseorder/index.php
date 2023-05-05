@@ -5,7 +5,7 @@
     <section class="content-header">
     </section>
 
-     <section class="content">
+    <section class="content">
         <div class="container-fluid">
             <h1 class="mt-4"><i class="fas fa-server"></i> Purchase Order</h1>
             <ol class="breadcrumb mb-4">
@@ -20,7 +20,7 @@
                             <a href="<?= base_url('index.php/purchaseorder/import'); ?>" class="btn btn-success mb-3"><i class="fas fa-file-import"></i> Import</a>
                             <a href="<?= base_url('index.php/purchaseorder/export'); ?>" class="btn btn-warning mb-3"><i class="fas fa-file-export"></i> Export</a>
                             <a href="<?= base_url('index.php/purchaseorder/print'); ?>" class="btn btn-info mb-3"><i class="fas fa-print"></i> Print</a>
-                            
+
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -38,7 +38,7 @@
                                 <tbody>
                                     <?php foreach ($buyerPO as $po) : ?>
                                         <tr>
-                                        <td><a href="<?= base_url('index.php/purchaseorder/' . $po['PO_No']); ?>"><?= esc($po['PO_No']); ?></a></td>
+                                            <td><a href="<?= base_url('index.php/purchaseorder/' . $po['PO_No']); ?>"><?= esc($po['PO_No']); ?></a></td>
                                             <td><?= esc($po['gl_number']); ?></td>
                                             <td><?= esc($po['factory_name']); ?></td>
                                             <td><?= esc($po['shipdate']); ?></td>
@@ -83,7 +83,7 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="id">Factory</label>
                         <select class="form-control" id="factory_id" name="factory_id">
@@ -104,7 +104,7 @@
                         <input type="text" class="form-control" id="unit_price" name="unit_price" placeholder="Unit Price">
                     </div>
 
-                    
+
                     <div class="form-group">
                         <label for="PO_qty">PO Qty</label>
                         <input type="text" class="form-control" id="PO_qty" name="PO_qty" placeholder="PO Qty">
@@ -116,10 +116,11 @@
                     </div>
 
                     <div class="form-group">
-                    
+
                         <table class="table table-bordered" id="item_table">
                             <thead>
                                 <tr>
+                                    <th>Style</th>
                                     <th>Size</th>
                                     <th>Qty</th>
                                     <th colspan="2" width="15%">Action</th>
@@ -129,11 +130,20 @@
                             <tbody>
                                 <tr>
                                     <td>
+                                        <select class="form-control" id="style_no[]" name="style_no[]">
+                                            <option value="">-- Select Style No. --</option>
+                                            <?php foreach ($purchaseorderstyle as $s) : ?>
+                                                <option value="<?= $s['id']; ?>"><?= $s['style_description']; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </td>
+                                    <td>
                                         <select class="form-control" id="size_id[]" name="size_id[]">
                                             <option value="">-- Select Size --</option>
                                             <?php foreach ($size as $s) : ?>
                                                 <option value="<?= $s['id']; ?>"><?= $s['size']; ?></option>
                                             <?php endforeach; ?>
+                                        </select>
                                     </td>
                                     <td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Qty"></td>
                                     <td style="text-align: center;">
@@ -162,6 +172,7 @@
                                             <?php foreach ($purchaseorderstyle as $s) : ?>
                                                 <option value="<?= $s['id']; ?>"><?= $s['style_description']; ?></option>
                                             <?php endforeach; ?>
+                                        </select>
                                     </td>
                                     <td style="text-align: center;">
                                         <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowStyle(this);" id="btnRemoveRowStyle"></i></button>
@@ -175,6 +186,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal" aria-label="Close" class=>Close</button>
                     <button type="submit" class="btn btn-primary">Add Purchase Order</button>
                 </div>
             </div>
