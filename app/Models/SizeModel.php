@@ -10,6 +10,7 @@ class SizeModel extends Model
     protected $allowedFields    = [
         'size'
     ];
+    protected $returnType = 'object';
 
     // Dates
     protected $useTimestamps = true;

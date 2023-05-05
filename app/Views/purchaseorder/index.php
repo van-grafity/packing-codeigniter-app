@@ -2,57 +2,46 @@
 
 <?= $this->Section('content'); ?>
 <div class="content-wrapper">
-    <section class="content-header">
-    </section>
+    <section class="content">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title"><?= $title ?></h3>
+            </div>
+            <div class="card-body">
+                <a data-toggle="modal" data-target="#createModal" class="btn btn-secondary mb-2" href="#"><i class="fas fa-plus"></i> Add New</a>
+                <a href="<?= base_url('index.php/purchaseorder/import'); ?>" class="btn btn-success mb-3"><i class="fas fa-file-import"></i> Import</a>
+                <a href="<?= base_url('index.php/purchaseorder/export'); ?>" class="btn btn-warning mb-3"><i class="fas fa-file-export"></i> Export</a>
+                <a href="<?= base_url('index.php/purchaseorder/print'); ?>" class="btn btn-info mb-3"><i class="fas fa-print"></i> Print</a>
+                
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>PO No.</th>
+                            <th>GL No.</th>
+                            <th>Factory</th>
+                            <th>Ship Date</th>
+                            <th>Unit Price</th>
+                            <th>PO Qty</th>
+                            <th>PO Amount</th>
+                            <th>Created At</th>
+                        </tr>
+                    </thead>
 
-     <section class="content">
-        <div class="container-fluid">
-            <h1 class="mt-4"><i class="fas fa-server"></i> Purchase Order</h1>
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item"><a href="<?= base_url('index.php/home'); ?>">Dashboard</a></li>
-                <li class="breadcrumb-item active"><?= $title; ?></li>
-            </ol>
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <a data-toggle="modal" data-target="#createModal" class="btn btn-secondary mb-2" href="#"><i class="fas fa-plus"></i> Add New</a>
-                            <a href="<?= base_url('index.php/purchaseorder/import'); ?>" class="btn btn-success mb-3"><i class="fas fa-file-import"></i> Import</a>
-                            <a href="<?= base_url('index.php/purchaseorder/export'); ?>" class="btn btn-warning mb-3"><i class="fas fa-file-export"></i> Export</a>
-                            <a href="<?= base_url('index.php/purchaseorder/print'); ?>" class="btn btn-info mb-3"><i class="fas fa-print"></i> Print</a>
-                            
-                            <table id="example1" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>PO No.</th>
-                                        <th>GL No.</th>
-                                        <th>Factory</th>
-                                        <th>Ship Date</th>
-                                        <th>Unit Price</th>
-                                        <th>PO Qty</th>
-                                        <th>PO Amount</th>
-                                        <th>Created At</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <?php foreach ($buyerPO as $po) : ?>
-                                        <tr>
-                                        <td><a href="<?= base_url('index.php/purchaseorder/' . $po['PO_No']); ?>"><?= esc($po['PO_No']); ?></a></td>
-                                            <td><?= esc($po['gl_number']); ?></td>
-                                            <td><?= esc($po['factory_name']); ?></td>
-                                            <td><?= esc($po['shipdate']); ?></td>
-                                            <td><?= esc($po['unit_price']); ?></td>
-                                            <td><?= esc($po['PO_qty']); ?></td>
-                                            <td><?= esc(number_to_currency($po['PO_amount'], 'IDR')); ?></td>
-                                            <td><?= esc($po['created_at']); ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                    <tbody>
+                        <?php foreach ($buyerPO as $po) : ?>
+                            <tr>
+                            <td><a href="<?= base_url('index.php/purchaseorder/' . $po->PO_No); ?>"><?= esc($po->PO_No); ?></a></td>
+                                <td><?= esc($po->gl_number); ?></td>
+                                <td><?= esc($po->factory_name); ?></td>
+                                <td><?= esc($po->shipdate); ?></td>
+                                <td><?= esc($po->unit_price); ?></td>
+                                <td><?= esc($po->PO_qty); ?></td>
+                                <td><?= esc(number_to_currency($po->PO_amount, 'IDR')); ?></td>
+                                <td><?= esc($po->created_at); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>
@@ -132,7 +121,7 @@
                                         <select class="form-control" id="size_id[]" name="size_id[]">
                                             <option value="">-- Select Size --</option>
                                             <?php foreach ($size as $s) : ?>
-                                                <option value="<?= $s['id']; ?>"><?= $s['size']; ?></option>
+                                                <option value="<?= $s->id; ?>"><?= $s->size; ?></option>
                                             <?php endforeach; ?>
                                     </td>
                                     <td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Qty"></td>
@@ -188,7 +177,7 @@
 <script>
     function addRowSize() {
         var html = '<tr>';
-        html += '<td><select class="form-control" id="size_id[]" name="size_id[]"><option value="">-- Select Size --</option><?php foreach ($size as $s) : ?><option value="<?= $s['id']; ?>"><?= $s['size']; ?></option><?php endforeach; ?></select></td>';
+        html += '<td><select class="form-control" id="size_id[]" name="size_id[]"><option value="">-- Select Size --</option><?php foreach ($size as $s) : ?><option value="<?= $s->id; ?>"><?= $s->size; ?></option><?php endforeach; ?></select></td>';
         html += '<td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Qty"></td>';
         html += '<td><button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowSize(this);"></i></button></td>';
         html += '<th><button type="button" class="btn btn-success btn-sm" onclick="addRowSize();"><i class="fas fa-plus"></i></button></th>';
@@ -204,37 +193,6 @@
             alert(e);
         }
     }
-
-    // function addRowSize() {
-    //     try {
-    //         var table = document.getElementById("item_table");
-    //         var rowCount = table.rows.length;
-    //         var row = table.insertRow(rowCount);
-
-    //         var cell1 = row.insertCell(0);
-    //         cell1.innerHTML = "<select class='form-control' id='size' name='size'><option value=''>-- Select Size --</option><?php foreach ($size as $s) : ?><option value='<?= $s['id']; ?>'><?= $s['size']; ?></option><?php endforeach; ?></select>";
-
-    //         var cell2 = row.insertCell(1);
-    //         cell2.innerHTML = "<input type='text' class='form-control' id='qty' name='qty' placeholder='Qty'>";
-
-    //         var cell3 = row.insertCell(2);
-    //         cell3.innerHTML = "<button type='button' class='btn btn-success btn-sm' onclick='addRowSize();'><i class='fas fa-plus'></i></button>";
-
-    //         var cell4 = row.insertCell(3);
-    //         cell4.innerHTML = "<button type='button' class='btn btn-danger btn-sm'><i class='fas fa-minus' href='javascript:void(0);' onclick='removeRowSize(this);'></i></button>";
-    //     } catch (e) {
-    //         alert(e);
-    //     }
-    // }
-
-    // function removeRowSize(oButton) {
-    //     try {
-    //         var table = document.getElementById("item_table");
-    //         table.deleteRow(oButton.parentNode.parentNode.rowIndex);
-    //     } catch (e) {
-    //         alert(e);
-    //     }
-    // }
 
     $(document).ready(function() {
         $('#unit_price, #PO_qty').keyup(function() {

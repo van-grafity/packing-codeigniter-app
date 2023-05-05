@@ -19,6 +19,7 @@ class PurchaseOrderModel extends Model
         'PO_qty',
         'PO_amount',
     ];
+    protected $returnType = 'object';
 
     public function getPO()
     {
