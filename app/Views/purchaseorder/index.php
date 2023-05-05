@@ -131,7 +131,7 @@
                                     <td>
                                         <select class="form-control" id="size_id[]" name="size_id[]">
                                             <option value="">-- Select Size --</option>
-                                            <?php foreach ($purchaseordersize as $s) : ?>
+                                            <?php foreach ($size as $s) : ?>
                                                 <option value="<?= $s['id']; ?>"><?= $s['size']; ?></option>
                                             <?php endforeach; ?>
                                     </td>
@@ -188,7 +188,7 @@
 <script>
     function addRowSize() {
         var html = '<tr>';
-        html += '<td><select class="form-control" id="size_id[]" name="size_id[]"><option value="">-- Select Size --</option><?php foreach ($purchaseordersize as $s) : ?><option value="<?= $s['id']; ?>"><?= $s['size']; ?></option><?php endforeach; ?></select></td>';
+        html += '<td><select class="form-control" id="size_id[]" name="size_id[]"><option value="">-- Select Size --</option><?php foreach ($size as $s) : ?><option value="<?= $s['id']; ?>"><?= $s['size']; ?></option><?php endforeach; ?></select></td>';
         html += '<td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Qty"></td>';
         html += '<td><button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowSize(this);"></i></button></td>';
         html += '<th><button type="button" class="btn btn-success btn-sm" onclick="addRowSize();"><i class="fas fa-plus"></i></button></th>';
@@ -212,7 +212,7 @@
     //         var row = table.insertRow(rowCount);
 
     //         var cell1 = row.insertCell(0);
-    //         cell1.innerHTML = "<select class='form-control' id='size' name='size'><option value=''>-- Select Size --</option><?php foreach ($purchaseordersize as $s) : ?><option value='<?= $s['id']; ?>'><?= $s['size']; ?></option><?php endforeach; ?></select>";
+    //         cell1.innerHTML = "<select class='form-control' id='size' name='size'><option value=''>-- Select Size --</option><?php foreach ($size as $s) : ?><option value='<?= $s['id']; ?>'><?= $s['size']; ?></option><?php endforeach; ?></select>";
 
     //         var cell2 = row.insertCell(1);
     //         cell2.innerHTML = "<input type='text' class='form-control' id='qty' name='qty' placeholder='Qty'>";

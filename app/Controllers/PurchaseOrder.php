@@ -9,6 +9,7 @@ use App\Models\GlModel;
 use App\Models\FactoryModel;
 use App\Models\StyleModel;
 use App\Models\PackingListSizeModel;
+use App\Models\SizeModel;
 
 helper('number');
 
@@ -28,6 +29,7 @@ class PurchaseOrder extends BaseController
         $this->glModel = new GlModel();
         $this->factoryModel = new FactoryModel();
         $this->styleModel = new StyleModel();
+        $this->sizeModel = new SizeModel();
     }
 
     public function index()
@@ -47,6 +49,7 @@ class PurchaseOrder extends BaseController
             'purchaseorderstyle'  => $this->purchaseOrderStyleModel->select('tblpurchaseorderstyle.*, tblstyles.style_description, tblstyles.style_no')
                 ->join('tblstyles', 'tblstyles.id = tblpurchaseorderstyle.style_id')
                 ->findAll(),
+            'size'  => $this->sizeModel->findAll(),
             'validation' => \Config\Services::validation()
         ];
 

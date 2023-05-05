@@ -85,13 +85,6 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Style :</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="packinglist_style" name="packinglist_style" autofocus placeholder="Style">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
                         <label for="name" class="col-sm-3 col-form-label">Order Qty :</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="packinglist_qty" name="packinglist_qty" autofocus placeholder="Order Qty">
@@ -119,7 +112,7 @@
                                     <td class="text-center"><b>Size</b>
                                         <input type="text" name="packinglistsize_size[]" placeholder="Size" class="form-control name_list" />
                                     </td>
-                                    <td class="text-center" hidden><b>Size Id</b>
+                                    <td class="text-center"><b>Size Id</b>
                                         <input type="text" name="packinglistsize_size_id[]" placeholder="Size" class="form-control name_list" />
                                     </td>
                                     <td class="text-center"><b>Qty per Carton</b>
@@ -133,6 +126,10 @@
                                     </td>
                                 </tr>
                             </table>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <small></small>
+                                <button type="button" name="add" id="add" class="btn btn-success btn-sm" href="javascript:void(0);" onclick="addSize();">Add Size</button>
+                            </div>
                         </div>
                     </div>
                     
@@ -184,8 +181,8 @@
                                 '<td class="text-center"><b>Size</b>' +
                                 '<input type="text" name="packinglistsize_size[]" placeholder="Size" class="form-control name_list" value="' + data.posize[i].size + '" />' +
                                 '</td>' +
-                                '<td class="text-center" hidden><b>Size Id</b>' +
-                                '<input type="text" name="packinglistsize_size_id[]" placeholder="Size" class="form-control name_list" value="' + data.posize[i].id + '" />' +
+                                '<td class="text-center"><b>Size Id</b>' +
+                                '<input type="text" name="packinglistsize_size_id[]" placeholder="Size" class="form-control name_list" value="' + data.posize[i].size_id + '" />' +
                                 '</td>' +
                                 '<td class="text-center"><b>Qty per Carton</b>' +
                                 '<input type="text" name="packinglistsize_qty[]" placeholder="Qty" class="form-control name_list" />' +
@@ -207,6 +204,27 @@
             }
         });
     });
+
+    function addSize() {
+        var html = '<tr>' +
+            '<td class="text-center"><b>Size</b>' +
+            '<input type="text" name="packinglistsize_size[]" placeholder="Size" class="form-control name_list" />' +
+            '</td>' +
+            '<td class="text-center"><b>Size Id</b>' +
+            '<input type="text" name="packinglistsize_size_id[]" placeholder="Size" class="form-control name_list" />' +
+            '</td>' +
+            '<td class="text-center"><b>Qty per Carton</b>' +
+            '<input type="text" name="packinglistsize_qty[]" placeholder="Qty" class="form-control name_list" />' +
+            '</td>' +
+            '<td class="text-center"><b>Carton</b>' +
+            '<input type="text" name="packinglistsize_carton[]" placeholder="Carton" class="form-control name_list" />' +
+            '</td>' +
+            '<td class="text-center"><b>Amount</b>' +
+            '<input type="text" name="packinglistsize_amount[]" placeholder="Amount" class="form-control name_list" />' +
+            '</td>' +
+            '</tr>';
+        $('#dynamic_field').append(html);
+    }
 
     function sum() {
         var txtFirstNumberValue = document.getElementById('packinglist_qty').value;
@@ -247,7 +265,7 @@
                     var html = '';
                     var i;
                     for (i = 0; i < data.length; i++) {
-                        html += '<option value=' + data[i].id + '>' + data[i].style_description + '</option>';
+                        html += '<option value=' + data[i].style_id + '>' + data[i].style_description + '</option>';
                     }
                     $('#packinglist_style_id').html(html);
                 }

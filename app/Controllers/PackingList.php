@@ -78,6 +78,7 @@ class PackingList extends BaseController
     
     public function store() {
         // dd($this->request->getVar());
+        // dd($this->request->getVar('packinglist_style_id'));
         if (!$this->validate([
             'packinglist_no' => [
                 'rules' => 'required|is_unique[tblpackinglist.packinglist_no]',
