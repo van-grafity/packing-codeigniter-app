@@ -70,13 +70,13 @@ class PurchaseOrder extends BaseController
                 ->join('tblstyles', 'tblstyles.id = tblpurchaseorderstyle.style_id')
                 ->where('tblpurchaseorderstyle.purchase_order_id', $this->purchaseOrderModel->select('tblpurchaseorder.id')
                     ->where('tblpurchaseorder.PO_No', $PO_No)
-                    ->first()['id'])
+                    ->first()->id)
                 ->findAll(),
             'purchaseordersize'  => $this->purchaseOrderSizeModel->select('tblpurchaseordersize.*, tblsizes.size')
                 ->join('tblsizes', 'tblsizes.id = tblpurchaseordersize.size_id')
                 ->where('tblpurchaseordersize.purchase_order_id', $this->purchaseOrderModel->select('tblpurchaseorder.id')
                     ->where('tblpurchaseorder.PO_No', $PO_No)
-                    ->first()['id'])
+                    ->first()->id)
                 ->findAll(),
             'validation' => \Config\Services::validation()
         ];
