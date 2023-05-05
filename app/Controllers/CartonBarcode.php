@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\CartonBarcodeModel;
+use App\Models\PackingListModel;
 
 class CartonBarcode extends BaseController
 {
@@ -12,6 +13,7 @@ class CartonBarcode extends BaseController
     public function __construct()
     {
         $this->CartonBarcodeModel = new CartonBarcodeModel();
+        $this->PackingListModel = new PackingListModel();
     }
 
     public function index()
@@ -19,6 +21,7 @@ class CartonBarcode extends BaseController
 
         $data = [
             'title' => 'Carton Barcode Setup',
+            'packinglist' => $this->PackingListModel->getPackingList()->getResultArray(),
             'carton' => $this->CartonBarcodeModel->getCartonBarcode()->getResultArray(),
             'ratio' => $this->CartonBarcodeModel->getCartonRatio()->getResultArray(),
             'size' => $this->CartonBarcodeModel->getSize()->getResultArray(),
