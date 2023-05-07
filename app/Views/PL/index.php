@@ -106,24 +106,10 @@
                     </div>
                     <div class="form-group row">
                         <label for="name" class="col-sm-3 col-form-label">Size :</label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-12">
                             <table class="table table-bordered" id="dynamic_field">
                                 <tr>
-                                    <td class="text-center"><b>Size</b>
-                                        <input type="text" name="packinglistsize_size[]" placeholder="Size" class="form-control name_list" />
-                                    </td>
-                                    <td class="text-center"><b>Size Id</b>
-                                        <input type="text" name="packinglistsize_size_id[]" placeholder="Size" class="form-control name_list" />
-                                    </td>
-                                    <td class="text-center"><b>Qty per Carton</b>
-                                        <input type="text" name="packinglistsize_qty[]" placeholder="Qty" class="form-control name_list" />
-                                    </td>
-                                    <td class="text-center"><b>Carton</b>
-                                        <input type="text" name="packinglistsize_carton[]" placeholder="Carton" class="form-control name_list" />
-                                    </td>
-                                    <td class="text-center"><b>Amount</b>
-                                        <input type="text" name="packinglistsize_amount[]" placeholder="Amount" class="form-control name_list" />
-                                    </td>
+                                    <td class="text-center align-middle" colspan="3">Please Select PO No.</td>
                                 </tr>
                             </table>
                             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -179,10 +165,14 @@
                         for (i = 0; i < data.posize.length; i++) {
                             html += '<tr>' +
                                 '<td class="text-center"><b>Size</b>' +
-                                '<input type="text" name="packinglistsize_size[]" placeholder="Size" class="form-control name_list" value="' + data.posize[i].size + '" />' +
+                                '<select id="packinglistsize_size_id" name="packinglistsize_size_id[]" class="form-control">' +
+                                '<option value="' + data.posize[i].size_id + '">' + data.posize[i].size + '</option>' +
+                                '</select>' +
                                 '</td>' +
-                                '<td class="text-center"><b>Size Id</b>' +
-                                '<input type="text" name="packinglistsize_size_id[]" placeholder="Size" class="form-control name_list" value="' + data.posize[i].size_id + '" />' +
+                                '<td class="text-center"><b>Style</b>' +
+                                '<select id="packinglistsize_style_id" name="packinglistsize_style_id[]" class="form-control">' +
+                                '<option value="' + data.postyle[i].style_id + '">' + data.postyle[i].style_description + '</option>' +
+                                '</select>' +
                                 '</td>' +
                                 '<td class="text-center"><b>Qty per Carton</b>' +
                                 '<input type="text" name="packinglistsize_qty[]" placeholder="Qty" class="form-control name_list" />' +
@@ -208,10 +198,20 @@
     function addSize() {
         var html = '<tr>' +
             '<td class="text-center"><b>Size</b>' +
-            '<input type="text" name="packinglistsize_size[]" placeholder="Size" class="form-control name_list" />' +
+            '<select id="packinglistsize_size_id" name="packinglistsize_size_id[]" class="form-control">' +
+            '<option value="">Select Size</option>' +
+            '<?php foreach ($size as $s) : ?>' +
+            '<option value="<?= $s->id; ?>"><?= $s->size; ?></option>' +
+            '<?php endforeach; ?>' +
+            '</select>' +
             '</td>' +
-            '<td class="text-center"><b>Size Id</b>' +
-            '<input type="text" name="packinglistsize_size_id[]" placeholder="Size" class="form-control name_list" />' +
+            '<td class="text-center"><b>Style</b>' +
+            '<select id="packinglistsize_style_id" name="packinglistsize_style_id[]" class="form-control">' +
+            '<option value="">Select Style</option>' +
+            '<?php foreach ($style as $s) : ?>' +
+            '<option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>' +
+            '<?php endforeach; ?>' +
+            '</select>' +
             '</td>' +
             '<td class="text-center"><b>Qty per Carton</b>' +
             '<input type="text" name="packinglistsize_qty[]" placeholder="Qty" class="form-control name_list" />' +

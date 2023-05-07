@@ -11,6 +11,7 @@ use App\Models\PurchaseOrderModel;
 use App\Models\PurchaseOrderStyleModel;
 use App\Models\StyleModel;
 use App\Models\PurchaseOrderSizeModel;
+use App\Models\SizeModel;
 
 class PackingList extends BaseController
 {
@@ -28,6 +29,7 @@ class PackingList extends BaseController
         $this->postyle = new PurchaseOrderStyleModel();
         $this->style = new StyleModel();
         $this->posize = new PurchaseOrderSizeModel();
+        $this->size = new SizeModel();
     }
 
     public function index()
@@ -47,6 +49,7 @@ class PackingList extends BaseController
             'po' => $this->po->select('tblpurchaseorder.*')->get()->getResult(),
             'packinglist_no' => $packinglist_no,
             'style' => $this->style->select('tblstyles.*')->get()->getResult(),
+            'size' => $this->size->select('tblsizes.*')->get()->getResult(),
             'validation' => \Config\Services::validation()
         ];
         return view('pl/index', $data);
@@ -65,8 +68,9 @@ class PackingList extends BaseController
                 ->join('tblstyles', 'tblstyles.id = tblpurchaseorderstyle.style_id')
                 ->where('tblpackinglist.packinglist_no', $packinglist_no)
                 ->first(),
-            'plsizes' => $this->plsize->select('tblpackinglistsizes.*, tblsizes.size')
+            'plsizes' => $this->plsize->select('tblpackinglistsizes.*, tblsizes.size, tblstyles.style_description')
                 ->join('tblsizes', 'tblsizes.id = tblpackinglistsizes.packinglistsize_size_id')
+                ->join('tblstyles', 'tblstyles.id = tblpackinglistsizes.packinglistsize_style_id')
                 ->where('tblpackinglistsizes.packinglistsize_pl_id', $this->pl->select('tblpackinglist.id')
                     ->where('tblpackinglist.packinglist_no', $packinglist_no)
                     ->first()['id'])
@@ -149,6 +153,7 @@ class PackingList extends BaseController
             ->first()['id'];
 
         $packinglistsize_size_id = $this->request->getVar('packinglistsize_size_id');
+        $packinglistsize_style_id = $this->request->getVar('packinglistsize_style_id');
         $packinglistsize_qty = $this->request->getVar('packinglistsize_qty');
         // $packinglistsize_carton = $this->request->getVar('packinglistsize_carton');
         $packinglistsize_amount = $this->request->getVar('packinglistsize_amount');
@@ -157,6 +162,7 @@ class PackingList extends BaseController
             $this->plsize->save([
                 'packinglistsize_pl_id' => $packinglist_id,
                 'packinglistsize_size_id' => $packinglistsize_size_id[$i],
+                'packinglistsize_style_id' => $packinglistsize_style_id[$i],
                 'packinglistsize_qty' => $packinglistsize_qty[$i],
                 // 'packinglistsize_carton' => $packinglistsize_carton[$i],
                 'packinglistsize_amount' => $packinglistsize_amount[$i]
@@ -188,6 +194,7 @@ class PackingList extends BaseController
                 ->join('tblsizes', 'tblsizes.id = tblpurchaseordersize.size_id')
                 ->where('tblpurchaseordersize.purchase_order_id', $po_id)
                 ->findAll(),
+            'style' => $this->style->findAll(),
             
         ];
 
