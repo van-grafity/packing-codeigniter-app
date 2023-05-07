@@ -6,14 +6,8 @@ use CodeIgniter\Model;
 
 class PurchaseOrderDetailModel extends Model
 {
-    protected $DBGroup          = 'default';
     protected $table            = 'tblpurchaseorderdetail';
-    protected $primaryKey       = 'id';
-    protected $useAutoIncrement = true;
-    protected $insertID         = 0;
-    protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
     protected $allowedFields    = [
         'order_id',
         'style_id',
@@ -22,26 +16,8 @@ class PurchaseOrderDetailModel extends Model
         'price',
         'qty',
     ];
-
-    // Dates
+    protected $returnType = 'object';
     protected $useTimestamps = true;
-
-    // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
-    protected $skipValidation       = false;
-    protected $cleanValidationRules = true;
-
-    // Callbacks
-    protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
 
     public function getPODetailSizeStyle()
     {

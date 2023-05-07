@@ -13,4 +13,5 @@ class StyleModel extends Model
         'style_description', 
         'style_gl_id'
     ];
+    protected $returnType = 'object';
 }

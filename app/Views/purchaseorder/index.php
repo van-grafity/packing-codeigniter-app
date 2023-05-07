@@ -103,12 +103,12 @@
                         <label for="PO_amount">PO Amount</label>
                         <input type="text" class="form-control" id="PO_amount" name="PO_amount" placeholder="0" readonly>
                     </div>
-
                     <div class="form-group">
                     
                         <table class="table table-bordered" id="item_table">
                             <thead>
                                 <tr>
+                                    <th>Style No.</th>
                                     <th>Size</th>
                                     <th>Qty</th>
                                     <th colspan="2" width="15%">Action</th>
@@ -117,6 +117,13 @@
 
                             <tbody>
                                 <tr>
+                                    <td>
+                                        <select class="form-control" id="style_no[]" name="style_no[]">
+                                            <option value="">-- Select Style No. --</option>
+                                            <?php foreach ($style as $s) : ?>
+                                                <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
+                                            <?php endforeach; ?>
+                                    </td>
                                     <td>
                                         <select class="form-control" id="size_id[]" name="size_id[]">
                                             <option value="">-- Select Size --</option>
@@ -129,34 +136,7 @@
                                         <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowSize(this);" id="btnRemoveRowSize"></i></button>
                                     </td>
                                     <td style="text-align: center;">
-                                        <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus" href="javascript:void(0);" onclick="addRowSize();" id="btnAddRowSize"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <table class="table table-bordered" id="style_table">
-                            <thead>
-                                <tr>
-                                    <th>Style No.</th>
-                                    <th colspan="2" width="15%">Action</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <select class="form-control" id="style_no[]" name="style_no[]">
-                                            <option value="">-- Select Style No. --</option>
-                                            <?php foreach ($purchaseorderstyle as $s) : ?>
-                                                <option value="<?= $s['id']; ?>"><?= $s['style_description']; ?></option>
-                                            <?php endforeach; ?>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowStyle(this);" id="btnRemoveRowStyle"></i></button>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus" href="javascript:void(0);" onclick="addRowStyle();" id="btnAddRowStyle"></i></button>
+                                        <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus" href="javascript:void(0);" onclick="addRowStyleSize();" id="btnAddRowSize"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -175,23 +155,19 @@
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    function addRowSize() {
+    function addRowStyleSize() {
         var html = '<tr>';
-        html += '<td><select class="form-control" id="size_id[]" name="size_id[]"><option value="">-- Select Size --</option><?php foreach ($size as $s) : ?><option value="<?= $s->id; ?>"><?= $s->size; ?></option><?php endforeach; ?></select></td>';
+        html += '<td><select class="form-control" id="style_no[]" name="style_no[]"><option value="">-- Select Style No. --</option><?php foreach ($style as $s) : ?><option value="<?= $s->id; ?>"><?= $s->style_description; ?></option><?php endforeach; ?></td>';
+        html += '<td><select class="form-control" id="size_id[]" name="size_id[]"><option value="">-- Select Size --</option><?php foreach ($size as $s) : ?><option value="<?= $s->id; ?>"><?= $s->size; ?></option><?php endforeach; ?></td>';
         html += '<td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Qty"></td>';
-        html += '<td><button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowSize(this);"></i></button></td>';
-        html += '<th><button type="button" class="btn btn-success btn-sm" onclick="addRowSize();"><i class="fas fa-plus"></i></button></th>';
+        html += '<td style="text-align: center;"><button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowStyleSize(this);" id="btnRemoveRowStyleSize"></i></button></td>';
+        html += '<td style="text-align: center;"><button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus" href="javascript:void(0);" onclick="addRowStyleSize();" id="btnAddRowStyleSize"></i></button></td>';
         html += '</tr>';
-        $('#item_table tbody').append(html);
+        $('#item_table').append(html);
     }
 
-    function removeRowSize(e) {
-        try {
-            var row = $(e).closest('tr');
-            row.remove();
-        } catch (e) {
-            alert(e);
-        }
+    function removeRowStyleSize(removeRowStyleSize) {
+        $(removeRowStyleSize).closest('tr').remove();
     }
 
     $(document).ready(function() {

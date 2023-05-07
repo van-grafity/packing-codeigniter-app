@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\PurchaseOrderModel;
+use App\Models\PurchaseOrderDetailModel;
 use App\Models\PurchaseOrderStyleModel;
 use App\Models\PurchaseOrderSizeModel;
 use App\Models\GlModel;
@@ -21,6 +22,7 @@ class PurchaseOrder extends BaseController
     public function __construct()
     {
         $this->purchaseOrderModel = new PurchaseOrderModel();
+        $this->purchaseOrderDetailModel = new PurchaseOrderDetailModel();
         $this->purchaseOrderStyleModel = new PurchaseOrderStyleModel();
         $this->purchaseOrderSizeModel = new PurchaseOrderSizeModel();
 
@@ -50,6 +52,7 @@ class PurchaseOrder extends BaseController
                 ->join('tblstyles', 'tblstyles.id = tblpurchaseorderstyle.style_id')
                 ->findAll(),
             'size'  => $this->sizeModel->findAll(),
+            'style'  => $this->styleModel->findAll(),
             'validation' => \Config\Services::validation()
         ];
 
@@ -173,7 +176,7 @@ class PurchaseOrder extends BaseController
 
         $purchase_order_id = $this->purchaseOrderModel->select('tblpurchaseorder.id')
             ->where('tblpurchaseorder.PO_No', $this->request->getVar('PO_No'))
-            ->first()['id'];
+            ->first()->id;
 
         $size_id = $this->request->getVar('size_id');
         $qty = $this->request->getVar('qty');
@@ -192,6 +195,17 @@ class PurchaseOrder extends BaseController
             $this->purchaseOrderStyleModel->save([
                 'purchase_order_id' => $purchase_order_id,
                 'style_id' => $style_no[$i]
+            ]);
+        }
+
+        for ($i = 0; $i < count($size_id); $i++) {
+            $this->purchaseOrderDetailModel->save([
+                'order_id' => $purchase_order_id,
+                'style_id' => $style_no[$i],
+                'size_id' => $size_id[$i],
+                'product_id' => 1,
+                'qty' => $qty[$i],
+                'price' => 2900
             ]);
         }
 
