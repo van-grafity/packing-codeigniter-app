@@ -37,14 +37,8 @@ class PackingList extends BaseController
         $packinglist_no = strlen($this->pl->countAllResults()) == 1 ? 'PL-000' . $this->pl->countAllResults() + 1 : 'PL-00' . $this->pl->countAllResults() + 1;
         $data = [
             'title' => 'Factory Packing List',
-            'pl' => $this->pl->select('tblpackinglist.*, tblpurchaseorder.PO_No, tblbuyer.buyer_name, tblgl.gl_number, tblgl.season, tblgl.size_order')
-                ->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id')
-                ->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id')
-                ->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id')
-                ->findAll(),
-            'plsize' => $this->plsize->select('tblpackinglistsizes.*, tblsizes.size')
-                ->join('tblsizes', 'tblsizes.id = tblpackinglistsizes.id')
-                ->findAll(),
+            'pl' => $this->pl->getPackingList()->getResult(),
+            'plsize' => $this->pl->getPackingListSize()->getResult(),
             'buyer'  => $this->buyerModel->getBuyer()->getResult(),
             'po' => $this->po->select('tblpurchaseorder.*')->get()->getResult(),
             'packinglist_no' => $packinglist_no,

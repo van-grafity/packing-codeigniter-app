@@ -23,11 +23,11 @@
                     <tbody>
                         <?php foreach ($pl as $pl) : ?>
                             <tr>
-                                <td><a href="<?= base_url('index.php/packinglist/' . $pl['packinglist_no']); ?>"><?= esc($pl['packinglist_no']); ?></a></td>
-                                <td onClick="window.location.href='<?= base_url('index.php/home'); ?>'"><?= esc($pl['PO_No']); ?></td>
-                                <td><?= esc($pl['buyer_name']); ?></td>
-                                <td><?= esc($pl['gl_number']); ?></td>
-                                <td><?= esc($pl['season']); ?></td>
+                                <td><a href="<?= base_url('index.php/packinglist/' . $pl->packinglist_no); ?>"><?= esc($pl->packinglist_no); ?></a></td>
+                                <td onClick="window.location.href='<?= base_url('index.php/home'); ?>'"><?= esc($pl->PO_No); ?></td>
+                                <td><?= esc($pl->buyer_name); ?></td>
+                                <td><?= esc($pl->gl_number); ?></td>
+                                <td><?= esc($pl->season); ?></td>
                                 <td class="text-center align-middle">
                                     <a class="btn btn-warning btn-sm btn-edit">Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete">Delete</a>
