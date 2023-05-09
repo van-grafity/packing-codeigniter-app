@@ -79,7 +79,7 @@ class PackingListSeeder extends Seeder
             'packinglist_no' => 'PL-0006',
             'packinglist_date' => '2021-04-16',
             'packinglist_po_id' => 3,
-            'packinglist_style_id' => 6,
+            'packinglist_style_id' => 4,
             'packinglist_qty' => 395,
             'packinglist_cutting_qty' => 395,
             'packinglist_ship_qty' => 395,

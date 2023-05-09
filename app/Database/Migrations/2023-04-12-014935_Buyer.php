@@ -30,10 +30,6 @@ class Buyer extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 35,
             ],
-            'code' => [
-                'type' => 'VARCHAR',
-                'constraint' => 50,
-            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

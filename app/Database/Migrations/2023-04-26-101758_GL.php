@@ -22,13 +22,17 @@ class GL extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'size_order' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+            'style_id' => [
+                'type' => 'BIGINT',
+                'unsigned' => true,
             ],
             'buyer_id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
+            ],
+            'size_order' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
             'created_at' => [
                 'type' => 'TIMESTAMP',
@@ -41,6 +45,7 @@ class GL extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('buyer_id', 'tblbuyer', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('style_id', 'tblstyles', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblgl');
     }
 
