@@ -86,7 +86,7 @@
                     </div>
                     <div class="form-group">
                         <label>Style</label>
-                        <select name="style_id" class="form-control">
+                        <select name="product_style_id" class="form-control">
                             <option value="">-Select-</option>
                             <?php foreach ($style as $s) : ?>
                                 <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
@@ -98,7 +98,7 @@
                         <input type="text" class="form-control" name="product_name" placeholder="Product Name">
                     </div>
                     <div class="form-group">
-                        <label>Price</label>
+                        <label>Price</label>    
                         <input type="text" class="form-control" name="product_price" placeholder="Product Price">
                     </div>
                 </div>

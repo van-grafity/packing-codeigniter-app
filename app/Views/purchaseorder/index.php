@@ -8,29 +8,25 @@
                 <h3 class="card-title"><?= $title ?></h3>
             </div>
             <div class="card-body">
-                <a data-toggle="modal" data-target="#createModal" class="btn btn-secondary mb-2" href="#"><i class="fas fa-plus"></i> Add New</a>
-                <a href="<?= base_url('index.php/purchaseorder/import'); ?>" class="btn btn-success mb-3"><i class="fas fa-file-import"></i> Import</a>
-                <a href="<?= base_url('index.php/purchaseorder/export'); ?>" class="btn btn-warning mb-3"><i class="fas fa-file-export"></i> Export</a>
-                <a href="<?= base_url('index.php/purchaseorder/print'); ?>" class="btn btn-info mb-3"><i class="fas fa-print"></i> Print</a>
-                
-                <table id="example1" class="table table-bordered table-striped">
+                <button type="button" class="btn btn-secondary mb-2" data-toggle="modal" data-target="#addModal">Add New</button>
+                <table id="table1" class="table table-bordered table-striped">
                     <thead>
-                        <tr>
-                            <th>PO No.</th>
-                            <th>GL No.</th>
-                            <th>Factory</th>
-                            <th>Ship Date</th>
-                            <th>Unit Price</th>
-                            <th>PO Qty</th>
-                            <th>PO Amount</th>
-                            <th>Created At</th>
+                        <tr class="table-primary">
+                            <th class="text-center align-middle">PO No.</th>
+                            <th class="text-center align-middle">GL No.</th>
+                            <th class="text-center align-middle">Factory</th>
+                            <th class="text-center align-middle">Ship Date</th>
+                            <th class="text-center align-middle">Unit Price</th>
+                            <th class="text-center align-middle">PO Qty</th>
+                            <th class="text-center align-middle">PO Amount</th>
+                            <th class="text-center align-middle">Created At</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <?php foreach ($buyerPO as $po) : ?>
                             <tr>
-                            <td><a href="<?= base_url('index.php/purchaseorder/' . $po->PO_No); ?>"><?= esc($po->PO_No); ?></a></td>
+                                <td><a href="<?= base_url('index.php/purchaseorder/' . $po->PO_No); ?>"><?= esc($po->PO_No); ?></a></td>
                                 <td><?= esc($po->gl_number); ?></td>
                                 <td><?= esc($po->factory_name); ?></td>
                                 <td><?= esc($po->shipdate); ?></td>
