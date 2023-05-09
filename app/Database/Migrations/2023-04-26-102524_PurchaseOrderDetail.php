@@ -18,6 +18,10 @@ class PurchaseOrderDetail extends Migration
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
+            'style_id' => [
+                'type' => 'BIGINT',
+                'unsigned' => true,
+            ],
             'product_id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
@@ -42,6 +46,7 @@ class PurchaseOrderDetail extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('style_id', 'tblstyles', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('order_id', 'tblpurchaseorder', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('product_id', 'tblproduct', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblpurchaseorderdetail');

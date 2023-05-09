@@ -65,34 +65,6 @@ class BuyerSeeder extends Seeder
             'shipadd' => 'Shipping Address 8',
             'country' => 'Country 8',
         ],
-        [
-            'id' => 9,
-            'buyer_name' => 'Buyer 9',
-            'offadd' => 'Office Address 9',
-            'shipadd' => 'Shipping Address 9',
-            'country' => 'Country 9',
-        ],
-        [
-            'id' => 10,
-            'buyer_name' => 'Buyer 10',
-            'offadd' => 'Office Address 10',
-            'shipadd' => 'Shipping Address 10',
-            'country' => 'Country 10',
-        ],
-        [
-            'id' => 11,
-            'buyer_name' => 'Buyer 11',
-            'offadd' => 'Office Address 11',
-            'shipadd' => 'Shipping Address 11',
-            'country' => 'Country 11',
-        ],
-        [
-            'id' => 12,
-            'buyer_name' => 'Buyer 12',
-            'offadd' => 'Office Address 12',
-            'shipadd' => 'Shipping Address 12',
-            'country' => 'Country 12',
-        ],
     ];
 
     public function run()

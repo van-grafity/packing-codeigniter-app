@@ -22,11 +22,11 @@ class GL extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'style_id' => [
+            'buyer_id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
-            'buyer_id' => [
+            'style_id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
