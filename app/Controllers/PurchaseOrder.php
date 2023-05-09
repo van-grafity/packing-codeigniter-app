@@ -52,7 +52,7 @@ class PurchaseOrder extends BaseController
                 ->join('tblstyles', 'tblstyles.id = tblpurchaseorderstyle.style_id')
                 ->findAll(),
             'size'  => $this->sizeModel->findAll(),
-            'style'  => $this->styleModel->findAll(),
+            'style'  => $this->styleModel->get()->getResult(),
             'validation' => \Config\Services::validation()
         ];
 

@@ -12,7 +12,6 @@ class PackingListModel extends Model
         'packinglist_no',
         'packinglist_date',
         'packinglist_po_id',
-        'packinglist_style_id',
         'packinglist_qty',
         'packinglist_cutting_qty',
         'packinglist_ship_qty',

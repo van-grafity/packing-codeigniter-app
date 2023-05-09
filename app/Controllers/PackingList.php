@@ -97,12 +97,6 @@ class PackingList extends BaseController
                     'required' => '{field} packinglist harus diisi.'
                 ]
             ],
-            'packinglist_style_id' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} packinglist harus diisi.'
-                ]
-            ],
             'packinglist_date' => [
                 'rules' => 'required',
                 'errors' => [
@@ -140,7 +134,6 @@ class PackingList extends BaseController
         $this->pl->save([
             'packinglist_no' => $this->request->getVar('packinglist_no'),
             'packinglist_po_id' => $this->request->getVar('packinglist_po_id'),
-            'packinglist_style_id' => $this->request->getVar('packinglist_style_id'),
             'packinglist_date' => $this->request->getVar('packinglist_date'),
             'packinglist_qty' => $this->request->getVar('packinglist_qty'),
             'packinglist_cutting_qty' => $this->request->getVar('packinglist_cutting_qty'),

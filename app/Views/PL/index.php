@@ -69,14 +69,7 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-
-                    <div class="form-group row">
-                        <label for="packinglist_style_id" class="col-sm-3 col-form-label">Style :</label>
-                        <select id="packinglist_style_id" name="packinglist_style_id" class="form-control">
-                            <option value="">-Select-</option>
-                        </select>
-                    </div>
-
+                    
                     <div class="form-group row">
                         <label for="name" class="col-sm-3 col-form-label">Packing List Date :</label>
                         <div class="col-sm-9">
