@@ -34,9 +34,6 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="css/adminlte.min.css">
 
-    <!-- Own DataTable style -->
-    <!-- <link rel="stylesheet" href="css/scanpack.css"> -->
-
     <script src="plugins/jquery/jquery.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -85,6 +82,18 @@
                                     <a href="../index.php/user" class="nav-link">
                                         <i class="nav-icon fas fa-users"></i>
                                         <p>User List</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../index.php/factory" class="nav-link">
+                                        <i class="nav-icon fas fa-industry"></i>
+                                        <p>Factory</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../index.php/gl" class="nav-link">
+                                        <i class="nav-icon fas fa-file-contract"></i>
+                                        <p>GL</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">

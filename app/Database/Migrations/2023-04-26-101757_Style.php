@@ -22,10 +22,6 @@ class Style extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'style_gl_id' => [
-                'type' => 'BIGINT',
-                'unsigned' => true,
-            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
@@ -36,7 +32,6 @@ class Style extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('style_gl_id', 'tblgl', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblstyles');
     }
 

@@ -19,13 +19,14 @@
                             <th class="text-center align-middle" scope="col">SN</th>
                             <th class="text-center align-middle" scope="col">Prod Code</th>
                             <th class="text-center align-middle" scope="col">ASIN #</th>
+                            <th class="text-center align-middle" scope="col">Category</th>
+                            <th class="text-center align-middle" scope="col">Style</th>
                             <th class="text-center align-middle" scope="col">Description</th>
                             <th class="text-center align-middle" scope="col">Price</th>
-                            <th class="text-center align-middle" scope="col">Category</th>
                             <th class="text-center align-middle" scope="col">Action</th>
                         </tr>
                     </thead>
-                    
+
                     <tbody>
                         <?php $i = 1; ?>
                         <?php foreach ($product as $p) : ?>
@@ -33,12 +34,13 @@
                                 <th class="text-center" scope="row"><?= $i++; ?></th>
                                 <td><?= $p->product_code; ?></td>
                                 <td><?= $p->product_asin_id; ?></td>
+                                <td><?= $p->category_name; ?></td>
+                                <td><?= $p->style_description; ?></td>
                                 <td><?= $p->product_name; ?></td>
                                 <td class="text-right"><?= number_to_currency($p->product_price, 'USD', 'en_US', 2); ?></td>
-                                <td><?= $p->category_name; ?></td>
                                 <td>
-                                    <a class="btn btn-success btn-sm btn-detail" data-id="<?= $p->id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-style="<?= $p->style_id; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>" data-category_id="<?= $p->product_category_id; ?>">Details</a>
-                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $p->id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-style="<?= $p->style_id; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>" data-category_id="<?= $p->product_category_id; ?>">Edit</a>
+                                    <a class="btn btn-success btn-sm btn-detail" data-id="<?= $p->id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-category_id="<?= $p->product_category_id; ?>" data-style_id="<?= $p->product_style_id; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>">Details</a>
+                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $p->id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-category_id="<?= $p->product_category_id; ?>" data-style_id="<?= $p->product_style_id; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>">Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $p->id; ?>">Delete</a>
                                 </td>
                             </tr>
@@ -48,7 +50,9 @@
             </div>
             <!-- /.card-body -->
         </div>
+        <!-- /.card -->
     </section>
+    <!-- /.section -->
 </div>
 
 <!-- Modal Add Product-->
@@ -67,32 +71,10 @@
                         <label>Product Code</label>
                         <input type="text" class="form-control" name="product_code" placeholder="Product Code" autofocus>
                     </div>
-
                     <div class="form-group">
                         <label>Product ASIN #</label>
                         <input type="text" class="form-control" name="product_asin_id" placeholder="Product ASIN #">
                     </div>
-
-                    <div class="form-group">
-                        <label>Style</label>
-                        <select name="style_id" class="form-control">
-                            <option value="">-Select-</option>
-                            <?php foreach ($style as $s) : ?>
-                                <option value="<?= $s->id; ?>"><?= $s->style_no; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Product Name</label>
-                        <input type="text" class="form-control" name="product_name" placeholder="Product Name">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Price</label>
-                        <input type="text" class="form-control" name="product_price" placeholder="Product Price">
-                    </div>
-
                     <div class="form-group">
                         <label>Category</label>
                         <select name="product_category" class="form-control">
@@ -102,7 +84,23 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-
+                    <div class="form-group">
+                        <label>Style</label>
+                        <select name="style_id" class="form-control">
+                            <option value="">-Select-</option>
+                            <?php foreach ($style as $s) : ?>
+                                <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" class="form-control" name="product_name" placeholder="Product Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input type="text" class="form-control" name="product_price" placeholder="Product Price">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -126,37 +124,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-
                     <div class="form-group">
                         <label>Product Code</label>
                         <input type="text" disabled class="form-control product_code" name="product_code" placeholder="Product Code">
                     </div>
-
                     <div class="form-group">
                         <label>Product ASIN #</label>
-                        <input type="text" disabled class="form-control product_asin_id"" name=" product_asin_id" placeholder="Product ASIN #">
+                        <input type="text" disabled class="form-control product_asin_id" name="product_asin_id" placeholder="Product ASIN #">
                     </div>
-
-                    <div class="form-group">
-                        <label>Style</label>
-                        <select name="style_id" class="form-control product_style" disabled>
-                            <option value="" disabled>-Select-</option>
-                            <?php foreach ($style as $s) : ?>
-                                <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Product Name</label>
-                        <input type="text" disabled class="form-control product_name" name="product_name" placeholder="Product Name">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Price</label>
-                        <input type="text" disabled class="form-control product_price" name="product_price" placeholder="Product Price">
-                    </div>
-
                     <div class="form-group">
                         <label>Category</label>
                         <select name="product_category" class="form-control product_category" disabled>
@@ -166,7 +141,23 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-
+                    <div class="form-group">
+                        <label>Style</label>
+                        <select name="product_style" class="form-control product_style" disabled>
+                            <option value="" disabled>-Select-</option>
+                            <?php foreach ($style as $s) : ?>
+                                <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" disabled class="form-control product_name" name="product_name" placeholder="Product Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input type="text" disabled class="form-control product_price" name="product_price" placeholder="Product Price">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="product_id" class="product_id">
@@ -190,37 +181,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-
                     <div class="form-group">
                         <label>Product Code</label>
                         <input type="text" class="form-control product_code" name="product_code" placeholder="Product Code">
                     </div>
-
                     <div class="form-group">
                         <label>Product ASIN #</label>
                         <input type="text" class="form-control product_asin_id" name="product_asin_id" placeholder="Product ASIN #">
                     </div>
-
-                    <div class="form-group">
-                        <label>Style</label>
-                        <select name="style_id" class="form-control product_style">
-                            <option value="" disabled>-Select-</option>
-                            <?php foreach ($style as $s) : ?>
-                                <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Product Name</label>
-                        <input type="text" class="form-control product_name" name="product_name" placeholder="Product Name">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Price</label>
-                        <input type="text" class="form-control product_price" name="product_price" placeholder="Product Price">
-                    </div>
-
                     <div class="form-group">
                         <label>Category</label>
                         <select name="product_category" class="form-control product_category">
@@ -230,7 +198,23 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-
+                    <div class="form-group">
+                        <label>Style</label>
+                        <select name="product_style" class="form-control product_style">
+                            <option value="">-Select-</option>
+                            <?php foreach ($style as $s) : ?>
+                                <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" class="form-control product_name" name="product_name" placeholder="Product Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input type="text" class="form-control product_price" name="product_price" placeholder="Product Price">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="product_id" class="product_id">
@@ -270,8 +254,6 @@
 </form>
 <!-- End Modal Delete Product-->
 
-<script src="plugins/jquery/jquery.min.js"></script>
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
     $(document).ready(function() {
         // get Product Detail
@@ -280,18 +262,18 @@
             const id = $(this).data('id');
             const code = $(this).data('code');
             const asin = $(this).data('asin');
-            const style = $(this).data('style');
+            const category = $(this).data('category_id');
+            const style = $(this).data('style_id');
             const name = $(this).data('name');
             const price = $(this).data('price');
-            const category = $(this).data('category_id');
             // Set data to Form Detail
             $('.product_id').val(id);
             $('.product_code').val(code);
             $('.product_asin_id').val(asin);
-            $('.style').val(style);
+            $('.product_category').val(category).trigger('change');
+            $('.product_style').val(style).trigger('change');
             $('.product_name').val(name);
             $('.product_price').val(price);
-            $('.product_category').val(category).trigger('change');
             // Call Modal Detail
             $('#detailModal').modal('show');
         });
@@ -302,18 +284,18 @@
             const id = $(this).data('id');
             const code = $(this).data('code');
             const asin = $(this).data('asin');
-            const style = $(this).data('style');
+            const category = $(this).data('category_id');
+            const style = $(this).data('style_id');
             const name = $(this).data('name');
             const price = $(this).data('price');
-            const category = $(this).data('category_id');
             // Set data to Form Edit
             $('.product_id').val(id);
             $('.product_code').val(code);
             $('.product_asin_id').val(asin);
-            $('.style').val(style);
+            $('.product_category').val(category).trigger('change');
+            $('.product_style').val(style).trigger('change');
             $('.product_name').val(name);
             $('.product_price').val(price);
-            $('.product_category').val(category).trigger('change');
             // Call Modal Edit
             $('#editModal').modal('show');
         });

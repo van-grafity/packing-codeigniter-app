@@ -6,6 +6,7 @@ use CodeIgniter\Model;
 
 class ProductModel extends Model
 {
+    protected $table = 'tblProduct';
     protected $useTimestamps = true;
     protected $allowedFields = [
         'product_code',
@@ -23,12 +24,18 @@ class ProductModel extends Model
         return $builder->get();
     }
 
+    public function getStyle()
+    {
+        $builder = $this->db->table('tblstyles');
+        return $builder->get();
+    }
+
     public function getProduct()
     {
         $builder = $this->db->table('tblproduct');
         $builder->select('*');
         $builder->join('tblcategory', 'tblcategory.id = product_category_id', 'left');
-        $builder->join('tblstyles', 'tblstyles.id = style_id', 'left');
+        $builder->join('tblstyles', 'tblstyles.id = product_style_id', 'left');
         return $builder->get();
     }
 
@@ -48,11 +55,5 @@ class ProductModel extends Model
     {
         $query = $this->db->table('tblproduct')->delete(array('id' => $id));
         return $query;
-    }
-
-    public function getStyle()
-    {
-        $builder = $this->db->table('tblstyles');
-        return $builder->get();
     }
 }

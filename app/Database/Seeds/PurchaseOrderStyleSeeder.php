@@ -37,22 +37,22 @@ class PurchaseOrderStyleSeeder extends Seeder
         [
             'id' => 6,
             'purchase_order_id' => 2,
-            'style_id' => 6,
+            'style_id' => 4,
         ],
         [
             'id' => 7,
             'purchase_order_id' => 3,
-            'style_id' => 7,
+            'style_id' => 3,
         ],
         [
             'id' => 8,
             'purchase_order_id' => 3,
-            'style_id' => 8,
+            'style_id' => 2,
         ],
         [
             'id' => 9,
             'purchase_order_id' => 4,
-            'style_id' => 9,
+            'style_id' => 1,
         ]
     ];
 

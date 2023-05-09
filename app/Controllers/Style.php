@@ -2,24 +2,53 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
-
 use App\Models\StyleModel;
 
 class Style extends BaseController
 {
+    protected $StyleModel;
+
     public function __construct()
     {
-        $this->styleModel = new StyleModel();
+        $this->StyleModel = new StyleModel();
     }
 
     public function index()
     {
         $data = [
-            'title' => 'Style',
-            'styles' => $this->styleModel->select('*')->join('tblgl', 'tblgl.id = tblstyles.style_gl_id')->get()->getResultArray(),
-            'validation' => \Config\Services::validation()
+            'title' => 'List of Styling',
+            'styles' => $this->StyleModel->getStyles()->getResult()
         ];
         return view('style/index', $data);
+    }
+
+    public function save()
+    {
+        $data = array(
+            'id'                => $this->request->getVar('id'),
+            'style_no'          => $this->request->getVar('number'),
+            'style_description' => $this->request->getVar('description'),
+        );
+        $this->StyleModel->saveStyle($data);
+        return redirect()->to('/style');
+    }
+
+    public function update()
+    {
+        $id = $this->request->getVar('id');
+        $data = array(
+            'id'                => $this->request->getVar('id'),
+            'style_no'          => $this->request->getVar('number'),
+            'style_description' => $this->request->getVar('description'),
+        );
+        $this->StyleModel->updateStyle($data, $id);
+        return redirect()->to('/style');
+    }
+
+    public function delete()
+    {
+        $id = $this->request->getVar('style_id');
+        $this->StyleModel->deleteStyle($id);
+        return redirect()->to('style');
     }
 }

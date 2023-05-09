@@ -16,9 +16,6 @@ class Buyer extends BaseController
 
     public function index()
     {
-        $buyer = $this->buyerModel->findAll();
-        //dd($buyer);
-
         $data = [
             'title'  => 'Buyer List',
             'buyer'  => $this->buyerModel->getBuyer()->getResult()
@@ -52,11 +49,10 @@ class Buyer extends BaseController
 
     public function save()
     {
-        $code = url_title($this->request->getVar('name'), '-', true);
+        // $code = url_title($this->request->getVar('name'), '-', true);
 
         $this->buyerModel->save([
             'buyer_name' => $this->request->getVar('name'),
-            'code' => $code,
             'offadd' => $this->request->getVar('offadd'),
             'shipadd' => $this->request->getVar('shipadd'),
             'country' => $this->request->getVar('country')
@@ -69,14 +65,13 @@ class Buyer extends BaseController
     public function update()
     {
         $id = $this->request->getPost('buyer_id');
-        $code = url_title($this->request->getVar('name'), '-', true);
+        // $code = url_title($this->request->getVar('name'), '-', true);
 
         $data = array(
-            'buyer_name'    => $this->request->getPost('name'),
-            'code'          => $code,
-            'offadd'        => $this->request->getPost('offadd'),
-            'shipadd'       => $this->request->getPost('shipadd'),
-            'country' => $this->request->getPost('country'),
+            'buyer_name'    => $this->request->getVar('name'),
+            'offadd'        => $this->request->getVar('offadd'),
+            'shipadd'       => $this->request->getVar('shipadd'),
+            'country' => $this->request->getVar('country'),
         );
         $this->buyerModel->updateBuyer($data, $id);
         session()->setFlashdata('pesan', 'Data Updated');
@@ -85,9 +80,8 @@ class Buyer extends BaseController
 
     public function delete()
     {
-        $model = new BuyerModel();
-        $id = $this->request->getPost('buyer_id');
-        $model->deleteBuyer($id);
+        $id = $this->request->getVar('buyer_id');
+        $this->buyerModel->deleteBuyer($id);
         return redirect()->to('/buyer');
     }
 }

@@ -15,7 +15,6 @@ class BuyerSeeder extends Seeder
             'offadd' => 'Office Address 1',
             'shipadd' => 'Shipping Address 1',
             'country' => 'Country 1',
-            'code' => 'Code 1',
         ],
         [
             'id' => 2,
@@ -23,7 +22,6 @@ class BuyerSeeder extends Seeder
             'offadd' => 'Office Address 2',
             'shipadd' => 'Shipping Address 2',
             'country' => 'Country 2',
-            'code' => 'Code 2',
         ],
         [
             'id' => 3,
@@ -31,7 +29,6 @@ class BuyerSeeder extends Seeder
             'offadd' => 'Office Address 3',
             'shipadd' => 'Shipping Address 3',
             'country' => 'Country 3',
-            'code' => 'Code 3',
         ],
         [
             'id' => 4,
@@ -39,7 +36,6 @@ class BuyerSeeder extends Seeder
             'offadd' => 'Office Address 4',
             'shipadd' => 'Shipping Address 4',
             'country' => 'Country 4',
-            'code' => 'Code 4',
         ],
         [
             'id' => 5,
@@ -47,7 +43,6 @@ class BuyerSeeder extends Seeder
             'offadd' => 'Office Address 5',
             'shipadd' => 'Shipping Address 5',
             'country' => 'Country 5',
-            'code' => 'Code 5',
         ],
         [
             'id' => 6,
@@ -55,7 +50,6 @@ class BuyerSeeder extends Seeder
             'offadd' => 'Office Address 6',
             'shipadd' => 'Shipping Address 6',
             'country' => 'Country 6',
-            'code' => 'Code 6',
         ],
         [
             'id' => 7,
@@ -63,7 +57,6 @@ class BuyerSeeder extends Seeder
             'offadd' => 'Office Address 7',
             'shipadd' => 'Shipping Address 7',
             'country' => 'Country 7',
-            'code' => 'Code 7',
         ],
         [
             'id' => 8,
@@ -71,39 +64,6 @@ class BuyerSeeder extends Seeder
             'offadd' => 'Office Address 8',
             'shipadd' => 'Shipping Address 8',
             'country' => 'Country 8',
-            'code' => 'Code 8',
-        ],
-        [
-            'id' => 9,
-            'buyer_name' => 'Buyer 9',
-            'offadd' => 'Office Address 9',
-            'shipadd' => 'Shipping Address 9',
-            'country' => 'Country 9',
-            'code' => 'Code 9',
-        ],
-        [
-            'id' => 10,
-            'buyer_name' => 'Buyer 10',
-            'offadd' => 'Office Address 10',
-            'shipadd' => 'Shipping Address 10',
-            'country' => 'Country 10',
-            'code' => 'Code 10',
-        ],
-        [
-            'id' => 11,
-            'buyer_name' => 'Buyer 11',
-            'offadd' => 'Office Address 11',
-            'shipadd' => 'Shipping Address 11',
-            'country' => 'Country 11',
-            'code' => 'Code 11',
-        ],
-        [
-            'id' => 12,
-            'buyer_name' => 'Buyer 12',
-            'offadd' => 'Office Address 12',
-            'shipadd' => 'Shipping Address 12',
-            'country' => 'Country 12',
-            'code' => 'Code 12',
         ],
     ];
 

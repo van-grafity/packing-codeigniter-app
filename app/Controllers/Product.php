@@ -23,45 +23,47 @@ class Product extends BaseController
             'category'  => $this->ProductModel->getCategory()->getResult(),
             'style'     => $this->ProductModel->getStyle()->getResult(),
         ];
+        // $produk = $this->ProductModel->getProduct()->getResult();
+        // dd($produk);
         return view('product/index', $data);
     }
 
     public function save()
     {
-        $model = new ProductModel();
-        $data = array(
-            'product_code'        => $this->request->getPost('product_code'),
-            'product_asin_id'     => $this->request->getPost('product_asin_id'),
-            'style'               => $this->request->getPost('style'),
-            'product_name'        => $this->request->getPost('product_name'),
-            'product_price'       => $this->request->getPost('product_price'),
-            'product_category_id' => $this->request->getPost('product_category'),
+        $this->ProductModel->save(
+            [
+                'product_code'        => $this->request->getVar('product_code'),
+                'product_asin_id'     => $this->request->getVar('product_asin_id'),
+                'product_category_id' => $this->request->getVar('product_category'),
+                'product_style_id'    => $this->request->getVar('product_Style'),
+                'product_name'        => $this->request->getVar('product_name'),
+                'product_price'       => $this->request->getVar('product_price')
+            ]
         );
-        $model->saveProduct($data);
+        session()->setFlashdata('pesan', ' Data Added');
         return redirect()->to('/product');
     }
 
     public function update()
     {
-        $model = new ProductModel();
-        $id = $this->request->getPost('product_id');
+        $id = $this->request->getVar('product_id');
         $data = array(
-            'product_code'        => $this->request->getPost('product_code'),
-            'product_asin_id'     => $this->request->getPost('product_asin_id'),
-            'style'               => $this->request->getPost('style'),
-            'product_name'        => $this->request->getPost('product_name'),
-            'product_price'       => $this->request->getPost('product_price'),
-            'product_category_id' => $this->request->getPost('product_category'),
+            'product_code'        => $this->request->getVar('product_code'),
+            'product_asin_id'     => $this->request->getVar('product_asin_id'),
+            'product_category_id' => $this->request->getVar('product_category'),
+            'product_style_id'    => $this->request->getVar('product_style'),
+            'product_name'        => $this->request->getVar('product_name'),
+            'product_price'       => $this->request->getVar('product_price'),
         );
-        $model->updateProduct($data, $id);
-        return redirect()->to('/product');
+        $this->ProductModel->updateProduct($data, $id);
+        session()->setFlashdata('pesan', 'Data Updated');
+        return redirect()->to('product');
     }
 
     public function delete()
     {
-        $model = new ProductModel();
-        $id = $this->request->getPost('product_id');
-        $model->deleteProduct($id);
+        $id = $this->request->getVar('product_id');
+        $this->ProductModel->deleteProduct($id);
         return redirect()->to('/product');
     }
 }
