@@ -19,6 +19,7 @@ class GL extends BaseController
             'title'     => 'List of GL',
             'gl'        => $this->glModel->getGL()->getResult(),
             'buyer'     => $this->glModel->getBuyer()->getResult(),
+            'style'     => $this->glModel->getStyles()->getResult(),
         ];
 
         // $glku = $this->glModel->getGL()->getResult();
@@ -31,12 +32,12 @@ class GL extends BaseController
         $data = array(
             'id'            => $this->request->getVar('id'),
             'gl_number'     => $this->request->getVar('number'),
-            'season'        => $this->request->getVar('description'),
-            'style_id'      => $this->request->getVar('description'),
-            'buyer_id'      => $this->request->getVar('description'),
-            'size_order'    => $this->request->getVar('description'),
+            'buyer_id'      => $this->request->getVar('gl_buyer'),
+            'style_id'      => $this->request->getVar('gl_style'),
+            'season'        => $this->request->getVar('season'),
+            'size_order'    => $this->request->getVar('size_order'),
         );
-        $this->glModel->saveStyle($data);
+        $this->glModel->saveGl($data);
         return redirect()->to('/gl');
     }
 
@@ -44,19 +45,19 @@ class GL extends BaseController
     {
         $id = $this->request->getVar('id');
         $data = array(
-            'id'                => $this->request->getVar('id'),
+            'id'             => $this->request->getVar('id'),
             'gl_number'     => $this->request->getVar('number'),
-            'season'        => $this->request->getVar('description'),
-            'style_id'      => $this->request->getVar('description'),
-            'buyer_id'      => $this->request->getVar('description'),
-            'size_order'    => $this->request->getVar('description'),
+            'season'        => $this->request->getVar('season'),
+            'buyer_id'      => $this->request->getVar('gl_buyer'),
+            'style_id'      => $this->request->getVar('gl_style'),
+            'size_order'    => $this->request->getVar('size_order'),
         );
         $this->glModel->updateStyle($data, $id);
         return redirect()->to('/gl');
     }
     public function delete()
     {
-        $id = $this->request->getVar('gl_id');
+        $id = $this->request->getVar('glid');
         $this->glModel->deleteGL($id);
         return redirect()->to('gl');
     }
