@@ -49,8 +49,6 @@ $routes->get('/packinglist/get_style_by_po/(:any)', 'PackingList::getStyleByPoId
 $routes->get('/packinglist/(:any)', 'PackingList::detail/$1');
 $routes->get('/packinglist/store', 'PackingList::store');
 
-
-
 $routes->get('/cartonbarcode', 'CartonBarcode::index');
 
 /*
@@ -69,4 +67,3 @@ $routes->get('/cartonbarcode', 'CartonBarcode::index');
 if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
     require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
-

@@ -12,12 +12,12 @@ class ProductSeeder extends Seeder
     private const DATA = [
         [
             'id' => 1,
-            'product_code' => '195111263922',
-            'product_asin_id' => 'B08J66XGYV',
+            'product_code' => '193548003111',
+            'product_asin_id' => 'B07HL25ZVB',
             'product_style_id' => 1,
-            'product_name' => 'Amazon Essential Disney Star Wars Men\'s Fleece Pullover Hoodie Sweatshirts, Marvel Spider-Man 1',
-            'product_price' => 10.80,
-            'product_category_id' => 1,
+            'product_name' => 'Spotted Zebra Girls Fleece Zip-Up Hoodie Sweatshirts, Unicorn',
+            'product_price' => 7.2,
+            'product_category_id' => 5,
             'created_at' => '2023-04-29 10:46:01',
             'updated_at' => '2023-04-29 10:46:01',
         ],

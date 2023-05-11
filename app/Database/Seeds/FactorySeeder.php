@@ -11,7 +11,7 @@ class FactorySeeder extends Seeder
     private const DATA = [
         [
             'id' => 1,
-            'name' => 'Factory 1',
+            'name' => 'Factory A',
             'incharge' => 'Incharge 1',
             'remarks' => 'Remarks 1',
         ],

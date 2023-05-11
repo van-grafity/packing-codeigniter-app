@@ -44,7 +44,7 @@
 </div>
 
 <form action="<?= base_url('index.php/purchaseorder/store'); ?>" method="post">
-    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -68,7 +68,7 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="id">Factory</label>
                         <select class="form-control" id="factory_id" name="factory_id">
@@ -89,7 +89,7 @@
                         <input type="text" class="form-control" id="unit_price" name="unit_price" placeholder="Unit Price">
                     </div>
 
-                    
+
                     <div class="form-group">
                         <label for="PO_qty">PO Qty</label>
                         <input type="text" class="form-control" id="PO_qty" name="PO_qty" placeholder="PO Qty">
@@ -100,7 +100,7 @@
                         <input type="text" class="form-control" id="PO_amount" name="PO_amount" placeholder="0" readonly>
                     </div>
                     <div class="form-group">
-                    
+
                         <table class="table table-bordered" id="item_table">
                             <thead>
                                 <tr>
@@ -146,9 +146,6 @@
         </div>
     </div>
 </form>
-
-<script src="plugins/jquery/jquery.min.js"></script>
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script>
     function addRowStyleSize() {

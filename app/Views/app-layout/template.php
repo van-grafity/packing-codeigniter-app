@@ -73,6 +73,12 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="../index.php/category" class="nav-link">
+                                        <i class="nav-icon fas fa-tshirt"></i>
+                                        <p>Category</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="../index.php/product" class="nav-link">
                                         <i class="nav-icon fas fa-tshirt"></i>
                                         <p>Products</p>
