@@ -1,65 +1,51 @@
 <?= $this->extend('app-layout/template'); ?>
 
 <?= $this->Section('content'); ?>
+<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <section class="content-header">
-    </section>
-
+    <!-- Main content -->
     <section class="content">
-        <div class="container-fluid">
-            <h1 class="mt-4"><i class="fas fa-server"></i> Purchase Order</h1>
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item"><a href="<?= base_url('index.php/home'); ?>">Dashboard</a></li>
-                <li class="breadcrumb-item active"><?= $title; ?></li>
-            </ol>
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <a data-toggle="modal" data-target="#createModal" class="btn btn-secondary mb-2" href="#"><i class="fas fa-plus"></i> Add New</a>
-                            <a href="<?= base_url('index.php/purchaseorder/import'); ?>" class="btn btn-success mb-3"><i class="fas fa-file-import"></i> Import</a>
-                            <a href="<?= base_url('index.php/purchaseorder/export'); ?>" class="btn btn-warning mb-3"><i class="fas fa-file-export"></i> Export</a>
-                            <a href="<?= base_url('index.php/purchaseorder/print'); ?>" class="btn btn-info mb-3"><i class="fas fa-print"></i> Print</a>
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title"><?= $title ?></h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <button type="button" class="btn btn-secondary mb-2" data-toggle="modal" data-target="#addModal">Add New</button>
 
-                            <table id="example1" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>PO No.</th>
-                                        <th>GL No.</th>
-                                        <th>Factory</th>
-                                        <th>Ship Date</th>
-                                        <th>Unit Price</th>
-                                        <th>PO Qty</th>
-                                        <th>PO Amount</th>
-                                        <th>Created At</th>
-                                    </tr>
-                                </thead>
+                <table id="table1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="table-primary">
+                            <th class="text-center align-middle">PO No.</th>
+                            <th class="text-center align-middle">GL No.</th>
+                            <th class="text-center align-middle">Ship Date</th>
+                            <th class="text-center align-middle">Total Qty</th>
+                            <th class="text-center align-middle">Total Amount</th>
+                        </tr>
+                    </thead>
 
-                                <tbody>
-                                    <?php foreach ($buyerPO as $po) : ?>
-                                        <tr>
-                                            <td><a href="<?= base_url('index.php/purchaseorder/' . $po['PO_No']); ?>"><?= esc($po['PO_No']); ?></a></td>
-                                            <td><?= esc($po['gl_number']); ?></td>
-                                            <td><?= esc($po['factory_name']); ?></td>
-                                            <td><?= esc($po['shipdate']); ?></td>
-                                            <td><?= esc($po['unit_price']); ?></td>
-                                            <td><?= esc($po['PO_qty']); ?></td>
-                                            <td><?= esc(number_to_currency($po['PO_amount'], 'IDR')); ?></td>
-                                            <td><?= esc($po['created_at']); ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                    <tbody>
+                        <?php foreach ($buyerPO as $po) : ?>
+                            <tr>
+                                <td class="text-center align-middle"><a href="<?= '../index.php/purchaseorder/' . $po['PO_No']; ?>"><?= esc($po['PO_No']); ?></a></td>
+                                <td class="text-center align-middle"><?= $po['gl_number']; ?></td>
+                                <td class="text-center align-middle"><?= $po['shipdate']; ?></td>
+                                <td class="text-center align-middle"><?= $po['PO_qty']; ?></td>
+                                <td class="text-right align-middle"><?= number_to_currency($po['PO_amount'], 'USD', 'en_US', 2); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </section>
+</div>
+</div>
+</div>
+</section>
 </div>
 
-<form action="<?= base_url('index.php/purchaseorder/store'); ?>" method="post">
-    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+<form action="<?= '../index.php/purchaseorder/store'; ?>" method="post">
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -73,7 +59,6 @@
                         <label for="PO_No">PO No.</label>
                         <input type="text" class="form-control" id="PO_No" name="PO_No" placeholder="PO No.">
                     </div>
-
                     <div class="form-group">
                         <label for="id">GL No.</label>
                         <select class="form-control" id="id" name="id">
@@ -83,36 +68,17 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-
-                    <div class="form-group">
-                        <label for="id">Factory</label>
-                        <select class="form-control" id="factory_id" name="factory_id">
-                            <option value="">-- Select Factory --</option>
-                            <?php foreach ($factory as $f) : ?>
-                                <option value="<?= $f['id']; ?>"><?= $f['name']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
                     <div class="form-group">
                         <label for="shipdate">Ship Date</label>
                         <input type="date" class="form-control" id="shipdate" name="shipdate" placeholder="Ship Date">
                     </div>
-
                     <div class="form-group">
-                        <label for="unit_price">Unit Price</label>
-                        <input type="text" class="form-control" id="unit_price" name="unit_price" placeholder="Unit Price">
+                        <label for="PO_qty">Total Qty</label>
+                        <input type="text" class="form-control" id="PO_qty" name="PO_qty" placeholder="Total Qty" disabled>
                     </div>
-
-
-                    <div class="form-group">
-                        <label for="PO_qty">PO Qty</label>
-                        <input type="text" class="form-control" id="PO_qty" name="PO_qty" placeholder="PO Qty">
-                    </div>
-
                     <div class="form-group">
                         <label for="PO_amount">PO Amount</label>
-                        <input type="text" class="form-control" id="PO_amount" name="PO_amount" placeholder="0" readonly>
+                        <input type="text" class="form-control" id="PO_amount" name="PO_amount" placeholder="Total Amount" disabled>
                     </div>
 
                     <div class="form-group">
@@ -156,33 +122,7 @@
                             </tbody>
                         </table>
 
-                        <table class="table table-bordered" id="style_table">
-                            <thead>
-                                <tr>
-                                    <th>Style No.</th>
-                                    <th colspan="2" width="15%">Action</th>
-                                </tr>
-                            </thead>
 
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <select class="form-control" id="style_no[]" name="style_no[]">
-                                            <option value="">-- Select Style No. --</option>
-                                            <?php foreach ($purchaseorderstyle as $s) : ?>
-                                                <option value="<?= $s['id']; ?>"><?= $s['style_description']; ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowStyle(this);" id="btnRemoveRowStyle"></i></button>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus" href="javascript:void(0);" onclick="addRowStyle();" id="btnAddRowStyle"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -193,9 +133,6 @@
         </div>
     </div>
 </form>
-
-<script src="plugins/jquery/jquery.min.js"></script>
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script>
     function addRowSize() {
