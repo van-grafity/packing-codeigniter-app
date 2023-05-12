@@ -27,14 +27,11 @@
                     <tbody>
                         <?php foreach ($buyerPO as $po) : ?>
                             <tr>
-                                <td><a href="<?= base_url('index.php/purchaseorder/' . $po['PO_No']); ?>"><?= esc($po['PO_No']); ?></a></td>
-                                <td><?= esc($po['gl_number']); ?></td>
-                                <td><?= esc($po['factory_name']); ?></td>
-                                <td><?= esc($po['shipdate']); ?></td>
-                                <td><?= esc($po['unit_price']); ?></td>
-                                <td><?= esc($po['PO_qty']); ?></td>
-                                <td><?= esc(number_to_currency($po['PO_amount'], 'IDR')); ?></td>
-                                <td><?= esc($po['created_at']); ?></td>
+                                <td><a href='../index.php/purchaseorder/' . $po->PO_No><?= $po->PO_No; ?></a></td>
+                                <td><?= $po->gl_number; ?></td>
+                                <td><?= $po->shipdate; ?></td>
+                                <td><?= $po->PO_qty; ?></td>
+                                <td><?= number_to_currency($po->PO_amount, 'USD', 'en_US', 2); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -47,8 +44,8 @@
 </section>
 </div>
 
-<form action="<?= base_url('index.php/purchaseorder/store'); ?>" method="post">
-    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+<form action="../index.php/purchaseorder/save" method="post">
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -84,17 +81,20 @@
                         <input type="text" class="form-control" id="PO_amount" name="PO_amount" placeholder="Total Amount" disabled>
                     </div>
                     <div class="form-group">
-
+                        <label>Order Details</label>
+                    </div>
+                    <div class="form-group">
                         <table class="table table-bordered" id="item_table">
                             <thead>
                                 <tr>
-                                    <th>Style No.</th>
+                                    <th>Product Code</th>
+                                    <th>Product Name</th>
+                                    <th>Unit Price</th>
                                     <th>Size</th>
-                                    <th>Qty</th>
-                                    <th colspan="2" width="15%">Action</th>
+                                    <th>Qty Order</th>
+                                    <th colspan="2">Action</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 <tr>
                                     <td>
@@ -104,47 +104,21 @@
                                                 <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
                                             <?php endforeach; ?>
                                     </td>
+                                    <td><input type="text" class="form-control" id="name[]" name="name[]" placeholder="Product Name"></td>
+                                    <td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Unit Price"></td>
                                     <td>
                                         <select class="form-control" id="size_id[]" name="size_id[]">
-                                            <option value="">-- Select Size --</option>
+                                            <option value="">-Size-</option>
                                             <?php foreach ($size as $s) : ?>
                                                 <option value="<?= $s->id; ?>"><?= $s->size; ?></option>
                                             <?php endforeach; ?>
                                     </td>
-                                    <td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Qty"></td>
+                                    <td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Qty Order"></td>
                                     <td style="text-align: center;">
                                         <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowSize(this);" id="btnRemoveRowSize"></i></button>
                                     </td>
                                     <td style="text-align: center;">
                                         <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus" href="javascript:void(0);" onclick="addRowSize();" id="btnAddRowSize"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <table class="table table-bordered" id="style_table">
-                            <thead>
-                                <tr>
-                                    <th>Style No.</th>
-                                    <th colspan="2" width="15%">Action</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <select class="form-control" id="style_no[]" name="style_no[]">
-                                            <option value="">-- Select Style No. --</option>
-                                            <?php foreach ($purchaseorderstyle as $s) : ?>
-                                                <option value="<?= $s['id']; ?>"><?= $s['style_description']; ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowStyle(this);" id="btnRemoveRowStyle"></i></button>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus" href="javascript:void(0);" onclick="addRowStyle();" id="btnAddRowStyle"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
