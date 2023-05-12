@@ -27,11 +27,11 @@
                     <tbody>
                         <?php foreach ($buyerPO as $po) : ?>
                             <tr>
-                                <td><a href='../index.php/purchaseorder/' . $po->PO_No><?= $po->PO_No; ?></a></td>
-                                <td><?= $po->gl_number; ?></td>
-                                <td><?= $po->shipdate; ?></td>
-                                <td><?= $po->PO_qty; ?></td>
-                                <td><?= number_to_currency($po->PO_amount, 'USD', 'en_US', 2); ?></td>
+                                <td class="text-center"><a href="<?= '../index.php/purchaseorder/' . $po->PO_No; ?>"><?= $po->PO_No; ?></a></td>
+                                <td class="text-center"><?= $po->gl_number; ?></td>
+                                <td class="text-center"><?= $po->shipdate; ?></td>
+                                <td class="text-center"><?= $po->PO_qty; ?></td>
+                                <td class="text-right"><?= number_to_currency($po->PO_amount, 'USD', 'en_US', 2); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -46,7 +46,7 @@
 
 <form action="../index.php/purchaseorder/save" method="post">
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">Add New Purchase Order</h5>
@@ -92,7 +92,7 @@
                                     <th>Unit Price</th>
                                     <th>Size</th>
                                     <th>Qty Order</th>
-                                    <th colspan="2">Action</th>
+                                    <th colspan="2" class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
