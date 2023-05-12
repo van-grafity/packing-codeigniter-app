@@ -108,6 +108,7 @@
                                             <thead>
                                                 <tr class="table-primary">
                                                     <th class="text-center align-middle">Size</th>
+                                                    <th class="text-center align-middle">Style</th>
                                                     <th class="text-center align-middle">Qty ship</th>
                                                     <th class="text-center align-middle">Carton</th>
                                                     <th class="text-center align-middle">Amount</th>
@@ -118,6 +119,7 @@
                                                 <?php foreach ($plsizes as $key => $value) : ?>
                                                     <tr>
                                                         <td class="text-center align-middle"><?= $value['size']; ?></td>
+                                                        <td class="text-center align-middle"><?= $value['style_description']; ?></td>
                                                         <td class="text-center align-middle"><?= $value['packinglistsize_qty']; ?></td>
                                                         <td class="text-center align-middle"></td>
                                                         <td class="text-right align-middle"><?= number_to_currency($value['packinglistsize_amount'], 'USD', 'en_US', 2); ?></td>

@@ -11,11 +11,12 @@ class ProductModel extends Model
     protected $allowedFields = [
         'product_code',
         'product_asin_id',
-        'style_id',
+        'product_style_id',
         'product_name',
-        'product_description',
         'product_price',
-        'product_category_id'
+        'product_category_id',
+        'created_at',
+        'updated_at',
     ];
 
     public function getCategory()
@@ -33,7 +34,7 @@ class ProductModel extends Model
     public function getProduct()
     {
         $builder = $this->db->table('tblproduct');
-        $builder->select('*');
+        $builder->select('tblproduct.*, tblstyles.style_description, tblcategory.category_name ');
         $builder->join('tblcategory', 'tblcategory.id = product_category_id', 'left');
         $builder->join('tblstyles', 'tblstyles.id = product_style_id', 'left');
         return $builder->get();

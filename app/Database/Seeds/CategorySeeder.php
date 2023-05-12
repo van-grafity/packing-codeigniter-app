@@ -28,7 +28,23 @@ class CategorySeeder extends Seeder
         ],
         [
             'id' => 5,
-            'category_name' => 'Jacket',
+            'category_name' => 'Jacket/Hoodie',
+        ],
+        [
+            'id' => 6,
+            'category_name' => 'Jumpsuit',
+        ],
+        [
+            'id' => 7,
+            'category_name' => 'Round Neck',
+        ],
+        [
+            'id' => 8,
+            'category_name' => 'V Neck',
+        ],
+        [
+            'id' => 9,
+            'category_name' => 'Boat Neck',
         ],
     ];
 

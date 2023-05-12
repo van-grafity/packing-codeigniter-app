@@ -23,6 +23,10 @@ class PackingListSize extends Migration
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
+            'packinglistsize_style_id' => [
+                'type' => 'BIGINT',
+                'unsigned' => true,
+            ],
             'packinglistsize_qty' => [
                 'type' => 'INT',
                 'constraint' => 11,
@@ -45,6 +49,7 @@ class PackingListSize extends Migration
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('packinglistsize_pl_id', 'tblpackinglist', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('packinglistsize_size_id', 'tblsizes', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('packinglistsize_style_id', 'tblstyles', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblpackinglistsizes');
     }
 

@@ -12,17 +12,17 @@ class StyleSeeder extends Seeder
         [
             'id' => 1,
             'style_no' => 'S001',
-            'style_description' => 'AE-M-FW20-SHR-127-Micron',
+            'style_description' => 'AE-M-FW20-SHR-127',
         ],
         [
             'id' => 2,
             'style_no' => 'S002',
-            'style_description' => 'AE-M-FW20-SHR-127-Micron',
+            'style_description' => 'AE-M-FW20-SHR-128',
         ],
         [
             'id' => 3,
             'style_no' => 'S003',
-            'style_description' => 'AE-M-FW20-SHR-127-Micron',
+            'style_description' => 'AE-M-FW20-SHR-129',
         ],
         [
             'id' => 4,

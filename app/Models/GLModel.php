@@ -31,7 +31,7 @@ class GLModel extends Model
     public function getGL()
     {
         $builder = $this->db->table('tblgl');
-        $builder->select('*');
+        $builder->select('tblgl.*, tblbuyer.buyer_name, tblstyles.style_description');
         $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id', 'left');
         $builder->join('tblstyles', 'tblstyles.id = tblgl.style_id', 'left');
         return $builder->get();

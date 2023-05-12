@@ -35,7 +35,7 @@ class Product extends BaseController
                 'product_code'        => $this->request->getVar('product_code'),
                 'product_asin_id'     => $this->request->getVar('product_asin_id'),
                 'product_category_id' => $this->request->getVar('product_category'),
-                'product_style_id'    => $this->request->getVar('product_Style'),
+                'product_style_id'    => $this->request->getVar('product_style_id'),
                 'product_name'        => $this->request->getVar('product_name'),
                 'product_price'       => $this->request->getVar('product_price')
             ]

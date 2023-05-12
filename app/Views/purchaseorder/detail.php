@@ -24,37 +24,37 @@
                                             <h4>PO No.</h4>
                                         </div>
                                     </div>
-                                    <h1><?= esc($buyerPO['PO_No']); ?></h1>
+                                    <h1><?= esc($buyerPO->PO_No); ?></h1>
                                     <table width="100%">
                                         <tr>
                                             <td><b>Buyer</b></td>
-                                            <td><?= esc($buyerPO['buyer_name']); ?></td>
+                                            <td><?= esc($buyerPO->buyer_name); ?></td>
                                             <td></td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td><b>Order Qty.</b></td>
-                                            <td><?= esc($buyerPO['PO_qty']); ?></td>
+                                            <td><?= esc($buyerPO->PO_qty); ?></td>
                                             <td><b>Cut Qty.</b></td>
-                                            <td><?= esc($buyerPO['PO_qty']); ?></td>
+                                            <td><?= esc($buyerPO->PO_qty); ?></td>
                                         </tr>
                                         <tr>
                                             <td><b>PO Amount</b></td>
-                                            <td><?= esc($buyerPO['PO_amount']); ?></td>
+                                            <td><?= esc($buyerPO->PO_qty * $buyerPO->unit_price); ?></td>
                                             <td><b>Size Order</b></td>
-                                            <td><?= esc($buyerPO['size_order']); ?></td>
+                                            <td><?= esc($buyerPO->size_order); ?></td>
                                         </tr>
                                         <tr>
                                             <td><b>Ship Date</b></td>
-                                            <td><?= esc($buyerPO['shipdate']); ?></td>
+                                            <td><?= esc($buyerPO->shipdate); ?></td>
                                             <td><b>GL Number</b></td>
-                                            <td><?= esc($buyerPO['gl_number']); ?></td>
+                                            <td><?= esc($buyerPO->gl_number); ?></td>
                                         </tr>
                                         <tr>
                                             <td><b>Factory</b></td>
-                                            <td><?= esc($buyerPO['factory_name']); ?></td>
+                                            <td><?= esc($buyerPO->factory_name); ?></td>
                                             <td><b>Factory Code</b></td>
-                                            <td><?= esc($buyerPO['factory_id']); ?></td>
+                                            <td><?= esc($buyerPO->factory_id); ?></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -143,7 +143,7 @@
             <div class="row">
                 <div class="col-12">
                     <a href="<?= base_url('purchaseorder'); ?>" class="btn btn-secondary">Back</a>
-                    <a href="<?= base_url('purchaseorder/edit/' . $buyerPO['PO_No']); ?>" class="btn btn-warning float-right">Edit</a>
+                    <a href="<?= base_url('purchaseorder/edit/' . $buyerPO->PO_No); ?>" class="btn btn-warning float-right">Edit</a>
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ class PackingListSizeModel extends Model
     protected $allowedFields    = [
         'packinglistsize_pl_id',
         'packinglistsize_size_id',
+        'packinglistsize_style_id',
         'packinglistsize_qty',
         'packinglistsize_amount',
     ];
