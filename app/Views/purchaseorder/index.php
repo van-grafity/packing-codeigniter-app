@@ -25,13 +25,13 @@
                     </thead>
 
                     <tbody>
-                        <?php foreach ($buyerPO as $po) : ?>
+                        <?php foreach ($BuyerPO as $po) : ?>
                             <tr>
                                 <td class="text-center"><a href="<?= '../index.php/purchaseorder/' . $po->PO_No; ?>"><?= $po->PO_No; ?></a></td>
                                 <td class="text-center"><?= $po->gl_number; ?></td>
-                                <td class="text-center"><?= $po->shipdate; ?></td>
-                                <td class="text-center"><?= $po->PO_qty; ?></td>
-                                <td class="text-right"><?= number_to_currency($po->PO_amount, 'USD', 'en_US', 2); ?></td>
+                                <td class="text-center"><?= $po->Shipdate; ?></td>
+                                <td class="text-center"><?= $po->PO_Qty; ?></td>
+                                <td class="text-right"><?= number_to_currency($po->PO_Amount, 'USD', 'en_US', 2); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -64,7 +64,7 @@
                         <label>Buyer</label>
                         <select name="gl_no" class="form-control">
                             <option value="">-Select GL No-</option>
-                            <?php foreach ($gl as $g) : ?>
+                            <?php foreach ($GL as $g) : ?>
                                 <option value="<?= $g->id; ?>"><?= $g->gl_number; ?></option>
                             <?php endforeach; ?>
                         </select>

@@ -15,8 +15,6 @@ class ProductModel extends Model
         'product_name',
         'product_price',
         'product_category_id',
-        'created_at',
-        'updated_at',
     ];
 
     public function getCategory()
@@ -31,13 +29,20 @@ class ProductModel extends Model
         return $builder->get();
     }
 
-    public function getProduct()
+    public function getProduct($code = false)
     {
+        if ($code == false) {
+            $builder = $this->db->table('tblproduct');
+            $builder->select('tblproduct.*, tblstyles.style_description, tblcategory.category_name ');
+            $builder->join('tblcategory', 'tblcategory.id = product_category_id', 'left');
+            $builder->join('tblstyles', 'tblstyles.id = product_style_id', 'left');
+            return $builder->get();
+        }
         $builder = $this->db->table('tblproduct');
         $builder->select('tblproduct.*, tblstyles.style_description, tblcategory.category_name ');
         $builder->join('tblcategory', 'tblcategory.id = product_category_id', 'left');
         $builder->join('tblstyles', 'tblstyles.id = product_style_id', 'left');
-        return $builder->get();
+        return $builder->where(['code' => $code])->get();
     }
 
     public function saveProduct($data)

@@ -2,28 +2,40 @@
 
 namespace App\Controllers;
 
+use App\Models\BuyerModel;
+use App\Models\GLModel;
 use App\Models\PurchaseOrderModel;
+use App\Models\ProductModel;
+use App\Models\SizeModel;
 
 helper('number');
 
 class PurchaseOrder extends BaseController
 {
+    protected $BuyerModel;
+    protected $GLModel;
     protected $PurchaseOrderModel;
+    protected $ProductModel;
+    protected $SizeModel;
 
     public function __construct()
     {
+        $this->BuyerModel = new BuyerModel();
+        $this->GLModel = new GLModel();
         $this->PurchaseOrderModel = new PurchaseOrderModel();
+        $this->ProductModel = new ProductModel();
+        $this->SizeModel = new SizeModel();
     }
 
     public function index()
     {
         $data = [
             'title'     => 'Buyer Purchase Order',
-            'buyer'     => $this->PurchaseOrderModel->getBuyer()->getResult(),
-            'gl'        => $this->PurchaseOrderModel->getGL()->getResult(),
-            'buyerPO'   => $this->PurchaseOrderModel->getPO()->getResult(),
-            'Product'   => $this->PurchaseOrderModel->getPoduct()->getResult(),
-            'Sizes'     => $this->PurchaseOrderModel->getSize()->getResult(),
+            'Buyer'     => $this->BuyerModel->getBuyer()->getResult(),
+            'GL'        => $this->GLModel->getGL()->getResult(),
+            'BuyerPO'   => $this->PurchaseOrderModel->getPO()->getResult(),
+            'Product'   => $this->ProductModel->getProduct()->getResult(),
+            'Sizes'     => $this->SizeModel->getSize()->getResult(),
         ];
         // dd($data['Product']);
         return view('purchaseorder/index', $data);
