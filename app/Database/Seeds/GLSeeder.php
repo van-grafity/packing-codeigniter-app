@@ -11,51 +11,11 @@ class GLSeeder extends Seeder
     private const DATA = [
         [
             'id' => 1,
-            'gl_number' => 'GL-62358-001',
+            'gl_number' => 'GL-62358-00',
             'season' => 'SS21',
             'style_id' => 1,
             'buyer_id' => 1,
-            'size_order' => 'XS - XXL',
-        ],
-        [
-            'id' => 2,
-            'gl_number' => 'GL-62358-002',
-            'season' => 'SS21',
-            'style_id' => 1,
-            'buyer_id' => 1,
-            'size_order' => 'XS - XXL',
-        ],
-        [
-            'id' => 3,
-            'gl_number' => 'GL-62358-003',
-            'season' => 'SS21',
-            'style_id' => 1,
-            'buyer_id' => 1,
-            'size_order' => 'XS - XXL',
-        ],
-        [
-            'id' => 4,
-            'gl_number' => 'GL-62359-001',
-            'season' => 'SS21',
-            'style_id' => 1,
-            'buyer_id' => 2,
-            'size_order' => 'XS - XL',
-        ],
-        [
-            'id' => 5,
-            'gl_number' => 'GL-62359-002',
-            'season' => 'SS21',
-            'style_id' => 1,
-            'buyer_id' => 2,
-            'size_order' => 'XS - XL',
-        ],
-        [
-            'id' => 6,
-            'gl_number' => 'GL-62359-003',
-            'season' => 'SS21',
-            'style_id' => 1,
-            'buyer_id' => 2,
-            'size_order' => 'XS - XL',
+            'size_order' => 'XS - M',
         ],
     ];
 

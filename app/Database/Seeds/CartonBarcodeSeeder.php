@@ -25,22 +25,6 @@ class CartonBarcodeSeeder extends Seeder
             'created_at' => '2023-04-17 21:50:01',
             'updated_at' => '2023-04-17 21:50:01',
         ],
-        [
-            'id' => 3,
-            'carton_pl_id' => 3,
-            'carton_no' => 3,
-            'carton_barcode' => 99961088754691,
-            'created_at' => '2023-04-17 21:50:01',
-            'updated_at' => '2023-04-17 21:50:01',
-        ],
-        [
-            'id' => 4,
-            'carton_pl_id' => 4,
-            'carton_no' => 4,
-            'carton_barcode' => 99961088754692,
-            'created_at' => '2023-04-17 21:50:01',
-            'updated_at' => '2023-04-17 21:50:01',
-        ],
     ];
 
     public function run()

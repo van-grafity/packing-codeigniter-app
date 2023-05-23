@@ -18,26 +18,22 @@ class PurchaseOrder extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 35,
             ],
-            'gl_id' => [
+            'GL_id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
-            'factory_id' => [
+            'Factory_id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
-            'shipdate' => [
+            'Shipdate' => [
                 'type' => 'DATE',
             ],
-            'unit_price' => [
-                'type' => 'DECIMAL',
-                'constraint' => '10,2',
-            ],
-            'PO_qty' => [
+            'PO_Qty' => [
                 'type' => 'INT',
                 'constraint' => 11,
             ],
-            'PO_amount' => [
+            'PO_Amount' => [
                 'type' => 'INT',
                 'constraint' => 11,
             ],
@@ -51,8 +47,8 @@ class PurchaseOrder extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('gl_id', 'tblgl', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('factory_id', 'tblfactory', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('GL_id', 'tblgl', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('Factory_id', 'tblfactory', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblpurchaseorder');
     }
 

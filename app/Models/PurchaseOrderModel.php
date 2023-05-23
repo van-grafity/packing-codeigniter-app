@@ -12,33 +12,62 @@ class PurchaseOrderModel extends Model
         'id',
         'PO_No',
         'gl_id',
-        'PO_product_id',
-        'factory_id',
         'shipdate',
-        'unit_price',
         'PO_qty',
         'PO_amount',
+        // 'PO_product_id',
     ];
-    protected $returnType = 'object';
 
     public function getPO()
     {
         $builder = $this->db->table('tblpurchaseorder');
-        $builder->select('*');
+        $builder->select('tblpurchaseorder.*, tblbuyer.buyer_name, tblgl.gl_number,tblgl.season');
         $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id');
-        $builder->join('tblfactory', 'tblfactory.id = tblpurchaseorder.factory_id');
+        $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id');
         return $builder->get();
     }
 
-    public function getBuyer()
+    public function getGL()
     {
-        $builder = $this->db->table('tblbuyer');
+        $builder = $this->db->table('tblgl');
         return $builder->get();
     }
 
-    public function saveProduct($data)
+    public function getBuyer($code = false)
+    {
+        if ($code == false) {
+            return $this->db->table('tblbuyer')->get();
+        }
+        return $this->where(['code' => $code])->first();
+    }
+
+    public function getPoduct()
+    {
+        $builder = $this->db->table('tblproduct');
+        return $builder->get();
+    }
+
+    public function getSize($code = false)
+    {
+        if ($code == false) {
+            return $this->db->table('tblsizes')->get();
+        }
+        return $this->where(['code' => $code])->first();
+    }
+
+    public function savePO($data)
     {
         $query = $this->db->table('tblpurchaseorder')->insert($data);
         return $query;
+    }
+
+    public function updatePO($data, $id)
+    {
+        $query = $this->db->table('tblpurchaseorder')->update($data, array('id' => $id));
+        return $query;
+    }
+
+    public function deletePO($data)
+    {
     }
 }

@@ -8,7 +8,6 @@ class DataSeeder extends Seeder
 {
     public function run()
     {
-        $this->call('EmployeeSeeder');
         $this->call('UserSeeder');
         $this->call('BuyerSeeder');
         $this->call('StyleSeeder');
@@ -19,11 +18,8 @@ class DataSeeder extends Seeder
         $this->call('ProductSeeder');
         $this->call('PurchaseOrderSeeder');
         $this->call('PurchaseOrderDetailSeeder');
-        $this->call('PurchaseOrderStyleSeeder');
-        $this->call('PurchaseOrderSizeSeeder');
         $this->call('PackingListSeeder');
         $this->call('CartonBarcodeSeeder');
         $this->call('CartonRatioSeeder');
-        $this->call('PackingListSizeSeeder');
     }
 }

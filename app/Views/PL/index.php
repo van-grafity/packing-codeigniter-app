@@ -81,14 +81,7 @@
                     <div class="form-group row">
                         <label for="name" class="col-sm-3 col-form-label">Order Qty :</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="packinglist_qty" name="packinglist_qty" autofocus placeholder="Order Qty">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Cutting Qty :</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="packinglist_cutting_qty" name="packinglist_cutting_qty" autofocus placeholder="Cutting Qty">
+                            <input type="text" disabled class="form-control" id="packinglist_qty" name="packinglist_qty" autofocus placeholder="Order Qty">
                         </div>
                     </div>
 
@@ -105,10 +98,11 @@
                                 <tr>
                                     <th width="10%" class="text-center align-middle">Size</th>
                                     <th width="10%" class="text-center align-middle">Style</th>
+                                    <th width="10%" class="text-center align-middle">Qty Order</th>
                                     <th width="10%" class="text-center align-middle">Qty Per Carton</th>
                                     <th width="10%" class="text-center align-middle">Carton</th>
                                     <th width="10%" class="text-center align-middle">Amount</th>
-                                    <th width="10%" class="text-center align-middle">#</th>
+                                    <th width="10%" class="text-center align-middle">Action</th>
                                 </tr>
                             </table>
                             <table class="table table-bordered" id="dynamic_field">

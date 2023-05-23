@@ -44,7 +44,7 @@
 </section>
 </div>
 
-<form action="../index.php/purchaseorder/save" method="post">
+<form action="../index.php/purchaseorder/savePO" method="post">
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -59,12 +59,13 @@
                         <label for="PO_No">PO No.</label>
                         <input type="text" class="form-control" id="PO_No" name="PO_No" placeholder="PO No.">
                     </div>
+
                     <div class="form-group">
-                        <label for="id">GL No.</label>
-                        <select class="form-control" id="id" name="id">
-                            <option value="">-- Select GL No. --</option>
+                        <label>Buyer</label>
+                        <select name="gl_no" class="form-control">
+                            <option value="">-Select GL No-</option>
                             <?php foreach ($gl as $g) : ?>
-                                <option value="<?= $g['id']; ?>"><?= $g['gl_number']; ?></option>
+                                <option value="<?= $g->id; ?>"><?= $g->gl_number; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -74,11 +75,11 @@
                     </div>
                     <div class="form-group">
                         <label for="PO_qty">Total Qty</label>
-                        <input type="text" class="form-control" id="PO_qty" name="PO_qty" placeholder="Total Qty" disabled>
+                        <input type="text" disabled class="form-control" id="PO_qty" name="PO_qty" placeholder="Total Qty">
                     </div>
                     <div class="form-group">
                         <label for="PO_amount">PO Amount</label>
-                        <input type="text" class="form-control" id="PO_amount" name="PO_amount" placeholder="Total Amount" disabled>
+                        <input type="text" disabled class="form-control" id="PO_amount" name="PO_amount" placeholder="Total Amount">
                     </div>
                     <div class="form-group">
                         <label>Order Details</label>
@@ -98,20 +99,22 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <select class="form-control" id="style_no[]" name="style_no[]">
-                                            <option value="">-- Select Style No. --</option>
-                                            <?php foreach ($style as $s) : ?>
-                                                <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
+                                        <select name="product" class="form-control" type="text" id="product_code" name="product_code" onchange="javascript:set_to(this.value);">
+                                            <option value="">-Product Code-</option>
+                                            <?php foreach ($Product as $p) : ?>
+                                                <option value="<?= $p->id; ?>"><?= $p->product_code; ?></option>
                                             <?php endforeach; ?>
+                                        </select>
                                     </td>
-                                    <td><input type="text" class="form-control" id="name[]" name="name[]" placeholder="Product Name"></td>
-                                    <td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Unit Price"></td>
+                                    <td><input type="text" disabled id="name" name="name" class="form-control" placeholder="Product Name" /></td>
+                                    <td><input type="text" disabled id="price" name="price" class="form-control" placeholder="Unit Price" /></td>
                                     <td>
-                                        <select class="form-control" id="size_id[]" name="size_id[]">
-                                            <option value="">-Size-</option>
-                                            <?php foreach ($size as $s) : ?>
+                                        <select name="size" class="form-control">
+                                            <option value="">-Select Size-</option>
+                                            <?php foreach ($Sizes as $s) : ?>
                                                 <option value="<?= $s->id; ?>"><?= $s->size; ?></option>
                                             <?php endforeach; ?>
+                                        </select>
                                     </td>
                                     <td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Qty Order"></td>
                                     <td style="text-align: center;">
@@ -126,6 +129,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add Purchase Order</button>
                 </div>
             </div>
@@ -134,14 +138,17 @@
 </form>
 
 <script>
+    function set_to(id) {
+        $('#name').val(id);
+
+        $('#price').val(id);
+    }
+</script>
+
+<script>
     function addRowStyleSize() {
         var html = '<tr>';
-        html += '<td><select class="form-control" id="style_no[]" name="style_no[]"><option value="">-- Select Style No. --</option><?php foreach ($style as $s) : ?><option value="<?= $s->id; ?>"><?= $s->style_description; ?></option><?php endforeach; ?></td>';
-        html += '<td><select class="form-control" id="size_id[]" name="size_id[]"><option value="">-- Select Size --</option><?php foreach ($size as $s) : ?><option value="<?= $s->id; ?>"><?= $s->size; ?></option><?php endforeach; ?></td>';
-        html += '<td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Qty"></td>';
-        html += '<td style="text-align: center;"><button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowStyleSize(this);" id="btnRemoveRowStyleSize"></i></button></td>';
-        html += '<td style="text-align: center;"><button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus" href="javascript:void(0);" onclick="addRowStyleSize();" id="btnAddRowStyleSize"></i></button></td>';
-        html += '</tr>';
+
         $('#item_table').append(html);
     }
 
@@ -179,10 +186,7 @@
 
     function addRowStyle() {
         var html = '<tr>';
-        html += '<td><select class="form-control" id="style_no[]" name="style_no[]"><option value="">-- Select Style No. --</option><?php foreach ($purchaseorderstyle as $s) : ?><option value="<?= $s['id']; ?>"><?= $s['style_description']; ?></option><?php endforeach; ?></select></td>';
-        html += '<td><button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowStyle(this);"></i></button></td>';
-        html += '<th><button type="button" class="btn btn-success btn-sm" onclick="addRowStyle();"><i class="fas fa-plus"></i></button></th>';
-        html += '</tr>';
+
         $('#style_table tbody').append(html);
     }
 

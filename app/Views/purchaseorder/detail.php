@@ -13,7 +13,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        <h5>PO No. <b><?= $buyerPO->PO_No; ?></b> Details</h5>
+
                     </div>
                 </div>
                 <div class="row">
@@ -21,24 +21,24 @@
                         <table>
                             <tr>
                                 <td><b>Buyer Name :</b></td>
-                                <td><?= $buyerPO->buyer_name; ?></td>
+                                <td></td>
                                 <td><b>GL Number</b></td>
-                                <td><?= $buyerPO->gl_number; ?></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td><b>Total Qty :</b></td>
-                                <td><?= $buyerPO->PO_qty; ?></td>
+                                <td></td>
                                 <td><b>Size Order</b></td>
-                                <td><?= $buyerPO->size_order; ?></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td><b>PO Amount :</b></td>
-                                <td><?= number_to_currency($buyerPO->PO_qty * $buyerPO->unit_price, 'USD', 'en_USD', 2); ?></td>
+                                <td><?= number_to_currency(1, 'USD', 'en_USD', 2); ?></td>
 
                             </tr>
                             <tr>
                                 <td><b>Required Ship Date :</b></td>
-                                <td><?= $buyerPO->shipdate; ?></td>
+                                <td></td>
                             </tr>
                         </table>
                     </div>
@@ -84,7 +84,7 @@
             <div class="row">
                 <div class="col-12">
                     <a href="../index.php/purchaseorder" class="btn btn-secondary">Back</a>
-                    <a href=<?= '../index.php/packinglist/edit/' . $buyerPO->PO_No; ?> class="btn btn-warning">Edit</a>
+                    <a href='' class="btn btn-warning">Edit</a>
                 </div>
             </div>
         </div>

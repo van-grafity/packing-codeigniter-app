@@ -11,13 +11,13 @@ class sizeSeeder extends Seeder
     public const DATA = [
         [
             'id' => 1,
-            'size' => 'S',
+            'size' => 'XS',
             'created_at' => '2023-04-19 17:32:03',
             'updated_at' => '2023-04-19 17:32:03',
         ],
         [
             'id' => 2,
-            'size' => 'XS',
+            'size' => 'S',
             'created_at' => '2023-04-19 17:32:03',
             'updated_at' => '2023-04-19 17:32:03',
         ],
@@ -51,12 +51,6 @@ class sizeSeeder extends Seeder
             'created_at' => '2023-04-19 17:32:08',
             'updated_at' => '2023-04-19 17:32:08',
         ],
-        [
-            'id' => 8,
-            'size' => 'XXXXL',
-            'created_at' => '2023-04-19 17:32:09',
-            'updated_at' => '2023-04-19 17:32:09',
-        ]
     ];
 
     public function run()
