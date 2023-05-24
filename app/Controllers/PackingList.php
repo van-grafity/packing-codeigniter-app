@@ -5,46 +5,32 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 
 use App\Models\PackingListModel;
-use App\Models\PackingListSizeModel;
 use App\Models\BuyerModel;
 use App\Models\PurchaseOrderModel;
-use App\Models\PurchaseOrderStyleModel;
-use App\Models\StyleModel;
-use App\Models\PurchaseOrderSizeModel;
 use App\Models\SizeModel;
+
+helper('number', 'form', 'url', 'text');
 
 class PackingList extends BaseController
 {
-    protected $pl;
-    protected $buyerModel;
-    protected $plsize;
-    protected $helpers = ['number', 'form', 'url', 'text'];
+    protected $PLModel;
+    protected $BuyerModel;
+    protected $PurchaseOrderModel;
+    protected $SizeModel;
 
     public function __construct()
     {
-        $this->pl = new PackingListModel();
-        $this->buyerModel = new BuyerModel();
-        $this->plsize = new PackingListSizeModel();
-        $this->po = new PurchaseOrderModel();
-        $this->postyle = new PurchaseOrderStyleModel();
-        $this->style = new StyleModel();
-        $this->posize = new PurchaseOrderSizeModel();
-        $this->size = new SizeModel();
+        $this->PLModel = new PackingListModel();
+        $this->BuyerModel = new BuyerModel();
+        $this->PurchaseOrderModel = new PurchaseOrderModel();
+        $this->SizeModel = new SizeModel();
     }
 
     public function index()
     {
-        $packinglist_no = strlen($this->pl->countAllResults()) == 1 ? 'PL-000' . $this->pl->countAllResults() + 1 : 'PL-00' . $this->pl->countAllResults() + 1;
         $data = [
             'title' => 'Factory Packing List',
-            'pl' => $this->pl->getPackingList()->getResult(),
-            'plsize' => $this->pl->getPackingListSize()->getResult(),
-            'buyer'  => $this->buyerModel->getBuyer()->getResult(),
-            'po' => $this->po->select('tblpurchaseorder.*')->get()->getResult(),
-            'packinglist_no' => $packinglist_no,
-            'style' => $this->style->select('tblstyles.*')->get()->getResult(),
-            'size' => $this->size->select('tblsizes.*')->get()->getResult(),
-            'validation' => \Config\Services::validation()
+
         ];
         return view('pl/index', $data);
     }
@@ -73,8 +59,9 @@ class PackingList extends BaseController
         ];
         return view('pl/detail', $data);
     }
-    
-    public function store() {
+
+    public function store()
+    {
         // dd($this->request->getVar());
         // dd($this->request->getVar('packinglist_style_id'));
         if (!$this->validate([
@@ -161,12 +148,13 @@ class PackingList extends BaseController
         return redirect()->to('/packinglist');
     }
 
-    public function getByPoId($po_id) {
+    public function getByPoId($po_id)
+    {
         $pl = $this->pl->select('tblpackinglist.*, tblpurchaseorder.PO_qty')
             ->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id')
             ->where('tblpackinglist.packinglist_po_id', $po_id)
             ->first();
-            
+
         $data = [
             // 'pl' => $pl,
             'postyle' => $this->postyle->select('tblpurchaseorderstyle.*, tblstyles.style_description')
@@ -182,13 +170,14 @@ class PackingList extends BaseController
                 ->where('tblpurchaseordersize.purchase_order_id', $po_id)
                 ->findAll(),
             'style' => $this->style->findAll(),
-            
+
         ];
 
         echo json_encode($data);
     }
 
-    public function getStyleByPoId($po_id) {
+    public function getStyleByPoId($po_id)
+    {
         $data = $this->postyle->select('tblpurchaseorderstyle.*, tblstyles.style_description')
             ->join('tblstyles', 'tblstyles.id = tblpurchaseorderstyle.style_id')
             ->where('tblpurchaseorderstyle.purchase_order_id', $po_id)
