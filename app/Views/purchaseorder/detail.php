@@ -3,6 +3,7 @@
 <?= $this->Section('content'); ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
+
     <!-- Main content -->
     <section class="content">
         <div class="card card-primary">
@@ -11,44 +12,37 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <div class="row">
-                    <div class="col-12">
 
-                    </div>
-                </div>
                 <div class="row">
-                    <div class="col-12">
-                        <table>
-                            <tr>
-                                <td><b>Buyer Name :</b></td>
-                                <td></td>
-                                <td><b>GL Number</b></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td><b>Total Qty :</b></td>
-                                <td></td>
-                                <td><b>Size Order</b></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td><b>PO Amount :</b></td>
-                                <td><?= number_to_currency(1, 'USD', 'en_USD', 2); ?></td>
-
-                            </tr>
-                            <tr>
-                                <td><b>Required Ship Date :</b></td>
-                                <td></td>
-                            </tr>
-                        </table>
-                    </div>
+                    <table>
+                        <tr>
+                            <td width=20%><b>Buyer Name :</b></td>
+                            <td></td>
+                            <td width=20%><b>GL Number</b></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>Total Qty :</b></td>
+                            <td></td>
+                            <td><b>Size Order</b></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>PO Amount :</b></td>
+                            <td><?= number_to_currency(1, 'USD', 'en_USD', 2); ?></td>
+                        </tr>
+                        <tr>
+                            <td><b>Required Ship Date :</b></td>
+                            <td></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <div class=" row">
                 <div class="col-12 col-sm-12">
                     <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <h5 class="m-0 card-title"><b>PO Details</b></h5>
+                            <h3 class="card-title"><?= $title ?></h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                     <i class="fas fa-minus"></i>
@@ -67,9 +61,23 @@
                                             <th class="text-center align-middle">Unit Price</th>
                                             <th class="text-center align-middle">Qty Ordered</th>
                                             <th class="text-center align-middle">Total Amount</th>
+                                            <th class="text-center align-middle">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-center">
+                                                <a class="btn btn-warning btn-sm btn-edit">Edit</a>
+                                                <a class="btn btn-danger btn-sm btn-delete">Delete</a>
+                                            </td>
+                                        </tr>
 
                                     </tbody>
                                 </table>
@@ -80,11 +88,10 @@
                 </div>
             </div>
         </div>
-        <div class="card-footer">
+        <div class=" card-footer">
             <div class="row">
                 <div class="col-12">
                     <a href="../index.php/purchaseorder" class="btn btn-secondary">Back</a>
-                    <a href='' class="btn btn-warning">Edit</a>
                 </div>
             </div>
         </div>

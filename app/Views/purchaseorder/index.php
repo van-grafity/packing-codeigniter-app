@@ -21,9 +21,9 @@
                             <th class="text-center align-middle">Ship Date</th>
                             <th class="text-center align-middle">Total Qty</th>
                             <th class="text-center align-middle">Total Amount</th>
+                            <th class="text-center align-middle">Action</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         <?php foreach ($BuyerPO as $po) : ?>
                             <tr>
@@ -32,16 +32,17 @@
                                 <td class="text-center"><?= $po->Shipdate; ?></td>
                                 <td class="text-center"><?= $po->PO_Qty; ?></td>
                                 <td class="text-right"><?= number_to_currency($po->PO_Amount, 'USD', 'en_US', 2); ?></td>
+                                <td class="text-center">
+                                    <a class="btn btn-warning btn-sm btn-edit">Edit</a>
+                                    <a class="btn btn-danger btn-sm btn-delete">Delete</a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
         </div>
-</div>
-</div>
-</div>
-</section>
+    </section>
 </div>
 
 <form action="../index.php/purchaseorder/savePO" method="post">

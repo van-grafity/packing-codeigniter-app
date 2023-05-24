@@ -60,9 +60,8 @@ class PurchaseOrder extends BaseController
     {
         $data = [
             'title'     => 'Purchase Order Detail',
-            'buyerPO'   => $this->PurchaseOrderModel->getPO()->getResult(),
+            'buyerPO'   => $this->PurchaseOrderModel->getPOdetails()->getResult(),
         ];
-        // dd($buyerPO);
         return view('purchaseorder/detail', $data);
     }
 

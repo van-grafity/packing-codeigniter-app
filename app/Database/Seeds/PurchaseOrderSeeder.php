@@ -14,7 +14,7 @@ class PurchaseOrderSeeder extends Seeder
             'PO_No' => '8XW8FHBM',
             'GL_id' => 1,
             'Factory_id' => 1,
-            'Shipdate' => '2022-11-03',
+            'Shipdate' => '2022-08-16',
             'PO_Qty' => 395,
             'PO_Amount' => 4266,
             'created_at' => '2022-08-16 00:00:00',
