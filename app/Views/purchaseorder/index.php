@@ -45,10 +45,10 @@
     </section>
 </div>
 
-<form action="../index.php/purchaseorder/savePO" method="post">
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <form action="../index.php/purchaseorder/savePO" method="post" id="purchase_order_form">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">Add New Purchase Order</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -58,12 +58,12 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="PO_No">PO No.</label>
-                        <input type="text" class="form-control" id="PO_No" name="PO_No" placeholder="PO No.">
+                        <input type="text" class="form-control" id="PO_No" name="PO_No" placeholder="PO No." required>
                     </div>
 
                     <div class="form-group">
                         <label>Buyer</label>
-                        <select name="gl_no" class="form-control">
+                        <select name="gl_no" class="form-control" required>
                             <option value="">-Select GL No-</option>
                             <?php foreach ($GL as $g) : ?>
                                 <option value="<?= $g->id; ?>"><?= $g->gl_number; ?></option>
@@ -72,59 +72,32 @@
                     </div>
                     <div class="form-group">
                         <label for="shipdate">Ship Date</label>
-                        <input type="date" class="form-control" id="shipdate" name="shipdate" placeholder="Ship Date">
+                        <input type="date" class="form-control" id="shipdate" name="shipdate" placeholder="Ship Date" required onclick="this.showPicker()">
                     </div>
                     <div class="form-group">
-                        <label for="PO_qty">Total Qty</label>
-                        <input type="text" disabled class="form-control" id="PO_qty" name="PO_qty" placeholder="Total Qty">
+                        <label for="total_order_qty">Total Qty</label>
+                        <input type="text" readonly class="form-control" id="total_order_qty" name="total_order_qty" placeholder="Total Order Qty">
                     </div>
                     <div class="form-group">
-                        <label for="PO_amount">PO Amount</label>
-                        <input type="text" disabled class="form-control" id="PO_amount" name="PO_amount" placeholder="Total Amount">
+                        <label for="total_amount">PO Amount</label>
+                        <input type="text" readonly class="form-control" id="total_amount" name="total_amount" placeholder="Total Amount">
                     </div>
                     <div class="form-group">
                         <label>Order Details</label>
                     </div>
                     <div class="form-group">
-                        <table class="table table-bordered" id="item_table">
+                        <table class="table table-bordered" id="po_detail_table">
                             <thead>
                                 <tr>
                                     <th>Product Code</th>
-                                    <th>Product Name</th>
-                                    <th>Unit Price</th>
+                                    <th width="30%">Product Name</th>
+                                    <th width="15%">Unit Price</th>
                                     <th>Size</th>
-                                    <th>Qty Order</th>
+                                    <th width="15%">Order Qty</th>
                                     <th colspan="2" class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <select name="product" class="form-control" type="text" id="product_code" name="product_code" onchange="javascript:set_to(this.value);">
-                                            <option value="">-Product Code-</option>
-                                            <?php foreach ($Product as $p) : ?>
-                                                <option value="<?= $p->id; ?>"><?= $p->product_code; ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" disabled id="name" name="name" class="form-control" placeholder="Product Name" /></td>
-                                    <td><input type="text" disabled id="price" name="price" class="form-control" placeholder="Unit Price" /></td>
-                                    <td>
-                                        <select name="size" class="form-control">
-                                            <option value="">-Select Size-</option>
-                                            <?php foreach ($Sizes as $s) : ?>
-                                                <option value="<?= $s->id; ?>"><?= $s->size; ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="Qty Order"></td>
-                                    <td style="text-align: center;">
-                                        <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus" href="javascript:void(0);" onclick="removeRowSize(this);" id="btnRemoveRowSize"></i></button>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus" href="javascript:void(0);" onclick="addRowSize();" id="btnAddRowSize"></i></button>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -133,31 +106,139 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add Purchase Order</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-</form>
+</div>
+
 
 <script>
-    function set_to(id) {
-        $('#name').val(id);
+    $(document).ready(function() {
+        if(count_po_details() <= 0) {
+            add_po_detail();
+        }
 
-        $('#price').val(id);
-    }
+        // ## prevent submit on keyboard enter
+        $('#purchase_order_form input').on('keyup keypress', function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) { 
+                e.preventDefault();
+                return false;
+            }
+        });
+        $('#shipdate').on('keyup keypress', function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) { 
+                $('#shipdate').trigger('click')
+            }
+        })
+    });
 </script>
 
 <script>
-    function addRowStyleSize() {
-        var html = '<tr>';
-
-        $('#item_table').append(html);
+    function count_po_details() {
+        return $('#po_detail_table tbody tr').length;
     }
 
-    function removeRowStyleSize(removeRowStyleSize) {
-        $(removeRowStyleSize).closest('tr').remove();
+    function add_po_detail() {
+        let element = create_blank_element_tr();
+        $('#po_detail_table tbody').append(element);
+        update_total_order_qty();
     }
+
+    function delete_po_detail(element) {
+        if(count_po_details() > 1) {
+            $(element).parents('tr').remove();
+        } else {
+            alert('Purchase Order Detail cannot be less than 1');
+        }
+
+        $( "#po_detail_table tbody tr" ).find('.btn-detail-delete').first().trigger( "focus" );
+        update_total_order_qty();
+    }
+
+    function set_product_info() {
+        let optionElement = $(event.target);
+        let productData = $(event.target).find($('option:selected')).data();
+        
+        if(optionElement.val()){
+            optionElement.parents('tr').find('input[name="product_name[]"]').val(productData.productName);
+            optionElement.parents('tr').find('input[name="product_price[]"]').val(productData.productPrice);
+        } else {
+            optionElement.parents('tr').find('input[name="product_name[]"]').val('');
+            optionElement.parents('tr').find('input[name="product_price[]"]').val('');
+        }
+    }
+
+    function update_total_order_qty() {
+        let total_order_qty = 0;
+        $('input[name="order_qty[]"]').each( function(){
+            total_order_qty += parseFloat($(this).val()) || 0;
+        });
+        $('#total_order_qty').val(total_order_qty);
+        update_po_amout();
+    }
+
+    function update_po_amout() {
+        let all_po_detail = $('#po_detail_table > tbody tr');
+        let total_amount = 0;
+        // console.log(all_po_detail);
+        all_po_detail.each(function() {
+            product_price = parseFloat($(this).find('input[name="product_price[]"]').val()) || 0;
+            order_qty = parseInt($(this).find('input[name="order_qty[]"]').val()) || 0;
+            total_amount += product_price * order_qty;
+        });
+        $('#total_amount').val(total_amount.toFixed(2));
+    }
+
+    function create_blank_element_tr() {
+        let element = `
+        <tr>
+            <td>
+                <select class="form-control" type="text" name="product_code[]" onchange="javascript:set_product_info();">
+                    <option value="">-Product Code-</option>
+                    <?php foreach ($Product as $p) : ?>
+                        <option value="<?= $p->id; ?>" data-product-name="<?= $p->product_name; ?>" data-product-price="<?= $p->product_price; ?>"><?= $p->product_code; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+            <td><input type="text" readonly name="product_name[]" class="form-control" placeholder="Product Name"/></td>
+            <td><input type="text" readonly name="product_price[]" class="form-control" placeholder="Unit Price" /></td>
+            <td>
+                <select name="size[]" class="form-control">
+                    <option value="">-Select Size-</option>
+                    <?php foreach ($Sizes as $s) : ?>
+                        <option value="<?= $s->id; ?>"><?= $s->size; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+            <td><input type="number" class="form-control" name="order_qty[]" placeholder="Order Qty" onkeydown="if(event.key==='.'){event.preventDefault();}"></td>
+            <td style="text-align: center;">
+                <a type="button" href="javascript:void(0);" onclick="delete_po_detail(this);" class="btn btn-danger btn-sm btn-detail-delete"><i class="fas fa-minus"></i></a>
+            </td>
+            <td style="text-align: center;">
+                <a type="button" href="javascript:void(0);" onclick="add_po_detail();" class="btn btn-success btn-sm"><i class="fas fa-plus" ></i></a>
+            </td>
+        </tr>
+        `
+        return element;
+    }
+</script>
+
+
+<script>
+
 
     $(document).ready(function() {
+        $('#unit_price, #PO_qty').keyup(function() {
+            var unit_price = $('#unit_price').val();
+            var PO_qty = $('#PO_qty').val();
+            var result = parseFloat(unit_price) * parseFloat(PO_qty);
+            if (!isNaN(result)) {
+                $('#PO_amount').val(result);
+            }
+        });
+    });$(document).ready(function() {
         $('#unit_price, #PO_qty').keyup(function() {
             var unit_price = $('#unit_price').val();
             var PO_qty = $('#PO_qty').val();
@@ -199,5 +280,8 @@
             alert(e);
         }
     }
+</script>
+<script>
+    
 </script>
 <?= $this->endSection(); ?>

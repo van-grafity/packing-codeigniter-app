@@ -43,6 +43,10 @@ class PurchaseOrder extends BaseController
 
     public function savePO()
     {
+        
+        dd($this->request->getVar());
+        
+
         $data = array(
             'id'           => $this->request->getVar('id'),
             'PO_No'        => $this->request->getVar('PO_No'),
