@@ -13,8 +13,8 @@
                     <thead>
                         <tr class="table-primary">
                             <th class="text-center align-middle">PL No.</th>
-                            <th class="text-center align-middle">PO No.</th>
                             <th class="text-center align-middle">Buyer</th>
+                            <th class="text-center align-middle">PO No.</th>
                             <th class="text-center align-middle">GL No.</th>
                             <th class="text-center align-middle">Season</th>
                             <th class="text-center align-middle">Action</th>
@@ -22,9 +22,8 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a href="../index.php/packinglist/"></a></td>
-
-                            <td onClick="window.location.href='<?= base_url('index.php/home'); ?>'"></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
