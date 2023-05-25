@@ -36,4 +36,13 @@ class PackingList extends BaseController
         // dd($data['PackingList']);
         return view('pl/index', $data);
     }
+
+    public function detail()
+    {
+        $data = [
+            'title'             => 'Packing List Detail',
+            'OrderPackingList'  => $this->PackingListModel->getPackingListDetail()->getResult(),
+        ];
+        return view('PL/detail', $data);
+    }
 }

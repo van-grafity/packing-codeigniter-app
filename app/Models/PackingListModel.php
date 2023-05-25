@@ -36,6 +36,10 @@ class PackingListModel extends Model
         return $builder->where(['code' => $code])->get();
     }
 
+    public function getPackingListDetail($code = false)
+    {
+    }
+
     public function savePackingList($data)
     {
         $query = $this->db->table('tblpackinglist')->insert($data);
