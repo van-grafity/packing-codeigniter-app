@@ -94,24 +94,74 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>195111263922</td>
-                                    <td>AE-M-FW20-SHR-127</td>
-                                    <td>XS</td>
+                                    <td>
+                                        <select class="form-control" type="text">
+                                            <option value="">195111263922</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" value="AE-M-FW20-SHR-127" class="form-control"></td>
+                                    <td>S</td>
+                                    <td>10</td>
+                                    <td>1</td>
+                                    <td>10</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select class="form-control" type="text">
+                                            <option value="">195111263939</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" value="AE-M-FW20-SHR-127" class="form-control"></td>
+                                    <td>M</td>
                                     <td>20</td>
                                     <td>5</td>
                                     <td>100</td>
-                                    <td>11.21</td>
-                                    <td>9.92</td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
-                                    <td>195111263922</td>
-                                    <td>AE-M-FW20-SHR-127</td>
-                                    <td>XS</td>
+                                    <td>
+                                        <select class="form-control" type="text">
+                                            <option value="">195111263946</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" value="AE-M-FW20-SHR-127" class="form-control"></td>
+                                    <td>L</td>
+                                    <td>20</td>
+                                    <td>13</td>
+                                    <td>260</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select class="form-control" type="text">
+                                            <option value="">195111263939</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" value="AE-M-FW20-SHR-127" class="form-control"></td>
+                                    <td>M</td>
                                     <td>16</td>
                                     <td>1</td>
                                     <td>16</td>
-                                    <td>8.97</td>
-                                    <td>7.94</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select class="form-control" type="text">
+                                            <option value="">195111263946</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" value="AE-M-FW20-SHR-127" class="form-control"></td>
+                                    <td>L</td>
+                                    <td>9</td>
+                                    <td>1</td>
+                                    <td>9</td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>
