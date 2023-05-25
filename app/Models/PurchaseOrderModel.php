@@ -76,7 +76,11 @@ class PurchaseOrderModel extends Model
     public function savePO($data)
     {
         $query = $this->db->table('tblpurchaseorder')->insert($data);
-        return $query;
+        if($query) {
+            return $this->db->insertID();
+        } else {
+            return $query;
+        }
     }
 
     public function updatePO($data, $id)

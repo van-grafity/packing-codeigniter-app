@@ -22,10 +22,6 @@ class PurchaseOrder extends Migration
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
-            'Factory_id' => [
-                'type' => 'BIGINT',
-                'unsigned' => true,
-            ],
             'Shipdate' => [
                 'type' => 'DATE',
             ],
@@ -48,7 +44,6 @@ class PurchaseOrder extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('GL_id', 'tblgl', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('Factory_id', 'tblfactory', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblpurchaseorder');
     }
 

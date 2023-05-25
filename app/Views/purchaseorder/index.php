@@ -33,8 +33,7 @@
                                 <td class="text-center"><?= $po->PO_Qty; ?></td>
                                 <td class="text-right"><?= number_to_currency($po->PO_Amount, 'USD', 'en_US', 2); ?></td>
                                 <td class="text-center">
-                                    <a class="btn btn-warning btn-sm btn-edit">Edit</a>
-                                    <a class="btn btn-danger btn-sm btn-delete">Delete</a>
+                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $po->id; ?>" data-po-number="<?= $po->PO_No; ?> ">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -112,13 +111,41 @@
 </div>
 
 
+<!-- Modal Delete Purchase Order -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="../index.php/purchaseorder/delete" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Purchase Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <h4 id="delete_message">Are you sure want to delete this Purhcase Order ?</h4>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="po_id" id ="po_id" >
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Delete Purchase Order -->
+
+
 <script>
     $(document).ready(function() {
         if(count_po_details() <= 0) {
             add_po_detail();
         }
 
-        // ## prevent submit on keyboard enter
+        // ## prevent submit form when keyboard press enter
         $('#purchase_order_form input').on('keyup keypress', function(e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) { 
@@ -126,12 +153,27 @@
                 return false;
             }
         });
+
+        // ## Shipdate Field show date picker when focus and enter is pressed
         $('#shipdate').on('keyup keypress', function(e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) { 
                 $('#shipdate').trigger('click')
             }
         })
+
+        // Show Delete Modal
+        $('.btn-delete').on('click', function() {
+            let id = $(this).data('id');
+            let po_number = $(this).data('po-number');
+
+            $('#po_id').val(id);
+            if (po_number) {
+                $('#delete_message').val(`Are you sure want to delete this Purhcase Order ${po_number} ?`);
+            }
+
+            $('#deleteModal').modal('show');
+        });
     });
 </script>
 
@@ -195,7 +237,7 @@
         let element = `
         <tr>
             <td>
-                <select class="form-control" type="text" name="product_code[]" onchange="javascript:set_product_info();">
+                <select class="form-control" type="text" name="product_code[]" onchange="javascript:set_product_info();" required>
                     <option value="">-Product Code-</option>
                     <?php foreach ($Product as $p) : ?>
                         <option value="<?= $p->id; ?>" data-product-name="<?= $p->product_name; ?>" data-product-price="<?= $p->product_price; ?>"><?= $p->product_code; ?></option>
@@ -205,14 +247,14 @@
             <td><input type="text" readonly name="product_name[]" class="form-control" placeholder="Product Name"/></td>
             <td><input type="text" readonly name="product_price[]" class="form-control" placeholder="Unit Price" /></td>
             <td>
-                <select name="size[]" class="form-control">
+                <select name="size[]" class="form-control" required>
                     <option value="">-Select Size-</option>
                     <?php foreach ($Sizes as $s) : ?>
                         <option value="<?= $s->id; ?>"><?= $s->size; ?></option>
                     <?php endforeach; ?>
                 </select>
             </td>
-            <td><input type="number" class="form-control" name="order_qty[]" placeholder="Order Qty" onkeydown="if(event.key==='.'){event.preventDefault();}"></td>
+            <td><input type="number" class="form-control" name="order_qty[]" placeholder="Order Qty" onkeydown="if(event.key==='.'){event.preventDefault();}" required></td>
             <td style="text-align: center;">
                 <a type="button" href="javascript:void(0);" onclick="delete_po_detail(this);" class="btn btn-danger btn-sm btn-detail-delete"><i class="fas fa-minus"></i></a>
             </td>

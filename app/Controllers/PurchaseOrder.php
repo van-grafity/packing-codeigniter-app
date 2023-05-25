@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\BuyerModel;
 use App\Models\GLModel;
 use App\Models\PurchaseOrderModel;
+use App\Models\PurchaseOrderDetailModel;
 use App\Models\ProductModel;
 use App\Models\SizeModel;
 
@@ -23,6 +24,7 @@ class PurchaseOrder extends BaseController
         $this->BuyerModel = new BuyerModel();
         $this->GLModel = new GLModel();
         $this->PurchaseOrderModel = new PurchaseOrderModel();
+        $this->PurchaseOrderDetailModel = new PurchaseOrderDetailModel();
         $this->ProductModel = new ProductModel();
         $this->SizeModel = new SizeModel();
     }
@@ -37,26 +39,48 @@ class PurchaseOrder extends BaseController
             'Product'   => $this->ProductModel->getProduct()->getResult(),
             'Sizes'     => $this->SizeModel->getSize()->getResult(),
         ];
-        // dd($data['Product']);
         return view('purchaseorder/index', $data);
     }
 
     public function savePO()
     {
-        
-        dd($this->request->getVar());
-        
-
-        $data = array(
-            'id'           => $this->request->getVar('id'),
+        $data_po = array(
             'PO_No'        => $this->request->getVar('PO_No'),
             'gl_id'        => $this->request->getVar('gl_no'),
             'shipdate'     => $this->request->getVar('shipdate'),
-            'PO_qty'       => $this->request->getVar('PO_qty'),
-            'PO_amount'    => $this->request->getVar('PO_amount'),
+            'PO_qty'       => $this->request->getVar('total_order_qty'),
+            'PO_amount'    => $this->request->getVar('total_amount'),
         );
 
-        $this->PurchaseOrderModel->savePO($data);
+        try {
+            $this->PurchaseOrderModel->transException(true)->transStart();
+            
+            $po_id = $this->PurchaseOrderModel->savePO($data_po);
+            if(!$po_id) {
+                $this->PurchaseOrderModel->transRollback();
+            }
+            
+            // ## insert PO Detail
+            $product_codes = $this->request->getPost('product_code');
+            foreach ($product_codes as $key => $value) {
+                $data_po_detail = [
+                    'order_id' => $po_id,
+                    'product_id' => $this->request->getPost('product_code')[$key],
+                    'size_id' => $this->request->getPost('size')[$key],
+                    'qty' => $this->request->getPost('order_qty')[$key],
+                ];
+                $po_detail = $this->PurchaseOrderDetailModel->insert($data_po_detail);
+                if(!$po_detail) {
+                    $this->PurchaseOrderModel->transRollback();
+                }
+            }
+            $this->PurchaseOrderModel->transComplete();
+            
+        } catch (DatabaseException $e) {
+            
+            // Automatically rolled back already.
+        }
+        
         return redirect()->to('/purchaseorder');
     }
 
@@ -69,25 +93,10 @@ class PurchaseOrder extends BaseController
         return view('purchaseorder/detail', $data);
     }
 
-    public function updatePO()
-    {
-        $id = $this->request->getVar('id');
-        $data = array(
-            'id'           => $this->request->getVar('id'),
-            'PO_No'        => $this->request->getVar('PO_No'),
-            'gl_id'        => $this->request->getVar('gl_no'),
-            'shipdate'     => $this->request->getVar('shipdate'),
-            'PO_qty'       => $this->request->getVar('PO_qty'),
-            'PO_amount'    => $this->request->getVar('PO_amount'),
-        );
-        $this->PurchaseOrderModel->updateStyle($data, $id);
-        return redirect()->to('/purchaseorder');
-    }
-
     public function delete()
     {
-        $id = $this->request->getVar('PO_id');
-        $this->PurchaseOrderModel->deletePO($id);
+        $id = $this->request->getVar('po_id');
+        $delete = $this->PurchaseOrderModel->delete($id);
         return redirect()->to('purchaseorder');
     }
 }
