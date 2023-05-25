@@ -12,26 +12,31 @@
                 <table id="table1" class="table table-bordered table-striped">
                     <thead>
                         <tr class="table-primary">
-                            <th class="text-center align-middle">PL No.</th>
-                            <th class="text-center align-middle">Buyer</th>
-                            <th class="text-center align-middle">PO No.</th>
-                            <th class="text-center align-middle">GL No.</th>
-                            <th class="text-center align-middle">Season</th>
-                            <th class="text-center align-middle">Action</th>
+                            <th class="text-center align-middle" width="5%">SN</th>
+                            <th class="text-center align-middle" width="10%">PL No.</th>
+                            <th class="text-center align-middle" width="20%">Buyer</th>
+                            <th class="text-center align-middle" width="20%">PO No.</th>
+                            <th class="text-center align-middle" width="20%">GL No.</th>
+                            <th class="text-center align-middle" width="10%">Season</th>
+                            <th class="text-center align-middle" width="15%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="text-center align-middle">
-                                <a class="btn btn-warning btn-sm btn-edit">Edit</a>
-                                <a class="btn btn-danger btn-sm btn-delete">Delete</a>
-                            </td>
-                        </tr>
+                        <?php $i = 1; ?>
+                        <?php foreach ($PackingList as $PL) : ?>
+                            <tr>
+                                <td class="text-center" scope="row"><?= $i++; ?></td>
+                                <td><?= $PL->packinglist_no; ?></td>
+                                <td><?= $PL->buyer_name; ?></td>
+                                <td><?= $PL->PO_No; ?></td>
+                                <td><?= $PL->gl_number; ?></td>
+                                <td><?= $PL->season; ?></td>
+                                <td class="text-center align-middle">
+                                    <a class="btn btn-warning btn-sm btn-edit">Edit</a>
+                                    <a class="btn btn-danger btn-sm btn-delete">Delete</a>
+                                </td>
+                            </tr>
+                        <?php endforeach;  ?>
                     </tbody>
                 </table>
             </div>
