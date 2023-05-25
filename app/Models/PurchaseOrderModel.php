@@ -18,31 +18,35 @@ class PurchaseOrderModel extends Model
         // 'PO_product_id',
     ];
 
-    public function getPO()
+    public function getPO($code = null)
     {
         $builder = $this->db->table('tblpurchaseorder');
         $builder->select('tblpurchaseorder.*, tblbuyer.buyer_name, tblgl.gl_number,tblgl.season');
         $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id');
         $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id');
-        return $builder->get();
+
+        if($code) {
+            $builder->where(['PO_No' => $code]);
+        }
+        $result = $builder->get();
+        return $result;
     }
 
-    public function getPODetails($code = false)
+    public function getPODetails($code = null)
     {
-        if ($code == false) {
-            $builder = $this->db->table('tblpurchaseorderdetail');
-            $builder->select('tblpurchaseorderdetail.*, tblproduct.product_name, tblproduct.product_price,tblsizes.size,tblpurchaseorder.PO_Qty,tblpurchaseorder.PO_Amount');
-            $builder->join('tblsizes', 'tblsizes.id = tblpurchaseorderdetail.size_id');
-            $builder->join('tblproduct', 'tblproduct.id = tblpurchaseorderdetail.product_id');
-            $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpurchaseorderdetail.order_id');
-            return $builder->get();
-        }
         $builder = $this->db->table('tblpurchaseorderdetail');
-        $builder->select('tblpurchaseorderdetail.*, tblproduct.product_name, tblproduct.product_price,tblsizes.size,tblpurchaseorder.PO_Qty,tblpurchaseorder.PO_Amount');
+        $builder->select('tblpurchaseorderdetail.*, tblproduct.product_name, tblproduct.product_price, tblproduct.product_code,tblsizes.size,tblpurchaseorder.PO_Qty,tblpurchaseorder.PO_Amount, tblstyles.style_no, (tblproduct.product_price * tblpurchaseorderdetail.qty ) as total_amount');
+        $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpurchaseorderdetail.order_id');
         $builder->join('tblsizes', 'tblsizes.id = tblpurchaseorderdetail.size_id');
         $builder->join('tblproduct', 'tblproduct.id = tblpurchaseorderdetail.product_id');
-        $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpurchaseorderdetail.order_id');
-        return $builder->where(['code' => $code])->get();
+        $builder->join('tblstyles', 'tblstyles.id = tblproduct.product_style_id');
+
+        if($code) {
+            $builder->where(['PO_No' => $code]);
+        }
+
+        $result = $builder->get()->getResult();
+        return $result;
     }
 
     public function getGL()

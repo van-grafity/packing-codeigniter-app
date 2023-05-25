@@ -84,12 +84,14 @@ class PurchaseOrder extends BaseController
         return redirect()->to('/purchaseorder');
     }
 
-    public function detail()
+    public function detail($code = null)
     {
         $data = [
             'title'     => 'Purchase Order Detail',
-            'buyerPO'   => $this->PurchaseOrderModel->getPOdetails()->getResult(),
+            'purchase_order'   => $this->PurchaseOrderModel->getPO($code)->getRow(),
+            'purchase_order_details'   => $this->PurchaseOrderModel->getPODetails($code),
         ];
+        // dd($data);
         return view('purchaseorder/detail', $data);
     }
 
@@ -98,5 +100,14 @@ class PurchaseOrder extends BaseController
         $id = $this->request->getVar('po_id');
         $delete = $this->PurchaseOrderModel->delete($id);
         return redirect()->to('purchaseorder');
+    }
+
+    public function deletedetail()
+    {
+        $po_number = $this->request->getPost('po_number');
+        $po_detail_id = $this->request->getPost('po_detail_id');
+        $delete = $this->PurchaseOrderDetailModel->delete($po_detail_id);
+        
+        return redirect()->to('purchaseorder/'.$po_number);
     }
 }

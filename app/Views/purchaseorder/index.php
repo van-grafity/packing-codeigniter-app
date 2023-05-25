@@ -33,7 +33,7 @@
                                 <td class="text-center"><?= $po->PO_Qty; ?></td>
                                 <td class="text-right"><?= number_to_currency($po->PO_Amount, 'USD', 'en_US', 2); ?></td>
                                 <td class="text-center">
-                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $po->id; ?>" data-po-number="<?= $po->PO_No; ?> ">Delete</a>
+                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $po->id; ?>" data-po-number="<?= $po->PO_No; ?>">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -123,9 +123,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-
-                    <h4 id="delete_message">Are you sure want to delete this Purhcase Order ?</h4>
-
+                    <h4 id="delete_message">Are you sure want to delete this Purchase Order ?</h4>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="po_id" id ="po_id" >
@@ -141,6 +139,8 @@
 
 <script>
     $(document).ready(function() {
+
+        //## Check PO Details, at least 1 product
         if(count_po_details() <= 0) {
             add_po_detail();
         }
@@ -166,10 +166,10 @@
         $('.btn-delete').on('click', function() {
             let id = $(this).data('id');
             let po_number = $(this).data('po-number');
-
+            
             $('#po_id').val(id);
             if (po_number) {
-                $('#delete_message').val(`Are you sure want to delete this Purhcase Order ${po_number} ?`);
+                $('#delete_message').text(`Are you sure want to delete this Purchase Order (${po_number}) ?`);
             }
 
             $('#deleteModal').modal('show');
@@ -224,7 +224,7 @@
     function update_po_amout() {
         let all_po_detail = $('#po_detail_table > tbody tr');
         let total_amount = 0;
-        // console.log(all_po_detail);
+
         all_po_detail.each(function() {
             product_price = parseFloat($(this).find('input[name="product_price[]"]').val()) || 0;
             order_qty = parseInt($(this).find('input[name="order_qty[]"]').val()) || 0;
@@ -265,65 +265,5 @@
         `
         return element;
     }
-</script>
-
-
-<script>
-
-
-    $(document).ready(function() {
-        $('#unit_price, #PO_qty').keyup(function() {
-            var unit_price = $('#unit_price').val();
-            var PO_qty = $('#PO_qty').val();
-            var result = parseFloat(unit_price) * parseFloat(PO_qty);
-            if (!isNaN(result)) {
-                $('#PO_amount').val(result);
-            }
-        });
-    });$(document).ready(function() {
-        $('#unit_price, #PO_qty').keyup(function() {
-            var unit_price = $('#unit_price').val();
-            var PO_qty = $('#PO_qty').val();
-            var result = parseFloat(unit_price) * parseFloat(PO_qty);
-            if (!isNaN(result)) {
-                $('#PO_amount').val(result);
-            }
-        });
-    });
-
-    function calculate() {
-        var myBox1 = document.getElementById('unit_price').value;
-        var myBox2 = document.getElementById('PO_qty').value;
-        var result = document.getElementById('PO_amount');
-        var myResult = myBox1 * myBox2;
-        result.value = myResult;
-    }
-
-    $(document).ready(function() {
-        $('#unit_price').change(function() {
-            calculate();
-        });
-        $('#PO_qty').change(function() {
-            calculate();
-        });
-    });
-
-    function addRowStyle() {
-        var html = '<tr>';
-
-        $('#style_table tbody').append(html);
-    }
-
-    function removeRowStyle(e) {
-        try {
-            var row = $(e).closest('tr');
-            row.remove();
-        } catch (e) {
-            alert(e);
-        }
-    }
-</script>
-<script>
-    
 </script>
 <?= $this->endSection(); ?>
