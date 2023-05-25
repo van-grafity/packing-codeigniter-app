@@ -16,6 +16,7 @@
                 <table id="table1" class="table table-bordered table-striped">
                     <thead>
                         <tr class="table-primary">
+                            <th class="text-center align-middle" width="5%">SN</th>
                             <th class="text-center align-middle">PO No.</th>
                             <th class="text-center align-middle">GL No.</th>
                             <th class="text-center align-middle">Ship Date</th>
@@ -25,8 +26,10 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php $i = 1; ?>
                         <?php foreach ($BuyerPO as $po) : ?>
                             <tr>
+                                <td class="text-center" scope="row"><?= $i++; ?></td>
                                 <td class="text-center"><a href="<?= '../index.php/purchaseorder/' . $po->PO_No; ?>"><?= $po->PO_No; ?></a></td>
                                 <td class="text-center"><?= $po->gl_number; ?></td>
                                 <td class="text-center"><?= $po->Shipdate; ?></td>

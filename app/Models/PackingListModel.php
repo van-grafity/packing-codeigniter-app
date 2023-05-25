@@ -18,13 +18,13 @@ class PackingListModel extends Model
         'packinglist_amount',
     ];
 
-    public function getPackingList($code)
+    public function getPackingList($code = false)
     {
         if ($code == false) {
             $builder = $this->db->table('tblpackinglist');
-            $builder->select('tblpackinglist.*, tblpurchaseorder.PO_No, tblbuyer.buyer_name, tblgl.gl_number, tblgl.season, tblgl.size_order');
+            $builder->select('tblpackinglist.*, tblpurchaseorder.PO_No, tblpurchaseorder.GL_id, tblgl.gl_number, tblgl.season, tblbuyer.buyer_name');
             $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id');
-            $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id');
+            $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.GL_id');
             $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id');
             return $builder->get();
         }
@@ -34,6 +34,10 @@ class PackingListModel extends Model
         $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id');
         $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id');
         return $builder->where(['code' => $code])->get();
+    }
+
+    public function getPackingListDetail($code = false)
+    {
     }
 
     public function savePackingList($data)

@@ -31,7 +31,7 @@
                         <?php $i = 1; ?>
                         <?php foreach ($product as $p) : ?>
                             <tr>
-                                <th class="text-center" scope="row"><?= $i++; ?></th>
+                                <td class="text-center" scope="row"><?= $i++; ?></td>
                                 <td><?= $p->product_code; ?></td>
                                 <td><?= $p->product_asin_id; ?></td>
                                 <td><?= $p->category_name; ?></td>
