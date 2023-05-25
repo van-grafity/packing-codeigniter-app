@@ -56,71 +56,58 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Packing List No :</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="packinglist_no" name="packinglist_no" autofocus placeholder="Packing List No" value="" readonly>
-                        </div>
+                    <div class="form-group">
+                        <label for="PL_No">Packing List No :</label>
+                        <input type="text" class="form-control" id="packinglist_no" name="packinglist_no" placeholder="Packing List No" value="" readonly>
                     </div>
-
-                    <div class="form-group row">
-                        <label for="packinglist_po_id" class="col-sm-3 col-form-label">PO No :</label>
-                        <select id="packinglist_po_id" name="packinglist_po_id" class="form-control">
-                            <option value="">-Select-</option>
+                    <div class="form-group">
+                        <label for="PL_Date">Packing List Date :</label>
+                        <input type="date" class="form-control" id="packinglist_date" name="packinglist_date" placeholder="Packing List Date" value="<?= date('Y-m-d'); ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="po_No">PO No :</label>
+                        <select id="po_No" name="po_no" class="form-control">
+                            <option value="">-Select PO No -</option>
                         </select>
                     </div>
-
-                    <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Packing List Date :</label>
-                        <div class="col-sm-9">
-                            <input type="date" class="form-control" id="packinglist_date" name="packinglist_date" autofocus placeholder="Packing List Date" value="<?= date('Y-m-d'); ?>" readonly>
-                        </div>
+                    <div class="form-group">
+                        <label for="order_qty">Order Qty :</label>
+                        <input type="text" disabled class="form-control" id="order_qty" name="order_qty" placeholder="Order Qty">
                     </div>
-
-                    <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Order Qty :</label>
-                        <div class="col-sm-9">
-                            <input type="text" disabled class="form-control" id="packinglist_qty" name="packinglist_qty" autofocus placeholder="Order Qty">
-                        </div>
+                    <div class="form-group">
+                        <label for="name">Ship Qty :</label>
+                        <input type="text" class="form-control" id="ship_qty" name="ship_qty" placeholder="Ship Qty">
                     </div>
-
-                    <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Ship Qty :</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="packinglist_ship_qty" name="packinglist_ship_qty" autofocus placeholder="Ship Qty">
-                        </div>
+                    <div class="form-group">
+                        <label for="name">Packing List Amount :</label>
+                        <input type="text" class="form-control" id="packinglist_amount" name="packinglist_amount" autofocus placeholder="Packing List Amount">
                     </div>
-                    <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Size :</label>
-                        <div class="col-sm-12">
-                            <table class="table table-bordered">
+                    <div class="form-group">
+                        <table class="table table-bordered" id="item_table">
+                            <thead>
                                 <tr>
-                                    <th width="10%" class="text-center align-middle">Size</th>
-                                    <th width="10%" class="text-center align-middle">Style</th>
-                                    <th width="10%" class="text-center align-middle">Qty Order</th>
-                                    <th width="10%" class="text-center align-middle">Qty Per Carton</th>
-                                    <th width="10%" class="text-center align-middle">Carton</th>
-                                    <th width="10%" class="text-center align-middle">Amount</th>
-                                    <th width="10%" class="text-center align-middle">Action</th>
+                                    <th>Product No</th>
+                                    <th>Style</th>
+                                    <th>Size</th>
+                                    <th>Order Qty</th>
+                                    <th>Qty/carton</th>
+                                    <th>Carton</th>
+                                    <th>GW</th>
+                                    <th>NW</th>
                                 </tr>
-                            </table>
-                            <table class="table table-bordered" id="dynamic_field">
+                            </thead>
+                            <tbody>
                                 <tr>
-                                    <td class="text-center align-middle" colspan="3">Please Select PO No.</td>
-                                </tr>
-                            </table>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <small></small>
-                                <button type="button" name="add" id="add" class="btn btn-success btn-sm" href="javascript:void(0);" onclick="addSize();">Add Size</button>
-                            </div>
-                        </div>
-                    </div>
+                                    <td>
 
-                    <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Packing List Amount :</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="packinglist_amount" name="packinglist_amount" autofocus placeholder="Packing List Amount">
-                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <small></small>
+                        <button type="button" name="add" id="add" class="btn btn-success btn-sm" href="javascript:void(0);" onclick="addSize();">Add Size</button>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -131,7 +118,4 @@
         </div>
     </div>
 </form>
-
-</section>
-</div>
 <?= $this->endSection(); ?>
