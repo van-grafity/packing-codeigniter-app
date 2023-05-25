@@ -63,7 +63,6 @@
                         <label for="PO_No">PO No.</label>
                         <input type="text" class="form-control" id="PO_No" name="PO_No" placeholder="PO No.">
                     </div>
-
                     <div class="form-group">
                         <label>Buyer</label>
                         <select name="gl_no" class="form-control">
