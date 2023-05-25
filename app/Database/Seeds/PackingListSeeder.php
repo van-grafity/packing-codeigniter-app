@@ -18,20 +18,6 @@ class PackingListSeeder extends Seeder
             'packinglist_cutting_qty' => 395,
             'packinglist_ship_qty' => 395,
             'packinglist_amount' => 100000,
-            'packinglist_created_at' => '2021-04-16 15:38:09',
-            'packinglist_updated_at' => '2021-04-16 15:38:09',
-        ],
-        [
-            'id' => 2,
-            'packinglist_no' => 'PL-0002',
-            'packinglist_date' => '2021-04-16',
-            'packinglist_po_id' => 1,
-            'packinglist_qty' => 395,
-            'packinglist_cutting_qty' => 395,
-            'packinglist_ship_qty' => 395,
-            'packinglist_amount' => 200000,
-            'packinglist_created_at' => '2021-04-16 15:38:09',
-            'packinglist_updated_at' => '2021-04-16 15:38:09',
         ],
     ];
 

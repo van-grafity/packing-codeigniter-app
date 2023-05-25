@@ -41,20 +41,12 @@ class PackingList extends Migration
                 'type' => 'INT',
                 'constraint' => 11,
             ],
-            'packinglist_created_at' => [
+            'created_at' => [
                 'type' => 'TIMESTAMP',
                 'null' => true,
             ],
-            'packinglist_updated_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
-            ],
-            'created_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
-            ],
             'updated_at' => [
-                'type' => 'DATETIME',
+                'type' => 'TIMESTAMP',
                 'null' => true,
             ],
         ]);
