@@ -76,11 +76,7 @@
                     </div>
                     <div class="form-group">
                         <label for="name">Ship Qty :</label>
-                        <input type="text" class="form-control" id="ship_qty" name="ship_qty" placeholder="Ship Qty">
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Packing List Amount :</label>
-                        <input type="text" class="form-control" id="packinglist_amount" name="packinglist_amount" autofocus placeholder="Packing List Amount">
+                        <input type="text" class="form-control" id="ship_qty" name="ship_qty" placeholder="116">
                     </div>
                     <div class="form-group">
                         <table class="table table-bordered" id="item_table">
@@ -89,25 +85,40 @@
                                     <th>Product No</th>
                                     <th>Style</th>
                                     <th>Size</th>
-                                    <th>Order Qty</th>
-                                    <th>Qty/carton</th>
+                                    <th>Qty/Carton</th>
                                     <th>Carton</th>
+                                    <th>Qty Ship</th>
                                     <th>GW</th>
                                     <th>NW</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-
-                                    </td>
+                                    <td>195111263922</td>
+                                    <td>AE-M-FW20-SHR-127</td>
+                                    <td>XS</td>
+                                    <td>20</td>
+                                    <td>5</td>
+                                    <td>100</td>
+                                    <td>11.21</td>
+                                    <td>9.92</td>
+                                </tr>
+                                <tr>
+                                    <td>195111263922</td>
+                                    <td>AE-M-FW20-SHR-127</td>
+                                    <td>XS</td>
+                                    <td>16</td>
+                                    <td>1</td>
+                                    <td>16</td>
+                                    <td>8.97</td>
+                                    <td>7.94</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <small></small>
-                        <button type="button" name="add" id="add" class="btn btn-success btn-sm" href="javascript:void(0);" onclick="addSize();">Add Size</button>
+                        <button type="button" name="add" id="add" class="btn btn-success btn-sm" href="javascript:void(0);" onclick="addSize();">Add Row</button>
                     </div>
                 </div>
                 <div class="modal-footer">
