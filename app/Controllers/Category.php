@@ -16,7 +16,7 @@ class Category extends BaseController
     public function index()
     {
         $data = [
-            'title' => 'List of Category',
+            'title' => 'List of Product Type',
             'category' => $this->CategoryModel->getCategory()->getResult()
         ];
         return view('category/index', $data);

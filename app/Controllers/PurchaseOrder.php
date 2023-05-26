@@ -108,6 +108,7 @@ class PurchaseOrder extends BaseController
         $po_detail_id = $this->request->getPost('po_detail_id');
         $delete = $this->PurchaseOrderDetailModel->delete($po_detail_id);
         
+        $updated_po = $this->PurchaseOrderModel->sync_po_details($po_number);
         return redirect()->to('purchaseorder/'.$po_number);
     }
 }

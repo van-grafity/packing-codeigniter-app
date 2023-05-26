@@ -33,12 +33,14 @@
                         <tr>
                             <td width=20%><b>Buyer Name :</b></td>
                             <td><?= $purchase_order->buyer_name ?></td>
-                            <td width=20%><b>GL Number</b></td>
-                            <td><?= $purchase_order->gl_number ?></td>
+                            <td width=20%><b>PO Number :</b></td>
+                            <td><?= $purchase_order->PO_No ?></td>
                         </tr>
                         <tr>
                             <td><b>Total Qty :</b></td>
                             <td><?= $purchase_order->PO_Qty ?></td>
+                            <td width=20%><b>GL Number :</b></td>
+                            <td><?= $purchase_order->gl_number ?></td>
                         </tr>
                         <tr>
                             <td><b>PO Amount :</b></td>
@@ -69,6 +71,7 @@
                                     <thead>
                                         <tr class="table-primary">
                                             <th class="text-center align-middle">Product No.</th>
+                                            <th class="text-center align-middle">Product Type</th>
                                             <th class="text-center align-middle">Style</th>
                                             <th class="text-center align-middle">Size</th>
                                             <th class="text-center align-middle">Unit Price</th>
@@ -81,6 +84,7 @@
                                         <?php foreach ($purchase_order_details as $key => $detail) { ?>
                                             <tr>
                                                 <td><?= $detail->product_code ?></td>
+                                                <td><?= $detail->category_name ?></td>
                                                 <td><?= $detail->style_no ?></td>
                                                 <td><?= $detail->size ?></td>
                                                 <td><?= number_to_currency($detail->product_price, 'USD', 'en_US', 2); ?></td>

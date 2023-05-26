@@ -9,12 +9,12 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <button type="button" class="btn btn-secondary mb-2" data-toggle="modal" data-target="#addModal">Add Category</button>
+                <button type="button" class="btn btn-secondary mb-2" data-toggle="modal" data-target="#addModal">Add Product Type</button>
                 <table id="table1" class="table table-bordered table-striped">
                     <thead>
                         <tr class="table-primary">
                             <th class="text-center align-middle" width="10%">No</th>
-                            <th class="text-center align-middle" width="75%">Category Name</th>
+                            <th class="text-center align-middle" width="75%">Product Type Name</th>
                             <th class="text-center align-middle" width="15%">Action</th>
                         </tr>
                     </thead>
@@ -42,21 +42,21 @@
     <!-- /.section -->
 </div>
 
-<!-- Modal Add Category -->
+<!-- Modal Add Product Type -->
 <form action="../index.php/category/save" method="post">
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Category</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Product Type</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Category Name</label>
-                        <input type="text" class="form-control" name="name" placeholder="Category Name" autofocus>
+                        <label>Product Type Name</label>
+                        <input type="text" class="form-control" name="name" placeholder="Product Type Name" autofocus>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -67,23 +67,23 @@
         </div>
     </div>
 </form>
-<!-- End Modal Add Category -->
+<!-- End Modal Add Product Type -->
 
-<!-- Modal Details Category-->
+<!-- Modal Details Product Type-->
 <form action="" method="post">
     <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Category Details</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Product Type Details</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Category Name </label>
-                        <input type="text" disabled class="form-control name" name="name" placeholder="Category Name">
+                        <label>Product Type Name </label>
+                        <input type="text" disabled class="form-control name" name="name" placeholder="Product Type Name">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -94,23 +94,23 @@
         </div>
     </div>
 </form>
-<!-- End Modal Details Category-->
+<!-- End Modal Details Product Type-->
 
-<!-- Modal Edit Category-->
+<!-- Modal Edit Product Type-->
 <form action="../index.php/category/update" method="post">
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Product Type</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Category Name</label>
-                        <input type="text" class="form-control name" name="name" placeholder="Category Name">
+                        <label>Product Type Name</label>
+                        <input type="text" class="form-control name" name="name" placeholder="Product Type Name">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -122,9 +122,9 @@
         </div>
     </div>
 </form>
-<!-- End Modal Edit Category-->
+<!-- End Modal Edit Product Type-->
 
-<!-- Modal Delete Category-->
+<!-- Modal Delete Product Type-->
 <form action="../index.php/category/delete" method="post">
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -137,7 +137,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <h4>Are you sure want to delete this Category?</h4>
+                    <h4>Are you sure want to delete this Product Type?</h4>
 
                 </div>
                 <div class="modal-footer">
@@ -149,11 +149,11 @@
         </div>
     </div>
 </form>
-<!-- End Modal Delete Category-->
+<!-- End Modal Delete Product Type-->
 
 <script>
     $(document).ready(function() {
-        // get Category Detail
+        // get Product Type Detail
         $('.btn-detail').on('click', function() {
             // get data from button detail
             const id = $(this).data('id');
@@ -165,7 +165,7 @@
             $('#detailModal').modal('show');
         });
 
-        // get Edit Category
+        // get Edit Product Type
         $('.btn-edit').on('click', function() {
             // get data from button edit
             const id = $(this).data('id');
@@ -177,7 +177,7 @@
             $('#editModal').modal('show');
         });
 
-        // get Delete Category
+        // get Delete Product Type
         $('.btn-delete').on('click', function() {
             // get data from button delete
             const id = $(this).data('id');
