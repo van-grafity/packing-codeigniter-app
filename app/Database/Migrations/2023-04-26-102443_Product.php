@@ -22,7 +22,19 @@ class Product extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 35,
             ],
+            'product_category_id' => [
+                'type' => 'BIGINT',
+                'unsigned' => true,
+            ],
             'product_style_id' => [
+                'type' => 'BIGINT',
+                'unsigned' => true,
+            ],
+            'product_colour_id' => [
+                'type' => 'BIGINT',
+                'unsigned' => true,
+            ],
+            'product_size_id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
@@ -36,10 +48,6 @@ class Product extends Migration
                 'constraint' => '10,2',
                 'null' => true,
             ],
-            'product_category_id' => [
-                'type' => 'BIGINT',
-                'unsigned' => true,
-            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
@@ -52,6 +60,8 @@ class Product extends Migration
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('product_category_id', 'tblcategory', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('product_style_id', 'tblstyles', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('product_colour_id', 'tblcolour', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('product_size_id', 'tblsizes', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblproduct');
     }
 

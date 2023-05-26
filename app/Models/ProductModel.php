@@ -29,6 +29,18 @@ class ProductModel extends Model
         return $builder->get();
     }
 
+    public function getColour()
+    {
+        $builder = $this->db->table('tblcolour');
+        return $builder->get();
+    }
+
+    public function getSize()
+    {
+        $builder = $this->db->table('tblsizes');
+        return $builder->get();
+    }
+
     public function getProduct($code = false)
     {
         if ($code == false) {

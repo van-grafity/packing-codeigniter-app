@@ -22,6 +22,8 @@ class Product extends BaseController
             'product'   => $this->ProductModel->getProduct()->getResult(),
             'category'  => $this->ProductModel->getCategory()->getResult(),
             'style'     => $this->ProductModel->getStyle()->getResult(),
+            'colour'    => $this->ProductModel->getColour()->getResult(),
+            'size'    => $this->ProductModel->getSize()->getResult(),
         ];
         // $produk = $this->ProductModel->getProduct()->getResult();
         // dd($produk);

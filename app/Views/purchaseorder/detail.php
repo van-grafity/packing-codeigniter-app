@@ -44,7 +44,7 @@
                         </tr>
                         <tr>
                             <td><b>PO Amount :</b></td>
-                            <td><?= number_to_currency($purchase_order->PO_Amount , 'USD', 'en_USD', 2); ?></td>
+                            <td><?= number_to_currency($purchase_order->PO_Amount, 'USD', 'en_USD', 2); ?></td>
                         </tr>
                         <tr>
                             <td><b>Required Ship Date :</b></td>
@@ -92,19 +92,8 @@
                                                 <td><?= $detail->qty ?></td>
                                                 <td><?= number_to_currency($detail->total_amount, 'USD', 'en_US', 2); ?></td>
                                                 <td class="text-center">
-                                                    <a class="btn btn-warning btn-sm btn-edit"
-                                                        data-id="<?= $detail->id ?>" 
-                                                        data-product-id="<?= $detail->product_id ?>"
-                                                        data-product-code="<?= $detail->product_code ?>"
-                                                        data-product-name="<?= $detail->product_name ?>"
-                                                        data-order-size-id="<?= $detail->size_id ?>"
-                                                        data-order-qty="<?= $detail->qty ?>"
-                                                        data-total-amount="<?= $detail->total_amount ?>"
-                                                    >Edit</a>
-                                                    <a class="btn btn-danger btn-sm btn-delete" 
-                                                        data-id="<?= $detail->id ?>" 
-                                                        data-product-code="<?= $detail->product_code ?>"
-                                                    >Delete</a>
+                                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $detail->id ?>" data-product-id="<?= $detail->product_id ?>" data-product-code="<?= $detail->product_code ?>" data-product-name="<?= $detail->product_name ?>" data-order-size-id="<?= $detail->size_id ?>" data-order-qty="<?= $detail->qty ?>" data-total-amount="<?= $detail->total_amount ?>">Edit</a>
+                                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $detail->id ?>" data-product-code="<?= $detail->product_code ?>">Delete</a>
                                                 </td>
                                             </tr>
                                         <?php } ?>
@@ -128,13 +117,13 @@
 </div>
 
 
-<!-- Modal Add and Delete Purchase Order Detail -->
+<!-- Modal Add and Edit Purchase Order Detail -->
 <div class="modal fade" id="modal_po_detail" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="" method="post" id="po_detail_form">
                 <input type="hidden" name="order_id" value="<?= $purchase_order->id ?>">
-                <input type="hidden" name="po_number" value="<?= $purchase_order->PO_No?>">
+                <input type="hidden" name="po_number" value="<?= $purchase_order->PO_No ?>">
                 <input type="hidden" name="edit_po_detail_id" value="" id="edit_po_detail_id">
 
                 <div class="modal-header">
@@ -149,10 +138,7 @@
                         <select id="product" name="product" class="form-control" required>
                             <option value="">-Select Product Code-</option>
                             <?php foreach ($products as $product) : ?>
-                                <option value="<?= $product->id; ?>"
-                                        data-product-name="<?= $product->product_name; ?>"
-                                        data-product-price="<?= $product->product_price; ?>"
-                                    ><?= $product->product_code; ?>
+                                <option value="<?= $product->id; ?>" data-product-name="<?= $product->product_name; ?>" data-product-price="<?= $product->product_price; ?>"><?= $product->product_code; ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -191,9 +177,7 @@
         </div>
     </div>
 </div>
-<!-- End Modal Add and Delete Purchase Order Detail -->
-
-
+<!-- End Modal Add and Edit Purchase Order Detail -->
 
 <!-- Modal Delete Purchase Order Detail -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -210,8 +194,8 @@
                     <h4 id="delete_message">Are you sure want to delete this Product from this Purchase Order?</h4>
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="po_detail_id" id ="po_detail_id" >
-                    <input type="hidden" name="po_number" value="<?= $purchase_order->PO_No?>" >
+                    <input type="hidden" name="po_detail_id" id="po_detail_id">
+                    <input type="hidden" name="po_number" value="<?= $purchase_order->PO_No ?>">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                     <button type="submit" class="btn btn-primary">Yes</button>
                 </div>
@@ -222,76 +206,76 @@
 <!-- End Modal Delete Purchase Order Detail -->
 
 <script type="text/javascript">
-$(document).ready(function() {
+    $(document).ready(function() {
 
-    $('#product').on('change', function(event) {
+        $('#product').on('change', function(event) {
 
-        let product_name = $(this).find($('option:selected')).data('product-name');
-        let product_price = $(this).find($('option:selected')).data('product-price');
-        
-        if($(this).val()){
-            $('#product_name').val(product_name);
-            $('#product_price').val(product_price);
+            let product_name = $(this).find($('option:selected')).data('product-name');
+            let product_price = $(this).find($('option:selected')).data('product-price');
 
+            if ($(this).val()) {
+                $('#product_name').val(product_name);
+                $('#product_price').val(product_price);
+
+                let total_amount = $('#order_qty').val() * $('#product_price').val();
+                $('#total_amount').val(total_amount);
+            } else {
+                $('#product_name').val();
+                $('#product_price').val();
+            }
+        })
+
+        $('#order_qty').on('keyup', function(event) {
             let total_amount = $('#order_qty').val() * $('#product_price').val();
             $('#total_amount').val(total_amount);
-        } else {
-            $('#product_name').val();
-            $('#product_price').val();
-        }
+        })
+
+        $('#btn-add-detail').on('click', function(event) {
+
+            $('#ModalLabel').text("Add Product")
+            $('#btn_submit').text("Add Product")
+            $('#po_detail_form').attr('action', store_url);
+            $('#po_detail_form').find("input[type=text], input[type=number], textarea").val("");
+            $('#po_detail_form').find('select').val("").trigger('change');
+
+            $('#modal_po_detail').modal('show');
+        })
+
+        $('.btn-delete').on('click', function() {
+            let id = $(this).data('id');
+            let product_code = $(this).data('product-code');
+
+            $('#po_detail_id').val(id);
+            if (product_code) {
+                $('#delete_message').text(`Are you sure want to delete this Product (${product_code}) from this Purchase Order?`);
+            }
+
+            $('#deleteModal').modal('show');
+        });
+
+        $('.btn-edit').on('click', function() {
+            let id = $(this).data('id');
+            let product_id = $(this).data('product-id');
+            let product_code = $(this).data('product-code');
+            let product_name = $(this).data('product-name');
+            let product_price = $(this).data('product-price');
+            let order_size = $(this).data('order-size-id');
+            let order_qty = $(this).data('order-qty');
+            let total_amount = $(this).data('total-amount');
+
+            $('#ModalLabel').text("Edit Product")
+            $('#btn_submit').text("Edit Product")
+            $('#po_detail_form').attr('action', update_url);
+
+            $('#edit_po_detail_id').val(id);
+            $('#product').val(product_id).trigger('change');
+            $('#size').val(order_size);
+            $('#order_qty').val(order_qty);
+            $('#total_amount').val(total_amount);
+
+            $('#modal_po_detail').modal('show');
+        })
     })
-
-    $('#order_qty').on('keyup', function(event) {
-        let total_amount = $('#order_qty').val() * $('#product_price').val();
-        $('#total_amount').val(total_amount);
-    })
-
-    $('#btn-add-detail').on('click', function(event) {
-        
-        $('#ModalLabel').text("Add Product")
-        $('#btn_submit').text("Add Product")
-        $('#po_detail_form').attr('action', store_url);
-        $('#po_detail_form').find("input[type=text], input[type=number], textarea").val("");
-        $('#po_detail_form').find('select').val("").trigger('change');
-
-        $('#modal_po_detail').modal('show');
-    })
-
-    $('.btn-delete').on('click', function() {
-        let id = $(this).data('id');
-        let product_code = $(this).data('product-code');
-
-        $('#po_detail_id').val(id);
-        if (product_code) {
-            $('#delete_message').text(`Are you sure want to delete this Product (${product_code}) from this Purchase Order?`);
-        }
-
-        $('#deleteModal').modal('show');
-    });
-
-    $('.btn-edit').on('click', function() {
-        let id = $(this).data('id');
-        let product_id = $(this).data('product-id');
-        let product_code = $(this).data('product-code');
-        let product_name = $(this).data('product-name');
-        let product_price = $(this).data('product-price');
-        let order_size = $(this).data('order-size-id');
-        let order_qty = $(this).data('order-qty');
-        let total_amount = $(this).data('total-amount');
-
-        $('#ModalLabel').text("Edit Product")
-        $('#btn_submit').text("Edit Product")
-        $('#po_detail_form').attr('action', update_url);
-
-        $('#edit_po_detail_id').val(id);
-        $('#product').val(product_id).trigger('change');
-        $('#size').val(order_size);
-        $('#order_qty').val(order_qty);
-        $('#total_amount').val(total_amount);
-
-        $('#modal_po_detail').modal('show');
-    })
-})
 </script>
 
 <script type="text/javascript">

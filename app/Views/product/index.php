@@ -76,9 +76,9 @@
                         <input type="text" class="form-control" name="product_asin_id" placeholder="Product ASIN #">
                     </div>
                     <div class="form-group">
-                        <label>Category</label>
+                        <label>Product Type</label>
                         <select name="product_category" class="form-control">
-                            <option value="">-Select-</option>
+                            <option value="">-Select Product Type-</option>
                             <?php foreach ($category as $cat) : ?>
                                 <option value="<?= $cat->id; ?>"><?= $cat->category_name; ?></option>
                             <?php endforeach; ?>
@@ -87,9 +87,27 @@
                     <div class="form-group">
                         <label>Style</label>
                         <select name="product_style_id" class="form-control">
-                            <option value="">-Select-</option>
+                            <option value="">-Select Style-</option>
                             <?php foreach ($style as $s) : ?>
                                 <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Colour</label>
+                        <select name="product_style_id" class="form-control">
+                            <option value="">-Select Colour-</option>
+                            <?php foreach ($colour as $c) : ?>
+                                <option value="<?= $c->id; ?>"><?= $c->colour_name; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Size</label>
+                        <select name="product_style_id" class="form-control">
+                            <option value="">-Select Size-</option>
+                            <?php foreach ($size as $sz) : ?>
+                                <option value="<?= $sz->id; ?>"><?= $sz->size; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -133,7 +151,7 @@
                         <input type="text" disabled class="form-control product_asin_id" name="product_asin_id" placeholder="Product ASIN #">
                     </div>
                     <div class="form-group">
-                        <label>Category</label>
+                        <label>Product Type</label>
                         <select name="product_category" class="form-control product_category" disabled>
                             <option value="" disabled>-Select-</option>
                             <?php foreach ($category as $cat) : ?>
@@ -147,6 +165,24 @@
                             <option value="" disabled>-Select-</option>
                             <?php foreach ($style as $s) : ?>
                                 <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Colour</label>
+                        <select name="product_style_id" class="form-control">
+                            <option value="" disabled>-Select Colour-</option>
+                            <?php foreach ($colour as $c) : ?>
+                                <option value="<?= $c->id; ?>"><?= $c->colour_name; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Size</label>
+                        <select name="product_style_id" class="form-control">
+                            <option value="" disabled>-Select Size-</option>
+                            <?php foreach ($size as $sz) : ?>
+                                <option value="<?= $sz->id; ?>"><?= $sz->size; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -190,7 +226,7 @@
                         <input type="text" class="form-control product_asin_id" name="product_asin_id" placeholder="Product ASIN #">
                     </div>
                     <div class="form-group">
-                        <label>Category</label>
+                        <label>Product Type</label>
                         <select name="product_category" class="form-control product_category">
                             <option value="">-Select-</option>
                             <?php foreach ($category as $cat) : ?>
@@ -204,6 +240,24 @@
                             <option value="">-Select-</option>
                             <?php foreach ($style as $s) : ?>
                                 <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Colour</label>
+                        <select name="product_style_id" class="form-control">
+                            <option value="">-Select Colour-</option>
+                            <?php foreach ($colour as $c) : ?>
+                                <option value="<?= $c->id; ?>"><?= $c->colour_name; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Size</label>
+                        <select name="product_style_id" class="form-control">
+                            <option value="">-Select Size-</option>
+                            <?php foreach ($size as $sz) : ?>
+                                <option value="<?= $sz->id; ?>"><?= $sz->size; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
