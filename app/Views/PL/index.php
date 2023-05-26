@@ -84,7 +84,7 @@
                                 <tr>
                                     <th>Product No</th>
                                     <th>Style</th>
-                                    <th>Size</th>
+                                    <th width="10%">Size</th>
                                     <th>Qty/Carton</th>
                                     <th>Carton</th>
                                     <th>Qty Ship</th>
@@ -94,9 +94,27 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>195111263922</td>
-                                    <td>AE-M-FW20-SHR-127</td>
-                                    <td>XS</td>
+                                    <td>
+                                        <select class="form-control" type="text">
+                                            <option value="">195111263922</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" value="AE-M-FW20-SHR-127" disabled class="form-control"> </td>
+                                    <td><input type="text" value="XS" readonly class="form-control"></td>
+                                    <td>10</td>
+                                    <td>1</td>
+                                    <td>10</td>
+                                    <td>5.33</td>
+                                    <td>4.68</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select class="form-control" type="text">
+                                            <option value="">195111263939</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" value="AE-M-FW20-SHR-127" disabled class="form-control"> </td>
+                                    <td><input type="text" value="S" readonly class="form-control"></td>
                                     <td>20</td>
                                     <td>5</td>
                                     <td>100</td>
@@ -104,9 +122,27 @@
                                     <td>9.92</td>
                                 </tr>
                                 <tr>
-                                    <td>195111263922</td>
-                                    <td>AE-M-FW20-SHR-127</td>
-                                    <td>XS</td>
+                                    <td>
+                                        <select class="form-control" type="text">
+                                            <option value="">195111263946</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" value="AE-M-FW20-SHR-127" disabled class="form-control"> </td>
+                                    <td><input type="text" value="M" readonly class="form-control"></td>
+                                    <td>20</td>
+                                    <td>13</td>
+                                    <td>260</td>
+                                    <td>11.77</td>
+                                    <td>10.48</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select class="form-control" type="text">
+                                            <option value="">195111263939</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" value="AE-M-FW20-SHR-127" disabled class="form-control"> </td>
+                                    <td><input type="text" value="S" readonly class="form-control"></td>
                                     <td>16</td>
                                     <td>1</td>
                                     <td>16</td>
