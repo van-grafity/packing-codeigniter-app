@@ -33,7 +33,15 @@
                                 <td><?= $PL->gl_number; ?></td>
                                 <td><?= $PL->season; ?></td>
                                 <td class="text-center align-middle">
-                                    <a class="btn btn-warning btn-sm btn-edit">Edit</a>
+                                    <a class="btn btn-warning btn-sm btn-edit"
+                                        data-id = "<?= esc($PL->id)?>"
+                                        data-po-id = "<?= esc($PL->po_id)?>"
+                                        data-buyer-name = "<?= esc($PL->buyer_name)?>"
+                                        data-order-no = "<?= esc($PL->gl_number)?>"
+                                        data-order-qty = "<?= esc($PL->packinglist_qty)?>"
+                                        data-shipdate = "<?= esc($PL->shipdate)?>"
+                                        data-packinglist-date = "<?= esc($PL->packinglist_date)?>"
+                                    >Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" 
                                         data-id = "<?= esc($PL->id)?>"
                                         data-pl-serial-number = "<?= esc($PL->packinglist_serial_number)?>"
@@ -56,6 +64,7 @@
         <div class="modal-content">
             <form action="" method="post" id="packinglist_form">
                 <?= csrf_field(); ?>
+                <input type="hidden" name="edit_packinglist_id" id="edit_packinglist_id">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Packing List</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -169,6 +178,29 @@ $(document).ready(function() {
         
     });
 
+    $('.btn-edit').on('click', function() {
+        let id = $(this).data('id');
+        let po_id = $(this).data('po-id');
+        let buyer_name = $(this).data('buyer-name');
+        let order_no = $(this).data('order-no');
+        let order_qty = $(this).data('order-qty');
+        let shipdate = $(this).data('shipdate');
+        let packinglist_date = $(this).data('packinglist-date');
+
+        $('.modal-title').text("Edit Packing List");
+        $('.btn-submit').text("Save")
+        $('#packinglist_form').attr('action', update_url);
+
+        $('#edit_packinglist_id').val(id);
+        $('#po_no').val(po_id).trigger('change');
+        $('#order_no').val(order_no);
+        $('#order_qty').val(order_qty);
+        $('#shipdate').val(shipdate);
+        $('#packinglist_date').val(packinglist_date);
+
+        $('#packinglist_modal').modal('show');
+    })
+
     $('.btn-delete').on('click', function() {
         let id = $(this).data('id');
         let serial_number = $(this).data('pl-serial-number');
@@ -200,6 +232,7 @@ $(document).ready(function() {
 
 <script type="text/javascript">
     const store_url = "../index.php/packinglist/store";
+    const update_url = "../index.php/packinglist/update";
 </script>
 
 <?= $this->endSection('page_script'); ?>

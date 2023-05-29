@@ -30,13 +30,13 @@ class PackingList extends BaseController
     {
         $data = [
             'title' => 'Factory Packing List',
-            'PackingList'   => $this->PackingListModel->getPackingList()->getResult(),
+            'PackingList'   => $this->PackingListModel->getPackingList(),
             'po_list'   => $this->PurchaseOrderModel->getPO()->getResult(),
 
         ];
         // dd($data);
         // return view('PL/index', $data);
-        return view('packing-list/index', $data);
+        return view('packinglist/index', $data);
     }
 
     public function store()
@@ -57,6 +57,16 @@ class PackingList extends BaseController
         ];
         
         $packing_id = $this->PackingListModel->insert($packinglist_data);
+        return redirect()->to('packinglist');
+    }
+
+    public function update() {
+        $packinglist_data = [
+            'packinglist_po_id' => $this->request->getPost('po_no'),
+            'packinglist_qty' => $this->request->getPost('order_qty'),
+        ];
+        $id = $this->request->getPost('edit_packinglist_id');
+        $this->PackingListModel->update($id,$packinglist_data);
         return redirect()->to('packinglist');
     }
 

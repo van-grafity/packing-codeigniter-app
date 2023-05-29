@@ -19,22 +19,21 @@ class PackingListModel extends Model
         'packinglist_amount',
     ];
 
-    public function getPackingList($code = false)
+    public function getPackingList($id = false)
     {
-        if ($code == false) {
-            $builder = $this->db->table('tblpackinglist');
-            $builder->select('tblpackinglist.*, tblpurchaseorder.PO_No, tblpurchaseorder.GL_id, tblgl.gl_number, tblgl.season, tblbuyer.buyer_name');
-            $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id');
-            $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.GL_id');
-            $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id');
-            return $builder->get();
-        }
         $builder = $this->db->table('tblpackinglist');
-        $builder->select('tblpackinglist.*, tblpurchaseorder.PO_No, tblbuyer.buyer_name, tblgl.gl_number, tblgl.season, tblgl.size_order');
+        $builder->select('tblpackinglist.*, tblpurchaseorder.id as po_id, tblpurchaseorder.PO_No, tblpurchaseorder.shipdate , tblbuyer.buyer_name, tblgl.gl_number, tblgl.season, tblgl.size_order');
         $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id');
-        $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id');
+        $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.GL_id');
         $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id');
-        return $builder->where(['code' => $code])->get();
+        
+        if ($id) {
+            $builder->where(['tblpackinglist.id' => $id]);
+            $result = $builder->get()->getRow();
+        } else {
+            $result = $builder->get()->getResult();
+        }
+        return $result;
     }
 
     public function get_last_pl_by_month($month_filter = null)
@@ -49,9 +48,4 @@ class PackingListModel extends Model
         return $result;
     }
 
-    public function savePackingList($data)
-    {
-        $query = $this->db->table('tblpackinglist')->insert($data);
-        return $query;
-    }
 }
