@@ -175,6 +175,10 @@ $(document).ready(function() {
             modal_btn_submit: "Add Packing List",
             form_action_url: store_url,
         });
+                        // date_filter: ,
+        
+        let date_today = new Date().toJSON().slice(0, 10);
+        $('#packinglist_date').val(date_today);
         $('#packinglist_modal').modal('show');
         
     });
