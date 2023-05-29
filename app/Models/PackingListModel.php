@@ -26,6 +26,7 @@ class PackingListModel extends Model
         $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id');
         $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.GL_id');
         $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id');
+        $builder->orderBy('tblpackinglist.id', 'ASC');
         
         if ($id) {
             $builder->where(['tblpackinglist.id' => $id]);

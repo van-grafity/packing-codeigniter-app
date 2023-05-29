@@ -34,6 +34,7 @@
                                 <td><?= $PL->season; ?></td>
                                 <td class="text-center align-middle">
                                     <a class="btn btn-warning btn-sm btn-edit"
+                                        data-pl-serial-number = "<?= esc($PL->packinglist_serial_number)?>"
                                         data-id = "<?= esc($PL->id)?>"
                                         data-po-id = "<?= esc($PL->po_id)?>"
                                         data-buyer-name = "<?= esc($PL->buyer_name)?>"
@@ -170,8 +171,8 @@ $(document).ready(function() {
     $('#btn_modal_create').on('click', function(e) {
         clear_form({
             modal_id : 'packinglist_modal',
-            modal_title: "Add Product",
-            modal_btn_submit: "Add Product",
+            modal_title: "Add Packing List",
+            modal_btn_submit: "Add Packing List",
             form_action_url: store_url,
         });
         $('#packinglist_modal').modal('show');
@@ -179,6 +180,7 @@ $(document).ready(function() {
     });
 
     $('.btn-edit').on('click', function() {
+        let serial_number = $(this).data('pl-serial-number');
         let id = $(this).data('id');
         let po_id = $(this).data('po-id');
         let buyer_name = $(this).data('buyer-name');
@@ -187,7 +189,7 @@ $(document).ready(function() {
         let shipdate = $(this).data('shipdate');
         let packinglist_date = $(this).data('packinglist-date');
 
-        $('.modal-title').text("Edit Packing List");
+        $('.modal-title').text(`Edit Packing List (${serial_number})`);
         $('.btn-submit').text("Save")
         $('#packinglist_form').attr('action', update_url);
 
