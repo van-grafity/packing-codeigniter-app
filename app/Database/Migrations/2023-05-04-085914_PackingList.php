@@ -14,7 +14,11 @@ class PackingList extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'packinglist_no' => [
+            'packinglist_number' => [
+                'type' => 'int',
+                'constraint' => 255,
+            ],
+            'packinglist_serial_number' => [
                 'type' => 'VARCHAR',
                 'constraint' => 35,
             ],

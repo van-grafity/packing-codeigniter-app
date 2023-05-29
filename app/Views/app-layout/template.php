@@ -278,6 +278,9 @@
     <!-- AdminLTE App -->
     <script src="js/adminlte.js"></script>
 
+    <!-- Custom JS | Utility -->
+    <script src="<?= base_url(); ?>assets/js/utils.js"></script>
+    
     <!-- Page specific script -->
     <script>
         $(function() {
@@ -300,6 +303,9 @@
             }).buttons().container().appendTo('#table1_wrapper .col-md-6:eq(0)');
         });
     </script>
+
+    <!-- Page Script | Javascript Khusus di halaman tersebut -->
+    <?= $this->renderSection('page_script'); ?>
 </body>
 
 </html>

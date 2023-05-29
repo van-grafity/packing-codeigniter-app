@@ -9,7 +9,8 @@ class PackingListModel extends Model
     protected $useTimestamps = true;
     protected $table = 'tblpackinglist';
     protected $allowedFields = [
-        'packinglist_no',
+        'packinglist_number',
+        'packinglist_serial_number',
         'packinglist_date',
         'packinglist_po_id',
         'packinglist_qty',
@@ -36,8 +37,16 @@ class PackingListModel extends Model
         return $builder->where(['code' => $code])->get();
     }
 
-    public function getPackingListDetail($code = false)
+    public function get_last_pl_by_month($month_filter = null)
     {
+        $month_filter = $month_filter ? $month_filter : date('m');
+
+        $builder = $this->db->table('tblpackinglist as pl');
+        $builder->select('pl.*');
+        $builder->where("MONTH(pl.created_at)", $month_filter);
+        $builder->orderBy('pl.packinglist_number', 'DESC');
+        $result = $builder->get()->getRow();
+        return $result;
     }
 
     public function savePackingList($data)

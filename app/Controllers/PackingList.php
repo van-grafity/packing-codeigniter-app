@@ -31,10 +31,33 @@ class PackingList extends BaseController
         $data = [
             'title' => 'Factory Packing List',
             'PackingList'   => $this->PackingListModel->getPackingList()->getResult(),
+            'po_list'   => $this->PurchaseOrderModel->getPO()->getResult(),
 
         ];
-        // dd($data['PackingList']);
-        return view('pl/index', $data);
+        // dd($data);
+        // return view('PL/index', $data);
+        return view('packing-list/index', $data);
+    }
+
+    public function store()
+    {
+        $request_data = $this->request->getPost();
+        
+        $month_filter = date('m');
+        $packinglist_this_month = $this->PackingListModel->get_last_pl_by_month($month_filter);
+        $next_packinglist_number = $packinglist_this_month->packinglist_number + 1;
+        $next_packinglist_serial_number = $this->generate_serial_number($next_packinglist_number);
+        
+        $packinglist_data = [
+            'packinglist_number' => $next_packinglist_number,
+            'packinglist_serial_number' => $next_packinglist_serial_number,
+            'packinglist_date' => $this->request->getPost('packinglist_date'),
+            'packinglist_po_id' => $this->request->getPost('po_no'),
+            'packinglist_qty' => $this->request->getPost('order_qty'),
+        ];
+        
+        $packing_id = $this->PackingListModel->insert($packinglist_data);
+        return redirect()->to('packinglist');
     }
 
     public function detail()
@@ -44,5 +67,18 @@ class PackingList extends BaseController
             'OrderPackingList'  => $this->PackingListModel->getPackingListDetail()->getResult(),
         ];
         return view('PL/detail', $data);
+    }
+
+    public function delete()
+    {
+        $id = $this->request->getPost('packinglist_id');
+        $delete = $this->PackingListModel->delete($id);
+        return redirect()->to('packinglist');
+    }
+
+    private function generate_serial_number($number)
+    {
+        $serial_number = 'PL-'. date('ym') . '-' . str_pad($number, 3, '0',STR_PAD_LEFT);
+        return $serial_number;
     }
 }

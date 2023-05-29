@@ -11,7 +11,7 @@ class GLSeeder extends Seeder
     private const DATA = [
         [
             'id' => 1,
-            'gl_number' => 'GL-62358-00',
+            'gl_number' => '62358-00',
             'season' => 'SS21',
             'style_id' => 1,
             'buyer_id' => 1,
