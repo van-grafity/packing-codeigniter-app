@@ -27,7 +27,7 @@
                         <?php foreach ($PackingList as $PL) : ?>
                             <tr>
                                 <td class="text-center" scope="row"><?= $i++; ?></td>
-                                <td><a href="<?= '../index.php/packinglist/' . $PL->packinglist_serial_number; ?>"><?= $PL->packinglist_serial_number; ?></a></td>
+                                <td><a href="<?= '../index.php/packinglist/' . $PL->id; ?>"><?= $PL->packinglist_serial_number; ?></a></td>
                                 <td><?= $PL->buyer_name; ?></td>
                                 <td><?= $PL->PO_No; ?></td>
                                 <td><?= $PL->gl_number; ?></td>

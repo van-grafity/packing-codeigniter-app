@@ -20,14 +20,14 @@ class PurchaseOrderDetailSeeder extends Seeder
             'id' => 2,
             'order_id' => 1,
             'size_id' => 2,
-            'product_id' => 1,
+            'product_id' => 2,
             'qty' => 116,
         ],
         [
             'id' => 3,
             'order_id' => 1,
             'size_id' => 3,
-            'product_id' => 1,
+            'product_id' => 3,
             'qty' => 269,
         ],
     ];

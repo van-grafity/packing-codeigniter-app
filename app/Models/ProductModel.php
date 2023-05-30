@@ -74,4 +74,21 @@ class ProductModel extends Model
         $query = $this->db->table('tblproduct')->delete(array('id' => $id));
         return $query;
     }
+
+    public function getByPackinglist($po_id)
+    {
+        $builder = $this->db->table('tblproduct as product');
+        $builder->select('product.*, colour.colour_name as colour, style.style_description as style, size.size, category.category_name as category');
+        // $builder->select('product.*');
+        $builder->join('tblpurchaseorderdetail as po_detail', 'po_detail.product_id = product.id');
+        $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
+        $builder->join('tblstyles as style', 'style.id = product.product_style_id');
+        $builder->join('tblsizes as size', 'size.id = product.product_size_id');
+        $builder->join('tblcategory as category', 'category.id = product.product_category_id');
+        $builder->where('po_detail.order_id', $po_id);
+        $builder->orderby('product.id','ASC');
+        $builder->groupBy('product.id');
+        $result = $builder->get()->getResult();
+        return $result;
+    }
 }

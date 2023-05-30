@@ -8,6 +8,7 @@ use App\Models\PackingListModel;
 use App\Models\BuyerModel;
 use App\Models\PurchaseOrderModel;
 use App\Models\SizeModel;
+use App\Models\ProductModel;
 
 helper('number', 'form', 'url', 'text');
 
@@ -17,6 +18,7 @@ class PackingList extends BaseController
     protected $BuyerModel;
     protected $PurchaseOrderModel;
     protected $SizeModel;
+    protected $ProductModel;
 
     public function __construct()
     {
@@ -24,14 +26,15 @@ class PackingList extends BaseController
         $this->BuyerModel = new BuyerModel();
         $this->PurchaseOrderModel = new PurchaseOrderModel();
         $this->SizeModel = new SizeModel();
+        $this->ProductModel = new ProductModel();
     }
 
     public function index()
     {
         $data = [
-            'title' => 'Factory Packing List',
+            'title'         => 'Factory Packing List',
             'PackingList'   => $this->PackingListModel->getPackingList(),
-            'po_list'   => $this->PurchaseOrderModel->getPO()->getResult(),
+            'po_list'       => $this->PurchaseOrderModel->getPO()->getResult(),
 
         ];
         // dd($data);
@@ -70,13 +73,15 @@ class PackingList extends BaseController
         return redirect()->to('packinglist');
     }
 
-    public function detail()
+    public function detail($id)
     {
         $data = [
-            'title'             => 'Packing List Detail',
-            'OrderPackingList'  => $this->PackingListModel->getPackingListDetail()->getResult(),
+            'title'         => 'Packing List Detail',
+            'packinglist'   => $this->PackingListModel->getPackingList($id),
+            'products'   => $this->ProductModel->getByPackinglist($id),
         ];
-        return view('PL/detail', $data);
+        // dd($data);
+        return view('packinglist/detail', $data);
     }
 
     public function delete()
