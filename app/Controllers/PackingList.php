@@ -91,6 +91,13 @@ class PackingList extends BaseController
         return redirect()->to('packinglist');
     }
 
+    public function cartonstore()
+    {
+        dd($this->request->getPost());
+        dd("masuk");
+        
+    }
+
     private function generate_serial_number($number)
     {
         $serial_number = 'PL-'. date('ym') . '-' . str_pad($number, 3, '0',STR_PAD_LEFT);

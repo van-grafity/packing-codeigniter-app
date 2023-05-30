@@ -1,6 +1,14 @@
 <?= $this->extend('app-layout/template'); ?>
 
 <?= $this->Section('content'); ?>
+<style>
+    .table-wrapper {
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+</style>
+
 <div class="content-wrapper">
     <section class="content">
         <div class="card card-primary mt-2">
@@ -98,8 +106,8 @@
                             <th width="30%" rowspan="1" colspan="4" class="align-middle">Size</th>
                             <th width="10%" rowspan="2" colspan="1" class="align-middle">Total Carton</th>
                             <th width="10%" rowspan="2" colspan="1" class="align-middle">Ship Qty</th>
-                            <th width="5%" rowspan="2" colspan="1" class="align-middle">NW</th>
-                            <th width="5%" rowspan="2" colspan="1" class="align-middle">GW</th>
+                            <th width="5%" rowspan="2" colspan="1" class="align-middle">NW (Kgs)</th>
+                            <th width="5%" rowspan="2" colspan="1" class="align-middle">GW (Kgs)</th>
                             <th width="15%" rowspan="2" colspan="1" class="align-middle">Action</th>
                         </tr>
                         <tr class="table-primary text-center">
@@ -145,7 +153,7 @@
         <div class="modal-content">
             <form action="" method="post" id="packinglist_form">
                 <?= csrf_field(); ?>
-                <input type="hidden" name="edit_packinglist_id" id="edit_packinglist_id">
+                <input type="hidden" name="packinglist_id" id="packinglist_id">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Carton</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -157,7 +165,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="product">Product Code :</label>
-                                <select id="product" name="product" class="form-control" required>
+                                <select id="product" class="form-control">
                                     <option value="">Select Product Code </option>
                                     <?php foreach ($products as $key => $product) { ?>
                                     <option value="<?= esc($product->id) ?>"
@@ -176,76 +184,96 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="product_qty">Product Qty :</label>
-                                <input type="number" class="form-control" id="product_qty" name="product_qty"
-                                    placeholder="Product Qty">
+                                <input type="number" class="form-control" id="product_qty" placeholder="Product Qty">
                             </div>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-12">
                             <h5 class="title label"> Product Detail :</h5>
-                            <table class="table no-border" style="border: 1px solid #ced4da">
-                                <tbody>
-                                    <tr>
-                                        <td width="20%">Product Name</td>
-                                        <td width="30%" id="product_name">: </td>
-                                        <td width="20%">Colour</td>
-                                        <td width="30%" id="product_colour">: </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="20%">Style</td>
-                                        <td width="30%" id="product_style">: </td>
-                                        <td width="20%">Size</td>
-                                        <td width="30%" id="product_size">: </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="20%">Category</td>
-                                        <td width="30%" id="product_category">: </td>
-                                        <td width="20%">Price</td>
-                                        <td width="30%" id="product_price">: </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="table-wrapper">
+                                <table class="table no-border">
+                                    <tbody>
+                                        <tr>
+                                            <td width="20%">Product Name</td>
+                                            <td width="30%" id="product_name">: </td>
+                                            <td width="20%">Colour</td>
+                                            <td width="30%" id="product_colour">: </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%">Style</td>
+                                            <td width="30%" id="product_style">: </td>
+                                            <td width="20%">Size</td>
+                                            <td width="30%" id="product_size">: </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%">Category</td>
+                                            <td width="30%" id="product_category">: </td>
+                                            <td width="20%">Price</td>
+                                            <td width="30%" id="product_price">: </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="text-right">
-                                <button type="button" class="btn btn-success btn-sm">Add Product to Carton</button>
+                                <button type="button" class="btn btn-success btn-sm" id="btn_add_product">Add Product to Carton</button>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-12">
                             <h5 class="">Carton Contents :</h5>
-                            <table class="table table-bordered table-sm">
+                            <table class="table table-bordered table-sm" id="table_carton_contents">
                                 <thead class="text-center thead-dark">
                                     <tr>
-                                        <th>No</th>
-                                        <th>UPC</th>
-                                        <th>Colour</th>
-                                        <th>Size</th>
-                                        <th>Product Qty</th>
-                                        <th>Action</th>
+                                        <th class="d-none">Product ID</th>
+                                        <th width="25%">UPC</th>
+                                        <th width="30%">Colour</th>
+                                        <th width="10%">Size</th>
+                                        <th width="15%">Product Qty</th>
+                                        <th width="20%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-center">
                                     <tr>
-                                        <td>1</td>
-                                        <td>081277364</td>
-                                        <td>Med Heather Grey</td>
-                                        <td>S</td>
-                                        <td>1</td>
-                                        <td>
-                                            <a type="button" class="btn btn-danger btn-sm">Delete</a>
-                                        </td>
+                                        <!-- <td class="align-middle" colspan="6"> Empty Carton</td> -->
                                     </tr>
                                 </tbody>
+                                <tfoot>
+                                    <tr class="bg-dark">
+                                        <td class="text-right" colspan="3"> Total Pcs : </td>
+                                        <td class="text-center" colspan="1" id="total_pcs"> 0 </td>
+                                        <td class=""></td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-8">
                             <div class="form-group">
                                 <label for="carton_qty">How many of these carton to add to the Packing List? :</label>
-                                <input type="number" class="form-control" id="carton_qty" name="carton_qty"
-                                    placeholder="Carton Quantity">
+                                <input type="number" class="form-control" id="carton_qty" name="carton_qty" value="0" placeholder="Carton Quantity">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="ship_qty">Ship Qty :</label>
+                                <input type="number" class="form-control" id="ship_qty" name="ship_qty"  value="0" placeholder="Ship Quantity" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="carton_gw">Carton GW (Kgs): </label>
+                                <input type="number" class="form-control" id="carton_gw" name="carton_gw" placeholder="Carton GW">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="carton_nw">Carton NW (Kgs): </label>
+                                <input type="number" class="form-control" id="carton_nw" name="carton_nw" placeholder="Carton NW">
                             </div>
                         </div>
                     </div>
@@ -264,6 +292,7 @@
 
 
 <?= $this->Section('page_script'); ?>
+
 <script type="text/javascript">
 $(document).ready(function() {
     $('#btn_modal_create').on('click', function(e) {
@@ -273,18 +302,26 @@ $(document).ready(function() {
             modal_btn_submit: "Add Carton to Packing List",
             form_action_url: store_url,
         });
-        // date_filter: ,
 
+        // ## Add empty tr when no product selected
+        if(is_table_empty()) {
+            $('#table_carton_contents tbody').html(`<td class="align-middle" colspan="6"> Empty Carton</td>`);
+        }
+        
         let date_today = new Date().toJSON().slice(0, 10);
         $('#packinglist_date').val(date_today);
+        $('#carton_qty').val(0);
+        $('#ship_qty').val(0);
+        $('#carton_gw').val(0);
+        $('#carton_nw').val(0);
         $('#packinglist_modal').modal('show');
 
     });
 
+    // ## Set Product Detail Info on Product Code change
     $('#product').on('change', function(event) {
-
         let selected_option = $(this).find($('option:selected'));
-        console.log(selected_option.data());
+
         let product_name = selected_option.data('product-name');
         let product_colour = selected_option.data('colour');
         let product_style = selected_option.data('style');
@@ -307,12 +344,118 @@ $(document).ready(function() {
             $('#product_category').text('');
             $('#product_price').text('');
         }
-    })
+    });
+
+    $('#btn_add_product').on('click', function() {
+        if(!$('#product').val()) {
+            alert('Please select a product');
+            return false;
+        }
+
+        if(!$('#product_qty').val()) {
+            alert('Please provide a quantity for the product');
+            return false;
+        }
+        
+        if(is_product_already_added()){
+            alert('Product already added!');
+            return false;
+        }
+        
+        if(is_table_empty()) {
+            $('#table_carton_contents tbody').html('');
+        }
+
+        let data_element = {
+            product_id: $('#product').val(),
+            product_code: $('#product option:selected').text(),
+            product_name: $('#product_name').text(),
+            product_colour: $('#product_colour').text(),
+            product_style: $('#product_style').text(),
+            product_size: $('#product_size').text(),
+            product_category: $('#product_category').text(),
+            product_price: $('#product_price').text(),
+            product_qty: parseInt($('#product_qty').val()),
+        }
+        let element_tr = create_element_tr(data_element);
+        $('#table_carton_contents tbody').append(element_tr);
+        
+        $('#product').val('').trigger('change');
+        $('#product_qty').val('0');
+        update_total_pcs()
+    });
+
+    $('#carton_qty').on('keyup', function() {
+        update_ship_qty();
+    });
+
 })
 </script>
 
 <script type="text/javascript">
 const store_url = "../index.php/packinglist/cartonstore";
 // const update_url = "../index.php/packinglist/cartonupdate";
+
+function create_element_tr(data) {
+    let element = `
+    <tr>
+        <td class="d-none">
+            <input class="form-control" type="text" value="${data.product_id}" name="products_in_carton[]" readonly>
+            <input class="form-control" type="text" value="${data.product_qty}" name="products_in_carton_qty[]" readonly>
+        </td>
+        <td class="align-middle" >${data.product_code}</td>
+        <td class="align-middle" >${data.product_colour}</td>
+        <td class="align-middle" >${data.product_size}</td>
+        <td class="align-middle" >${data.product_qty}</td>
+        <td class="align-middle" >
+            <a type="button" class="btn btn-danger btn-sm btn-delete-product" onclick="delete_po_detail(this)">Delete</a>
+        </td>
+    </tr>
+    `
+    return element;
+}
+
+function delete_po_detail(element) {
+    $(element).parents('tr').remove();
+    if(is_table_empty()) {
+        $('#table_carton_contents tbody').html(`<td class="align-middle" colspan="6"> Empty Carton</td>`);
+    }
+    update_total_pcs()
+}
+
+function is_table_empty() {
+    let count_first_element = $(`#table_carton_contents tbody tr td`).length;
+    if (count_first_element <= 1) {
+        return true;
+    }
+    return false;
+}
+
+function is_product_already_added() {
+    var product_on_carton = $("input[name='products_in_carton[]']").map(function(){return $(this).val();}).get();
+    let product_selected_value = $('#product').val();
+    if(product_on_carton.includes(product_selected_value)){
+        return true;
+    }
+    return false;
+}
+
+function update_total_pcs() {
+    let qty_per_product = $("input[name='products_in_carton_qty[]']").map(function(){return $(this).val();}).get();
+    let sum_qty = qty_per_product.reduce((tempSum, next_arr) => tempSum + parseInt(next_arr), 0);
+    $('#total_pcs').html(sum_qty);
+    update_ship_qty();
+}
+
+function update_ship_qty() {
+    let carton_qty = $('#carton_qty').val();
+    if(carton_qty == '') {
+        carton_qty = '0';
+    }
+    let total_pcs = parseInt($('#total_pcs').text());
+    let ship_qty = carton_qty * total_pcs; 
+    $('#ship_qty').val(ship_qty);
+}
+
 </script>
 <?= $this->endSection('page_script'); ?>
