@@ -49,4 +49,9 @@ class PackingListModel extends Model
         return $result;
     }
 
+    public function getSizeList($packinglist_id)
+    {
+        //## get all size from this packing list
+    }
+
 }

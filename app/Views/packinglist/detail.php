@@ -102,8 +102,10 @@
                     <thead>
                         <tr class="table-primary text-center">
                             <th width="5%" rowspan="1" colspan="2" class="align-middle">Ctn No.</th>
+                            <th width="20%" rowspan="2" colspan="1" class="align-middle">UPC</th>
                             <th width="20%" rowspan="2" colspan="1" class="align-middle">Colour</th>
                             <th width="30%" rowspan="1" colspan="4" class="align-middle">Size</th>
+                            <th width="10%" rowspan="2" colspan="1" class="align-middle">Pcs / Carton</th>
                             <th width="10%" rowspan="2" colspan="1" class="align-middle">Total Carton</th>
                             <th width="10%" rowspan="2" colspan="1" class="align-middle">Ship Qty</th>
                             <th width="5%" rowspan="2" colspan="1" class="align-middle">NW (Kgs)</th>
@@ -120,23 +122,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="text-center">
-                            <td> xxxxx </td>
-                            <td> xxxxx </td>
-                            <td> xxxxx </td>
-                            <td> xxxxx </td>
-                            <td> xxxxx </td>
-                            <td> xxxxx </td>
-                            <td> xxxxx </td>
-                            <td> xxxxx </td>
-                            <td> xxxxx </td>
-                            <td> xxxxx </td>
-                            <td> xxxxx </td>
-                            <td>
-                                <a class="btn btn-warning btn-sm btn-edit">Edit</a>
-                                <a class="btn btn-danger btn-sm btn-delete">Delete</a>
-                            </td>
-                        </tr>
+                        <?php foreach ($packinglist_carton as $key => $carton) { ?>
+                            <tr class="text-center">
+                                <td> <?= $carton->carton_number_from ?> </td>
+                                <td> <?= $carton->carton_number_to ?> </td>
+                                <td> <?= $carton->products_in_carton[0]->product_code ?> </td>
+                                <!-- <td> xxxxx </td> -->
+                                <td> <?= $carton->colour ?> </td>
+                                <td> xxxxx </td>
+                                <td> xxxxx </td>
+                                <td> xxxxx </td>
+                                <td> xxxxx </td>
+                                <!-- <td colspan="4"> xxxxx </td> -->
+                                <td> <?= $carton->pcs_per_carton ?> </td>
+                                <td> <?= $carton->carton_qty ?> </td>
+                                <td> <?= $carton->ship_qty ?> </td>
+                                <td> <?= $carton->net_weight ?> </td>
+                                <td> <?= $carton->gross_weight ?> </td>
+                                <td>
+                                    <a class="btn btn-warning btn-sm btn-edit">Edit</a>
+                                    <a class="btn btn-danger btn-sm btn-delete">Delete</a>
+                                </td>
+                            </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
@@ -153,7 +161,7 @@
         <div class="modal-content">
             <form action="" method="post" id="packinglist_form">
                 <?= csrf_field(); ?>
-                <input type="hidden" name="packinglist_id" id="packinglist_id">
+                <input type="hidden" name="packinglist_id" id="packinglist_id" value="<?= $packinglist->id  ?>">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Carton</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -264,16 +272,28 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <div class="form-group">
-                                <label for="carton_gw">Carton GW (Kgs): </label>
-                                <input type="number" class="form-control" id="carton_gw" name="carton_gw" placeholder="Carton GW">
+                                <label for="gross_weight">Carton GW (Kgs): </label>
+                                <input type="number" class="form-control" id="gross_weight" name="gross_weight" placeholder="Carton GW" step="0.01">
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <div class="form-group">
-                                <label for="carton_nw">Carton NW (Kgs): </label>
-                                <input type="number" class="form-control" id="carton_nw" name="carton_nw" placeholder="Carton NW">
+                                <label for="net_weight">Carton NW (Kgs): </label>
+                                <input type="number" class="form-control" id="net_weight" name="net_weight" placeholder="Carton NW" step="0.01">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="carton_number_from">Carton No. From : </label>
+                                <input type="number" class="form-control" id="carton_number_from" name="carton_number_from" placeholder="From" min="1">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="carton_number_to">Carton No. To : </label>
+                                <input type="number" class="form-control" id="carton_number_to" name="carton_number_to" placeholder="To" min="1">
                             </div>
                         </div>
                     </div>
@@ -295,6 +315,15 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+    // ## prevent submit form when keyboard press enter
+    $('#packinglist_form input').on('keyup keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) { 
+            e.preventDefault();
+            return false;
+        }
+    });
+
     $('#btn_modal_create').on('click', function(e) {
         clear_form({
             modal_id: 'packinglist_modal',
@@ -312,8 +341,8 @@ $(document).ready(function() {
         $('#packinglist_date').val(date_today);
         $('#carton_qty').val(0);
         $('#ship_qty').val(0);
-        $('#carton_gw').val(0);
-        $('#carton_nw').val(0);
+        $('#gross_weight').val(0);
+        $('#net_weight').val(0);
         $('#packinglist_modal').modal('show');
 
     });
@@ -385,7 +414,7 @@ $(document).ready(function() {
         update_total_pcs()
     });
 
-    $('#carton_qty').on('keyup', function() {
+    $('#carton_qty').on('input', function() {
         update_ship_qty();
     });
 
@@ -408,7 +437,7 @@ function create_element_tr(data) {
         <td class="align-middle" >${data.product_size}</td>
         <td class="align-middle" >${data.product_qty}</td>
         <td class="align-middle" >
-            <a type="button" class="btn btn-danger btn-sm btn-delete-product" onclick="delete_po_detail(this)">Delete</a>
+            <button type="button" class="btn btn-danger btn-sm btn-delete-product" onclick="delete_po_detail(this)">Delete</button>
         </td>
     </tr>
     `

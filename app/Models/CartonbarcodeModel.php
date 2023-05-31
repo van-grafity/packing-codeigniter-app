@@ -6,38 +6,12 @@ use CodeIgniter\Model;
 
 class CartonBarcodeModel extends Model
 {
-    protected $useTimestamps = true;
-    protected $table = 'tblcartonbarcode';
-    protected $allowedFields = [
-        'carton_pl_id',
-        'carton_no',
-        'carton_barcode'
+    protected $table            = 'tblcartonbarcode';
+    protected $useTimestamps    = true;
+    protected $allowedFields    = [
+        'packinglist_carton_id',
+        'carton_number_by_system',
+        'carton_number_by_input',
+        'barcode',
     ];
-
-    public function getCartonBarcode()
-    {
-        $builder = $this->db->table('tblcartonbarcode');
-        $builder->select('*');
-        $builder->join('tblpackinglist', 'tblpackinglist.id = carton_pl_id', 'left');
-        $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id', 'left');
-        return $builder->get();
-    }
-
-    public function getCartonRatio()
-    {
-        $builder = $this->db->table('tblcartonratio');
-        $builder->select('*, tblsizes.size as size_name');
-        $builder->join('tblcartonbarcode', 'tblcartonbarcode.id = cartonbarcode_id', 'left');
-        $builder->join('tblpackinglist', 'tblpackinglist.id = tblcartonbarcode.carton_pl_id', 'left');
-        $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id', 'left');
-        $builder->join('tblsizes', 'tblsizes.id = size_id', 'left');
-        return $builder->get();
-    }
-
-    public function getSize()
-    {
-        $builder = $this->db->table('tblsizes');
-        $builder->select('*');
-        return $builder->get();
-    }
 }
