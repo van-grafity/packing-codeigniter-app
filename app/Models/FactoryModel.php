@@ -22,12 +22,6 @@ class FactoryModel extends Model
         return $this->where(['code' => $code])->first();
     }
 
-    public function saveFactory($data)
-    {
-        $query = $this->db->table('tblfactory')->insert($data);
-        return $query;
-    }
-
     public function updateFactory($data, $id)
     {
         $query = $this->db->table('tblfactory')->update($data, array('id' => $id));

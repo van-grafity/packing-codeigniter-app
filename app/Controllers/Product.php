@@ -2,28 +2,40 @@
 
 namespace App\Controllers;
 
+use App\Models\CategoryModel;
+use App\Models\ColourModel;
 use App\Models\ProductModel;
+use App\Models\SizeModel;
+use App\Models\StyleModel;
 
 helper('number');
 
 class Product extends BaseController
 {
+    protected $CategoryModel;
+    protected $ColourModel;
     protected $ProductModel;
+    protected $SizeModel;
+    protected $StyleModel;
 
     public function __construct()
     {
+        $this->CategoryModel = new CategoryModel();
+        $this->ColourModel = new ColourModel();
         $this->ProductModel = new ProductModel();
+        $this->SizeModel = new SizeModel();
+        $this->StyleModel = new StyleModel();
     }
 
     public function index()
     {
         $data = [
             'title'     => 'Product List',
-            'product'   => $this->ProductModel->getProduct()->getResult(),
-            'category'  => $this->ProductModel->getCategory()->getResult(),
-            'style'     => $this->ProductModel->getStyle()->getResult(),
+            'category'  => $this->CategoryModel->getCategory()->getResult(),
             'colour'    => $this->ProductModel->getColour()->getResult(),
-            'size'    => $this->ProductModel->getSize()->getResult(),
+            'product'   => $this->ProductModel->getProduct()->getResult(),
+            'size'      => $this->ProductModel->getSize()->getResult(),
+            'style'     => $this->ProductModel->getStyle()->getResult(),
         ];
         // $produk = $this->ProductModel->getProduct()->getResult();
         // dd($produk);

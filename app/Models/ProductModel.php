@@ -17,30 +17,6 @@ class ProductModel extends Model
         'product_category_id',
     ];
 
-    public function getCategory()
-    {
-        $builder = $this->db->table('tblcategory');
-        return $builder->get();
-    }
-
-    public function getStyle()
-    {
-        $builder = $this->db->table('tblstyles');
-        return $builder->get();
-    }
-
-    public function getColour()
-    {
-        $builder = $this->db->table('tblcolour');
-        return $builder->get();
-    }
-
-    public function getSize()
-    {
-        $builder = $this->db->table('tblsizes');
-        return $builder->get();
-    }
-
     public function getProduct($code = false)
     {
         if ($code == false) {
@@ -86,7 +62,7 @@ class ProductModel extends Model
         $builder->join('tblsizes as size', 'size.id = product.product_size_id');
         $builder->join('tblcategory as category', 'category.id = product.product_category_id');
         $builder->where('po_detail.order_id', $po_id);
-        $builder->orderby('product.id','ASC');
+        $builder->orderby('product.id', 'ASC');
         $builder->groupBy('product.id');
         $result = $builder->get()->getResult();
         return $result;
