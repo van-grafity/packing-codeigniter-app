@@ -146,7 +146,7 @@
                                 <td rowspan="<?= $carton->number_of_product_per_carton; ?>" > <?= $carton->gross_weight ?> </td>
                                 <td rowspan="<?= $carton->number_of_product_per_carton; ?>">
                                     <a class="btn btn-warning btn-sm btn-edit">Edit</a>
-                                    <a class="btn btn-danger btn-sm btn-delete">Delete</a>
+                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $carton->id ?>">Delete</a>
                                 </td>
                             </tr>
                             <?php if($carton->number_of_product_per_carton > 1) {  ?>
@@ -179,7 +179,7 @@
         <div class="modal-content">
             <form action="" method="post" id="packinglist_form">
                 <?= csrf_field(); ?>
-                <input type="hidden" name="packinglist_id" id="packinglist_id" value="<?= $packinglist->id  ?>">
+                <input type="hidden" name="packinglist_id" value="<?= $packinglist->id  ?>">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Carton</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -326,6 +326,34 @@
 </div>
 <!-- End Modal Add and Edit Carton -->
 
+
+
+<!-- Modal Delete Carton -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="../index.php/packinglist/cartondelete" method="post">
+                <input type="hidden" name="packinglist_id" value="<?= $packinglist->id  ?>">
+                <input type="hidden" name="packinglist_carton_id" id ="packinglist_carton_id" >
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Carton</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 id="delete_message">Are you sure want to delete this Carton ?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Delete Carton -->
+
 <?= $this->endSection(); ?>
 
 
@@ -363,6 +391,15 @@ $(document).ready(function() {
         $('#net_weight').val(0);
         $('#packinglist_modal').modal('show');
 
+    });
+
+    $('.btn-delete').on('click', function() {
+        let id = $(this).data('id');
+        $('#packinglist_carton_id').val(id);
+        if (id) {
+            $('#delete_message').text(`Are you sure want to delete Carton?`);
+        }
+        $('#deleteModal').modal('show');
     });
 
     // ## Set Product Detail Info on Product Code change

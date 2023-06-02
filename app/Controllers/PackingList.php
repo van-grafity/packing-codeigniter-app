@@ -114,6 +114,7 @@ class PackingList extends BaseController
             }
             
             $packinglist_carton_data[] = (object)[
+                'id' => $carton->id,
                 'carton_number_from' => $carton->carton_number_from,
                 'carton_number_to' => $carton->carton_number_to,
                 'colour' => $carton->colour,
@@ -175,6 +176,14 @@ class PackingList extends BaseController
         }
 
         return redirect()->to('packinglist/'.$packinglist_id);
+    }
+
+    public function cartondelete() {
+        $id = $this->request->getPost('packinglist_carton_id');
+        $packinglist_id = $this->request->getPost('packinglist_id');
+
+        $delete = $this->PackinglistCartonModel->delete($id);
+        return redirect()->to('packinglist/'. $packinglist_id);
     }
 
     private function generate_serial_number($number)
