@@ -32,10 +32,10 @@ class Product extends BaseController
         $data = [
             'title'     => 'Product List',
             'category'  => $this->CategoryModel->getCategory()->getResult(),
-            'colour'    => $this->ProductModel->getColour()->getResult(),
+            'colour'    => $this->ColourModel->getColour()->getResult(),
             'product'   => $this->ProductModel->getProduct()->getResult(),
-            'size'      => $this->ProductModel->getSize()->getResult(),
-            'style'     => $this->ProductModel->getStyle()->getResult(),
+            'size'      => $this->SizeModel->getSize()->getResult(),
+            'style'     => $this->StyleModel->getStyle()->getResult(),
         ];
         // $produk = $this->ProductModel->getProduct()->getResult();
         // dd($produk);
