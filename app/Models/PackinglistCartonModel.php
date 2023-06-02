@@ -24,10 +24,11 @@ class PackinglistCartonModel extends Model
         $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
         $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
         $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
-        $builder->groupBy('pl_carton.id, colour.id');
         if ($packinglist_id) {
             $builder->where(['pl_carton.packinglist_id' => $packinglist_id]);
         }
+        $builder->groupBy('pl_carton.id, colour.id');
+        $builder->orderBy('pl_carton.id');
         $result = $builder->get()->getResult();
         
         return $result;
@@ -47,6 +48,7 @@ class PackinglistCartonModel extends Model
                 ->get()->getRow();
             
             $product_data->product_qty = $product->product_qty;
+            $product_data->carton_detail_id = $product->id;
             $data_return[] = $product_data;
         }
         return $data_return;

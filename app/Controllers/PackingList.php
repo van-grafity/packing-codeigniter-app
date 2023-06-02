@@ -147,7 +147,7 @@ class PackingList extends BaseController
         $products_in_carton = $this->request->getPost('products_in_carton');
         $products_in_carton_qty = $this->request->getPost('products_in_carton_qty');
         try {
-            $this->PurchaseOrderModel->transException(true)->transStart();
+            $this->PackinglistCartonModel->transException(true)->transStart();
 
             $packinglist_carton_data = [
                 'packinglist_id' => $this->request->getPost('packinglist_id'),
@@ -170,14 +170,38 @@ class PackingList extends BaseController
                 }
             }
 
-            $this->PurchaseOrderModel->transComplete();
+            $this->PackinglistCartonModel->transComplete();
         } catch (DatabaseException $e) {
             // Automatically rolled back already.
+
         }
 
         return redirect()->to('packinglist/'.$packinglist_id);
     }
 
+    public function cartonedit() {
+        
+        $id = $this->request->getGet('id');
+        $packinglist_carton = $this->PackinglistCartonModel->find($id);
+        $carton_detail = $this->PackinglistCartonModel->getProductsInCarton($id);
+        
+        $data_return = [
+            'status' => 'success',
+            'message' => 'successfully get data carton',
+            'data' => [
+                'packinglist_carton' => $packinglist_carton,
+                'carton_detail' => $carton_detail,
+            ],
+        ];
+
+        return $this->response->setJSON($data_return);
+    }
+
+    public function cartonupdate() {
+        dd("masuk");
+        
+    }
+    
     public function cartondelete() {
         $id = $this->request->getPost('packinglist_carton_id');
         $packinglist_id = $this->request->getPost('packinglist_id');

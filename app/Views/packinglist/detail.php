@@ -145,7 +145,7 @@
                                 <td rowspan="<?= $carton->number_of_product_per_carton; ?>" > <?= $carton->net_weight ?> </td>
                                 <td rowspan="<?= $carton->number_of_product_per_carton; ?>" > <?= $carton->gross_weight ?> </td>
                                 <td rowspan="<?= $carton->number_of_product_per_carton; ?>">
-                                    <a class="btn btn-warning btn-sm btn-edit">Edit</a>
+                                    <a class="btn btn-warning btn-sm btn-edit" onclick="edit_packinglist_carton(<?= $carton->id; ?>)"  >Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $carton->id ?>">Delete</a>
                                 </td>
                             </tr>
@@ -179,6 +179,7 @@
         <div class="modal-content">
             <form action="" method="post" id="packinglist_form">
                 <?= csrf_field(); ?>
+                <input type="hidden" name="edit_packinglist_carton_id" id="edit_packinglist_carton_id">
                 <input type="hidden" name="packinglist_id" value="<?= $packinglist->id  ?>">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Carton</h5>
@@ -318,7 +319,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary btn-submit">Add</button>
+                    <button type="submit" class="btn btn-primary btn-submit" id="btn_submit">Add</button>
                 </div>
             </form>
         </div>
@@ -379,9 +380,9 @@ $(document).ready(function() {
         });
 
         // ## Add empty tr when no product selected
-        if(is_table_empty()) {
-            $('#table_carton_contents tbody').html(`<td class="align-middle" colspan="6"> Empty Carton</td>`);
-        }
+        // if(is_table_empty()) {
+        //     clear_carton_contents();
+        // }
         
         let date_today = new Date().toJSON().slice(0, 10);
         $('#packinglist_date').val(date_today);
@@ -389,15 +390,17 @@ $(document).ready(function() {
         $('#ship_qty').val(0);
         $('#gross_weight').val(0);
         $('#net_weight').val(0);
+        clear_carton_contents();
+        update_total_pcs();
+        
         $('#packinglist_modal').modal('show');
-
     });
-
+    
     $('.btn-delete').on('click', function() {
         let id = $(this).data('id');
         $('#packinglist_carton_id').val(id);
         if (id) {
-            $('#delete_message').text(`Are you sure want to delete Carton?`);
+            $('#delete_message').text(`Are you sure want to delete this Carton?`);
         }
         $('#deleteModal').modal('show');
     });
@@ -446,8 +449,9 @@ $(document).ready(function() {
             return false;
         }
         
+        // ## if table empty replace default row to new data at the first row
         if(is_table_empty()) {
-            $('#table_carton_contents tbody').html('');
+            clear_carton_contents('empty');
         }
 
         let data_element = {
@@ -477,8 +481,9 @@ $(document).ready(function() {
 </script>
 
 <script type="text/javascript">
-const store_url = "../index.php/packinglist/cartonstore";
-// const update_url = "../index.php/packinglist/cartonupdate";
+const store_url = '<?= base_url('packinglistcarton/store')?>';
+const edit_url = '<?= base_url('packinglistcarton/edit')?>';
+const update_url = '<?= base_url('packinglistcarton/update')?>';
 
 function create_element_tr(data) {
     let element = `
@@ -492,17 +497,17 @@ function create_element_tr(data) {
         <td class="align-middle" >${data.product_size}</td>
         <td class="align-middle" >${data.product_qty}</td>
         <td class="align-middle" >
-            <button type="button" class="btn btn-danger btn-sm btn-delete-product" onclick="delete_po_detail(this)">Delete</button>
+            <button type="button" class="btn btn-danger btn-sm btn-delete-product" onclick="delete_carton_content(this)">Delete</button>
         </td>
     </tr>
     `
     return element;
 }
 
-function delete_po_detail(element) {
+function delete_carton_content(element) {
     $(element).parents('tr').remove();
     if(is_table_empty()) {
-        $('#table_carton_contents tbody').html(`<td class="align-middle" colspan="6"> Empty Carton</td>`);
+        clear_carton_contents()
     }
     update_total_pcs()
 }
@@ -541,5 +546,72 @@ function update_ship_qty() {
     $('#ship_qty').val(ship_qty);
 }
 
+function clear_carton_contents(type = false) {
+    if (type == 'empty') {
+        $('#table_carton_contents tbody').html(``);
+    } else {
+        $('#table_carton_contents tbody').html(`<td class="align-middle" colspan="6"> Empty Carton</td>`);
+    }
+}
+
+
+async function edit_packinglist_carton(packinglist_carton_id) {
+    params_data = { id : packinglist_carton_id };
+    result = await using_fetch(edit_url, params_data, "GET");
+    
+    let carton_detail = result.data.carton_detail;
+    if(carton_detail.length <= 0) { clear_carton_contents(); };
+    
+    clear_form({
+        modal_id: 'packinglist_modal',
+        modal_title: "Edit Carton",
+        modal_btn_submit: "Save",
+        form_action_url: update_url,
+    });
+    clear_carton_contents('empty');
+
+    carton_detail.forEach(data => {
+        console.log(data);
+        let data_element = {
+            product_id: data.product_id ,
+            product_code: data.product_code ,
+            product_name: data.product_name ,
+            product_colour: data.colour ,
+            product_style: data.product_id ,
+            product_size: data.size ,
+            product_qty: data.product_qty,
+        }
+        let element_tr = create_element_tr(data_element);
+        $('#table_carton_contents tbody').append(element_tr);
+    });
+    
+    let packinglist_carton = result.data.packinglist_carton;
+    $('#carton_qty').val(packinglist_carton.carton_qty);
+    $('#gross_weight').val(packinglist_carton.gross_weight);
+    $('#net_weight').val(packinglist_carton.net_weight);
+    $('#carton_number_from').val(packinglist_carton.carton_number_from);
+    $('#carton_number_to').val(packinglist_carton.carton_number_to);
+    $('#edit_packinglist_carton_id').val(packinglist_carton.id);
+    
+
+    // result = await get_using_fetch(url_edit);
+    // form = $('#buyer_form')
+    // form.append('<input type="hidden" name="_method" value="PUT">');
+    // $('#modal_formLabel').text("Edit Buyer");
+    // $('#btn_submit').text("Save");
+    // $('#modal_form').modal('show')
+
+    // let url_update = update_url.replace(':id',buyer_id);
+    // form.attr('action', url_update);
+    // form.find('input[name="name"]').val(result.name);
+    // form.find('input[name="address"]').val(result.address);
+    // form.find('input[name="shipment_address"]').val(result.shipment_address);
+    // form.find('input[name="code"]').val(result.code);
+
+    $('#packinglist_modal').modal('show');
+
+    update_total_pcs()
+    update_ship_qty();
+}
 </script>
 <?= $this->endSection('page_script'); ?>

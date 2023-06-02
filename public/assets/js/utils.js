@@ -17,3 +17,57 @@ const clear_form = ( data ) => {
     $(`#${data.modal_id} form`).find("input[type=text], input[type=number], textarea").val("");
     $(`#${data.modal_id} form`).find(`select`).val("").trigger(`change`);
 }
+
+
+
+async function using_fetch(url = "", data = {}, method = "GET") {
+
+    let fetch_data = {
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+    };
+
+    if(method === "GET") {
+        query_string = new URLSearchParams(data).toString();
+        url = url + "?" + query_string
+
+        fetch_data.method = method;
+        fetch_data.headers = {
+            "Content-Type": "application/json",
+        };
+    }
+
+    if(method === "DELETE") {
+        fetch_data.method = method;
+        fetch_data.headers = {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": data.token,
+        };
+    }
+
+    if(method === "PUT") {
+        fetch_data.method = method;
+        fetch_data.headers = {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": data.token,
+        };
+
+        fetch_data.body = JSON.stringify(data.body);
+    }
+
+    if(method === "POST") {
+        fetch_data.method = method;
+        fetch_data.headers = {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": data.token,
+        };
+
+        fetch_data.body = JSON.stringify(data.body);
+    }
+
+    const response = await fetch(url, fetch_data);
+    return response.json();
+}

@@ -51,6 +51,10 @@ $routes->get('/packinglist/store', 'PackingList::store');
 
 $routes->get('/cartonbarcode', 'CartonBarcode::index');
 
+$routes->post('/packinglistcarton/store', 'PackingList::cartonstore');
+$routes->get('/packinglistcarton/edit', 'PackingList::cartonedit');
+$routes->post('/packinglistcarton/update', 'PackingList::cartonupdate');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
