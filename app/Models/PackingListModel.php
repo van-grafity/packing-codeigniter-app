@@ -52,6 +52,16 @@ class PackingListModel extends Model
     public function getSizeList($packinglist_id)
     {
         //## get all size from this packing list
+        $builder = $this->db->table('tblpackinglist as packinglist');
+        $builder->select('size.id, size.size');
+        $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.packinglist_id = packinglist.id');
+        $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
+        $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
+        $builder->join('tblsizes as size', 'size.id = product.product_size_id');
+        $builder->where('packinglist.id', $packinglist_id);
+        $builder->groupBy('size.id');
+        $result = $builder->get()->getResult();
+        return $result;
     }
 
 }

@@ -88,23 +88,30 @@ class PackingList extends BaseController
 
     public function detail($id)
     {
-        // $packinglist_carton = $this->PackinglistCartonModel->where('packinglist_id',$id)->find();
         $packinglist_carton = $this->PackinglistCartonModel->getDataByPackinglist($id);
         $packinglist_size_list = $this->PackingListModel->getSizeList($id);
-
-        // dd($packinglist_size_list);
-        
-        // $packinglist_carton = $this->PackinglistCartonModel->getDataByPackinglist($id);
-        // dd($packinglist_carton);
         $packinglist_carton_data = [];
 
         foreach ($packinglist_carton as $key => $carton) {
-            // $products_in_carton = $this->CartonDetailModel->where('packinglist_carton_id', $carton->id)->find();
-            // $packinglist_carton_data[] = [
-            //     'products_in_carton' => $products_in_carton,
-            // ];
             $products_in_carton = $this->PackinglistCartonModel->getProductsInCarton($carton->id);
-            // dd($products_in_carton);
+
+            foreach ($products_in_carton as $key => $product) {
+                $product_ratio_by_size_list = [];
+                foreach ($packinglist_size_list as $key_size => $size) {
+                    $ratio_per_size = (object)[
+                        'size_id' => $size->id,
+                        'size_size' => $size->size,
+                    ];
+                    if($product->size_id == $size->id){
+                        $ratio_per_size->size_qty = $product->product_qty;
+                    } else {
+                        $ratio_per_size->size_qty = 0;
+                    }
+
+                    $product_ratio_by_size_list[] =  $ratio_per_size;
+                }
+                $products_in_carton[$key]->ratio_by_size_list = $product_ratio_by_size_list;
+            }
             
             $packinglist_carton_data[] = (object)[
                 'carton_number_from' => $carton->carton_number_from,
@@ -114,18 +121,20 @@ class PackingList extends BaseController
                 'carton_qty' => $carton->carton_qty,
                 'ship_qty' => $carton->pcs_per_carton * $carton->carton_qty,
                 'products_in_carton' => $products_in_carton,
+                'number_of_product_per_carton' => count($products_in_carton),
                 'gross_weight' => $carton->gross_weight,
                 'net_weight' => $carton->net_weight,
             ];
         }
 
-        // dd($packinglist_carton_data);
-        
         $data = [
             'title'         => 'Packing List Detail',
             'packinglist'   => $this->PackingListModel->getPackingList($id),
             'products'   => $this->ProductModel->getByPackinglist($id),
             'packinglist_carton'   => $packinglist_carton_data,
+            'packinglist_size_list'   => $packinglist_size_list,
+            'size_colspan'   => count($packinglist_size_list),
+            'size_rowspan'   => count($packinglist_size_list) ?  1 : 2,
         ];
         return view('packinglist/detail', $data);
     }

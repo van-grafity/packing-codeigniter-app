@@ -40,11 +40,11 @@ class PackinglistCartonModel extends Model
         $products_in_carton = model('App\Models\CartonDetailModel')->where('packinglist_carton_id', $carton_id)->find();
         foreach ($products_in_carton as $key => $product) {
             $product_data = $this->db->table('tblproduct as product')
-                            ->join('tblcolour as colour', 'colour.id = product.product_colour_id')
-                            ->join('tblsizes as size', 'size.id = product.product_size_id')
-                            ->select('product_name, product_code, colour.colour_name as colour, size.size')
-                            ->where('product.id', $product->id)
-                            ->get()->getRow();
+                ->join('tblcolour as colour', 'colour.id = product.product_colour_id')
+                ->join('tblsizes as size', 'size.id = product.product_size_id')
+                ->select('product.id as product_id, product_name, product_code, colour.colour_name as colour, size.id as size_id, size.size')
+                ->where('product.id', $product->product_id)
+                ->get()->getRow();
             
             $product_data->product_qty = $product->product_qty;
             $data_return[] = $product_data;
