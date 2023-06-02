@@ -22,17 +22,6 @@ class Style extends BaseController
         return view('style/index', $data);
     }
 
-    // public function save()
-    // {
-    //     $data = array(
-    //         'id'                => $this->request->getVar('id'),
-    //         'style_no'          => $this->request->getVar('number'),
-    //         'style_description' => $this->request->getVar('description'),
-    //     );
-    //     $this->StyleModel->saveStyle($data);
-    //     return redirect()->to('/style');
-    // }
-
     public function update()
     {
         $id = $this->request->getVar('id');

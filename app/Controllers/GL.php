@@ -43,7 +43,7 @@ class GL extends BaseController
             'season'        => $this->request->getVar('season'),
             'size_order'    => $this->request->getVar('size_order'),
         );
-        $this->glModel->saveGl($data);
+        $this->glModel->save($data);
         return redirect()->to('/gl');
     }
 

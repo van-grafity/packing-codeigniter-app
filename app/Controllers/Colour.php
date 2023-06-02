@@ -27,7 +27,7 @@ class Colour extends BaseController
         $data = array(
             'colour_name'  => $this->request->getVar('name'),
         );
-        $this->ColourModel->saveColour($data);
+        $this->ColourModel->save($data);
         return redirect()->to('/colour');
     }
 

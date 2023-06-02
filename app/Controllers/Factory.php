@@ -30,7 +30,7 @@ class Factory extends BaseController
             'incharge'  => $this->request->getVar('incharge'),
             'remarks'   => $this->request->getVar('remarks'),
         );
-        $this->FactoryModel->saveFactory($data);
+        $this->FactoryModel->save($data);
         return redirect()->to('/factory');
     }
 

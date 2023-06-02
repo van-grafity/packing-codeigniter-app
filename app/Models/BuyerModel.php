@@ -21,7 +21,7 @@ class BuyerModel extends Model
         if ($code == false) {
             return $this->db->table('tblbuyer')->get();
         }
-        return $this->where(['code' => $code])->first();
+        return $this->where(['id' => $code])->first();
     }
 
     public function updateBuyer($data, $id)

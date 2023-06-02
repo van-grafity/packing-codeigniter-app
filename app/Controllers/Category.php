@@ -27,7 +27,7 @@ class Category extends BaseController
         $data = array(
             'category_name'          => $this->request->getVar('name'),
         );
-        $this->CategoryModel->saveCategory($data);
+        $this->CategoryModel->save($data);
         return redirect()->to('/category');
     }
 

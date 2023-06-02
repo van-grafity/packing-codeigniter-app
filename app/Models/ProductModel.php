@@ -33,12 +33,6 @@ class ProductModel extends Model
         return $builder->where(['code' => $code])->get();
     }
 
-    public function saveProduct($data)
-    {
-        $query = $this->db->table('tblproduct')->insert($data);
-        return $query;
-    }
-
     public function updateProduct($data, $id)
     {
         $query = $this->db->table('tblproduct')->update($data, array('id' => $id));

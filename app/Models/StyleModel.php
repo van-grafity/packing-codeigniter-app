@@ -21,12 +21,6 @@ class StyleModel extends Model
         return $this->where(['id' => $code])->first();
     }
 
-    // public function saveStyle($data)
-    // {
-    //     $query = $this->db->table('tblstyles')->insert($data);
-    //     return $query;
-    // }
-
     public function updateStyle($data, $id)
     {
         $query = $this->db->table('tblstyles')->update($data, array('id' => $id));
