@@ -27,13 +27,13 @@ class Category extends BaseController
         $data = array(
             'category_name'          => $this->request->getVar('name'),
         );
-        $this->CategoryModel->saveCategory($data);
+        $this->CategoryModel->save($data);
         return redirect()->to('/category');
     }
 
     public function update()
     {
-        $id = $this->request->getVar('id');
+        $id = $this->request->getVar('edit_category_id');
         $data = array(
             'id'                => $this->request->getVar('id'),
             'category_name'          => $this->request->getVar('name'),
@@ -44,7 +44,7 @@ class Category extends BaseController
 
     public function delete()
     {
-        $id = $this->request->getVar('id');
+        $id = $this->request->getVar('category_id');
         $this->CategoryModel->deleteCategory($id);
         return redirect()->to('category');
     }

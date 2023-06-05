@@ -13,18 +13,12 @@ class StyleModel extends Model
         'style_description',
     ];
 
-    public function getStyles($id = false)
+    public function getStyles($code = false)
     {
-        if ($id == false) {
+        if ($code == false) {
             return $this->db->table('tblstyles')->get();
         }
-        return $this->where(['id' => $id])->first();
-    }
-
-    public function saveStyle($data)
-    {
-        $query = $this->db->table('tblstyles')->insert($data);
-        return $query;
+        return $this->where(['id' => $code])->first();
     }
 
     public function updateStyle($data, $id)

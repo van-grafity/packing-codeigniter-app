@@ -16,18 +16,6 @@ class GLModel extends Model
         'size_order',
     ];
 
-    public function getBuyer()
-    {
-        $builder = $this->db->table('tblBuyer');
-        return $builder->get();
-    }
-
-    public function getStyles()
-    {
-        $builder = $this->db->table('tblstyles');
-        return $builder->get();
-    }
-
     public function getGL($code = false)
     {
         if ($code == false) {
@@ -41,16 +29,10 @@ class GLModel extends Model
         $builder->select('tblgl.*, tblbuyer.buyer_name, tblstyles.style_description');
         $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id', 'left');
         $builder->join('tblstyles', 'tblstyles.id = tblgl.style_id', 'left');
-        return $builder->where(['code' => $code])->get();
+        return $builder->where(['id' => $code])->get();
     }
 
-    public function saveGl($data)
-    {
-        $query = $this->db->table('tblgl')->insert($data);
-        return $query;
-    }
-
-    public function updateStyle($data, $id)
+    public function updateGL($data, $id)
     {
         $query = $this->db->table('tblgl')->update($data, array('id' => $id));
         return $query;

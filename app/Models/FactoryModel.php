@@ -19,13 +19,7 @@ class FactoryModel extends Model
         if ($code == false) {
             return $this->db->table('tblfactory')->get();
         }
-        return $this->where(['code' => $code])->first();
-    }
-
-    public function saveFactory($data)
-    {
-        $query = $this->db->table('tblfactory')->insert($data);
-        return $query;
+        return $this->where(['id' => $code])->first();
     }
 
     public function updateFactory($data, $id)

@@ -73,6 +73,12 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="../index.php/colour" class="nav-link">
+                                        <i class="nav-icon fa fa-palette"></i>
+                                        <p>Colour</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="../index.php/category" class="nav-link">
                                         <i class="nav-icon fas fa-tshirt"></i>
                                         <p>Product Type</p>
@@ -210,12 +216,6 @@
                                 <p>Documentation</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-file"></i>
-                                <p>Contoh</p>
-                            </a>
-                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -280,7 +280,7 @@
 
     <!-- Custom JS | Utility -->
     <script src="<?= base_url(); ?>assets/js/utils.js"></script>
-    
+
     <!-- Page specific script -->
     <script>
         $(function() {
