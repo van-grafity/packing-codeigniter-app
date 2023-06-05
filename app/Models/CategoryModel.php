@@ -10,18 +10,12 @@ class CategoryModel extends Model
     protected $useTimestamps = true;
     protected $allowedFields = ['category_name'];
 
-    public function getCategory($id = false)
+    public function getCategory($code = false)
     {
-        if ($id == false) {
+        if ($code == false) {
             return $this->db->table('tblcategory')->get();
         }
-        return $this->where(['id' => $id])->first();
-    }
-
-    public function saveCategory($data)
-    {
-        $query = $this->db->table('tblcategory')->insert($data);
-        return $query;
+        return $this->where(['id' => $code])->first();
     }
 
     public function updateCategory($data, $id)

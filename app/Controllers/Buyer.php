@@ -64,8 +64,7 @@ class Buyer extends BaseController
 
     public function update()
     {
-        $id = $this->request->getPost('buyer_id');
-        // $code = url_title($this->request->getVar('name'), '-', true);
+        $id = $this->request->getVar('edit_buyer_id');
 
         $data = array(
             'buyer_name'    => $this->request->getVar('name'),
@@ -73,6 +72,7 @@ class Buyer extends BaseController
             'shipadd'       => $this->request->getVar('shipadd'),
             'country' => $this->request->getVar('country'),
         );
+        // dd($this->request->getvar());
         $this->buyerModel->updateBuyer($data, $id);
         session()->setFlashdata('pesan', 'Data Updated');
         return redirect()->to('buyer');

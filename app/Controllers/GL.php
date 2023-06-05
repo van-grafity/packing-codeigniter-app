@@ -2,15 +2,21 @@
 
 namespace App\Controllers;
 
+use App\Models\BuyerModel;
 use App\Models\GlModel;
+use App\Models\StyleModel;
 
 class GL extends BaseController
 {
+    protected $BuyerModel;
     protected $glModel;
+    protected $StyleModel;
 
     public function __construct()
     {
         $this->glModel = new GlModel();
+        $this->BuyerModel = new BuyerModel();
+        $this->StyleModel = new StyleModel();
     }
 
     public function index()
@@ -18,8 +24,8 @@ class GL extends BaseController
         $data = [
             'title'     => 'List of GL',
             'gl'        => $this->glModel->getGL()->getResult(),
-            'buyer'     => $this->glModel->getBuyer()->getResult(),
-            'style'     => $this->glModel->getStyles()->getResult(),
+            'buyer'     => $this->BuyerModel->getBuyer()->getResult(),
+            'style'     => $this->StyleModel->getStyles()->getResult(),
         ];
 
         // $glku = $this->glModel->getGL()->getResult();
@@ -37,7 +43,7 @@ class GL extends BaseController
             'season'        => $this->request->getVar('season'),
             'size_order'    => $this->request->getVar('size_order'),
         );
-        $this->glModel->saveGl($data);
+        $this->glModel->save($data);
         return redirect()->to('/gl');
     }
 
@@ -52,7 +58,7 @@ class GL extends BaseController
             'style_id'      => $this->request->getVar('gl_style'),
             'size_order'    => $this->request->getVar('size_order'),
         );
-        $this->glModel->updateStyle($data, $id);
+        $this->glModel->updateGL($data, $id);
         return redirect()->to('/gl');
     }
     public function delete()

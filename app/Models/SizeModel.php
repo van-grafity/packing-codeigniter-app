@@ -18,7 +18,7 @@ class SizeModel extends Model
         if ($code == false) {
             return $this->db->table('tblsizes')->get();
         }
-        return $this->where(['code' => $code])->first();
+        return $this->where(['id' => $code])->first();
     }
 
     public function updateSize($data, $id)
