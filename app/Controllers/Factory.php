@@ -26,7 +26,7 @@ class Factory extends BaseController
     {
         $data = array(
             'id'        => $this->request->getVar('id'),
-            'name'      => $this->request->getVar('fty_name'),
+            'name'      => $this->request->getVar('name'),
             'incharge'  => $this->request->getVar('incharge'),
             'remarks'   => $this->request->getVar('remarks'),
         );
@@ -36,7 +36,8 @@ class Factory extends BaseController
 
     public function update()
     {
-        $id = $this->request->getVar('id');
+        $id = $this->request->getVar('edit_factory_id');
+
         $data = array(
             'id'        => $this->request->getVar('id'),
             'name'      => $this->request->getVar('name'),
