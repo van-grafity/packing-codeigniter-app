@@ -69,19 +69,19 @@
                             </tr>
                             <tr>
                                 <td><b>Ship Qty.</b></td>
-                                <td>290</td> <!-- esc($packinglist->packinglist_ship_qty);  -->
+                                <td><?= esc($packinglist->packinglist_ship_qty); ?></td>
                                 <td><b>Customer</b></td>
                                 <td> xxxxx </td>
                             </tr>
                             <tr>
                                 <td><b>Total Carton</b></td>
-                                <td> xxxxx </td>
+                                <td> <?= esc($packinglist->total_carton); ?> </td>
                                 <td><b>Ship Date</b></td>
                                 <td><?= esc($packinglist->shipdate); ?></td>
                             </tr>
                             <tr>
                                 <td><b>Percentage Ship</b></td>
-                                <td> xxxxx </td>
+                                <td> <?= esc($packinglist->percentage_ship); ?> </td>
                                 <td></td>
                                 <td></td>
                             </tr>

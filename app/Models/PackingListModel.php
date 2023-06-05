@@ -64,4 +64,67 @@ class PackingListModel extends Model
         return $result;
     }
 
+    public function sync_with_packinglist_carton($packinglist_id = null)
+    {
+        if(!$packinglist_id) { 
+            return [
+                'status' => false,
+                'message' => "Please provide a packinglist ID.",
+            ]; 
+        };
+
+        $data_update = [
+            'packinglist_cutting_qty' => $this->get_ship_qty($packinglist_id),
+            'packinglist_ship_qty' => $this->get_ship_qty($packinglist_id),
+            'packinglist_amount' => $this->get_packinglist_amount($packinglist_id),
+        ];
+        
+        $builder = $this->db->table('tblpackinglist');
+        $builder->where('id',$packinglist_id);
+        $builder->update($data_update);
+
+        $result = $builder->where('id',$packinglist_id)->get()->getRow();
+        return $result;
+    }
+
+    public function get_total_carton($packinglist_id = null)
+    {
+        $builder = $this->db->table('tblpackinglistcarton');
+        $builder->selectSum('carton_qty');
+        $builder->where('packinglist_id', $packinglist_id);
+        $result = $builder->get()->getRow();
+        return $result->carton_qty;
+    }
+    
+    public function get_ship_qty($packinglist_id = null)
+    {
+        $builder = $this->db->table('tblcartondetail as carton_detail');
+        $builder->select('sum(carton_detail.product_qty * pl_carton.carton_qty) as ship_qty');
+        $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_detail.packinglist_carton_id');
+        $builder->where('pl_carton.packinglist_id',$packinglist_id);
+        $result = $builder->get()->getRow();
+        return $result->ship_qty;
+    }
+
+    public function get_percentage_ship($packinglist_id = null)
+    {
+        $builder = $this->db->table('tblpackinglist as packinglist');
+        $builder->where('packinglist.id',$packinglist_id);
+        $order_qty = $builder->get()->getRow()->packinglist_qty;
+        $ship_qty = $this->get_ship_qty($packinglist_id);
+        $percentage_ship = round($ship_qty / $order_qty * 100) . '%';
+        return $percentage_ship;
+    }
+
+    public function get_packinglist_amount($packinglist_id = null)
+    {
+        $builder = $this->db->table('tblcartondetail as carton_detail');
+        $builder->select('sum(carton_detail.product_qty * pl_carton.carton_qty * product.product_price) as packinglist_amount');
+        $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_detail.packinglist_carton_id');
+        $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
+        $builder->where('pl_carton.packinglist_id',$packinglist_id);
+        $result = $builder->get()->getRow();
+        return $result->packinglist_amount;
+    }
+
 }

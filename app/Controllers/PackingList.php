@@ -43,8 +43,6 @@ class PackingList extends BaseController
             'po_list'       => $this->PurchaseOrderModel->getPO()->getResult(),
 
         ];
-        // dd($data);
-        // return view('PL/index', $data);
         return view('packinglist/index', $data);
     }
 
@@ -69,7 +67,8 @@ class PackingList extends BaseController
         return redirect()->to('packinglist');
     }
 
-    public function update() {
+    public function update() 
+    {
         $packinglist_data = [
             'packinglist_po_id' => $this->request->getPost('po_no'),
             'packinglist_qty' => $this->request->getPost('order_qty'),
@@ -128,9 +127,12 @@ class PackingList extends BaseController
             ];
         }
 
+        $packinglist = $this->PackingListModel->getPackingList($id);
+        $packinglist->total_carton = $this->PackingListModel->get_total_carton($id);
+        $packinglist->percentage_ship = $this->PackingListModel->get_percentage_ship($id);
         $data = [
             'title'         => 'Packing List Detail',
-            'packinglist'   => $this->PackingListModel->getPackingList($id),
+            'packinglist'   => $packinglist,
             'products'   => $this->ProductModel->getByPackinglist($id),
             'packinglist_carton'   => $packinglist_carton_data,
             'packinglist_size_list'   => $packinglist_size_list,
@@ -142,7 +144,6 @@ class PackingList extends BaseController
 
     public function cartonstore()
     {
-        // dd($this->request->getPost());
         $packinglist_id = $this->request->getPost('packinglist_id');
         $products_in_carton = $this->request->getPost('products_in_carton');
         $products_in_carton_qty = $this->request->getPost('products_in_carton_qty');
@@ -169,18 +170,18 @@ class PackingList extends BaseController
                     $this->CartonDetailModel->insert($carton_detail_data);
                 }
             }
-
+    
+            $sync_prosses = $this->PackingListModel->sync_with_packinglist_carton($packinglist_id);
             $this->PackinglistCartonModel->transComplete();
         } catch (DatabaseException $e) {
             // Automatically rolled back already.
 
         }
-
         return redirect()->to('packinglist/'.$packinglist_id);
     }
 
-    public function cartonedit() {
-        
+    public function cartonedit() 
+    {
         $id = $this->request->getGet('id');
         $packinglist_carton = $this->PackinglistCartonModel->find($id);
         $carton_detail = $this->PackinglistCartonModel->getProductsInCarton($id);
@@ -193,20 +194,59 @@ class PackingList extends BaseController
                 'carton_detail' => $carton_detail,
             ],
         ];
-
         return $this->response->setJSON($data_return);
     }
 
-    public function cartonupdate() {
-        dd("masuk");
+    public function cartonupdate() 
+    {
+        $packinglist_carton_id = $this->request->getPost('edit_packinglist_carton_id');
         
+        $packinglist_id = $this->request->getPost('packinglist_id');
+        $products_in_carton = $this->request->getPost('products_in_carton');
+        $products_in_carton_qty = $this->request->getPost('products_in_carton_qty');
+
+        try {
+            $this->PackinglistCartonModel->transException(true)->transStart();
+
+            $packinglist_carton_data = [
+                'packinglist_id' => $this->request->getPost('packinglist_id'),
+                'carton_qty' => $this->request->getPost('carton_qty'),
+                'gross_weight' => $this->request->getPost('gross_weight'),
+                'net_weight' => $this->request->getPost('net_weight'),
+                'carton_number_from' => $this->request->getPost('carton_number_from'),
+                'carton_number_to' => $this->request->getPost('carton_number_to'),
+            ];
+            $this->PackinglistCartonModel->update($packinglist_carton_id,$packinglist_carton_data);
+            
+            $this->CartonDetailModel->where('packinglist_carton_id', $packinglist_carton_id)->delete();
+            if ($products_in_carton) {
+                foreach ($products_in_carton as $key => $product_id) {
+                    $carton_detail_data = [
+                        'packinglist_carton_id' => $packinglist_carton_id,
+                        'product_id' => $product_id,
+                        'product_qty' => $products_in_carton_qty[$key],
+                    ];
+                    $this->CartonDetailModel->insert($carton_detail_data);
+                }
+            }
+            $sync_prosses = $this->PackingListModel->sync_with_packinglist_carton($packinglist_id);
+            $this->PackinglistCartonModel->transComplete();
+        } catch (DatabaseException $e) {
+            // Automatically rolled back already.
+
+        }
+        return redirect()->to('packinglist/'.$packinglist_id);
     }
     
-    public function cartondelete() {
+    public function cartondelete() 
+    {
         $id = $this->request->getPost('packinglist_carton_id');
         $packinglist_id = $this->request->getPost('packinglist_id');
 
         $delete = $this->PackinglistCartonModel->delete($id);
+        $sync_prosses = $this->PackingListModel->sync_with_packinglist_carton($packinglist_id);
+
+        $sync_prosses = $this->PackingListModel->sync_with_packinglist_carton($packinglist_id);
         return redirect()->to('packinglist/'. $packinglist_id);
     }
 
