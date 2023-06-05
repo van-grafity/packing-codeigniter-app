@@ -61,6 +61,8 @@ class PackingList extends BaseController
             'packinglist_date' => $this->request->getPost('packinglist_date'),
             'packinglist_po_id' => $this->request->getPost('po_no'),
             'packinglist_qty' => $this->request->getPost('order_qty'),
+            'destination' => $this->request->getPost('destination'),
+            'department' => $this->request->getPost('department'),
         ];
         
         $packing_id = $this->PackingListModel->insert($packinglist_data);
@@ -72,6 +74,8 @@ class PackingList extends BaseController
         $packinglist_data = [
             'packinglist_po_id' => $this->request->getPost('po_no'),
             'packinglist_qty' => $this->request->getPost('order_qty'),
+            'destination' => $this->request->getPost('destination'),
+            'department' => $this->request->getPost('department'),
         ];
         $id = $this->request->getPost('edit_packinglist_id');
         $this->PackingListModel->update($id,$packinglist_data);
@@ -129,6 +133,7 @@ class PackingList extends BaseController
 
         $packinglist = $this->PackingListModel->getPackingList($id);
         $packinglist->total_carton = $this->PackingListModel->get_total_carton($id);
+        
         $packinglist->percentage_ship = $this->PackingListModel->get_percentage_ship($id);
         $data = [
             'title'         => 'Packing List Detail',

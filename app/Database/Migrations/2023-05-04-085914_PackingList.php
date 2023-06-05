@@ -45,6 +45,16 @@ class PackingList extends Migration
                 'type' => 'INT',
                 'constraint' => 11,
             ],
+            'destination' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'null' => true,
+            ],
+            'department' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'null' => true,
+            ],
             'created_at' => [
                 'type' => 'TIMESTAMP',
                 'null' => true,

@@ -17,6 +17,8 @@ class PackingListModel extends Model
         'packinglist_cutting_qty',
         'packinglist_ship_qty',
         'packinglist_amount',
+        'destination',
+        'department',
     ];
 
     public function getPackingList($id = false)
@@ -93,7 +95,7 @@ class PackingListModel extends Model
         $builder->selectSum('carton_qty');
         $builder->where('packinglist_id', $packinglist_id);
         $result = $builder->get()->getRow();
-        return $result->carton_qty;
+        return $result->carton_qty ? $result->carton_qty : 0;
     }
     
     public function get_ship_qty($packinglist_id = null)

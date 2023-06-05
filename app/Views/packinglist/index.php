@@ -42,6 +42,8 @@
                                         data-order-qty = "<?= esc($PL->packinglist_qty)?>"
                                         data-shipdate = "<?= esc($PL->shipdate)?>"
                                         data-packinglist-date = "<?= esc($PL->packinglist_date)?>"
+                                        data-destination = "<?= esc($PL->destination)?>"
+                                        data-department = "<?= esc($PL->department)?>"
                                     >Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" 
                                         data-id = "<?= esc($PL->id)?>"
@@ -118,8 +120,22 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="PL_Date">Packing List Date :</label>
+                                <label for="packinglist_date">Packing List Date :</label>
                                 <input type="date" class="form-control" id="packinglist_date" name="packinglist_date" placeholder="Packing List Date" value="<?= date('Y-m-d'); ?>" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="destination">Destionation :</label>
+                                <input type="text" class="form-control" id="destination" name="destination" placeholder="Destionation">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="department">Department :</label>
+                                <input type="text" class="form-control" id="department" name="department" placeholder="Department">
                             </div>
                         </div>
                     </div>
@@ -192,6 +208,8 @@ $(document).ready(function() {
         let order_qty = $(this).data('order-qty');
         let shipdate = $(this).data('shipdate');
         let packinglist_date = $(this).data('packinglist-date');
+        let destination = $(this).data('destination');
+        let department = $(this).data('department');
 
         $('.modal-title').text(`Edit Packing List (${serial_number})`);
         $('.btn-submit').text("Save")
@@ -203,6 +221,8 @@ $(document).ready(function() {
         $('#order_qty').val(order_qty);
         $('#shipdate').val(shipdate);
         $('#packinglist_date').val(packinglist_date);
+        $('#destination').val(destination);
+        $('#department').val(department);
 
         $('#packinglist_modal').modal('show');
     })

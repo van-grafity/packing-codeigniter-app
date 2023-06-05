@@ -59,13 +59,13 @@
                                 <td><b>Order Qty.</b></td>
                                 <td><?= esc($packinglist->packinglist_qty); ?></td>
                                 <td><b>Destination</b></td>
-                                <td> xxxxx </td>
+                                <td> <?= esc($packinglist->destination); ?> </td>
                             </tr>
                             <tr>
                                 <td><b>Cut Qty.</b></td>
                                 <td><?= esc($packinglist->packinglist_cutting_qty); ?></td>
                                 <td><b>Departments</b></td>
-                                <td> xxxxx </td>
+                                <td> <?= esc($packinglist->department); ?> </td>
                             </tr>
                             <tr>
                                 <td><b>Ship Qty.</b></td>
