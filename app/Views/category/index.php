@@ -68,6 +68,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="btn_submit">Save</button>
                 </div>
+            </form>
         </div>
     </div>
 </div>
