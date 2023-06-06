@@ -49,7 +49,7 @@ class GL extends BaseController
 
     public function update()
     {
-        $id = $this->request->getVar('id');
+        $id = $this->request->getVar('edit_gl_id');
         $data = array(
             'id'             => $this->request->getVar('id'),
             'gl_number'     => $this->request->getVar('number'),
@@ -63,7 +63,7 @@ class GL extends BaseController
     }
     public function delete()
     {
-        $id = $this->request->getVar('glid');
+        $id = $this->request->getVar('gl_id');
         $this->glModel->deleteGL($id);
         return redirect()->to('gl');
     }

@@ -101,7 +101,7 @@
 <script>
     $(document).ready(function() {
         // ## prevent submit form when keyboard press enter
-        $('#purchase_order_form input').on('keyup keypress', function(e) {
+        $('#colour_form input').on('keyup keypress', function(e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) {
                 e.preventDefault();
