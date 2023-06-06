@@ -45,7 +45,7 @@ class ProductModel extends Model
         return $query;
     }
 
-    public function getByPackinglist($po_id)
+    public function getByPurchaseOrderID($po_id)
     {
         $builder = $this->db->table('tblproduct as product');
         $builder->select('product.*, colour.colour_name as colour, style.style_description as style, size.size, category.category_name as category');

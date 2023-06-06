@@ -10,6 +10,7 @@ class CartonBarcodeModel extends Model
     protected $table            = 'tblcartonbarcode';
     protected $useTimestamps    = true;
     protected $allowedFields    = [
+        'packinglist_id',
         'packinglist_carton_id',
         'carton_number_by_system',
         'carton_number_by_input',
@@ -22,7 +23,8 @@ class CartonBarcodeModel extends Model
         $additionalUpdateField = ['updated_at' => new RawSql('CURRENT_TIMESTAMP')];
         $builder = $this->db->table('tblcartonbarcode');
         $builder->updateFields($additionalUpdateField, true);
-        $builder->updateBatch($data_array, ['packinglist_carton_id','carton_number_by_system']);
+        $result = $builder->updateBatch($data_array, ['packinglist_id','carton_number_by_system']);
+        return $result;
     }
 
     public function update_barcode_v2($data_array)

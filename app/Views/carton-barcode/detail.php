@@ -97,7 +97,7 @@
                     <div class="col-sm-6">
                         <form action="<?= base_url('cartonbarcode/import_excel')?>" method="post" id="packinglist_form" enctype="multipart/form-data">
                             <?= csrf_field(); ?>
-                            <input type="hidden">
+                            <input type="hidden" name="packinglist_id" value="<?= $packinglist->id?>">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">

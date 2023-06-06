@@ -63,24 +63,32 @@ class CartonBarcode extends BaseController
 
     public function import_excel()
     {
-        $file = $this->request->getFile('file_excel');
-        $spreadsheet = IOFactory::load($file->getTempName());
-        $worksheet = $spreadsheet->getActiveSheet();
-        
-        $excel_to_array = $this->parsing_excel_to_array($worksheet);
-        $excel_to_array = $excel_to_array['data'];
-        $data_to_update = array_walk($excel_to_array, function (&$item, $key) {
-            $item['packinglist_carton_id'] = '2';
-        });
+        try {
+            $packinglist_id = $this->request->getPost('packinglist_id');
+            
+            $file = $this->request->getFile('file_excel');
+            $spreadsheet = IOFactory::load($file->getTempName());
+            $worksheet = $spreadsheet->getActiveSheet();
+            
+            $excel_to_array = $this->parse_excel_to_array($worksheet);
+            $data_to_update = $excel_to_array['data'];
+            array_walk($data_to_update, function (&$item, $key) use ($packinglist_id){
+                $item['packinglist_id'] = $packinglist_id;
+            });
+    
+            // $update_barcode = $this->CartonBarcodeModel->insertBatch($excel_to_array);
+            // $update_barcode = $this->CartonBarcodeModel->updateBatch($excel_to_array);
+            $this->CartonBarcodeModel->transException(true)->transStart();
+            
+            $update_barcode = $this->CartonBarcodeModel->update_barcode($data_to_update);
+            
+            // $update_barcode = $this->CartonBarcodeModel->update_barcode_v2($excel_to_array);
 
-        // $update_barcode = $this->CartonBarcodeModel->insertBatch($excel_to_array);
-        // $update_barcode = $this->CartonBarcodeModel->updateBatch($excel_to_array);
-        $update_barcode = $this->CartonBarcodeModel->update_barcode($excel_to_array);
-        // $update_barcode = $this->CartonBarcodeModel->update_barcode_v2($excel_to_array);
-
-        // dd($update_barcode);
-        
-        return redirect()->to('cartonbarcode');
+            $this->CartonBarcodeModel->transComplete();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        return redirect()->to('cartonbarcode/'.$packinglist_id);
     }
 
     public function generatecarton()
@@ -106,7 +114,7 @@ class CartonBarcode extends BaseController
 
             $this->CartonBarcodeModel->transComplete();
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
         }
         
         return redirect()->to('cartonbarcode');
@@ -120,6 +128,7 @@ class CartonBarcode extends BaseController
             $carton_qty = $packinglist_carton->carton_qty;
             for ($i=0; $i < $carton_qty; $i++) { 
                 $carton_barcode = [
+                    'packinglist_id' => $packinglist_carton->packinglist_id,
                     'packinglist_carton_id' => $packinglist_carton->id,
                     'carton_number_by_system' => $carton_number_by_system,
                 ];
@@ -130,7 +139,7 @@ class CartonBarcode extends BaseController
         return $result;
     }
 
-    private function parsing_excel_to_array($worksheet)
+    private function parse_excel_to_array($worksheet)
     {
         $data = [];
         $firstRow = true;

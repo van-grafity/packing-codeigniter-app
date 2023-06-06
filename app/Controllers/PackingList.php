@@ -138,12 +138,15 @@ class PackingList extends BaseController
         $data = [
             'title'         => 'Packing List Detail',
             'packinglist'   => $packinglist,
-            'products'   => $this->ProductModel->getByPackinglist($id),
+            'products'   => $this->ProductModel->getByPurchaseOrderID($packinglist->po_id),
             'packinglist_carton'   => $packinglist_carton_data,
             'packinglist_size_list'   => $packinglist_size_list,
             'size_colspan'   => count($packinglist_size_list),
             'size_rowspan'   => count($packinglist_size_list) ?  1 : 2,
         ];
+
+        // dd($data['products']);
+        
         return view('packinglist/detail', $data);
     }
 

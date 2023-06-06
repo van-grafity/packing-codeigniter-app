@@ -16,6 +16,10 @@ class CartonBarcode extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
+            'packinglist_id' => [
+                'type' => 'bigint',
+                'unsigned' => true,
+            ],
             'packinglist_carton_id' => [
                 'type' => 'bigint',
                 'unsigned' => true,
@@ -42,6 +46,7 @@ class CartonBarcode extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('packinglist_id', 'tblpackinglist', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('packinglist_carton_id', 'tblpackinglistcarton', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable($this->table);
     }
