@@ -20,11 +20,13 @@ class CartonBarcode extends Migration
                 'type' => 'bigint',
                 'unsigned' => true,
             ],
-            'carton_nuber_by_system' => [
+            'carton_number_by_system' => [
                 'type' => 'int',
+                'null' => true,
             ],
-            'carton_nuber_by_input' => [
+            'carton_number_by_input' => [
                 'type' => 'int',
+                'null' => true,
             ],
             'barcode' => [
                 'type' => 'varchar',
