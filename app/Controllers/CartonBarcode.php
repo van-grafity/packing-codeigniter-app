@@ -47,7 +47,13 @@ class CartonBarcode extends BaseController
             $item['packinglist_carton_id'] = '2';
         });
 
-        $this->CartonBarcodeModel->update_barcode($excel_to_array);
+        // $update_barcode = $this->CartonBarcodeModel->insertBatch($excel_to_array);
+        // $update_barcode = $this->CartonBarcodeModel->updateBatch($excel_to_array);
+        $update_barcode = $this->CartonBarcodeModel->update_barcode($excel_to_array);
+        // $update_barcode = $this->CartonBarcodeModel->update_barcode_v2($excel_to_array);
+
+        // dd($update_barcode);
+        
         return redirect()->to('cartonbarcode');
     }
 
