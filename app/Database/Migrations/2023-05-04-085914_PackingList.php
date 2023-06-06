@@ -55,6 +55,11 @@ class PackingList extends Migration
                 'constraint' => 255,
                 'null' => true,
             ],
+            'flag_generate_carton' => [
+                'type' => 'char',
+                'constraint' => '2',
+                'default' => 'N',
+            ],
             'created_at' => [
                 'type' => 'TIMESTAMP',
                 'null' => true,

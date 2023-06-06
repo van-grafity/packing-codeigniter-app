@@ -1,4 +1,4 @@
-    .table>tbody>tr>* {
+    /* .table>tbody>tr>* {
         vertical-align: middle;
     }
 
@@ -8,4 +8,8 @@
 
     .gambar {
         width: 90px;
+    } */
+
+    a.btn.disabled {
+        cursor: not-allowed !important;
     }

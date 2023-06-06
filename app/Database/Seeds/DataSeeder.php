@@ -20,7 +20,7 @@ class DataSeeder extends Seeder
         $this->call('PurchaseOrderSeeder');
         $this->call('PurchaseOrderDetailSeeder');
         $this->call('PackingListSeeder');
-        // $this->call('CartonBarcodeSeeder');
-        // $this->call('CartonRatioSeeder');
+        $this->call('PackinglistCartonSeeder');
+        $this->call('CartonDetailSeeder');
     }
 }

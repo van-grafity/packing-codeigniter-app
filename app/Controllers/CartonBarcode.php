@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\CartonBarcodeModel;
 use App\Models\PackingListModel;
+use App\Models\PackinglistCartonModel;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -16,22 +17,32 @@ class CartonBarcode extends BaseController
 {
     protected $CartonBarcodeModel;
     protected $PackingListModel;
+    protected $PackinglistCartonModel;
 
     public function __construct()
     {
         $this->CartonBarcodeModel = new CartonBarcodeModel();
         $this->PackingListModel = new PackingListModel();
+        $this->PackinglistCartonModel = new PackinglistCartonModel();
     }
 
     public function index()
     {
-
+        $packinglist = $this->PackingListModel->getPackingList();
+        array_walk($packinglist, function (&$item, $key) {
+            if($item->flag_generate_carton == 'Y') {
+                $item->btn_generate_class = 'd-none';
+                $item->btn_detail_class = 'd-inline-block';
+            } else {
+                $item->btn_generate_class = 'd-inline-block';
+                $item->btn_detail_class = 'd-none';
+            }
+        });
+        
         $data = [
             'title' => 'Carton Barcode Setup',
-            'packinglist' => $this->PackingListModel->getPackingList(),
+            'packinglist' => $packinglist,
         ];
-
-        // return view('carton/index', $data);
         return view('carton-barcode/index', $data);
     }
 
@@ -70,6 +81,53 @@ class CartonBarcode extends BaseController
         // dd($update_barcode);
         
         return redirect()->to('cartonbarcode');
+    }
+
+    public function generatecarton()
+    {
+        try {
+            $packinglist_id = $this->request->getPost('packinglist_id');
+            
+            $packinglist_carton = $this->PackinglistCartonModel->getDataByPackinglist($packinglist_id);
+            $array_of_carton = $this->generate_array_of_carton($packinglist_carton);
+            
+            $this->CartonBarcodeModel->transException(true)->transStart();
+            if(!empty($array_of_carton)){
+                $this->CartonBarcodeModel->insertBatch($array_of_carton);
+            }
+            
+            // ## update flag on packinglist and packinglist carton
+            $data_update = [
+                'flag_generate_carton' => 'Y',
+                'updated_at'    => now(),
+            ];
+            $this->PackinglistCartonModel->where('packinglist_id', $packinglist_id)->set($data_update)->update();
+            $this->PackingListModel->update($packinglist_id,$data_update);
+
+            $this->CartonBarcodeModel->transComplete();
+        } catch (\Throwable $th) {
+            // throw $th;
+        }
+        
+        return redirect()->to('cartonbarcode');
+    }
+
+    private function generate_array_of_carton($data_packinglist_carton)
+    {
+        $result = [];
+        $carton_number_by_system = 1;
+        foreach ($data_packinglist_carton as $key => $packinglist_carton) {
+            $carton_qty = $packinglist_carton->carton_qty;
+            for ($i=0; $i < $carton_qty; $i++) { 
+                $carton_barcode = [
+                    'packinglist_carton_id' => $packinglist_carton->id,
+                    'carton_number_by_system' => $carton_number_by_system,
+                ];
+                $result[] = $carton_barcode;
+                $carton_number_by_system++;
+            }
+        }
+        return $result;
     }
 
     private function parsing_excel_to_array($worksheet)

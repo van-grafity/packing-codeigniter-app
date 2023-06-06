@@ -16,6 +16,7 @@ class PackinglistCartonModel extends Model
         'net_weight',
         'carton_number_from',
         'carton_number_to',
+        'flag_generate_carton',
     ];
 
     public function getDataByPackinglist($packinglist_id = null) {

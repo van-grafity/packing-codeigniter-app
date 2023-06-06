@@ -55,6 +55,7 @@ $routes->post('/packinglistcarton/update', 'PackingList::cartonupdate');
 
 $routes->get('cartonbarcode', 'CartonBarcode::index');
 $routes->get('cartonbarcode/(:num)', 'CartonBarcode::detail/$1');
+$routes->get('cartonbarcode/generatecarton', 'CartonBarcode::generatecarton');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

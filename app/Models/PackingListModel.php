@@ -19,6 +19,7 @@ class PackingListModel extends Model
         'packinglist_amount',
         'destination',
         'department',
+        'flag_generate_carton',
     ];
 
     public function getPackingList($id = false)

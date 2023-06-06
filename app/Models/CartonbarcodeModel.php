@@ -19,13 +19,10 @@ class CartonBarcodeModel extends Model
 
     public function update_barcode($data_array)
     {
-        // dd($data_array);
-        
         $additionalUpdateField = ['updated_at' => new RawSql('CURRENT_TIMESTAMP')];
         $builder = $this->db->table('tblcartonbarcode');
         $builder->updateFields($additionalUpdateField, true);
         $builder->updateBatch($data_array, ['packinglist_carton_id','carton_number_by_system']);
-        // $builder->insertBatch($data_array);
     }
 
     public function update_barcode_v2($data_array)
@@ -46,6 +43,7 @@ class CartonBarcodeModel extends Model
         $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
         $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
         $builder->join('tblsizes as size', 'size.id = product.product_size_id');
+        $builder->orderBy('carton_barcode.id');
         $builder->where('pl_carton.packinglist_id', $packinglist_id);
         $result = $builder->get()->getResult();
         return $result;

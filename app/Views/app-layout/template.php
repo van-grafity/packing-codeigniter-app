@@ -30,9 +30,13 @@
     <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-
+    
     <!-- Theme style -->
     <link rel="stylesheet" href="css/adminlte.min.css">
+    
+    
+    <!-- Custom style -->
+    <link rel="stylesheet" href="css/scanpack.css">
 
     <script src="plugins/jquery/jquery.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

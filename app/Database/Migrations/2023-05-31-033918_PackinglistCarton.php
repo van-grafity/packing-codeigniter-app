@@ -35,6 +35,11 @@ class PackinglistCarton extends Migration
             'carton_number_to' => [
                 'type' => 'int',
             ],
+            'flag_generate_carton' => [
+                'type' => 'char',
+                'constraint' => '2',
+                'default' => 'N',
+            ],
             'created_at'  => [
                 'type' => 'datetime', 
                 'null' => true

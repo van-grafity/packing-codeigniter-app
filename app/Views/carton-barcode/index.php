@@ -36,8 +36,12 @@
                             <td><?= $pl->PO_No; ?></td>
                             <td><?= $pl->gl_number; ?></td>
                             <td class="text-center align-middle">
-                                <a class="btn btn-primary btn-sm mb-1 mr-2">Generate Carton</a>
-                                <a href="<?= base_url('cartonbarcode/'.$pl->id)?>"class="btn btn-info btn-sm mb-1 mr-2">Detail</a>
+                                <a class="btn btn-primary btn-sm mb-1 mr-2 btn-generate-carton <?= $pl->btn_generate_class?>" 
+                                    data-id="<?= $pl->id ?>" 
+                                    data-packinglist-number="<?= $pl->packinglist_serial_number?>"   
+                                >Generate Carton</a>
+                                <a href="<?= base_url('cartonbarcode/'.$pl->id)?>"class="btn btn-info btn-sm mb-1 mr-2 <?= $pl->btn_detail_class?> "
+                                >Detail</a>
                             </td>
                         </tr>
                         <?php endforeach;  ?>
@@ -49,13 +53,56 @@
     </section>
 </div>
 
+
+<!-- Modal Generate Carton -->
+<div class="modal fade" id="generate_carton_modal" tabindex="-1" role="dialog" aria-labelledby="modal_label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="" method="post" id="generate_carton_form">
+                <input type="hidden" name="packinglist_id" id="packinglist_id" value="">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_label">Generate Carton</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 id="confirm_message">Are you sure want to Generate Carton from this Packinglist?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="modal_btn_submit">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Generate Carton -->
+
 <?= $this->endSection(); ?>
 
 
 <?= $this->Section('page_script'); ?>
 <script>
+    const generate_carton_url = '<?= base_url('cartonbarcode/generatecarton')?>';
+
+</script>
+<script>
 $(function() {
     bsCustomFileInput.init();
+
+    $('.btn-generate-carton').on('click', function() {
+        let id = $(this).data('id');
+        let packinglist_number = $(this).data('packinglist-number');
+
+        $('#confirm_message').text(`Are you sure want to Generate Carton from Packinglist: ${packinglist_number}`)
+        $('#modal_label').text("Generate Carton")
+        $('#modal_btn_submit').text("Generate")
+        $('#generate_carton_form').attr('action', generate_carton_url);
+        $('#packinglist_id').val(id);
+
+        $('#generate_carton_modal').modal('show');
+    })
 });
 </script>
 <script type="text/javascript">
