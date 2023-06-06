@@ -28,11 +28,26 @@ class CartonBarcode extends BaseController
 
         $data = [
             'title' => 'Carton Barcode Setup',
-            // 'packinglist' => $this->PackingListModel->getPackingList(),
+            'packinglist' => $this->PackingListModel->getPackingList(),
         ];
 
         // return view('carton/index', $data);
         return view('carton-barcode/index', $data);
+    }
+
+    public function detail($id)
+    {
+        $packinglist = $this->PackingListModel->getPackingList($id);
+        $packinglist->total_carton = $this->PackingListModel->get_total_carton($id);
+        $packinglist->percentage_ship = $this->PackingListModel->get_percentage_ship($id);
+        
+        $data = [
+            'title' => 'Carton Barcode Setup Detail',
+            'packinglist' => $packinglist,
+            'carton_list' => $this->CartonBarcodeModel->get_carton_by_packinglist($id),
+        ];
+
+        return view('carton-barcode/detail', $data);
     }
 
     public function import_excel()

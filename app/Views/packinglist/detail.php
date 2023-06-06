@@ -15,7 +15,7 @@
 </style>
 
 <div class="content-wrapper">
-    <section class="content">
+    <section class="content mb-4">
         <div class="card card-primary mt-2">
             <div class="card-header">
                 <h3 class="card-title"><?= $title ?></h3>
@@ -167,6 +167,12 @@
                 </table>
             </div>
             <!-- /.card-body -->
+        </div>
+
+        <div class="row text-right">
+            <div class="col-12">
+                <a href="<?= base_url('packinglist')?>" class="btn btn-secondary">Back</a>
+            </div>
         </div>
     </section>
 </div>

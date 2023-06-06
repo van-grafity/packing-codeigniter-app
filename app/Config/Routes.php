@@ -49,12 +49,12 @@ $routes->get('/packinglist/get_style_by_po/(:any)', 'PackingList::getStyleByPoId
 $routes->get('/packinglist/(:any)', 'PackingList::detail/$1');
 $routes->get('/packinglist/store', 'PackingList::store');
 
-$routes->get('/cartonbarcode', 'CartonBarcode::index');
-
 $routes->post('/packinglistcarton/store', 'PackingList::cartonstore');
 $routes->get('/packinglistcarton/edit', 'PackingList::cartonedit');
 $routes->post('/packinglistcarton/update', 'PackingList::cartonupdate');
 
+$routes->get('cartonbarcode', 'CartonBarcode::index');
+$routes->get('cartonbarcode/(:num)', 'CartonBarcode::detail/$1');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

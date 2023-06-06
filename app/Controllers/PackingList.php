@@ -133,8 +133,8 @@ class PackingList extends BaseController
 
         $packinglist = $this->PackingListModel->getPackingList($id);
         $packinglist->total_carton = $this->PackingListModel->get_total_carton($id);
-        
         $packinglist->percentage_ship = $this->PackingListModel->get_percentage_ship($id);
+        
         $data = [
             'title'         => 'Packing List Detail',
             'packinglist'   => $packinglist,
