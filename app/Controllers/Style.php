@@ -17,7 +17,7 @@ class Style extends BaseController
     {
         $data = [
             'title' => 'List of Styling',
-            'styles' => $this->StyleModel->getStyles()->getResult()
+            'styles' => $this->StyleModel->getStyle()->getResult()
         ];
         return view('style/index', $data);
     }

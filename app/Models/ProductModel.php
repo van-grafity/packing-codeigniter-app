@@ -11,10 +11,12 @@ class ProductModel extends Model
     protected $allowedFields = [
         'product_code',
         'product_asin_id',
+        'product_category_id',
         'product_style_id',
+        'product_colour_id',
+        'product_size_id',
         'product_name',
         'product_price',
-        'product_category_id',
     ];
 
     public function getProduct($code = false)
@@ -24,12 +26,16 @@ class ProductModel extends Model
             $builder->select('tblproduct.*, tblstyles.style_description, tblcategory.category_name ');
             $builder->join('tblcategory', 'tblcategory.id = product_category_id', 'left');
             $builder->join('tblstyles', 'tblstyles.id = product_style_id', 'left');
+            $builder->join('tblcolour', 'tblcolour.id = product_colour_id', 'left');
+            $builder->join('tblsizes', 'tblsizes.id = product_size_id', 'left');
             return $builder->get();
         }
         $builder = $this->db->table('tblproduct');
         $builder->select('tblproduct.*, tblstyles.style_description, tblcategory.category_name ');
         $builder->join('tblcategory', 'tblcategory.id = product_category_id', 'left');
         $builder->join('tblstyles', 'tblstyles.id = product_style_id', 'left');
+        $builder->join('tblcolour', 'tblcolour.id = product_colour_id', 'left');
+        $builder->join('tblsizes', 'tblsizes.id = product_size_id', 'left');
         return $builder->where(['code' => $code])->get();
     }
 

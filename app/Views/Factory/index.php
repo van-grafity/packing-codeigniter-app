@@ -77,7 +77,7 @@
                  </div>
                  <div class="modal-footer">
                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                     <button type="submit" class="btn btn-primary">Save</button>
+                     <button type="submit" class="btn btn-primary" id="btn_submit">Save</button>
                  </div>
              </form>
          </div>
@@ -155,7 +155,7 @@
              let remarks = $(this).data('remarks');
 
              $('#ModalLabel').text("Edit Factory")
-             $('#btn_submit').text("Update Colour")
+             $('#btn_submit').text("Update Factory")
              $('#btn_submit').attr('hidden', false);
              $('#factory_form').attr('action', update_url);
 

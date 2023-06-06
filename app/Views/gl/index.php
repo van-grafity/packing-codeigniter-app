@@ -71,7 +71,7 @@
                         <input type="text" class="form-control" id="number" name="number" placeholder="GL Number" autofocus>
                     </div>
                     <div class="form-group">
-                        <label for="buyer">Buyer</label>
+                        <label for="buyer" class="col-form-label">Buyer :</label>
                         <select id="gl_buyer" name="gl_buyer" class="form-control" required>
                             <option value="">-Select Buyer-</option>
                             <?php foreach ($buyer as $b) : ?>
@@ -80,7 +80,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="style">Style</label>
+                        <label for="style" class="col-form-label">Style :</label>
                         <select id="gl_style" name="gl_style" class="form-control" required>
                             <option value="">-Select Style-</option>
                             <?php foreach ($style as $s) : ?>
@@ -89,17 +89,17 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="season">Season</label>
+                        <label for="season" class="col-form-label">Season :</label>
                         <input type="text" class="form-control" id="season" name="season" placeholder="Season">
                     </div>
                     <div class="form-group">
-                        <label for="size_order">Size Order</label>
+                        <label for="size_order" class="col-form-label">Size Order :</label>
                         <input type="text" class="form-control" id="size_order" name="size_order" placeholder="Size Order">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" id="btn_submit">Save</button>
                 </div>
             </form>
         </div>

@@ -11,8 +11,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <button type="button" class="btn btn-secondary mb-2" data-toggle="modal" data-target="#addModal">Add New</button>
-
+                <button type="button" class="btn btn-secondary mb-2" id="btn-add-detail">Add New</button>
                 <table id="table1" class="table table-bordered table-striped">
                     <thead>
                         <tr class="table-primary">
@@ -39,9 +38,9 @@
                                 <td><?= $p->product_name; ?></td>
                                 <td class="text-right"><?= number_to_currency($p->product_price, 'USD', 'en_US', 2); ?></td>
                                 <td>
-                                    <a class="btn btn-success btn-sm btn-detail" data-id="<?= $p->id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-category_id="<?= $p->product_category_id; ?>" data-style_id="<?= $p->product_style_id; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>">Details</a>
-                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $p->id; ?>" data-code="<?= $p->product_code; ?>" data-asin="<?= $p->product_asin_id; ?>" data-category_id="<?= $p->product_category_id; ?>" data-style_id="<?= $p->product_style_id; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>">Edit</a>
-                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $p->id; ?>">Delete</a>
+                                    <a class="btn btn-success btn-sm btn-detail" data-id="<?= $p->id; ?>" data-product-code="<?= $p->product_code; ?>" data-product-asin="<?= $p->product_asin_id; ?>" data-category_id="<?= $p->product_category_id; ?>" data-style_id="<?= $p->product_style_id; ?>" data-colour_id="<?= $p->product_colour_id; ?>" data-size_id="<?= $p->product_size_id; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>">Details</a>
+                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $p->id; ?>" data-product-code="<?= $p->product_code; ?>" data-product-asin="<?= $p->product_asin_id; ?>" data-category_id="<?= $p->product_category_id; ?>" data-style_id="<?= $p->product_style_id; ?>" data-colour_id="<?= $p->product_colour_id; ?>" data-size_id="<?= $p->product_size_id; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>">Edit</a>
+                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $p->id; ?>" data-product-code="<?= $p->product_code; ?>">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -55,29 +54,31 @@
     <!-- /.section -->
 </div>
 
-<!-- Modal Add Product-->
-<form action="../index.php/product/save" method="post">
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
+<!-- Modal Add and Edit Product Detail -->
+<div class="modal fade" id="modal_product_detail" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="" method="post" id="product_form">
+                <input type="hidden" name="edit_product_id" value="" id="edit_product_id">
+
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Product</h5>
+                    <h5 class="modal-title" id="ModalLabel">Add New Product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Product Code</label>
-                        <input type="text" class="form-control" name="product_code" placeholder="Product Code" autofocus>
+                        <label for="product_code" class="col-form-label">Product Code</label>
+                        <input type="text" class="form-control" id="product_code" name="product_code" placeholder="Product Code" autofocus>
                     </div>
                     <div class="form-group">
-                        <label>Product ASIN #</label>
-                        <input type="text" class="form-control" name="product_asin_id" placeholder="Product ASIN #">
+                        <label for="asin" class="col-form-label">Product ASIN #</label>
+                        <input type="text" class="form-control" id="product_asin" name="product_asin_id" placeholder="Product ASIN #">
                     </div>
                     <div class="form-group">
-                        <label>Product Type</label>
-                        <select name="product_category" class="form-control">
+                        <label for="product_category" class="col-form-label">Product Type</label>
+                        <select id="product_category_id" name="product_category" class="form-control">
                             <option value="">-Select Product Type-</option>
                             <?php foreach ($category as $cat) : ?>
                                 <option value="<?= $cat->id; ?>"><?= $cat->category_name; ?></option>
@@ -85,8 +86,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Style</label>
-                        <select name="product_style_id" class="form-control">
+                        <label for="product_style" class="col-form-label">Style</label>
+                        <select id="product_style_id" name="product_style_id" class="form-control">
                             <option value="">-Select Style-</option>
                             <?php foreach ($style as $s) : ?>
                                 <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
@@ -94,8 +95,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Colour</label>
-                        <select name="product_style_id" class="form-control">
+                        <label for="colour" class="col-form-label">Colour</label>
+                        <select id="product_colour_id" name="product_colour_id" class="form-control">
                             <option value="">-Select Colour-</option>
                             <?php foreach ($colour as $c) : ?>
                                 <option value="<?= $c->id; ?>"><?= $c->colour_name; ?></option>
@@ -103,8 +104,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Size</label>
-                        <select name="product_style_id" class="form-control">
+                        <label for="size" class="col-form-label">Size</label>
+                        <select id="product_size_id" name="product_size_id" class="form-control">
                             <option value="">-Select Size-</option>
                             <?php foreach ($size as $sz) : ?>
                                 <option value="<?= $sz->id; ?>"><?= $sz->size; ?></option>
@@ -112,259 +113,171 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Product Name</label>
-                        <input type="text" class="form-control" name="product_name" placeholder="Product Name">
+                        <label for="product_name" class="col-form-label">Product Name</label>
+                        <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Product Name">
                     </div>
                     <div class="form-group">
-                        <label>Price</label>
-                        <input type="text" class="form-control" name="product_price" placeholder="Product Price">
+                        <label for="product_price" class="col-form-label">Price</label>
+                        <input type="text" class="form-control" id="product_price" name="product_price" placeholder="Product Price">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" id="btn_submit">Save</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-</form>
-<!-- End Modal Add Product-->
-
-<!-- Modal Details Product-->
-<form action="" method="post">
-    <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Product Code</label>
-                        <input type="text" disabled class="form-control product_code" name="product_code" placeholder="Product Code">
-                    </div>
-                    <div class="form-group">
-                        <label>Product ASIN #</label>
-                        <input type="text" disabled class="form-control product_asin_id" name="product_asin_id" placeholder="Product ASIN #">
-                    </div>
-                    <div class="form-group">
-                        <label>Product Type</label>
-                        <select name="product_category" class="form-control product_category" disabled>
-                            <option value="" disabled>-Select-</option>
-                            <?php foreach ($category as $cat) : ?>
-                                <option value="<?= $cat->id; ?>"><?= $cat->category_name; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Style</label>
-                        <select name="product_style" class="form-control product_style" disabled>
-                            <option value="" disabled>-Select-</option>
-                            <?php foreach ($style as $s) : ?>
-                                <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Colour</label>
-                        <select name="product_style_id" class="form-control">
-                            <option value="" disabled>-Select Colour-</option>
-                            <?php foreach ($colour as $c) : ?>
-                                <option value="<?= $c->id; ?>"><?= $c->colour_name; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Size</label>
-                        <select name="product_style_id" class="form-control">
-                            <option value="" disabled>-Select Size-</option>
-                            <?php foreach ($size as $sz) : ?>
-                                <option value="<?= $sz->id; ?>"><?= $sz->size; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Product Name</label>
-                        <input type="text" disabled class="form-control product_name" name="product_name" placeholder="Product Name">
-                    </div>
-                    <div class="form-group">
-                        <label>Price</label>
-                        <input type="text" disabled class="form-control product_price" name="product_price" placeholder="Product Price">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="product_id" class="product_id">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-<!-- End Modal Details Product-->
-
-<!-- Modal Edit Product-->
-<form action="../index.php/product/update" method="post">
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Product Code</label>
-                        <input type="text" class="form-control product_code" name="product_code" placeholder="Product Code">
-                    </div>
-                    <div class="form-group">
-                        <label>Product ASIN #</label>
-                        <input type="text" class="form-control product_asin_id" name="product_asin_id" placeholder="Product ASIN #">
-                    </div>
-                    <div class="form-group">
-                        <label>Product Type</label>
-                        <select name="product_category" class="form-control product_category">
-                            <option value="">-Select-</option>
-                            <?php foreach ($category as $cat) : ?>
-                                <option value="<?= $cat->id; ?>"><?= $cat->category_name; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Style</label>
-                        <select name="product_style" class="form-control product_style">
-                            <option value="">-Select-</option>
-                            <?php foreach ($style as $s) : ?>
-                                <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Colour</label>
-                        <select name="product_style_id" class="form-control">
-                            <option value="">-Select Colour-</option>
-                            <?php foreach ($colour as $c) : ?>
-                                <option value="<?= $c->id; ?>"><?= $c->colour_name; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Size</label>
-                        <select name="product_style_id" class="form-control">
-                            <option value="">-Select Size-</option>
-                            <?php foreach ($size as $sz) : ?>
-                                <option value="<?= $sz->id; ?>"><?= $sz->size; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Product Name</label>
-                        <input type="text" class="form-control product_name" name="product_name" placeholder="Product Name">
-                    </div>
-                    <div class="form-group">
-                        <label>Price</label>
-                        <input type="text" class="form-control product_price" name="product_price" placeholder="Product Price">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="product_id" class="product_id">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-<!-- End Modal Edit Product-->
+</div>
+<!-- End Modal Add and Edit Product Detail -->
 
 <!-- Modal Delete Product-->
-<form action="../index.php/product/delete" method="post">
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="../index.php/product/delete" method="post">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete Product</h5>
+                    <h5 class="modal-title" id="ModalLabel">Delete Product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-
-                    <h4>Are you sure want to delete this product?</h4>
-
+                    <h4 id="delete_message">Are you sure want to delete this product?</h4>
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="product_id" class="productID">
+                    <input type="hidden" name="product_id" id="product_id">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                     <button type="submit" class="btn btn-primary">Yes</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-</form>
+</div>
 <!-- End Modal Delete Product-->
 
 <script>
     $(document).ready(function() {
-        // get Product Detail
-        $('.btn-detail').on('click', function() {
-            // get data from button detail
-            const id = $(this).data('id');
-            const code = $(this).data('code');
-            const asin = $(this).data('asin');
-            const category = $(this).data('category_id');
-            const style = $(this).data('style_id');
-            const name = $(this).data('name');
-            const price = $(this).data('price');
-            // Set data to Form Detail
-            $('.product_id').val(id);
-            $('.product_code').val(code);
-            $('.product_asin_id').val(asin);
-            $('.product_category').val(category).trigger('change');
-            $('.product_style').val(style).trigger('change');
-            $('.product_name').val(name);
-            $('.product_price').val(price);
-            // Call Modal Detail
-            $('#detailModal').modal('show');
+        // ## prevent submit form when keyboard press enter
+        $('#product_form input').on('keyup keypress', function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                e.preventDefault();
+                return false;
+            }
         });
 
-        // get Edit Product
-        $('.btn-edit').on('click', function() {
-            // get data from button edit
-            const id = $(this).data('id');
-            const code = $(this).data('code');
-            const asin = $(this).data('asin');
-            const category = $(this).data('category_id');
-            const style = $(this).data('style_id');
-            const name = $(this).data('name');
-            const price = $(this).data('price');
-            // Set data to Form Edit
-            $('.product_id').val(id);
-            $('.product_code').val(code);
-            $('.product_asin_id').val(asin);
-            $('.product_category').val(category).trigger('change');
-            $('.product_style').val(style).trigger('change');
-            $('.product_name').val(name);
-            $('.product_price').val(price);
-            // Call Modal Edit
-            $('#editModal').modal('show');
-        });
+        $('#btn-add-detail').on('click', function(event) {
+            $('#ModalLabel').text("Add Product")
+            $('#product_form').attr('action', store_url);
+            $('#btn_submit').attr('hidden', false);
+            $('#product_form').find("input[type=text], input[type=number], textarea").val("");
+            $('#product_form').find('select').val("").trigger('change');
+
+            $('#modal_product_detail').modal('show');
+        })
 
         // get Delete Product
         $('.btn-delete').on('click', function() {
             // get data from button delete
-            const id = $(this).data('id');
+            let id = $(this).data('id');
+            let product_code = $(this).data('product-code');
+
             // Set data to Form Delete
-            $('.productID').val(id);
+            $('#product_id').val(id);
+            if (product_code) {
+                $('#delete_message').text(`Are you sure want to delete Product Code (${product_code}) from this database ?`);
+            }
             // Call Modal Delete
             $('#deleteModal').modal('show');
         });
+
+        $('.btn-edit').on('click', function() {
+            // get data from button detail
+            let id = $(this).data('id');
+            let code = $(this).data('product-code');
+            let asin = $(this).data('product-asin');
+            let category = $(this).data('category_id');
+            let style = $(this).data('style_id');
+            let colour = $(this).data('colour_id');
+            let size = $(this).data('size_id');
+            let name = $(this).data('name');
+            let price = $(this).data('price');
+
+            $('#ModalLabel').text("Edit Product")
+            $('#btn_submit').text("Update Product")
+            $('#btn_submit').attr('hidden', false);
+            $('#product_form').attr('action', update_url);
+
+            // Set ReadOnly the textboxes
+            $('#edit_product_id').attr("readonly", false);
+            $('#product_code').attr("readonly", false);
+            $('#product_asin').attr("readonly", false);
+            $('#product_category_id').attr("readonly", false);
+            $('#product_style_id').attr("readonly", false);
+            $('#product_colour_id').attr("readonly", false);
+            $('#product_size_id').attr("readonly", false);
+            $('#product_name').attr("readonly", false);
+            $('#product_price').attr("readonly", false);
+
+            // Set data to Form
+            $('#edit_product_id').val(id);
+            $('#product_code').val(code);
+            $('#product_asin').val(asin);
+            $('#product_category_id').val(category).trigger('change');
+            $('#product_style_id').val(style).trigger('change');
+            $('#product_colour_id').val(colour).trigger('change');
+            $('#product_size_id').val(size).trigger('change');
+            $('#product_name').val(name);
+            $('#product_price').val(price);
+
+            // Call Modal
+            $('#modal_product_detail').modal('show');
+        });
+
+        $('.btn-detail').on('click', function() {
+            // get data from button detail
+            let id = $(this).data('id');
+            let code = $(this).data('product-code');
+            let asin = $(this).data('product-asin');
+            let category = $(this).data('category_id');
+            let style = $(this).data('style_id');
+            let colour = $(this).data('colour_id');
+            let size = $(this).data('size_id');
+            let name = $(this).data('name');
+            let price = $(this).data('price');
+
+            // Set ReadOnly the textboxes
+            $('#edit_product_id').attr("readonly", true);
+            $('#product_code').attr("readonly", true);
+            $('#product_asin').attr("readonly", true);
+            $('#product_category_id').attr("readonly", true);
+            $('#product_style_id').attr("readonly", true);
+            $('#product_colour_id').attr("readonly", true);
+            $('#product_size_id').attr("readonly", true);
+            $('#product_name').attr("readonly", true);
+            $('#product_price').attr("readonly", true);
+
+            // Set data to Form Detail
+            $('#edit_product_id').val(id);
+            $('#product_code').val(code);
+            $('#product_asin').val(asin);
+            $('#product_category_id').val(category).trigger('change');
+            $('#product_style_id').val(style).trigger('change');
+            $('#product_colour_id').val(colour).trigger('change');
+            $('#product_size_id').val(size).trigger('change');
+            $('#product_name').val(name);
+            $('#product_price').val(price);
+
+            // Call Modal Detail
+            $('#modal_product_detail').modal('show');
+        });
     });
 </script>
-</section>
-</div>
+
+<script type="text/javascript">
+    const store_url = "../index.php/product/save";
+    const update_url = "../index.php/product/update";
+</script>
+
 <?= $this->endSection('content'); ?>

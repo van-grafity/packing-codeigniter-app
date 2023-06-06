@@ -44,7 +44,7 @@
     <!-- /.section -->
 </div>
 
-<!-- Modal Add and Edit Product Type Detail -->
+<!-- Modal Add and Edit Colour  Detail -->
 <div class="modal fade" id="modal_colour_detail" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -71,9 +71,9 @@
         </div>
     </div>
 </div>
-<!-- End Modal Add and Edit Product Type Detail -->
+<!-- End Modal Add and Edit Colour  Detail -->
 
-<!-- Modal Delete Product Type-->
+<!-- Modal Delete Colour -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -96,7 +96,7 @@
         </div>
     </div>
 </div>
-<!-- End Modal Delete Product Type-->
+<!-- End Modal Delete Colour -->
 
 <script>
     $(document).ready(function() {
@@ -119,7 +119,7 @@
             $('#modal_colour_detail').modal('show');
         })
 
-        // get Delete Product Type
+        // get Delete Colour
         $('.btn-delete').on('click', function() {
             // get data from button delete
             let id = $(this).data('id');

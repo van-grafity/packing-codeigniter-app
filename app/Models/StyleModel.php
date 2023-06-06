@@ -13,7 +13,7 @@ class StyleModel extends Model
         'style_description',
     ];
 
-    public function getStyles($code = false)
+    public function getStyle($code = false)
     {
         if ($code == false) {
             return $this->db->table('tblstyles')->get();

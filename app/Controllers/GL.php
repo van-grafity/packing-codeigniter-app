@@ -25,7 +25,7 @@ class GL extends BaseController
             'title'     => 'List of GL',
             'gl'        => $this->glModel->getGL()->getResult(),
             'buyer'     => $this->BuyerModel->getBuyer()->getResult(),
-            'style'     => $this->StyleModel->getStyles()->getResult(),
+            'style'     => $this->StyleModel->getStyle()->getResult(),
         ];
 
         // $glku = $this->glModel->getGL()->getResult();
