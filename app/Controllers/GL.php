@@ -25,7 +25,7 @@ class GL extends BaseController
             'title'     => 'List of GL',
             'gl'        => $this->glModel->getGL()->getResult(),
             'buyer'     => $this->BuyerModel->getBuyer()->getResult(),
-            'style'     => $this->StyleModel->getStyles()->getResult(),
+            'style'     => $this->StyleModel->getStyle()->getResult(),
         ];
 
         // $glku = $this->glModel->getGL()->getResult();
@@ -49,7 +49,7 @@ class GL extends BaseController
 
     public function update()
     {
-        $id = $this->request->getVar('id');
+        $id = $this->request->getVar('edit_gl_id');
         $data = array(
             'id'             => $this->request->getVar('id'),
             'gl_number'     => $this->request->getVar('number'),
@@ -63,7 +63,7 @@ class GL extends BaseController
     }
     public function delete()
     {
-        $id = $this->request->getVar('glid');
+        $id = $this->request->getVar('gl_id');
         $this->glModel->deleteGL($id);
         return redirect()->to('gl');
     }

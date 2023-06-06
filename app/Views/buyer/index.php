@@ -92,7 +92,6 @@
 <!-- End Modal Add and Edit Buyer Detail-->
 
 <!-- Modal Delete Buyer -->
-
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -121,7 +120,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         // ## prevent submit form when keyboard press enter
-        $('#purchase_order_form input').on('keyup keypress', function(e) {
+        $('#buyer_form input').on('keyup keypress', function(e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) {
                 e.preventDefault();

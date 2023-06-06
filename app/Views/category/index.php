@@ -68,6 +68,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="btn_submit">Save</button>
                 </div>
+            </form>
         </div>
     </div>
 </div>
@@ -103,7 +104,7 @@
 <script>
     $(document).ready(function() {
         // ## prevent submit form when keyboard press enter
-        $('#purchase_order_form input').on('keyup keypress', function(e) {
+        $('#category_form input').on('keyup keypress', function(e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) {
                 e.preventDefault();

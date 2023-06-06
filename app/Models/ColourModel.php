@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class ColourModel extends Model
 {
 
-    protected $table         = 'tblcolours';
+    protected $table         = 'tblcolour';
     protected $useTimestamps = false;
     protected $allowedFields = ['colour_name'];
 

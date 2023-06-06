@@ -1,15 +1,18 @@
 <?= $this->extend('app-layout/template'); ?>
 
 <?= $this->Section('content'); ?>
+<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
+    <!-- Main content -->
     <section class="content">
+        <!-- Default box -->
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title"><?= $title ?></h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <button type="button" class="btn btn-secondary mb-2" data-toggle="modal" data-target="#addModal">Add Style</button>
+                <button type="button" class="btn btn-secondary mb-2" id="btn-add-detail">Add Style</button>
                 <table id="table1" class="table table-bordered table-striped">
                     <thead>
                         <tr class="table-primary">
@@ -29,7 +32,7 @@
                                 <td>
                                     <a class="btn btn-success btn-sm btn-detail" data-id="<?= $st->id; ?>" data-number="<?= $st->style_no; ?>" data-description="<?= $st->style_description; ?>">Details</a>
                                     <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $st->id; ?>" data-number="<?= $st->style_no; ?>" data-description="<?= $st->style_description; ?>">Edit</a>
-                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $st->id; ?>">Delete</a>
+                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $st->id; ?>" data-number="<?= $st->style_no; ?>">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -43,13 +46,15 @@
     <!-- /.section -->
 </div>
 
-<!-- Modal Add Style-->
-<form action="../index.php/style/save" method="post">
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
+<!-- Modal Add and Edit Style Detail -->
+<div class="modal fade" id="modal_style_detail" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="" method="post" id="style_form">
+                <input type="hidden" name="edit_style_id" value="" id="edit_style_id">
+
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Style</h5>
+                    <h5 class="modal-title" id="ModalLabel">Add New Style</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -57,89 +62,22 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Style No</label>
-                        <input type="text" class="form-control" name="number" placeholder="Style No" autofocus>
+                        <input type="text" class="form-control" id="number" name="number" placeholder="Style No" autofocus>
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <input type="text" class="form-control" name="description" placeholder="Description">
+                        <input type="text" class="form-control" id="description" name="description" placeholder="Description">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" id="btn_submit">Save</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-</form>
-<!-- End Modal Add Style-->
-
-<!-- Modal Details Style-->
-<form action="" method="post">
-    <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Style Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Style No</label>
-                        <input type="text" disabled class="form-control number" name="number" placeholder="Style No">
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Style Description</label>
-                        <input type="text" disabled class="form-control description" name="description" placeholder="Description">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="id" class="id">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-<!-- End Modal Details Style-->
-
-<!-- Modal Edit Style-->
-<form action="../index.php/style/update" method="post">
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Style</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Style No</label>
-                        <input type="text" class="form-control number" name="number" placeholder="Style Number">
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Style Description</label>
-                        <input type="text" class="form-control description" name="description" placeholder="Description">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="id" class="id">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-<!-- End Modal Edit Style-->
+</div>
+<!-- End Modal Add and Edit Style Detail -->
 
 <!-- Modal Delete Style-->
 <form action="../index.php/style/delete" method="post">
@@ -154,11 +92,11 @@
                 </div>
                 <div class="modal-body">
 
-                    <h4>Are you sure want to delete this data?</h4>
+                    <h4 id="delete_message">Are you sure want to delete this data?</h4>
 
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="style_id" class="styleID">
+                    <input type="hidden" name="style_id" id="style_id">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                     <button type="submit" class="btn btn-primary">Yes</button>
                 </div>
@@ -170,44 +108,95 @@
 
 <script>
     $(document).ready(function() {
-        // get Style Detail
-        $('.btn-detail').on('click', function() {
-            // get data from button detail
-            const id = $(this).data('id');
-            const number = $(this).data('number');
-            const description = $(this).data('description');
-            // Set data to Form Detail
-            $('.id').val(id);
-            $('.number').val(number);
-            $('.description').val(description);
-            // Call Modal Detail
-            $('#detailModal').modal('show');
+        // ## prevent submit form when keyboard press enter
+        $('#style_form input').on('keyup keypress', function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                e.preventDefault();
+                return false;
+            }
         });
 
-        // get Edit Style
-        $('.btn-edit').on('click', function() {
-            // get data from button edit
-            const id = $(this).data('id');
-            const number = $(this).data('number');
-            const description = $(this).data('description');
-            // Set data to Form Edit
-            $('.id').val(id);
-            $('.number').val(number);
-            $('.description').val(description);
-            // Call Modal Edit
-            $('#editModal').modal('show');
-        });
-
-        // get Delete Style
+        // get Delete Buyer
         $('.btn-delete').on('click', function() {
             // get data from button delete
-            const id = $(this).data('id');
+            let id = $(this).data('id');
+            let number = $(this).data('number');
+
             // Set data to Form Delete
-            $('.styleID').val(id);
+            $('#style_id').val(id);
+            if (number) {
+                $('#delete_message').text(`Are you sure want to delete this style (${number}) from this database ?`);
+            }
+
             // Call Modal Delete
             $('#deleteModal').modal('show');
-        });
+        })
+
+        $('#btn-add-detail').on('click', function(event) {
+            $('#ModalLabel').text("Add Style")
+            $('#btn_submit').text("Add Style")
+            $('#style_form').attr('action', store_url);
+            $('#btn_submit').attr('hidden', false);
+            $('#style_form').find("input[type=text], input[type=number], textarea").val("");
+            $('#style_form').find('select').val("").trigger('change');
+
+            $('#modal_style_detail').modal('show');
+        })
+
+        $('.btn-edit').on('click', function(event) {
+            // get data from button edit
+            let id = $(this).data('id');
+            let number = $(this).data('number');
+            let description = $(this).data('description');
+
+            $('#ModalLabel').text("Edit Style")
+            $('#btn_submit').text("Update Style")
+            $('#btn_submit').attr('hidden', false);
+            $('#style_form').attr('action', update_url);
+
+            // Set ReadOnly the textboxes
+            $('#edit_style_id').attr("readonly", false);
+            $('#number').attr("readonly", false);
+            $('#description').attr("readonly", false);
+
+            // Set data to Form
+            $('#edit_style_id').val(id);
+            $('#number').val(number);
+            $('#description').val(description);
+
+            // Call the Modal
+            $('#modal_style_detail').modal('show');
+        })
+
+        $('.btn-detail').on('click', function(event) {
+            // get data from button edit
+            let id = $(this).data('id');
+            let number = $(this).data('number');
+            let description = $(this).data('description');
+
+            $('#ModalLabel').text("Style Details")
+            $('#btn_submit').attr('hidden', false);
+
+            // Set ReadOnly the textboxes
+            $('#edit_style_id').attr("readonly", true);
+            $('#number').attr("readonly", true);
+            $('#description').attr("readonly", true);
+
+            // Set data to Form
+            $('#edit_style_id').val(id);
+            $('#number').val(number);
+            $('#description').val(description);
+
+            // Call the Modal
+            $('#modal_style_detail').modal('show');
+        })
     });
+</script>
+
+<script type="text/javascript">
+    const store_url = "../index.php/style/save";
+    const update_url = "../index.php/style/update";
 </script>
 
 <?= $this->endSection(); ?>

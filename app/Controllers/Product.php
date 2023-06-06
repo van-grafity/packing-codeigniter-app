@@ -50,6 +50,8 @@ class Product extends BaseController
                 'product_asin_id'     => $this->request->getVar('product_asin_id'),
                 'product_category_id' => $this->request->getVar('product_category'),
                 'product_style_id'    => $this->request->getVar('product_style_id'),
+                'product_colour_id'    => $this->request->getVar('product_colour_id'),
+                'product_size_id'    => $this->request->getVar('product_size_id'),
                 'product_name'        => $this->request->getVar('product_name'),
                 'product_price'       => $this->request->getVar('product_price')
             ]
@@ -60,15 +62,18 @@ class Product extends BaseController
 
     public function update()
     {
-        $id = $this->request->getVar('product_id');
+        $id = $this->request->getVar('edit_product_id');
         $data = array(
             'product_code'        => $this->request->getVar('product_code'),
             'product_asin_id'     => $this->request->getVar('product_asin_id'),
             'product_category_id' => $this->request->getVar('product_category'),
-            'product_style_id'    => $this->request->getVar('product_style'),
+            'product_style_id'    => $this->request->getVar('product_style_id'),
+            'product_colour_id'    => $this->request->getVar('product_colour_id'),
+            'product_size_id'    => $this->request->getVar('product_size_id'),
             'product_name'        => $this->request->getVar('product_name'),
             'product_price'       => $this->request->getVar('product_price'),
         );
+        // dd($id);
         $this->ProductModel->updateProduct($data, $id);
         session()->setFlashdata('pesan', 'Data Updated');
         return redirect()->to('product');
@@ -76,7 +81,9 @@ class Product extends BaseController
 
     public function delete()
     {
+
         $id = $this->request->getVar('product_id');
+        // dd($id);
         $this->ProductModel->deleteProduct($id);
         return redirect()->to('/product');
     }

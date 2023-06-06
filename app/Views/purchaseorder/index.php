@@ -112,7 +112,6 @@
     </div>
 </div>
 
-
 <!-- Modal Delete Purchase Order -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -128,7 +127,7 @@
                     <h4 id="delete_message">Are you sure want to delete this Purchase Order ?</h4>
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="po_id" id ="po_id" >
+                    <input type="hidden" name="po_id" id="po_id">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                     <button type="submit" class="btn btn-primary">Yes</button>
                 </div>
@@ -143,14 +142,14 @@
     $(document).ready(function() {
 
         //## Check PO Details, at least 1 product
-        if(count_po_details() <= 0) {
+        if (count_po_details() <= 0) {
             add_po_detail();
         }
 
         // ## prevent submit form when keyboard press enter
         $('#purchase_order_form input').on('keyup keypress', function(e) {
             var keyCode = e.keyCode || e.which;
-            if (keyCode === 13) { 
+            if (keyCode === 13) {
                 e.preventDefault();
                 return false;
             }
@@ -159,7 +158,7 @@
         // ## Shipdate Field show date picker when focus and enter is pressed
         $('#shipdate').on('keyup keypress', function(e) {
             var keyCode = e.keyCode || e.which;
-            if (keyCode === 13) { 
+            if (keyCode === 13) {
                 $('#shipdate').trigger('click')
             }
         })
@@ -168,7 +167,7 @@
         $('.btn-delete').on('click', function() {
             let id = $(this).data('id');
             let po_number = $(this).data('po-number');
-            
+
             $('#po_id').val(id);
             if (po_number) {
                 $('#delete_message').text(`Are you sure want to delete this Purchase Order (${po_number}) ?`);
@@ -191,21 +190,21 @@
     }
 
     function delete_po_detail(element) {
-        if(count_po_details() > 1) {
+        if (count_po_details() > 1) {
             $(element).parents('tr').remove();
         } else {
             alert('Purchase Order Detail cannot be less than 1');
         }
 
-        $( "#po_detail_table tbody tr" ).find('.btn-detail-delete').first().trigger( "focus" );
+        $("#po_detail_table tbody tr").find('.btn-detail-delete').first().trigger("focus");
         update_total_order_qty();
     }
 
     function set_product_info() {
         let optionElement = $(event.target);
         let productData = $(event.target).find($('option:selected')).data();
-        
-        if(optionElement.val()){
+
+        if (optionElement.val()) {
             optionElement.parents('tr').find('input[name="product_name[]"]').val(productData.productName);
             optionElement.parents('tr').find('input[name="product_price[]"]').val(productData.productPrice);
         } else {
@@ -216,7 +215,7 @@
 
     function update_total_order_qty() {
         let total_order_qty = 0;
-        $('input[name="order_qty[]"]').each( function(){
+        $('input[name="order_qty[]"]').each(function() {
             total_order_qty += parseFloat($(this).val()) || 0;
         });
         $('#total_order_qty').val(total_order_qty);

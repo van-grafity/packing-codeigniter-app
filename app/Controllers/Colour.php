@@ -33,7 +33,7 @@ class Colour extends BaseController
 
     public function update()
     {
-        $id = $this->request->getVar('id');
+        $id = $this->request->getVar('edit_colour_id');
         $data = array(
             'id'                => $this->request->getVar('id'),
             'colour_name'          => $this->request->getVar('name'),
@@ -44,7 +44,7 @@ class Colour extends BaseController
 
     public function delete()
     {
-        $id = $this->request->getVar('id');
+        $id = $this->request->getVar('colour_id');
         $this->ColourModel->deleteColour($id);
         return redirect()->to('colour');
     }

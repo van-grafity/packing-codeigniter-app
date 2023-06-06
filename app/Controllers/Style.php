@@ -17,16 +17,25 @@ class Style extends BaseController
     {
         $data = [
             'title' => 'List of Styling',
-            'styles' => $this->StyleModel->getStyles()->getResult()
+            'styles' => $this->StyleModel->getStyle()->getResult()
         ];
         return view('style/index', $data);
     }
 
+    public function save()
+    {
+        $this->StyleModel->save([
+            'style_no'              => $this->request->getVar('number'),
+            'style_description'     => $this->request->getVar('description')
+        ]);
+
+        session()->setFlashdata('pesan', 'Data Saved');
+        return redirect()->to('style');
+    }
     public function update()
     {
-        $id = $this->request->getVar('id');
+        $id = $this->request->getVar('edit_style_id');
         $data = array(
-            'id'                => $this->request->getVar('id'),
             'style_no'          => $this->request->getVar('number'),
             'style_description' => $this->request->getVar('description'),
         );
