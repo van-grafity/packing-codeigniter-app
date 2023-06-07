@@ -35,6 +35,23 @@ class PackinglistCartonModel extends Model
         return $result;
     }
 
+    public function getUngeneratedCartonByPackinglistID($packinglist_id = null) {
+        $builder = $this->db->table('tblpackinglistcarton as pl_carton');
+        $builder->select('pl_carton.*');
+        // $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
+        // $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
+        // $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
+        if ($packinglist_id) {
+            $builder->where(['pl_carton.packinglist_id' => $packinglist_id]);
+        }
+        $builder->where(['pl_carton.flag_generate_carton' => 'N']);
+        // $builder->groupBy('pl_carton.id, colour.id');
+        // $builder->orderBy('pl_carton.id');
+        $result = $builder->get()->getResult();
+        
+        return $result;
+    }
+
     public function getProductsInCarton($carton_id = null) {
         if(!$carton_id) return null;
 

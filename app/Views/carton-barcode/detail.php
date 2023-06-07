@@ -123,8 +123,6 @@
                         <tr class="table-primary text-center">
                             <th width="5%">No</th>
                             <th width="15%">Carton Number</th>
-                            <th width="15%">Colour</th>
-                            <th width="15%">Size</th>
                             <th width="15%">Total PCS</th>
                             <th width="15%">Barcode</th>
                             <th width="25%">Action</th>
@@ -136,8 +134,6 @@
                         <tr class="text-center">
                             <td><?= $i++; ?></td>
                             <td><?= $carton->carton_number; ?></td>
-                            <td><?= $carton->colour; ?></td>
-                            <td><?= $carton->size; ?></td>
                             <td>100</td>
                             <td><?= $carton->barcode; ?></td>
                             <td class="text-center align-middle">
@@ -176,8 +172,6 @@ $(function() {
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'carton_number', name: 'carton_number'},
-            {data: 'colour', name: 'colour'},
-            {data: 'size', name: 'size'},
             {data: 'total_pcs', name: 'total_pcs'},
             {data: 'barcode', name: 'barcode'},
             {data: 'action', name: 'action', orderable: false, searchable: false},

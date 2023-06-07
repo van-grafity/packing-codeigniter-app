@@ -30,12 +30,19 @@ class CartonBarcode extends BaseController
     {
         $packinglist = $this->PackingListModel->getPackingList();
         array_walk($packinglist, function (&$item, $key) {
+            // if($item->flag_generate_carton == 'Y') {
+            //     $item->btn_generate_class = 'd-none';
+            //     $item->btn_detail_class = 'd-inline-block';
+            // } else {
+            //     $item->btn_generate_class = 'd-inline-block';
+            //     $item->btn_detail_class = 'd-none';
+            // }
             if($item->flag_generate_carton == 'Y') {
-                $item->btn_generate_class = 'd-none';
-                $item->btn_detail_class = 'd-inline-block';
+                $item->btn_generate_class = '';
+                $item->btn_detail_class = '';
             } else {
-                $item->btn_generate_class = 'd-inline-block';
-                $item->btn_detail_class = 'd-none';
+                $item->btn_generate_class = '';
+                $item->btn_detail_class = '';
             }
         });
         
@@ -55,9 +62,8 @@ class CartonBarcode extends BaseController
         $data = [
             'title' => 'Carton Barcode Setup Detail',
             'packinglist' => $packinglist,
-            'carton_list' => $this->CartonBarcodeModel->get_carton_by_packinglist($id),
+            'carton_list' => $this->CartonBarcodeModel->getCartonByPackinglist($id),
         ];
-
         return view('carton-barcode/detail', $data);
     }
 
@@ -96,8 +102,8 @@ class CartonBarcode extends BaseController
         try {
             $packinglist_id = $this->request->getPost('packinglist_id');
             
-            $packinglist_carton = $this->PackinglistCartonModel->getDataByPackinglist($packinglist_id);
-            $array_of_carton = $this->generate_array_of_carton($packinglist_carton);
+            $packinglist_carton = $this->PackinglistCartonModel->getUngeneratedCartonByPackinglistID($packinglist_id);
+            $array_of_carton = $this->generate_array_of_carton($packinglist_carton, $packinglist_id);
             
             $this->CartonBarcodeModel->transException(true)->transStart();
             if(!empty($array_of_carton)){
@@ -117,13 +123,19 @@ class CartonBarcode extends BaseController
             throw $th;
         }
         
-        return redirect()->to('cartonbarcode');
+        return redirect()->to('cartonbarcode/'.$packinglist_id);
     }
 
-    private function generate_array_of_carton($data_packinglist_carton)
+    private function generate_array_of_carton($data_packinglist_carton, $packinglist_id = null)
     {
+        if ($packinglist_id) {
+            $last_number = $this->CartonBarcodeModel->getLastNumber($packinglist_id);
+            $carton_number_by_system = $last_number + 1;
+        } else {
+            $carton_number_by_system = 1;
+        }
+        
         $result = [];
-        $carton_number_by_system = 1;
         foreach ($data_packinglist_carton as $key => $packinglist_carton) {
             $carton_qty = $packinglist_carton->carton_qty;
             for ($i=0; $i < $carton_qty; $i++) { 
