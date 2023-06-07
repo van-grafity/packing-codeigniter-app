@@ -166,22 +166,24 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <table class="table" id="detail_carton_table">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>No</th>
-                                    <th>UPC</th>
-                                    <th>Name</th>
-                                    <th>Colour</th>
-                                    <th>Size</th>
-                                    <th>Qty</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                            <tfoot>
-                            </tfoot>
-                        </table>
+                        <div class="col-sm-12">
+                            <table class="table" id="detail_carton_table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>UPC</th>
+                                        <th>Name</th>
+                                        <th>Colour</th>
+                                        <th>Size</th>
+                                        <th>Qty</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -229,13 +231,12 @@ $(function() {
     });
 
     async function detail_carton(carton_id) {
+        $('#detail_carton_table tbody').html('');
+        let total = 0;
+        
         params_data = { id : carton_id };
         result = await using_fetch(detail_carton_url, params_data, "GET");
-        let total = 0;
         console.log(result);
-        
-        $('#detail_carton_table tbody').html('');
-
         result.data.forEach((data, key) => {
             let row = `
                 <tr>
