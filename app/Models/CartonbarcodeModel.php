@@ -39,13 +39,14 @@ class CartonBarcodeModel extends Model
     public function getCartonByPackinglist($packinglist_id)
     {
         $builder = $this->db->table('tblcartonbarcode as carton_barcode');
-        $builder->select('carton_barcode.id, carton_barcode.carton_number_by_system as carton_number, carton_barcode.barcode as barcode');
+        $builder->select('carton_barcode.id, carton_barcode.carton_number_by_system as carton_number, carton_barcode.barcode as barcode, sum(carton_detail.product_qty) as pcs_per_carton');
         // $builder->select('carton_barcode.id, carton_barcode.carton_number_by_system as carton_number, carton_barcode.barcode as barcode, colour.colour_name as colour, size.size');
         $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id');
-        // $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
+        $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
         // $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
         // $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
         // $builder->join('tblsizes as size', 'size.id = product.product_size_id');
+        $builder->groupBy('carton_barcode.id');
         $builder->orderBy('carton_number');
         $builder->where('pl_carton.packinglist_id', $packinglist_id);
         $result = $builder->get()->getResult();
@@ -60,6 +61,25 @@ class CartonBarcodeModel extends Model
         $builder->orderBy('carton_number_by_system', 'desc');
         $result = $builder->get()->getRow();
         return $result ? $result->carton_number : 0;
+    }
+
+    public function getDetailCarton($carton_id = null)
+    {
+        if(!$carton_id) return null;
+        
+        $data_return = [];
+
+        $builder = $this->db->table('tblcartonbarcode as carton_barcode');
+        $builder->select('product.product_code, product.product_name as product_name, size.size as product_size, carton_detail.product_qty, colour.colour_name as product_colour');
+        $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id');
+        $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
+        $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
+        $builder->join('tblsizes as size', 'size.id = product.product_size_id');
+        $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
+        $builder->where('carton_barcode.id', $carton_id);
+        $result = $builder->get()->getResult();
+
+        return $result;
     }
 }
 

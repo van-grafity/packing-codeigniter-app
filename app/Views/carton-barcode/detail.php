@@ -122,10 +122,10 @@
                     <thead>
                         <tr class="table-primary text-center">
                             <th width="5%">No</th>
-                            <th width="15%">Carton Number</th>
-                            <th width="15%">Total PCS</th>
-                            <th width="15%">Barcode</th>
-                            <th width="25%">Action</th>
+                            <th width="25%">Carton Number</th>
+                            <th width="25%">Total PCS / Carton</th>
+                            <th width="25%">Carton Barcode</th>
+                            <th width="20%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -134,10 +134,10 @@
                         <tr class="text-center">
                             <td><?= $i++; ?></td>
                             <td><?= $carton->carton_number; ?></td>
-                            <td>100</td>
+                            <td><?= $carton->pcs_per_carton; ?></td>
                             <td><?= $carton->barcode; ?></td>
                             <td class="text-center align-middle">
-                                <a class="btn btn-info btn-sm mb-1 mr-2">Detail</a>
+                                <a class="btn btn-info btn-sm mb-1 mr-2" onclick="detail_carton(<?= $carton->id ?>)">Detail</a>
                             </td>
                         </tr>
                         <?php endforeach;  ?>
@@ -154,6 +154,45 @@
     </section>
 </div>
 
+<!-- Modal Detail Carton -->
+<div class="modal fade" id="detail_carton_modal" tabindex="-1" role="dialog" aria-labelledby="modal_label" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_label">Detail Carton</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <table class="table" id="detail_carton_table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>No</th>
+                                    <th>UPC</th>
+                                    <th>Name</th>
+                                    <th>Colour</th>
+                                    <th>Size</th>
+                                    <th>Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Detail Carton -->
+
 <?= $this->endSection(); ?>
 
 
@@ -164,6 +203,9 @@ $(function() {
 });
 </script>
 <script type="text/javascript">
+    const detail_carton_url = '<?= base_url('cartonbarcode/detailcarton')?>';
+
+
 
     $('#carton_table').DataTable({
         processing: true,
@@ -185,5 +227,39 @@ $(function() {
         searching: true,
         autoWidth: false,
     });
+
+    async function detail_carton(carton_id) {
+        params_data = { id : carton_id };
+        result = await using_fetch(detail_carton_url, params_data, "GET");
+        let total = 0;
+        console.log(result);
+        
+        $('#detail_carton_table tbody').html('');
+
+        result.data.forEach((data, key) => {
+            let row = `
+                <tr>
+                    <td>${key+1}</td>
+                    <td>${data.product_code}</td>
+                    <td>${data.product_name}</td>
+                    <td>${data.product_colour}</td>
+                    <td>${data.product_size}</td>
+                    <td>${data.product_qty}</td>
+                </tr>
+            `;
+            $('#detail_carton_table tbody').append(row);
+            
+            total += parseInt(data.product_qty);
+        });
+        let row_footer = `
+            <tr>
+                <td colspan="5" class="text-right">Total PCS :</td>
+                <td colspan="1">${total}</td>
+            </tr>
+        `;
+        $('#detail_carton_table tfoot').html(row_footer);
+
+        $('#detail_carton_modal').modal('show');
+    }
 </script>
 <?= $this->endSection('page_script'); ?>

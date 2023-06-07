@@ -126,6 +126,19 @@ class CartonBarcode extends BaseController
         return redirect()->to('cartonbarcode/'.$packinglist_id);
     }
 
+    public function detailcarton(){
+        
+        $carton_id = $this->request->getGet('id');
+        $detail_carton = $this->CartonBarcodeModel->getDetailCarton($carton_id);
+
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Succesfully retrieved carton',
+            'data' => $detail_carton,
+        ];
+        return $this->response->setJSON($data_return);
+    }
+
     private function generate_array_of_carton($data_packinglist_carton, $packinglist_id = null)
     {
         if ($packinglist_id) {
