@@ -90,7 +90,7 @@ class PackingListModel extends Model
         return $result;
     }
 
-    public function get_total_carton($packinglist_id = null)
+    public function getTotalCarton($packinglist_id = null)
     {
         $builder = $this->db->table('tblpackinglistcarton');
         $builder->selectSum('carton_qty');
@@ -128,6 +128,24 @@ class PackingListModel extends Model
         $builder->where('pl_carton.packinglist_id',$packinglist_id);
         $result = $builder->get()->getRow();
         return $result->packinglist_amount;
+    }
+
+    public function getPackinglistByCartonBarcode($carton_barcode = null)
+    {
+        if(!$carton_barcode) return null;
+
+        $builder = $this->db->table('tblcartonbarcode as carton_barcode');
+        $builder->select('po.po_no as po_number, packinglist.id as packinglist_id, packinglist.packinglist_serial_number as pl_number, buyer.buyer_name as buyer, carton_barcode.carton_number_by_system as carton_number');
+        $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id');
+        $builder->join('tblpackinglist as packinglist', 'packinglist.id = pl_carton.packinglist_id');
+        $builder->join('tblpurchaseorder as po', 'po.id = packinglist.packinglist_po_id');
+        $builder->join('tblgl as gl', 'gl.id = po.gl_id');
+        $builder->join('tblbuyer as buyer', 'buyer.id = gl.buyer_id');
+
+
+        $builder->where('carton_barcode.barcode', $carton_barcode);
+        $result = $builder->get()->getRow();
+        return $result;
     }
 
 }

@@ -57,7 +57,7 @@ class CartonBarcode extends BaseController
     public function detail($id)
     {
         $packinglist = $this->PackingListModel->getPackingList($id);
-        $packinglist->total_carton = $this->PackingListModel->get_total_carton($id);
+        $packinglist->total_carton = $this->PackingListModel->getTotalCarton($id);
         $packinglist->percentage_ship = $this->PackingListModel->get_percentage_ship($id);
         
         $data = [

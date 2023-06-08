@@ -63,7 +63,7 @@
                         <input type="text" class="form-control" id="PO_No" name="PO_No" placeholder="PO No." required>
                     </div>
                     <div class="form-group">
-                        <label>Buyer</label>
+                        <label>GL Number</label>
                         <select name="gl_no" class="form-control" required>
                             <option value="">-Select GL No-</option>
                             <?php foreach ($GL as $g) : ?>

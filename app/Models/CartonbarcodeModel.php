@@ -77,5 +77,24 @@ class CartonBarcodeModel extends Model
 
         return $result;
     }
+
+    public function getDetailCartonByBarcode($carton_barcode = null)
+    {
+        if(!$carton_barcode) return null;
+        
+        $data_return = [];
+
+        $builder = $this->db->table('tblcartonbarcode as carton_barcode');
+        $builder->select('product.product_code, product.product_name as product_name, size.size as product_size, carton_detail.product_qty, colour.colour_name as product_colour');
+        $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id');
+        $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
+        $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
+        $builder->join('tblsizes as size', 'size.id = product.product_size_id');
+        $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
+        $builder->where('carton_barcode.barcode', $carton_barcode);
+        $result = $builder->get()->getResult();
+
+        return $result;
+    }
 }
 
