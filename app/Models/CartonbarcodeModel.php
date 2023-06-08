@@ -40,12 +40,8 @@ class CartonBarcodeModel extends Model
     {
         $builder = $this->db->table('tblcartonbarcode as carton_barcode');
         $builder->select('carton_barcode.id, carton_barcode.carton_number_by_system as carton_number, carton_barcode.barcode as barcode, sum(carton_detail.product_qty) as pcs_per_carton');
-        // $builder->select('carton_barcode.id, carton_barcode.carton_number_by_system as carton_number, carton_barcode.barcode as barcode, colour.colour_name as colour, size.size');
         $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id');
         $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
-        // $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
-        // $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
-        // $builder->join('tblsizes as size', 'size.id = product.product_size_id');
         $builder->groupBy('carton_barcode.id');
         $builder->orderBy('carton_number');
         $builder->where('pl_carton.packinglist_id', $packinglist_id);

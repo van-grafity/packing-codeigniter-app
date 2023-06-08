@@ -7,11 +7,8 @@ use App\Models\PackingListModel;
 use App\Models\PackinglistCartonModel;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
-
-// require 'vendor/autoload.php';
-
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+// use PhpOffice\PhpSpreadsheet\Spreadsheet;
+// use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class CartonBarcode extends BaseController
 {
@@ -30,13 +27,17 @@ class CartonBarcode extends BaseController
     {
         $packinglist = $this->PackingListModel->getPackingList();
         array_walk($packinglist, function (&$item, $key) {
-            // if($item->flag_generate_carton == 'Y') {
-            //     $item->btn_generate_class = 'd-none';
-            //     $item->btn_detail_class = 'd-inline-block';
-            // } else {
-            //     $item->btn_generate_class = 'd-inline-block';
-            //     $item->btn_detail_class = 'd-none';
-            // }
+
+            /* 
+                if($item->flag_generate_carton == 'Y') {
+                    $item->btn_generate_class = 'd-none';
+                    $item->btn_detail_class = 'd-inline-block';
+                } else {
+                    $item->btn_generate_class = 'd-inline-block';
+                    $item->btn_detail_class = 'd-none';
+                }
+            */
+
             if($item->flag_generate_carton == 'Y') {
                 $item->btn_generate_class = '';
                 $item->btn_detail_class = '';
@@ -64,6 +65,7 @@ class CartonBarcode extends BaseController
             'packinglist' => $packinglist,
             'carton_list' => $this->CartonBarcodeModel->getCartonByPackinglist($id),
         ];
+        
         return view('carton-barcode/detail', $data);
     }
 
@@ -82,14 +84,10 @@ class CartonBarcode extends BaseController
                 $item['packinglist_id'] = $packinglist_id;
             });
     
-            // $update_barcode = $this->CartonBarcodeModel->insertBatch($excel_to_array);
-            // $update_barcode = $this->CartonBarcodeModel->updateBatch($excel_to_array);
             $this->CartonBarcodeModel->transException(true)->transStart();
             
             $update_barcode = $this->CartonBarcodeModel->update_barcode($data_to_update);
             
-            // $update_barcode = $this->CartonBarcodeModel->update_barcode_v2($excel_to_array);
-
             $this->CartonBarcodeModel->transComplete();
         } catch (\Throwable $th) {
             throw $th;
@@ -130,7 +128,7 @@ class CartonBarcode extends BaseController
         
         $carton_id = $this->request->getGet('id');
         $detail_carton = $this->CartonBarcodeModel->getDetailCarton($carton_id);
-
+        
         $data_return = [
             'status' => 'success',
             'message' => 'Succesfully retrieved carton',

@@ -236,7 +236,6 @@ $(function() {
         
         params_data = { id : carton_id };
         result = await using_fetch(detail_carton_url, params_data, "GET");
-        console.log(result);
         result.data.forEach((data, key) => {
             let row = `
                 <tr>
