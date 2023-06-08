@@ -8,7 +8,7 @@ class ColourModel extends Model
 {
 
     protected $table         = 'tblcolour';
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $allowedFields = ['colour_name'];
 
     public function getColour($code = false)

@@ -28,7 +28,8 @@ class Colour extends BaseController
             'colour_name'  => $this->request->getVar('name'),
         );
         $this->ColourModel->save($data);
-        return redirect()->to('/colour');
+        return redirect()->to('colour')->with('success', "Successfully added Colour");
+        // return redirect()->to('lines')->with('success', 'Successfully added Line');
     }
 
     public function update()
