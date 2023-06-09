@@ -43,7 +43,7 @@ class PurchaseOrder extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('GL_id', 'tblgl', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('gl_id', 'tblgl', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblpurchaseorder');
     }
 
