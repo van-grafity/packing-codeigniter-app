@@ -62,8 +62,8 @@
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <!--<li class="nav-item menu-open"> -->
                         <li class="nav-item">
-                            <a href="" class="nav-link active">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fas fa-database"></i>
                                 <p>
                                     Master Data
                                     <i class="right fas fa-angle-left"></i>
@@ -84,7 +84,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="../index.php/category" class="nav-link">
-                                        <i class="nav-icon fas fa-tshirt"></i>
+                                        <i class="nav-icon fas fa-tags"></i>
                                         <p>Product Type</p>
                                     </a>
                                 </li>
@@ -114,7 +114,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="../index.php/style" class="nav-link">
-                                        <i class="nav-icon fas fa-tshirt"></i>
+                                        <i class="nav-icon fas fa-paint-brush"></i>
                                         <p>Style</p>
                                     </a>
                                 </li>
@@ -123,7 +123,7 @@
 
                         <li class="nav-item">
                             <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <i class="nav-icon fas fa-exchange-alt"></i>
                                 <p>
                                     Transaction
                                     <i class="right fas fa-angle-left"></i>
@@ -163,7 +163,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-tree"></i>
+                                <i class="nav-icon fas fa-barcode"></i>
                                 <p>
                                     Scan & Pack
                                     <i class="fas fa-angle-left right"></i>
@@ -173,7 +173,7 @@
                                 <li class="nav-item">
                                     <a href="<?php echo base_url('scanpack') ?>" class="nav-link">
                                         <i class="nav-icon far fa-circle"></i>
-                                        <p>Shipment Scan</p>
+                                        <p>Packing Scan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -314,6 +314,29 @@
 
     <!-- Page Script | Javascript Khusus di halaman tersebut -->
     <?= $this->renderSection('page_script'); ?>
+
+
+    <script>
+        $(document).ready(function() {
+            /*** add active class and stay opened when selected ***/
+            var url = window.location;
+    
+            // for sidebar menu entirely but not cover treeview
+            $('ul.nav-sidebar a').filter(function() {
+                if (this.href) {
+                    return this.href == url || url.href.indexOf(this.href) == 0;
+                }
+            }).addClass('active');
+    
+            // for the treeview
+            $('ul.nav-treeview a').filter(function() {
+                if (this.href) {
+                    return this.href == url || url.href.indexOf(this.href) == 0;
+                }
+            }).parentsUntil(".nav-sidebar > .nav-treeview").addClass('menu-open').prev('a').addClass('active');
+        });
+
+    </script>
 </body>
 
 </html>
