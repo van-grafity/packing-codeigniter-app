@@ -66,7 +66,7 @@ class PurchaseOrderModel extends Model
         return $query;
     }
 
-    public function sync_po_details($po_number) {
+    public function syncPurchaseOrderDetails($po_number) {
 
         // ## Get PO details
         $builder = $this->db->table('tblpurchaseorderdetail as pod');

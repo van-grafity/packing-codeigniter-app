@@ -18,7 +18,6 @@ class Scanpack extends BaseController
 
     public function index()
     {
-
         $data = [
             'title' => 'Scan Carton',
         ];
@@ -28,7 +27,6 @@ class Scanpack extends BaseController
     public function detailcarton()
     {
         $carton_barcode = $this->request->getGet('carton_barcode');
-        
         $carton_detail = $this->CartonBarcodeModel->getDetailCartonByBarcode($carton_barcode);
         if(!$carton_detail) {
             $data_return = [
