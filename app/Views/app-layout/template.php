@@ -71,6 +71,12 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
+                                    <a href="../index.php/user" class="nav-link">
+                                        <i class="nav-icon fas fa-users"></i>
+                                        <p>User Management</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="../index.php/buyer" class="nav-link">
                                         <i class="nav-icon fa fa-user-tie"></i>
                                         <p>Buyer</p>
@@ -94,12 +100,7 @@
                                         <p>Products</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="../index.php/user" class="nav-link">
-                                        <i class="nav-icon fas fa-users"></i>
-                                        <p>User List</p>
-                                    </a>
-                                </li>
+
                                 <li class="nav-item">
                                     <a href="../index.php/factory" class="nav-link">
                                         <i class="nav-icon fas fa-industry"></i>
