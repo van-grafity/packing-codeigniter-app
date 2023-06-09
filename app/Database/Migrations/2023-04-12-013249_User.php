@@ -20,7 +20,11 @@ class User extends Migration
             ],
             'email' => [
                 'type' => 'VARCHAR',
-                'constraint' => 255,
+                'constraint' => 100,
+            ],
+            'password' => [
+                'type' => 'VARCHAR',
+                'constraint' => 50,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -32,11 +36,11 @@ class User extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('users');
+        $this->forge->createTable('tbluser');
     }
 
     public function down()
     {
-        $this->forge->dropTable('users');
+        $this->forge->dropTable('tbluser');
     }
 }

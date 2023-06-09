@@ -30,4 +30,8 @@ class Home extends BaseController
 
         return view('app-layout/dashboard', $data);
     }
+
+    public function login()
+    {
+    }
 }

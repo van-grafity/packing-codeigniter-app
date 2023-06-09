@@ -30,7 +30,7 @@ class PackingListModel extends Model
         $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.GL_id');
         $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id');
         $builder->orderBy('tblpackinglist.id', 'ASC');
-        
+
         if ($id) {
             $builder->where(['tblpackinglist.id' => $id]);
             $result = $builder->get()->getRow();
@@ -60,7 +60,7 @@ class PackingListModel extends Model
         $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.packinglist_id = packinglist.id');
         $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
         $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
-        $builder->join('tblsizes as size', 'size.id = product.product_size_id');
+        $builder->join('tblsize as size', 'size.id = product.product_size_id');
         $builder->where('packinglist.id', $packinglist_id);
         $builder->groupBy('size.id');
         $result = $builder->get()->getResult();
@@ -69,11 +69,11 @@ class PackingListModel extends Model
 
     public function sync_with_packinglist_carton($packinglist_id = null)
     {
-        if(!$packinglist_id) { 
+        if (!$packinglist_id) {
             return [
                 'status' => false,
                 'message' => "Please provide a packinglist ID.",
-            ]; 
+            ];
         };
 
         $data_update = [
@@ -81,12 +81,12 @@ class PackingListModel extends Model
             'packinglist_ship_qty' => $this->get_ship_qty($packinglist_id),
             'packinglist_amount' => $this->get_packinglist_amount($packinglist_id),
         ];
-        
+
         $builder = $this->db->table('tblpackinglist');
-        $builder->where('id',$packinglist_id);
+        $builder->where('id', $packinglist_id);
         $builder->update($data_update);
 
-        $result = $builder->where('id',$packinglist_id)->get()->getRow();
+        $result = $builder->where('id', $packinglist_id)->get()->getRow();
         return $result;
     }
 
@@ -98,13 +98,13 @@ class PackingListModel extends Model
         $result = $builder->get()->getRow();
         return $result->carton_qty ? $result->carton_qty : 0;
     }
-    
+
     public function get_ship_qty($packinglist_id = null)
     {
         $builder = $this->db->table('tblcartondetail as carton_detail');
         $builder->select('sum(carton_detail.product_qty * pl_carton.carton_qty) as ship_qty');
         $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_detail.packinglist_carton_id');
-        $builder->where('pl_carton.packinglist_id',$packinglist_id);
+        $builder->where('pl_carton.packinglist_id', $packinglist_id);
         $result = $builder->get()->getRow();
         return $result->ship_qty;
     }
@@ -112,7 +112,7 @@ class PackingListModel extends Model
     public function get_percentage_ship($packinglist_id = null)
     {
         $builder = $this->db->table('tblpackinglist as packinglist');
-        $builder->where('packinglist.id',$packinglist_id);
+        $builder->where('packinglist.id', $packinglist_id);
         $order_qty = $builder->get()->getRow()->packinglist_qty;
         $ship_qty = $this->get_ship_qty($packinglist_id);
         $percentage_ship = round($ship_qty / $order_qty * 100) . '%';
@@ -125,9 +125,8 @@ class PackingListModel extends Model
         $builder->select('sum(carton_detail.product_qty * pl_carton.carton_qty * product.product_price) as packinglist_amount');
         $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_detail.packinglist_carton_id');
         $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
-        $builder->where('pl_carton.packinglist_id',$packinglist_id);
+        $builder->where('pl_carton.packinglist_id', $packinglist_id);
         $result = $builder->get()->getRow();
         return $result->packinglist_amount;
     }
-
 }

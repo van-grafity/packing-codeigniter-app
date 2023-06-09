@@ -19,7 +19,8 @@ class PackinglistCartonModel extends Model
         'flag_generate_carton',
     ];
 
-    public function getDataByPackinglist($packinglist_id = null) {
+    public function getDataByPackinglist($packinglist_id = null)
+    {
         $builder = $this->db->table('tblpackinglistcarton as pl_carton');
         $builder->select('pl_carton.*, colour.colour_name as colour, sum(carton_detail.product_qty) as pcs_per_carton');
         $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
@@ -31,11 +32,12 @@ class PackinglistCartonModel extends Model
         $builder->groupBy('pl_carton.id, colour.id');
         $builder->orderBy('pl_carton.id');
         $result = $builder->get()->getResult();
-        
+
         return $result;
     }
 
-    public function getUngeneratedCartonByPackinglistID($packinglist_id = null) {
+    public function getUngeneratedCartonByPackinglistID($packinglist_id = null)
+    {
         $builder = $this->db->table('tblpackinglistcarton as pl_carton');
         $builder->select('pl_carton.*');
         // $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
@@ -48,23 +50,24 @@ class PackinglistCartonModel extends Model
         // $builder->groupBy('pl_carton.id, colour.id');
         // $builder->orderBy('pl_carton.id');
         $result = $builder->get()->getResult();
-        
+
         return $result;
     }
 
-    public function getProductsInCarton($carton_id = null) {
-        if(!$carton_id) return null;
+    public function getProductsInCarton($carton_id = null)
+    {
+        if (!$carton_id) return null;
 
         $data_return = [];
         $products_in_carton = model('App\Models\CartonDetailModel')->where('packinglist_carton_id', $carton_id)->find();
         foreach ($products_in_carton as $key => $product) {
             $product_data = $this->db->table('tblproduct as product')
                 ->join('tblcolour as colour', 'colour.id = product.product_colour_id')
-                ->join('tblsizes as size', 'size.id = product.product_size_id')
+                ->join('tblsize as size', 'size.id = product.product_size_id')
                 ->select('product.id as product_id, product_name, product_code, colour.colour_name as colour, size.id as size_id, size.size')
                 ->where('product.id', $product->product_id)
                 ->get()->getRow();
-            
+
             $product_data->product_qty = $product->product_qty;
             $product_data->carton_detail_id = $product->id;
             $data_return[] = $product_data;

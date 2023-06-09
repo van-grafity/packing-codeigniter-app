@@ -14,22 +14,22 @@ class PurchaseOrder extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'PO_No' => [
+            'po_no' => [
                 'type' => 'VARCHAR',
                 'constraint' => 35,
             ],
-            'GL_id' => [
+            'gl_id' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
-            'Shipdate' => [
+            'shipdate' => [
                 'type' => 'DATE',
             ],
-            'PO_Qty' => [
+            'po_qty' => [
                 'type' => 'INT',
                 'constraint' => 11,
             ],
-            'PO_Amount' => [
+            'po_amount' => [
                 'type' => 'INT',
                 'constraint' => 11,
             ],

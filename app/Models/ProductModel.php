@@ -23,19 +23,19 @@ class ProductModel extends Model
     {
         if ($code == false) {
             $builder = $this->db->table('tblproduct');
-            $builder->select('tblproduct.*, tblstyles.style_description, tblcategory.category_name ');
+            $builder->select('tblproduct.*, tblstyle.style_description, tblcategory.category_name ');
             $builder->join('tblcategory', 'tblcategory.id = product_category_id', 'left');
-            $builder->join('tblstyles', 'tblstyles.id = product_style_id', 'left');
+            $builder->join('tblstyle', 'tblstyle.id = product_style_id', 'left');
             $builder->join('tblcolour', 'tblcolour.id = product_colour_id', 'left');
-            $builder->join('tblsizes', 'tblsizes.id = product_size_id', 'left');
+            $builder->join('tblsize', 'tblsize.id = product_size_id', 'left');
             return $builder->get();
         }
         $builder = $this->db->table('tblproduct');
-        $builder->select('tblproduct.*, tblstyles.style_description, tblcategory.category_name ');
+        $builder->select('tblproduct.*, tblstyle.style_description, tblcategory.category_name ');
         $builder->join('tblcategory', 'tblcategory.id = product_category_id', 'left');
-        $builder->join('tblstyles', 'tblstyles.id = product_style_id', 'left');
+        $builder->join('tblstyle', 'tblstyle.id = product_style_id', 'left');
         $builder->join('tblcolour', 'tblcolour.id = product_colour_id', 'left');
-        $builder->join('tblsizes', 'tblsizes.id = product_size_id', 'left');
+        $builder->join('tblsize', 'tblsize.id = product_size_id', 'left');
         return $builder->where(['code' => $code])->get();
     }
 
@@ -58,8 +58,8 @@ class ProductModel extends Model
         // $builder->select('product.*');
         $builder->join('tblpurchaseorderdetail as po_detail', 'po_detail.product_id = product.id');
         $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
-        $builder->join('tblstyles as style', 'style.id = product.product_style_id');
-        $builder->join('tblsizes as size', 'size.id = product.product_size_id');
+        $builder->join('tblstyle as style', 'style.id = product.product_style_id');
+        $builder->join('tblsize as size', 'size.id = product.product_size_id');
         $builder->join('tblcategory as category', 'category.id = product.product_category_id');
         $builder->where('po_detail.order_id', $po_id);
         $builder->orderby('product.id', 'ASC');

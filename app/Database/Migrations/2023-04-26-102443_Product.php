@@ -59,9 +59,9 @@ class Product extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('product_category_id', 'tblcategory', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('product_style_id', 'tblstyles', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('product_style_id', 'tblstyle', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('product_colour_id', 'tblcolour', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('product_size_id', 'tblsizes', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('product_size_id', 'tblsize', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tblproduct');
     }
 

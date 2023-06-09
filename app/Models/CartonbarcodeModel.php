@@ -23,7 +23,7 @@ class CartonBarcodeModel extends Model
         $additionalUpdateField = ['updated_at' => new RawSql('CURRENT_TIMESTAMP')];
         $builder = $this->db->table('tblcartonbarcode');
         $builder->updateFields($additionalUpdateField, true);
-        $result = $builder->updateBatch($data_array, ['packinglist_id','carton_number_by_system']);
+        $result = $builder->updateBatch($data_array, ['packinglist_id', 'carton_number_by_system']);
         return $result;
     }
 
@@ -45,7 +45,7 @@ class CartonBarcodeModel extends Model
         $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
         // $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
         // $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
-        // $builder->join('tblsizes as size', 'size.id = product.product_size_id');
+        // $builder->join('tblsize as size', 'size.id = product.product_size_id');
         $builder->groupBy('carton_barcode.id');
         $builder->orderBy('carton_number');
         $builder->where('pl_carton.packinglist_id', $packinglist_id);
@@ -65,8 +65,8 @@ class CartonBarcodeModel extends Model
 
     public function getDetailCarton($carton_id = null)
     {
-        if(!$carton_id) return null;
-        
+        if (!$carton_id) return null;
+
         $data_return = [];
 
         $builder = $this->db->table('tblcartonbarcode as carton_barcode');
@@ -74,7 +74,7 @@ class CartonBarcodeModel extends Model
         $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id');
         $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
         $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
-        $builder->join('tblsizes as size', 'size.id = product.product_size_id');
+        $builder->join('tblsize as size', 'size.id = product.product_size_id');
         $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
         $builder->where('carton_barcode.id', $carton_id);
         $result = $builder->get()->getResult();
@@ -82,4 +82,3 @@ class CartonBarcodeModel extends Model
         return $result;
     }
 }
-

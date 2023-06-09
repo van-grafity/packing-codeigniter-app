@@ -6,7 +6,7 @@ use CodeIgniter\Database\Seeder;
 
 class sizeSeeder extends Seeder
 {
-    private $table = 'tblsizes';
+    private $table = 'tblsize';
 
     public const DATA = [
         [

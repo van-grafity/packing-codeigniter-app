@@ -37,11 +37,11 @@ class CartonBarcode extends Migration
                 'constraint' => 255,
             ],
             'created_at'  => [
-                'type' => 'datetime', 
+                'type' => 'datetime',
                 'null' => true
             ],
             'updated_at'  => [
-                'type' => 'datetime', 
+                'type' => 'datetime',
                 'null' => true
             ],
         ]);

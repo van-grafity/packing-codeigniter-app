@@ -32,11 +32,11 @@ class Style extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('tblstyles');
+        $this->forge->createTable('tblstyle');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tblstyles');
+        $this->forge->dropTable('tblstyle');
     }
 }

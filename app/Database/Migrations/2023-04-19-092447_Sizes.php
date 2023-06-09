@@ -29,12 +29,12 @@ class Sizes extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('tblsizes');
+        $this->forge->createTable('tblsize');
     }
 
     public function down()
     {
         //menghapus tabel sizes
-        $this->forge->dropTable('tblsizes');
+        $this->forge->dropTable('tblsize');
     }
 }

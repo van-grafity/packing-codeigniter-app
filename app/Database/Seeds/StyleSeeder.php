@@ -6,7 +6,7 @@ use CodeIgniter\Database\Seeder;
 
 class StyleSeeder extends Seeder
 {
-    private $table = 'tblstyles';
+    private $table = 'tblstyle';
 
     private const DATA = [
         [
