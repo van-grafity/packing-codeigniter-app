@@ -125,6 +125,7 @@
                             <th width="25%">Carton Number</th>
                             <th width="25%">Total PCS / Carton</th>
                             <th width="25%">Carton Barcode</th>
+                            <th width="25%">Packed Status</th>
                             <th width="20%">Action</th>
                         </tr>
                     </thead>
@@ -136,6 +137,7 @@
                             <td><?= $carton->carton_number; ?></td>
                             <td><?= $carton->pcs_per_carton; ?></td>
                             <td><?= $carton->barcode; ?></td>
+                            <td><?= $carton->packed_status; ?></td>
                             <td class="text-center align-middle">
                                 <a class="btn btn-info btn-sm mb-1 mr-2" onclick="detail_carton(<?= $carton->id ?>)">Detail</a>
                             </td>
@@ -218,6 +220,7 @@ $(function() {
             {data: 'carton_number', name: 'carton_number'},
             {data: 'total_pcs', name: 'total_pcs'},
             {data: 'barcode', name: 'barcode'},
+            {data: 'packed_status', name: 'packed_status'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>" +

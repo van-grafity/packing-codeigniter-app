@@ -171,7 +171,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="<?php echo base_url('scanpack') ?>" class="nav-link">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>Shipment Scan</p>
                                     </a>

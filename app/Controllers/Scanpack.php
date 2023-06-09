@@ -38,7 +38,7 @@ class Scanpack extends BaseController
             return $this->response->setJSON($data_return);
         }
         
-        $packinglist = $this->PackingListModel->getPackinglistByCartonBarcode($carton_barcode);
+        $packinglist = $this->CartonBarcodeModel->getCartonInfoByBarcode($carton_barcode);
         $packinglist->total_carton = $this->PackingListModel->getTotalCarton($packinglist->packinglist_id);
         $packinglist->total_pcs = array_sum(array_map(fn( $product ) => $product->product_qty, $carton_detail)); 
         
@@ -54,5 +54,15 @@ class Scanpack extends BaseController
         ];
         return $this->response->setJSON($data_return);
 
+    }
+
+    public function packcarton()
+    {
+        $carton_id = $this->request->getVar('carton_id');
+        $data = [
+            'flag_packed' => 'Y',
+        ];
+        $this->CartonBarcodeModel->update($carton_id, $data);
+        return redirect()->to('scanpack');
     }
 }

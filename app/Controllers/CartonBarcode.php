@@ -59,11 +59,20 @@ class CartonBarcode extends BaseController
         $packinglist = $this->PackingListModel->getPackingList($id);
         $packinglist->total_carton = $this->PackingListModel->getTotalCarton($id);
         $packinglist->percentage_ship = $this->PackingListModel->get_percentage_ship($id);
+
+        $carton_list = $this->CartonBarcodeModel->getCartonByPackinglist($id);
+        array_walk($carton_list, function (&$item, $key) {
+            if($item->flag_packed == 'Y') {
+                $item->packed_status = '<span class="badge bg-success">Packed</span>';
+            } else {
+                $item->packed_status = '<span class="badge bg-secondary">Not Packed Yet</span>';
+            }
+        });
         
         $data = [
             'title' => 'Carton Barcode Setup Detail',
             'packinglist' => $packinglist,
-            'carton_list' => $this->CartonBarcodeModel->getCartonByPackinglist($id),
+            'carton_list' => $carton_list,
         ];
         
         return view('carton-barcode/detail', $data);

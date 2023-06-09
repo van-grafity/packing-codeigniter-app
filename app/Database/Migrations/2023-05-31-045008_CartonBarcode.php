@@ -36,6 +36,11 @@ class CartonBarcode extends Migration
                 'type' => 'varchar',
                 'constraint' => 255,
             ],
+            'flag_packed' => [
+                'type' => 'char',
+                'default' => 'N',
+                'constraint' => 2,
+            ],
             'created_at'  => [
                 'type' => 'datetime', 
                 'null' => true
