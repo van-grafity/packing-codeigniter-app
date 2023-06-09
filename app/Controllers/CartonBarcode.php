@@ -58,7 +58,7 @@ class CartonBarcode extends BaseController
     {
         $packinglist = $this->PackingListModel->getPackingList($id);
         $packinglist->total_carton = $this->PackingListModel->getTotalCarton($id);
-        $packinglist->percentage_ship = $this->PackingListModel->get_percentage_ship($id);
+        $packinglist->percentage_ship = $this->PackingListModel->getShipmentPercentage($id);
 
         $carton_list = $this->CartonBarcodeModel->getCartonByPackinglist($id);
         array_walk($carton_list, function (&$item, $key) {
@@ -95,7 +95,7 @@ class CartonBarcode extends BaseController
     
             $this->CartonBarcodeModel->transException(true)->transStart();
             
-            $update_barcode = $this->CartonBarcodeModel->update_barcode($data_to_update);
+            $updateCartonBarcode = $this->CartonBarcodeModel->updateCartonBarcode($data_to_update);
             
             $this->CartonBarcodeModel->transComplete();
         } catch (\Throwable $th) {
