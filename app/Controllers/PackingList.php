@@ -51,7 +51,7 @@ class PackingList extends BaseController
         $request_data = $this->request->getPost();
         
         $month_filter = date('m');
-        $packinglist_this_month = $this->PackingListModel->get_last_pl_by_month($month_filter);
+        $packinglist_this_month = $this->PackingListModel->getLastPackinglistByMonth($month_filter);
         $next_packinglist_number = $packinglist_this_month->packinglist_number + 1;
         $next_packinglist_serial_number = $this->generate_serial_number($next_packinglist_number);
         
@@ -132,8 +132,8 @@ class PackingList extends BaseController
         }
 
         $packinglist = $this->PackingListModel->getPackingList($id);
-        $packinglist->total_carton = $this->PackingListModel->get_total_carton($id);
-        $packinglist->percentage_ship = $this->PackingListModel->get_percentage_ship($id);
+        $packinglist->total_carton = $this->PackingListModel->getTotalCarton($id);
+        $packinglist->percentage_ship = $this->PackingListModel->getShipmentPercentage($id);
         
         $data = [
             'title'         => 'Packing List Detail',
@@ -179,7 +179,7 @@ class PackingList extends BaseController
                 }
             }
     
-            $sync_prosses = $this->PackingListModel->sync_with_packinglist_carton($packinglist_id);
+            $sync_prosses = $this->PackingListModel->syncWithPackinglistCarton($packinglist_id);
             $this->PackinglistCartonModel->transComplete();
         } catch (DatabaseException $e) {
             // Automatically rolled back already.
@@ -237,7 +237,7 @@ class PackingList extends BaseController
                     $this->CartonDetailModel->insert($carton_detail_data);
                 }
             }
-            $sync_prosses = $this->PackingListModel->sync_with_packinglist_carton($packinglist_id);
+            $sync_prosses = $this->PackingListModel->syncWithPackinglistCarton($packinglist_id);
             $this->PackinglistCartonModel->transComplete();
         } catch (DatabaseException $e) {
             // Automatically rolled back already.
@@ -252,9 +252,9 @@ class PackingList extends BaseController
         $packinglist_id = $this->request->getPost('packinglist_id');
 
         $delete = $this->PackinglistCartonModel->delete($id);
-        $sync_prosses = $this->PackingListModel->sync_with_packinglist_carton($packinglist_id);
+        $sync_prosses = $this->PackingListModel->syncWithPackinglistCarton($packinglist_id);
 
-        $sync_prosses = $this->PackingListModel->sync_with_packinglist_carton($packinglist_id);
+        $sync_prosses = $this->PackingListModel->syncWithPackinglistCarton($packinglist_id);
         return redirect()->to('packinglist/'. $packinglist_id);
     }
 

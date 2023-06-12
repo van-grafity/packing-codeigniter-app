@@ -125,6 +125,7 @@
                             <th width="25%">Carton Number</th>
                             <th width="25%">Total PCS / Carton</th>
                             <th width="25%">Carton Barcode</th>
+                            <th width="25%">Packed Status</th>
                             <th width="20%">Action</th>
                         </tr>
                     </thead>
@@ -136,6 +137,7 @@
                             <td><?= $carton->carton_number; ?></td>
                             <td><?= $carton->pcs_per_carton; ?></td>
                             <td><?= $carton->barcode; ?></td>
+                            <td><?= $carton->packed_status; ?></td>
                             <td class="text-center align-middle">
                                 <a class="btn btn-info btn-sm mb-1 mr-2" onclick="detail_carton(<?= $carton->id ?>)">Detail</a>
                             </td>
@@ -200,9 +202,15 @@
 
 <?= $this->Section('page_script'); ?>
 <script>
-$(function() {
+
+$(document).ready(function(){
     bsCustomFileInput.init();
-});
+
+    // ## Show Flash Message
+    let session = <?= json_encode(session()->getFlashdata()) ?>;
+    show_flash_message(session);
+
+})
 </script>
 <script type="text/javascript">
     const detail_carton_url = '<?= base_url('cartonbarcode/detailcarton')?>';
@@ -218,11 +226,9 @@ $(function() {
             {data: 'carton_number', name: 'carton_number'},
             {data: 'total_pcs', name: 'total_pcs'},
             {data: 'barcode', name: 'barcode'},
+            {data: 'packed_status', name: 'packed_status'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
-        dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>" +
-            "<'row'<'col-md-12'tr>>" +
-            "<'row'<'col-md-5'i><'col-md-7'p>>",
         paging: true,
         responsive: true,
         lengthChange: true,
@@ -236,7 +242,6 @@ $(function() {
         
         params_data = { id : carton_id };
         result = await using_fetch(detail_carton_url, params_data, "GET");
-        console.log(result);
         result.data.forEach((data, key) => {
             let row = `
                 <tr>

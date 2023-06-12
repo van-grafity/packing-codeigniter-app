@@ -26,6 +26,12 @@
     <!-- summernote -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
 
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="plugins/sweetalert2/sweetalert2.min.css">
+
+    <!-- Toastr -->
+    <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
+
     <!-- DataTables -->
     <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
@@ -62,8 +68,8 @@
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <!--<li class="nav-item menu-open"> -->
                         <li class="nav-item">
-                            <a href="" class="nav-link active">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fas fa-database"></i>
                                 <p>
                                     Master Data
                                     <i class="right fas fa-angle-left"></i>
@@ -90,7 +96,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="../index.php/category" class="nav-link">
-                                        <i class="nav-icon fas fa-tshirt"></i>
+                                        <i class="nav-icon fas fa-tags"></i>
                                         <p>Product Type</p>
                                     </a>
                                 </li>
@@ -115,7 +121,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="../index.php/style" class="nav-link">
-                                        <i class="nav-icon fas fa-tshirt"></i>
+                                        <i class="nav-icon fas fa-paint-brush"></i>
                                         <p>Style</p>
                                     </a>
                                 </li>
@@ -124,7 +130,7 @@
 
                         <li class="nav-item">
                             <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <i class="nav-icon fas fa-exchange-alt"></i>
                                 <p>
                                     Transaction
                                     <i class="right fas fa-angle-left"></i>
@@ -164,7 +170,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-tree"></i>
+                                <i class="nav-icon fas fa-barcode"></i>
                                 <p>
                                     Scan & Pack
                                     <i class="fas fa-angle-left right"></i>
@@ -172,9 +178,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="<?php echo base_url('scanpack') ?>" class="nav-link">
                                         <i class="nav-icon far fa-circle"></i>
-                                        <p>Shipment Scan</p>
+                                        <p>Packing Scan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -233,6 +239,11 @@
             <!-- /.sidebar -->
         </aside>
 
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="<?= base_url('assets'); ?>/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+        </div>
+
         <?= $this->renderSection('content'); ?>
 
         <footer class="main-footer">
@@ -271,6 +282,12 @@
     <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+
+    <!-- Toastr -->
+    <script src="plugins/toastr/toastr.min.js"></script>
 
     <!-- DataTables  & Plugins -->
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
@@ -320,6 +337,30 @@
 
     <!-- Page Script | Javascript Khusus di halaman tersebut -->
     <?= $this->renderSection('page_script'); ?>
+
+
+    // ## Script for set Active Class depand on Active Page
+    <script>
+        $(document).ready(function() {
+            /*** add active class and stay opened when selected ***/
+            var url = window.location;
+    
+            // for sidebar menu entirely but not cover treeview
+            $('ul.nav-sidebar a').filter(function() {
+                if (this.href) {
+                    return this.href == url || url.href.indexOf(this.href) == 0;
+                }
+            }).addClass('active');
+    
+            // for the treeview
+            $('ul.nav-treeview a').filter(function() {
+                if (this.href) {
+                    return this.href == url || url.href.indexOf(this.href) == 0;
+                }
+            }).parentsUntil(".nav-sidebar > .nav-treeview").addClass('menu-open').prev('a').addClass('active');
+        });
+
+    </script>
 </body>
 
 </html>

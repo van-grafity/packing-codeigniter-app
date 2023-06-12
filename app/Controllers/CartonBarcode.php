@@ -8,11 +8,6 @@ use App\Models\PackinglistCartonModel;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-// require 'vendor/autoload.php';
-
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
 class CartonBarcode extends BaseController
 {
     protected $CartonBarcodeModel;
@@ -30,13 +25,17 @@ class CartonBarcode extends BaseController
     {
         $packinglist = $this->PackingListModel->getPackingList();
         array_walk($packinglist, function (&$item, $key) {
-            // if($item->flag_generate_carton == 'Y') {
-            //     $item->btn_generate_class = 'd-none';
-            //     $item->btn_detail_class = 'd-inline-block';
-            // } else {
-            //     $item->btn_generate_class = 'd-inline-block';
-            //     $item->btn_detail_class = 'd-none';
-            // }
+
+            /* 
+                if($item->flag_generate_carton == 'Y') {
+                    $item->btn_generate_class = 'd-none';
+                    $item->btn_detail_class = 'd-inline-block';
+                } else {
+                    $item->btn_generate_class = 'd-inline-block';
+                    $item->btn_detail_class = 'd-none';
+                }
+            */
+
             if($item->flag_generate_carton == 'Y') {
                 $item->btn_generate_class = '';
                 $item->btn_detail_class = '';
@@ -56,14 +55,24 @@ class CartonBarcode extends BaseController
     public function detail($id)
     {
         $packinglist = $this->PackingListModel->getPackingList($id);
-        $packinglist->total_carton = $this->PackingListModel->get_total_carton($id);
-        $packinglist->percentage_ship = $this->PackingListModel->get_percentage_ship($id);
+        $packinglist->total_carton = $this->PackingListModel->getTotalCarton($id);
+        $packinglist->percentage_ship = $this->PackingListModel->getShipmentPercentage($id);
+
+        $carton_list = $this->CartonBarcodeModel->getCartonByPackinglist($id);
+        array_walk($carton_list, function (&$item, $key) {
+            if($item->flag_packed == 'Y') {
+                $item->packed_status = '<span class="badge bg-success">Packed</span>';
+            } else {
+                $item->packed_status = '<span class="badge bg-secondary">Not Packed Yet</span>';
+            }
+        });
         
         $data = [
             'title' => 'Carton Barcode Setup Detail',
             'packinglist' => $packinglist,
-            'carton_list' => $this->CartonBarcodeModel->getCartonByPackinglist($id),
+            'carton_list' => $carton_list,
         ];
+        
         return view('carton-barcode/detail', $data);
     }
 
@@ -71,25 +80,35 @@ class CartonBarcode extends BaseController
     {
         try {
             $packinglist_id = $this->request->getPost('packinglist_id');
-            
             $file = $this->request->getFile('file_excel');
+            $rules = [
+                'file_excel' => 'ext_in[file_excel,csv]',
+            ];
+            if (!$this->validate($rules)) {
+                return redirect()->to('cartonbarcode/'.$packinglist_id)->with('error', 'Please upload on CSV format');
+            }
+
             $spreadsheet = IOFactory::load($file->getTempName());
             $worksheet = $spreadsheet->getActiveSheet();
             
+            $is_valid = $this->is_valid_header($worksheet);
+            if(!$is_valid) {
+                return redirect()->to('cartonbarcode/'.$packinglist_id)->with('error', 'Incorrect header format');
+            }
+            
             $excel_to_array = $this->parse_excel_to_array($worksheet);
             $data_to_update = $excel_to_array['data'];
+            
             array_walk($data_to_update, function (&$item, $key) use ($packinglist_id){
                 $item['packinglist_id'] = $packinglist_id;
+                $item['carton_number_by_system'] = $item['carton_number'];
+                unset($item['carton_number']);
             });
-    
-            // $update_barcode = $this->CartonBarcodeModel->insertBatch($excel_to_array);
-            // $update_barcode = $this->CartonBarcodeModel->updateBatch($excel_to_array);
+
             $this->CartonBarcodeModel->transException(true)->transStart();
             
-            $update_barcode = $this->CartonBarcodeModel->update_barcode($data_to_update);
+            $updateCartonBarcode = $this->CartonBarcodeModel->updateCartonBarcode($data_to_update);
             
-            // $update_barcode = $this->CartonBarcodeModel->update_barcode_v2($excel_to_array);
-
             $this->CartonBarcodeModel->transComplete();
         } catch (\Throwable $th) {
             throw $th;
@@ -126,11 +145,11 @@ class CartonBarcode extends BaseController
         return redirect()->to('cartonbarcode/'.$packinglist_id);
     }
 
-    public function detailcarton(){
-        
+    public function detailcarton()
+    {
         $carton_id = $this->request->getGet('id');
         $detail_carton = $this->CartonBarcodeModel->getDetailCarton($carton_id);
-
+        
         $data_return = [
             'status' => 'success',
             'message' => 'Succesfully retrieved carton',
@@ -186,7 +205,6 @@ class CartonBarcode extends BaseController
                     $headerIndex = array_key_exists($columnIndex, $header);
                     if ($headerIndex !== false) {
                         $rowData[$header[$columnIndex]] = $cell->getValue();
-                        
                     }
                 }
                 if(!empty($rowData)) {
@@ -201,5 +219,16 @@ class CartonBarcode extends BaseController
         ];
 
         return $data_return;
+    }
+
+    private function is_valid_header($worksheet)
+    {
+        // ## get first row in worksheet and check valid name
+        $header_from_excel = $worksheet->toArray()[0];;
+        $header_list = ['carton_number', 'barcode'];
+        foreach ($header_list as $key => $header) {
+            if ($header != $header_from_excel[$key]) return false;
+        }   
+        return true;
     }
 }

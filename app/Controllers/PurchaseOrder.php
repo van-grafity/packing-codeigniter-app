@@ -76,7 +76,7 @@ class PurchaseOrder extends BaseController
                 }
             }
             $po_number = $this->PurchaseOrderModel->find($po_id)['PO_No'];
-            $sync_po = $this->PurchaseOrderModel->sync_po_details($po_number);
+            $sync_po = $this->PurchaseOrderModel->syncPurchaseOrderDetails($po_number);
 
             $this->PurchaseOrderModel->transComplete();
         } catch (DatabaseException $e) {
@@ -117,7 +117,7 @@ class PurchaseOrder extends BaseController
         $this->PurchaseOrderDetailModel->insert($data_po_detail);
 
         $po_number = $this->request->getVar('po_number');
-        $sync_po = $this->PurchaseOrderModel->sync_po_details($po_number);
+        $sync_po = $this->PurchaseOrderModel->syncPurchaseOrderDetails($po_number);
 
         return redirect()->to('purchaseorder/' . $po_number);
     }
@@ -134,7 +134,7 @@ class PurchaseOrder extends BaseController
         $this->PurchaseOrderDetailModel->update($id, $data_po_detail);
 
         $po_number = $this->request->getVar('po_number');
-        $sync_po = $this->PurchaseOrderModel->sync_po_details($po_number);
+        $sync_po = $this->PurchaseOrderModel->syncPurchaseOrderDetails($po_number);
 
         return redirect()->to('purchaseorder/' . $po_number);
     }
@@ -145,7 +145,7 @@ class PurchaseOrder extends BaseController
         $po_detail_id = $this->request->getPost('po_detail_id');
         $delete = $this->PurchaseOrderDetailModel->delete($po_detail_id);
 
-        $sync_po = $this->PurchaseOrderModel->sync_po_details($po_number);
+        $sync_po = $this->PurchaseOrderModel->syncPurchaseOrderDetails($po_number);
         return redirect()->to('purchaseorder/' . $po_number);
     }
 }
