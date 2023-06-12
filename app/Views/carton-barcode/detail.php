@@ -202,9 +202,15 @@
 
 <?= $this->Section('page_script'); ?>
 <script>
-$(function() {
+
+$(document).ready(function(){
     bsCustomFileInput.init();
-});
+
+    // ## Show Flash Message
+    let session = <?= json_encode(session()->getFlashdata()) ?>;
+    show_flash_message(session);
+
+})
 </script>
 <script type="text/javascript">
     const detail_carton_url = '<?= base_url('cartonbarcode/detailcarton')?>';
@@ -223,9 +229,6 @@ $(function() {
             {data: 'packed_status', name: 'packed_status'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
-        dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>" +
-            "<'row'<'col-md-12'tr>>" +
-            "<'row'<'col-md-5'i><'col-md-7'p>>",
         paging: true,
         responsive: true,
         lengthChange: true,

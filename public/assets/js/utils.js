@@ -71,3 +71,22 @@ async function using_fetch(url = "", data = {}, method = "GET") {
     const response = await fetch(url, fetch_data);
     return response.json();
 }
+
+
+const show_flash_message = (session = {}) => {
+    if ("success" in session) {
+        Swal.fire({
+            icon: "success",
+            title: session.success,
+            showConfirmButton: false,
+            timer: 3000,
+        });
+    }
+    if ("error" in session) {
+        Swal.fire({
+            icon: "error",
+            title: session.error,
+            confirmButtonColor: "#007bff",
+        });
+    }
+}

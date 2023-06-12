@@ -88,9 +88,6 @@
 
 </script>
 <script>
-$(function() {
-    bsCustomFileInput.init();
-
     $('.btn-generate-carton').on('click', function() {
         let id = $(this).data('id');
         let packinglist_number = $(this).data('packinglist-number');
@@ -103,7 +100,9 @@ $(function() {
 
         $('#generate_carton_modal').modal('show');
     })
-});
+
+    // ## Show Flash Message
+    let session = <?= json_encode(session()->getFlashdata()) ?>;
 </script>
 <script type="text/javascript">
 
@@ -119,9 +118,6 @@ $(function() {
             {data: 'gl_number', name: 'gl_number'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
-        dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>" +
-            "<'row'<'col-md-12'tr>>" +
-            "<'row'<'col-md-5'i><'col-md-7'p>>",
         paging: true,
         responsive: true,
         lengthChange: true,

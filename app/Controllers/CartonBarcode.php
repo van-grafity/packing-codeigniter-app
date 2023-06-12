@@ -7,8 +7,6 @@ use App\Models\PackingListModel;
 use App\Models\PackinglistCartonModel;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
-// use PhpOffice\PhpSpreadsheet\Spreadsheet;
-// use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class CartonBarcode extends BaseController
 {
@@ -82,17 +80,31 @@ class CartonBarcode extends BaseController
     {
         try {
             $packinglist_id = $this->request->getPost('packinglist_id');
-            
             $file = $this->request->getFile('file_excel');
+            $rules = [
+                'file_excel' => 'ext_in[file_excel,csv]',
+            ];
+            if (!$this->validate($rules)) {
+                return redirect()->to('cartonbarcode/'.$packinglist_id)->with('error', 'Please upload on CSV format');
+            }
+
             $spreadsheet = IOFactory::load($file->getTempName());
             $worksheet = $spreadsheet->getActiveSheet();
             
+            $is_valid = $this->is_valid_header($worksheet);
+            if(!$is_valid) {
+                return redirect()->to('cartonbarcode/'.$packinglist_id)->with('error', 'Incorrect header format');
+            }
+            
             $excel_to_array = $this->parse_excel_to_array($worksheet);
             $data_to_update = $excel_to_array['data'];
+            
             array_walk($data_to_update, function (&$item, $key) use ($packinglist_id){
                 $item['packinglist_id'] = $packinglist_id;
+                $item['carton_number_by_system'] = $item['carton_number'];
+                unset($item['carton_number']);
             });
-    
+
             $this->CartonBarcodeModel->transException(true)->transStart();
             
             $updateCartonBarcode = $this->CartonBarcodeModel->updateCartonBarcode($data_to_update);
@@ -193,7 +205,6 @@ class CartonBarcode extends BaseController
                     $headerIndex = array_key_exists($columnIndex, $header);
                     if ($headerIndex !== false) {
                         $rowData[$header[$columnIndex]] = $cell->getValue();
-                        
                     }
                 }
                 if(!empty($rowData)) {
@@ -208,5 +219,16 @@ class CartonBarcode extends BaseController
         ];
 
         return $data_return;
+    }
+
+    private function is_valid_header($worksheet)
+    {
+        // ## get first row in worksheet and check valid name
+        $header_from_excel = $worksheet->toArray()[0];;
+        $header_list = ['carton_number', 'barcode'];
+        foreach ($header_list as $key => $header) {
+            if ($header != $header_from_excel[$key]) return false;
+        }   
+        return true;
     }
 }
