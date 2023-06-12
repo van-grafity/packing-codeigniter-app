@@ -90,3 +90,12 @@ const show_flash_message = (session = {}) => {
         });
     }
 }
+
+const swal_failed = (data) => {
+    Swal.fire({
+        icon: "error",
+        title: data.title ? data.title : "Something Error",
+        text: 'Please contact the Administrator',
+        showConfirmButton: true,
+    });
+}

@@ -29,6 +29,9 @@
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="plugins/sweetalert2/sweetalert2.min.css">
 
+    <!-- Toastr -->
+    <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
+
     <!-- DataTables -->
     <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
@@ -276,6 +279,9 @@
 
     <!-- SweetAlert2 -->
     <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+
+    <!-- Toastr -->
+    <script src="plugins/toastr/toastr.min.js"></script>
 
     <!-- DataTables  & Plugins -->
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>

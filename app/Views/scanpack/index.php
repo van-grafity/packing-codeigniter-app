@@ -42,6 +42,12 @@
                             </div>
                         </form>
                     </div>
+                    <div class="col-sm-6">
+                        <dl class="row">
+                            <dt class="col-md-5 col-sm-12">Carton Barcode</dt>
+                            <dd class="col-md-7 col-sm-12" id="carton_barcode_show"> - </dd>
+                        </dl>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
@@ -152,21 +158,21 @@ $(document).ready(function() {
     $('#carton_barcode_form').on('submit', function(e) {
         e.preventDefault();
         let carton_barcode = $('#carton_barcode').val();
-        $('#carton_barcode').val('');
-
         // ## If no Entry Barcode Skip;
         if (!carton_barcode) return false;
+
         show_detail_carton(carton_barcode)
+        $('#carton_barcode').val('');
     });
 
     $('#product_barcode_form').on('submit', function(e) {
         e.preventDefault();
         let product_code = $('#product_code').val();
-        $('#product_code').val('');
-
         // ## If no Entry Barcode Skip;
         if (!product_code) return false;
+
         scan_product_code(product_code);
+        $('#product_code').val('');
     });
     
 
@@ -185,18 +191,22 @@ async function show_detail_carton(carton_barcode) {
 
     if (result.status == 'error') {
         reset_field();
+        show_flash_message({ error: result.message} )
         return false;
     }
+
     let data_po = result.data.data_po;
     let carton_detail = result.data.carton_detail;
 
     set_po_detail(data_po);
     set_carton_detail(carton_detail)
-
+    $('#carton_barcode_show').text(carton_barcode);
+    
     $('#product_code').focus();
 }
 
 function reset_field() {
+    $('#carton_barcode_show').text('-');
     $('#po_number').text('-');
     $('#pl_number').text('-');
     $('#buyer').text('-');
@@ -260,13 +270,12 @@ function set_carton_detail(carton_detail) {
 }
 
 function scan_product_code(product_code) {
-    // console.log(product_code);
     let product_row = $("#carton_detail_table tbody .product_code").filter(function() {
         return $(this).text() == product_code;
     }).closest("tr");
     
     if(product_row.length <= 0) {
-        alert('Invalid Product Code!');
+        toastr.error('Invalid Product Code!')
         return false;
     }
 
