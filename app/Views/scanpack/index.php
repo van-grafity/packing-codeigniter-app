@@ -153,7 +153,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-    reset_field();
+    reset_carton_info();
 
     $('#carton_barcode_form').on('submit', function(e) {
         e.preventDefault();
@@ -190,22 +190,30 @@ async function show_detail_carton(carton_barcode) {
     result = await using_fetch(detail_carton_url, params_data, "GET");
 
     if (result.status == 'error') {
-        reset_field();
+        reset_carton_info();
         show_flash_message({ error: result.message} )
         return false;
     }
-
-    let data_po = result.data.data_po;
+    
+    let carton_info = result.data.carton_info;
+    let is_packed = carton_info.flag_packed == 'Y' ? true : false;
     let carton_detail = result.data.carton_detail;
 
-    set_po_detail(data_po);
-    set_carton_detail(carton_detail)
+    set_carton_info(carton_info);
+    set_carton_detail(carton_detail, is_packed)
+
     $('#carton_barcode_show').text(carton_barcode);
     
-    $('#product_code').focus();
+    if(carton_info.flag_packed == 'N') {
+        $('#product_code').attr('disabled',false);
+        $('#product_code').focus();
+    } else {
+        $('#product_code').attr('disabled',true);
+        $('#btn_pack_carton').attr('disabled',true);
+    }
 }
 
-function reset_field() {
+function reset_carton_info() {
     $('#carton_barcode_show').text('-');
     $('#po_number').text('-');
     $('#pl_number').text('-');
@@ -221,28 +229,31 @@ function reset_field() {
     `;
     $('#carton_detail_table tbody').html(empty_row);
 
+    $('#product_code').attr('disabled',true);
     $('#btn_pack_carton').attr('disabled',true);
 }
 
-function set_po_detail(data_po) {
-    $('#po_number').text(data_po.po_number);
-    $('#pl_number').text(data_po.pl_number);
-    $('#buyer').text(data_po.buyer);
-    $('#carton_number').text(data_po.carton_number);
-    $('#total_carton').text(data_po.total_carton);
-    $('#total_pcs').text(data_po.total_pcs);
+function set_carton_info(carton_info) {
+    $('#po_number').text(carton_info.po_number);
+    $('#pl_number').text(carton_info.pl_number);
+    $('#buyer').text(carton_info.buyer);
+    $('#carton_number').text(carton_info.carton_number);
+    $('#total_carton').text(carton_info.total_carton);
+    $('#total_pcs').text(carton_info.total_pcs);
 
-    $('#carton_id').val(data_po.carton_id);
+    $('#carton_id').val(carton_info.carton_id);
     $('#pack_carton_form').attr('action',pack_carton_url);
 }
 
-function set_carton_detail(carton_detail) {
+function set_carton_detail(carton_detail, is_packed = false) {
 
     $('#carton_detail_table tbody').html('');
 
     let total = 0;
     carton_detail.forEach((data, key) => {
-        let row = `
+        let row;
+        if(!is_packed) {
+            row = `
                 <tr class="text-center">
                     <td>${key+1}</td>
                     <td class="product_code">${data.product_code}</td>
@@ -254,6 +265,20 @@ function set_carton_detail(carton_detail) {
                     <td class="scanned_status"> <span class="badge bg-warning">Not Complete</span> </td>
                 </tr>
             `;
+        } else {
+            row = `
+                <tr class="text-center">
+                    <td>${key+1}</td>
+                    <td class="product_code">${data.product_code}</td>
+                    <td>${data.product_name}</td>
+                    <td>${data.product_colour}</td>
+                    <td>${data.product_size}</td>
+                    <td class="product_qty">${data.product_qty}</td>
+                    <td class="scanned_count"> ${data.product_qty} </td>
+                    <td class="scanned_status"> <span class="badge bg-success">Complete</span> </td>
+                </tr>
+            `;
+        }
         $('#carton_detail_table tbody').append(row);
 
         total += parseInt(data.product_qty);
@@ -267,6 +292,9 @@ function set_carton_detail(carton_detail) {
             </tr>
         `;
     $('#carton_detail_table tfoot').html(row_footer);
+
+    update_total_scanned();
+    check_all_status();
 }
 
 function scan_product_code(product_code) {

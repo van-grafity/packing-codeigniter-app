@@ -41,7 +41,7 @@ class Scanpack extends BaseController
         $packinglist->total_pcs = array_sum(array_map(fn( $product ) => $product->product_qty, $carton_detail)); 
         
         $data = [
-            'data_po' => $packinglist,
+            'carton_info' => $packinglist,
             'carton_detail' => $carton_detail,
         ];
         
