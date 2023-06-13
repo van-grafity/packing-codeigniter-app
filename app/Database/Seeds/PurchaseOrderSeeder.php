@@ -11,11 +11,11 @@ class PurchaseOrderSeeder extends Seeder
     private const DATA = [
         [
             'id' => 1,
-            'PO_No' => '8XW8FHBM',
+            'po_no' => '8XW8FHBM',
             'GL_id' => 1,
             'Shipdate' => '2022-08-16',
-            'PO_Qty' => 395,
-            'PO_Amount' => 4266,
+            'po_qty' => 395,
+            'po_amount' => 4266,
             'created_at' => '2022-08-16 00:00:00',
             'updated_at' => NULL,
         ],

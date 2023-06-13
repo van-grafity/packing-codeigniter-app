@@ -49,7 +49,7 @@ class CartonBarcode extends BaseController
             'title' => 'Carton Barcode Setup',
             'packinglist' => $packinglist,
         ];
-        return view('carton-barcode/index', $data);
+        return view('cartonbarcode/index', $data);
     }
 
     public function detail($id)
@@ -73,7 +73,7 @@ class CartonBarcode extends BaseController
             'carton_list' => $carton_list,
         ];
         
-        return view('carton-barcode/detail', $data);
+        return view('cartonbarcode/detail', $data);
     }
 
     public function import_excel()

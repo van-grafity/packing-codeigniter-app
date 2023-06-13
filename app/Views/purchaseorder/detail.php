@@ -34,21 +34,21 @@
                             <td width=20%><b>Buyer Name :</b></td>
                             <td><?= $purchase_order->buyer_name ?></td>
                             <td width=20%><b>PO Number :</b></td>
-                            <td><?= $purchase_order->PO_No ?></td>
+                            <td><?= $purchase_order->po_no ?></td>
                         </tr>
                         <tr>
                             <td><b>Total Qty :</b></td>
-                            <td><?= $purchase_order->PO_Qty ?></td>
+                            <td><?= $purchase_order->po_qty ?></td>
                             <td width=20%><b>GL Number :</b></td>
                             <td><?= $purchase_order->gl_number ?></td>
                         </tr>
                         <tr>
                             <td><b>PO Amount :</b></td>
-                            <td><?= number_to_currency($purchase_order->PO_Amount, 'USD', 'en_USD', 2); ?></td>
+                            <td><?= number_to_currency($purchase_order->po_amount, 'USD', 'en_USD', 2); ?></td>
                         </tr>
                         <tr>
                             <td><b>Required Ship Date :</b></td>
-                            <td><?= $purchase_order->Shipdate ?></td>
+                            <td><?= $purchase_order->shipdate ?></td>
                         </tr>
                     </table>
                 </div>
@@ -123,7 +123,7 @@
         <div class="modal-content">
             <form action="" method="post" id="po_detail_form">
                 <input type="hidden" name="order_id" value="<?= $purchase_order->id ?>">
-                <input type="hidden" name="po_number" value="<?= $purchase_order->PO_No ?>">
+                <input type="hidden" name="po_number" value="<?= $purchase_order->po_no ?>">
                 <input type="hidden" name="edit_po_detail_id" value="" id="edit_po_detail_id">
 
                 <div class="modal-header">
@@ -195,7 +195,7 @@
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="po_detail_id" id="po_detail_id">
-                    <input type="hidden" name="po_number" value="<?= $purchase_order->PO_No ?>">
+                    <input type="hidden" name="po_number" value="<?= $purchase_order->po_no ?>">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                     <button type="submit" class="btn btn-primary">Yes</button>
                 </div>

@@ -27,13 +27,13 @@
                                 <td width="20%"><b>Order No.</b></td>
                                 <td width="16%"><?= esc($packinglist->gl_number); ?></td>
                                 <td><b>Master Order No.</b></td>
-                                <td><?= esc($packinglist->PO_No); ?></td>
+                                <td><?= esc($packinglist->po_no); ?></td>
                             </tr>
                             <tr>
                                 <td><b>Buyer</b></td>
                                 <td><?= esc($packinglist->buyer_name); ?></td>
                                 <td><b>Purchase Order No.</b></td>
-                                <td><?= esc($packinglist->PO_No); ?></td>
+                                <td><?= esc($packinglist->po_no); ?></td>
                             </tr>
                             <tr>
                                 <td><b>Style No.</b></td>

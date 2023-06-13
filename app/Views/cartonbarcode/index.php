@@ -2,9 +2,9 @@
 
 <?= $this->Section('content'); ?>
 <style>
-    #packinglist_table tbody td {
-        vertical-align: middle
-    }
+#packinglist_table tbody td {
+    vertical-align: middle
+}
 </style>
 
 <div class="content-wrapper">
@@ -33,15 +33,14 @@
                             <td><?= $i++; ?></td>
                             <td><?= $pl->packinglist_serial_number; ?></td>
                             <td><?= $pl->buyer_name; ?></td>
-                            <td><?= $pl->PO_No; ?></td>
+                            <td><?= $pl->po_no; ?></td>
                             <td><?= $pl->gl_number; ?></td>
                             <td class="text-center align-middle">
-                                <a class="btn btn-primary btn-sm mb-1 mr-2 btn-generate-carton <?= $pl->btn_generate_class?>" 
-                                    data-id="<?= $pl->id ?>" 
-                                    data-packinglist-number="<?= $pl->packinglist_serial_number?>"   
-                                >Generate Carton</a>
-                                <a href="<?= base_url('cartonbarcode/'.$pl->id)?>"class="btn btn-info btn-sm mb-1 mr-2 <?= $pl->btn_detail_class?> "
-                                >Detail</a>
+                                <a class="btn btn-primary btn-sm mb-1 mr-2 btn-generate-carton <?= $pl->btn_generate_class?>"
+                                    data-id="<?= $pl->id ?>"
+                                    data-packinglist-number="<?= $pl->packinglist_serial_number?>">Generate Carton</a>
+                                <a href="<?= base_url('cartonbarcode/'.$pl->id)?>"
+                                    class="btn btn-info btn-sm mb-1 mr-2 <?= $pl->btn_detail_class?> ">Detail</a>
                             </td>
                         </tr>
                         <?php endforeach;  ?>
@@ -55,7 +54,8 @@
 
 
 <!-- Modal Generate Carton -->
-<div class="modal fade" id="generate_carton_modal" tabindex="-1" role="dialog" aria-labelledby="modal_label" aria-hidden="true">
+<div class="modal fade" id="generate_carton_modal" tabindex="-1" role="dialog" aria-labelledby="modal_label"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="" method="post" id="generate_carton_form">
@@ -83,19 +83,42 @@
 
 
 <?= $this->Section('page_script'); ?>
-<script>
-    const generate_carton_url = '<?= base_url('cartonbarcode/generatecarton')?>';
-
+<script type="text/javascript">
+const generate_carton_url = '<?= base_url('cartonbarcode/generatecarton')?>';
+</script>
+<script type="text/javascript">
+$('#packinglist_table').DataTable({
+    processing: true,
+    // serverSide: true,
+    // ajax: dtable_url,
+    columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'packinglist_number', name: 'packinglist_number'},
+            { data: 'buyer_name', name: 'buyer_name' },
+            { data: 'po_number', name: 'po_number' },
+            { data: 'gl_number', name: 'gl_number' },
+            { data: 'action', name: 'action', orderable: false, searchable: false },
+    ],
+    paging: true,
+    responsive: true,
+    lengthChange: true,
+    searching: true,
+    autoWidth: false,
+});
 </script>
 <script>
-$(function() {
-    bsCustomFileInput.init();
+$(document).ready(function() {
+
+    // ## Show Flash Message
+    let session = <?= json_encode(session()->getFlashdata()) ?>;
+    show_flash_message(session);
 
     $('.btn-generate-carton').on('click', function() {
         let id = $(this).data('id');
         let packinglist_number = $(this).data('packinglist-number');
 
-        $('#confirm_message').text(`Are you sure want to Generate Carton from Packinglist: ${packinglist_number}`)
+        $('#confirm_message').text(
+            `Are you sure want to Generate Carton from Packinglist: ${packinglist_number}`)
         $('#modal_label').text("Generate Carton")
         $('#modal_btn_submit').text("Generate")
         $('#generate_carton_form').attr('action', generate_carton_url);
@@ -103,30 +126,7 @@ $(function() {
 
         $('#generate_carton_modal').modal('show');
     })
-});
+})
 </script>
-<script type="text/javascript">
 
-    $('#packinglist_table').DataTable({
-        processing: true,
-        // serverSide: true,
-        // ajax: dtable_url,
-        columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-            {data: 'packinglist_number', name: 'packinglist_number'},
-            {data: 'buyer_name', name: 'buyer_name'},
-            {data: 'po_number', name: 'po_number'},
-            {data: 'gl_number', name: 'gl_number'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-        ],
-        dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>" +
-            "<'row'<'col-md-12'tr>>" +
-            "<'row'<'col-md-5'i><'col-md-7'p>>",
-        paging: true,
-        responsive: true,
-        lengthChange: true,
-        searching: true,
-        autoWidth: false,
-    });
-</script>
 <?= $this->endSection('page_script'); ?>

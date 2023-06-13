@@ -24,30 +24,30 @@
                     </thead>
                     <tbody>
                         <?php $i = 1; ?>
-                        <?php foreach ($PackingList as $PL) : ?>
+                        <?php foreach ($packinglist as $pl) : ?>
                             <tr>
                                 <td class="text-center" scope="row"><?= $i++; ?></td>
-                                <td><a href="<?= '../index.php/packinglist/' . $PL->id; ?>"><?= $PL->packinglist_serial_number; ?></a></td>
-                                <td><?= $PL->buyer_name; ?></td>
-                                <td><?= $PL->PO_No; ?></td>
-                                <td><?= $PL->gl_number; ?></td>
-                                <td><?= $PL->season; ?></td>
+                                <td><a href="<?= '../index.php/packinglist/' . $pl->id; ?>"><?= $pl->packinglist_serial_number; ?></a></td>
+                                <td><?= $pl->buyer_name; ?></td>
+                                <td><?= $pl->po_no; ?></td>
+                                <td><?= $pl->gl_number; ?></td>
+                                <td><?= $pl->season; ?></td>
                                 <td class="text-center align-middle">
                                     <a class="btn btn-warning btn-sm btn-edit"
-                                        data-pl-serial-number = "<?= esc($PL->packinglist_serial_number)?>"
-                                        data-id = "<?= esc($PL->id)?>"
-                                        data-po-id = "<?= esc($PL->po_id)?>"
-                                        data-buyer-name = "<?= esc($PL->buyer_name)?>"
-                                        data-order-no = "<?= esc($PL->gl_number)?>"
-                                        data-order-qty = "<?= esc($PL->packinglist_qty)?>"
-                                        data-shipdate = "<?= esc($PL->shipdate)?>"
-                                        data-packinglist-date = "<?= esc($PL->packinglist_date)?>"
-                                        data-destination = "<?= esc($PL->destination)?>"
-                                        data-department = "<?= esc($PL->department)?>"
+                                        data-pl-serial-number = "<?= esc($pl->packinglist_serial_number)?>"
+                                        data-id = "<?= esc($pl->id)?>"
+                                        data-po-id = "<?= esc($pl->po_id)?>"
+                                        data-buyer-name = "<?= esc($pl->buyer_name)?>"
+                                        data-order-no = "<?= esc($pl->gl_number)?>"
+                                        data-order-qty = "<?= esc($pl->packinglist_qty)?>"
+                                        data-shipdate = "<?= esc($pl->shipdate)?>"
+                                        data-packinglist-date = "<?= esc($pl->packinglist_date)?>"
+                                        data-destination = "<?= esc($pl->destination)?>"
+                                        data-department = "<?= esc($pl->department)?>"
                                     >Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" 
-                                        data-id = "<?= esc($PL->id)?>"
-                                        data-pl-serial-number = "<?= esc($PL->packinglist_serial_number)?>"
+                                        data-id = "<?= esc($pl->id)?>"
+                                        data-pl-serial-number = "<?= esc($pl->packinglist_serial_number)?>"
                                     >Delete</a>
                                 </td>
                             </tr>
@@ -83,9 +83,9 @@
                                 <option value="<?= esc($po->id) ?>"
                                     data-gl-number="<?= esc($po->gl_number) ?>"    
                                     data-buyer-name="<?= esc($po->buyer_name) ?>"    
-                                    data-po-qty="<?= esc($po->PO_Qty) ?>"    
-                                    data-shipdate="<?= esc($po->Shipdate) ?>"    
-                                ><?= esc($po->PO_No) ?></option>
+                                    data-po-qty="<?= esc($po->po_qty) ?>"    
+                                    data-shipdate="<?= esc($po->shipdate) ?>"    
+                                ><?= esc($po->po_no) ?></option>
                             <?php } ?>
                         </select>
                     </div>
