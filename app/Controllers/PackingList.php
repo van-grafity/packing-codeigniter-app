@@ -121,7 +121,6 @@ class PackingList extends BaseController
                 'id' => $carton->id,
                 'carton_number_from' => $carton->carton_number_from,
                 'carton_number_to' => $carton->carton_number_to,
-                'colour' => $carton->colour,
                 'pcs_per_carton' => $carton->pcs_per_carton,
                 'carton_qty' => $carton->carton_qty,
                 'ship_qty' => $carton->pcs_per_carton * $carton->carton_qty,

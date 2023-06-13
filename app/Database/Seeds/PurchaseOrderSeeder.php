@@ -12,7 +12,7 @@ class PurchaseOrderSeeder extends Seeder
         [
             'id' => 1,
             'po_no' => '8XW8FHBM',
-            'GL_id' => 1,
+            'gl_id' => 1,
             'Shipdate' => '2022-08-16',
             'po_qty' => 395,
             'po_amount' => 4266,

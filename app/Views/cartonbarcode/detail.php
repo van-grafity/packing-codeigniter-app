@@ -37,9 +37,9 @@
                             </tr>
                             <tr>
                                 <td><b>Style No.</b></td>
-                                <td> xxxxx </td>
+                                <td> <?= esc($packinglist->style_no); ?> </td>
                                 <td><b>Description</b></td>
-                                <td> xxxxx </td>
+                                <td> <?= esc($packinglist->style_description); ?> </td>
                             </tr>
                             <tr>
                                 <td></td>
