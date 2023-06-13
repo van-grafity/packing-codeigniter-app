@@ -169,51 +169,40 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="<?php echo base_url('scanpack') ?>" class="nav-link">
                                 <i class="nav-icon fas fa-barcode"></i>
-                                <p>
-                                    Scan & Pack
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
+                                <p>Scan & Pack</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?php echo base_url('scanpack') ?>" class="nav-link">
-                                        <i class="nav-icon far fa-circle"></i>
-                                        <p>Packing Scan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="" class="nav-link">
-                                        <i class="nav-icon far fa-circle"></i>
-                                        <p>Print Shipment Report</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="nav-item">
                             <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-ship"></i>
-                                <p>Shipment Reports
+                                <i class="nav-icon fas fa-file-invoice"></i>
+                                <p>Reports
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
                             <ul class="nva nav-treeview">
                                 <li class="nav-item">
                                     <a href="" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-success"></i>
+                                        <i class="nav-icon far fa-circle"></i>
+                                        <p>Print Shipment Report</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
                                         <p>Total PO</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-success"></i>
+                                        <i class="far fa-circle nav-icon"></i>
                                         <p>Total Packing List</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="" class="nav-link">
-                                        <i class="nav-icon far fa-circle text-success"></i>
+                                        <i class="nav-icon far fa-circle"></i>
                                         <p>Total Carton Shipped</p>
                                     </a>
                                 </li>
