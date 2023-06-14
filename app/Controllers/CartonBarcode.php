@@ -76,7 +76,7 @@ class CartonBarcode extends BaseController
         return view('cartonbarcode/detail', $data);
     }
 
-    public function import_excel()
+    public function importexcel()
     {
         try {
             $packinglist_id = $this->request->getPost('packinglist_id');
