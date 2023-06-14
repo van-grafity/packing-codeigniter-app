@@ -29,19 +29,19 @@
                                 <td width="20%"><b>Order No.</b></td>
                                 <td width="16%"><?= esc($packinglist->gl_number); ?></td>
                                 <td><b>Master Order No.</b></td>
-                                <td><?= esc($packinglist->PO_No); ?></td>
+                                <td><?= esc($packinglist->po_no); ?></td>
                             </tr>
                             <tr>
                                 <td><b>Buyer</b></td>
                                 <td><?= esc($packinglist->buyer_name); ?></td>
                                 <td><b>Purchase Order No.</b></td>
-                                <td><?= esc($packinglist->PO_No); ?></td>
+                                <td><?= esc($packinglist->po_no); ?></td>
                             </tr>
                             <tr>
                                 <td><b>Style No.</b></td>
-                                <td> xxxxx </td>
+                                <td> <?= esc($packinglist->style_no); ?> </td>
                                 <td><b>Description</b></td>
-                                <td> xxxxx </td>
+                                <td> <?= esc($packinglist->style_description); ?> </td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -113,8 +113,8 @@
                             <th width="5%" rowspan="2" colspan="1">Pcs / Carton</th>
                             <th width="5%" rowspan="2" colspan="1">Total Carton</th>
                             <th width="10%" rowspan="2" colspan="1">Ship Qty</th>
-                            <th width="5%" rowspan="2" colspan="1">NW (Kgs)</th>
                             <th width="5%" rowspan="2" colspan="1">GW (Kgs)</th>
+                            <th width="5%" rowspan="2" colspan="1">NW (Kgs)</th>
                             <th width="20%" rowspan="2" colspan="1">Action</th>
                         </tr>
                         <tr class="table-primary text-center">
@@ -142,8 +142,8 @@
                                 <td rowspan="<?= $carton->number_of_product_per_carton; ?>" > <?= $carton->pcs_per_carton ?> </td>
                                 <td rowspan="<?= $carton->number_of_product_per_carton; ?>" > <?= $carton->carton_qty ?> </td>
                                 <td rowspan="<?= $carton->number_of_product_per_carton; ?>" > <?= $carton->ship_qty ?> </td>
-                                <td rowspan="<?= $carton->number_of_product_per_carton; ?>" > <?= $carton->net_weight ?> </td>
                                 <td rowspan="<?= $carton->number_of_product_per_carton; ?>" > <?= $carton->gross_weight ?> </td>
+                                <td rowspan="<?= $carton->number_of_product_per_carton; ?>" > <?= $carton->net_weight ?> </td>
                                 <td rowspan="<?= $carton->number_of_product_per_carton; ?>">
                                     <a class="btn btn-warning btn-sm btn-edit" onclick="edit_packinglist_carton(<?= $carton->id; ?>)"  >Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $carton->id ?>">Delete</a>
