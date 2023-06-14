@@ -43,6 +43,7 @@ $routes->get('logout', 'Login::logout');
 
 // Users
 $routes->get('users', 'Users::user');
+$routes->post('users/save', 'Users::createUser');
 // $routes->get('users/enable/(:num)', 'Auth\UsersController::enable'); // new
 // $routes->get('users/edit/(:num)', 'Auth\UsersController::edit'); // new
 // $routes->post('users/update-user', 'Auth\UsersController::update'); // new

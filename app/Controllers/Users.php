@@ -65,4 +65,38 @@ class Users extends BaseController
             return redirect()->to('login');
         }
     }
+
+    public function createUser()
+    {
+        helper('text');
+
+        // save new user, validation happens in the model
+        $users = new UserModel();
+        $getRule = $users->getRule('registration');
+        $users->setValidationRules($getRule);
+
+        $user = [
+            'firstname'              => $this->request->getPost('firstname'),
+            'lastname'              => $this->request->getPost('lastname'),
+            'name'              => $this->request->getPost('name'),
+            'email'             => $this->request->getPost('email'),
+            'password'             => $this->request->getPost('password'),
+            'password_confirm'    => $this->request->getPost('password_confirm'),
+            'activate_hash'     => random_string('alnum', 32)
+        ];
+        // dd($users->test_model());
+        if (!$users->insert($user)) {
+            // dd($users);
+            return redirect()->back()->withInput()->with('errors', $users->errors());
+        }
+
+        // send activation email //
+        // send email activation is commented no email support //
+
+        // helper('auth'); 
+        // send_activation_email($user['email'], $user['activate_hash']);
+
+        // success
+        return redirect()->back()->with('success', 'Success! You created a new account');
+    }
 }

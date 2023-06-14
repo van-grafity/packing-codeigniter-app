@@ -87,7 +87,7 @@
                       Disabled
                     <?php endif ?>
                   </td>
-                  <td>
+                  <td class="text-right">
                     <?php if ($item['active'] == 0) : ?>
                       <a class="btn btn-outline-secondary btn-sm" href="<?= site_url('users/enable/') . $item['id'] ?>"><i class="fas fa-user-check"></i> Enable</a>
                     <?php endif ?>
@@ -113,18 +113,40 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <form action="" method="post" id="user_form">
+        <?= csrf_field() ?>
         <input type="hidden" name="edit_user_id" value="" id="edit_user_id">
 
         <div class="modal-header">
-          <h5 class="modal-title" id="ModalLabel">Add User</h5>
+          <h5 class="modal-title" id="ModalLabel">Add New User</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
+          <div class="form-group row">
+            <div class="col">
+              <label for="firstname">First name</label>
+              <input class="form-control" required type="text" name="firstname" value="<?= old('firstname') ?>" placeholder="First name" />
+            </div>
+            <div class="col">
+              <label for="lastname">Last name</label>
+              <input class="form-control" required type="text" name="lastname" value="<?= old('lastname') ?>" placeholder="Last name" />
+            </div>
+          </div>
           <div class="form-group">
-            <label for="name" class="col-form-label">Name :</label>
-            <input type="text" class="form-control" id="buyer_name" name="name" placeholder="Buyer Name" autofocus>
+            <label for="name">Nickname</label>
+            <input class="form-control" required type="text" name="name" value="<?= old('name') ?>" placeholder="Nickname" />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input class="form-control" required type="email" name="email" value="<?= old('email') ?>" placeholder="<?= lang('Auth.email') ?>" />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input class="form-control" required type="password" name="password" value="" placeholder="<?= lang('Auth.password') ?>" />
+          </div>
+          <div class="form-group">
+            <input class="form-control" required type="password" name="password_confirm" value="" placeholder="Confirm Password" />
           </div>
         </div>
         <div class="modal-footer">
@@ -149,22 +171,24 @@
     });
 
     $('#btn-add-user').on('click', function(event) {
-      $('#ModalLabel').text("Add User")
-      $('#btn_submit').text("Add User")
+      $('#ModalLabel').text("Add New User")
+      $('#btn_submit').text("Save")
       $('#user_form').attr('action', store_url);
-
+      $('#btn_submit').attr('hidden', false);
       $('#user_form').find("input[type=text], input[type=number], textarea").val("");
       $('#user_form').find('select').val("").trigger('change');
+
+      // Call the Modal
+      $('#addusermodal').modal('show');
     })
 
-    // Call the Modal
-    $('#addusermodal').modal('show');
+
   });
 </script>
 
 <script type="text/javascript">
-  const store_url = "../index.php/user/save";
-  const update_url = "../index.php/user/update";
+  const store_url = "../index.php/users/save";
+  const update_url = "../index.php/users/update";
 </script>
 
 <?= $this->endSection(); ?>
