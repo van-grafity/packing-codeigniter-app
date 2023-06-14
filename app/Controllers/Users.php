@@ -57,6 +57,7 @@ class Users extends BaseController
 
         // load the view with session data
         return view('user/users', [
+            'title' => 'User Management',
             'userData' => $this->session->userData,
             'data' => $allusers,
             'usercount' => $countusers,

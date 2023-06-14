@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Config\Services;
 use App\Models\CartonBarcodeModel;
 use App\Models\PackingListModel;
 use App\Models\PackinglistCartonModel;
@@ -13,12 +14,14 @@ class CartonBarcode extends BaseController
     protected $CartonBarcodeModel;
     protected $PackingListModel;
     protected $PackinglistCartonModel;
+    protected $session;
 
     public function __construct()
     {
         $this->CartonBarcodeModel = new CartonBarcodeModel();
         $this->PackingListModel = new PackingListModel();
         $this->PackinglistCartonModel = new PackinglistCartonModel();
+        $this->session = Services::session();
     }
 
     public function index()
@@ -36,7 +39,7 @@ class CartonBarcode extends BaseController
                 }
             */
 
-            if($item->flag_generate_carton == 'Y') {
+            if ($item->flag_generate_carton == 'Y') {
                 $item->btn_generate_class = '';
                 $item->btn_detail_class = '';
             } else {
@@ -44,11 +47,14 @@ class CartonBarcode extends BaseController
                 $item->btn_detail_class = '';
             }
         });
-        
+
         $data = [
             'title' => 'Carton Barcode Setup',
             'packinglist' => $packinglist,
         ];
+        if (!$this->session->isLoggedIn) {
+            return redirect()->to('login');
+        }
         return view('carton-barcode/index', $data);
     }
 
@@ -60,19 +66,19 @@ class CartonBarcode extends BaseController
 
         $carton_list = $this->CartonBarcodeModel->getCartonByPackinglist($id);
         array_walk($carton_list, function (&$item, $key) {
-            if($item->flag_packed == 'Y') {
+            if ($item->flag_packed == 'Y') {
                 $item->packed_status = '<span class="badge bg-success">Packed</span>';
             } else {
                 $item->packed_status = '<span class="badge bg-secondary">Not Packed Yet</span>';
             }
         });
-        
+
         $data = [
             'title' => 'Carton Barcode Setup Detail',
             'packinglist' => $packinglist,
             'carton_list' => $carton_list,
         ];
-        
+
         return view('carton-barcode/detail', $data);
     }
 
@@ -85,71 +91,71 @@ class CartonBarcode extends BaseController
                 'file_excel' => 'ext_in[file_excel,csv]',
             ];
             if (!$this->validate($rules)) {
-                return redirect()->to('cartonbarcode/'.$packinglist_id)->with('error', 'Please upload on CSV format');
+                return redirect()->to('cartonbarcode/' . $packinglist_id)->with('error', 'Please upload on CSV format');
             }
 
             $spreadsheet = IOFactory::load($file->getTempName());
             $worksheet = $spreadsheet->getActiveSheet();
-            
+
             $is_valid = $this->is_valid_header($worksheet);
-            if(!$is_valid) {
-                return redirect()->to('cartonbarcode/'.$packinglist_id)->with('error', 'Incorrect header format');
+            if (!$is_valid) {
+                return redirect()->to('cartonbarcode/' . $packinglist_id)->with('error', 'Incorrect header format');
             }
-            
+
             $excel_to_array = $this->parse_excel_to_array($worksheet);
             $data_to_update = $excel_to_array['data'];
-            
-            array_walk($data_to_update, function (&$item, $key) use ($packinglist_id){
+
+            array_walk($data_to_update, function (&$item, $key) use ($packinglist_id) {
                 $item['packinglist_id'] = $packinglist_id;
                 $item['carton_number_by_system'] = $item['carton_number'];
                 unset($item['carton_number']);
             });
 
             $this->CartonBarcodeModel->transException(true)->transStart();
-            
+
             $updateCartonBarcode = $this->CartonBarcodeModel->updateCartonBarcode($data_to_update);
-            
+
             $this->CartonBarcodeModel->transComplete();
         } catch (\Throwable $th) {
             throw $th;
         }
-        return redirect()->to('cartonbarcode/'.$packinglist_id);
+        return redirect()->to('cartonbarcode/' . $packinglist_id);
     }
 
     public function generatecarton()
     {
         try {
             $packinglist_id = $this->request->getPost('packinglist_id');
-            
+
             $packinglist_carton = $this->PackinglistCartonModel->getUngeneratedCartonByPackinglistID($packinglist_id);
             $array_of_carton = $this->generate_array_of_carton($packinglist_carton, $packinglist_id);
-            
+
             $this->CartonBarcodeModel->transException(true)->transStart();
-            if(!empty($array_of_carton)){
+            if (!empty($array_of_carton)) {
                 $this->CartonBarcodeModel->insertBatch($array_of_carton);
             }
-            
+
             // ## update flag on packinglist and packinglist carton
             $data_update = [
                 'flag_generate_carton' => 'Y',
                 'updated_at'    => now(),
             ];
             $this->PackinglistCartonModel->where('packinglist_id', $packinglist_id)->set($data_update)->update();
-            $this->PackingListModel->update($packinglist_id,$data_update);
+            $this->PackingListModel->update($packinglist_id, $data_update);
 
             $this->CartonBarcodeModel->transComplete();
         } catch (\Throwable $th) {
             throw $th;
         }
-        
-        return redirect()->to('cartonbarcode/'.$packinglist_id);
+
+        return redirect()->to('cartonbarcode/' . $packinglist_id);
     }
 
     public function detailcarton()
     {
         $carton_id = $this->request->getGet('id');
         $detail_carton = $this->CartonBarcodeModel->getDetailCarton($carton_id);
-        
+
         $data_return = [
             'status' => 'success',
             'message' => 'Succesfully retrieved carton',
@@ -166,11 +172,11 @@ class CartonBarcode extends BaseController
         } else {
             $carton_number_by_system = 1;
         }
-        
+
         $result = [];
         foreach ($data_packinglist_carton as $key => $packinglist_carton) {
             $carton_qty = $packinglist_carton->carton_qty;
-            for ($i=0; $i < $carton_qty; $i++) { 
+            for ($i = 0; $i < $carton_qty; $i++) {
                 $carton_barcode = [
                     'packinglist_id' => $packinglist_carton->packinglist_id,
                     'packinglist_carton_id' => $packinglist_carton->id,
@@ -207,7 +213,7 @@ class CartonBarcode extends BaseController
                         $rowData[$header[$columnIndex]] = $cell->getValue();
                     }
                 }
-                if(!empty($rowData)) {
+                if (!empty($rowData)) {
                     $data[] = $rowData;
                 }
             }
@@ -228,7 +234,7 @@ class CartonBarcode extends BaseController
         $header_list = ['carton_number', 'barcode'];
         foreach ($header_list as $key => $header) {
             if ($header != $header_from_excel[$key]) return false;
-        }   
+        }
         return true;
     }
 }
