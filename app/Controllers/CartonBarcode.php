@@ -52,7 +52,11 @@ class CartonBarcode extends BaseController
             'title' => 'Carton Barcode Setup',
             'packinglist' => $packinglist,
         ];
-        return view('carton-barcode/index', $data);
+
+        if (!$this->session->isLoggedIn) {
+            return redirect()->to('login');
+        }
+        return view('cartonbarcode/index', $data);
     }
 
     public function detail($id)

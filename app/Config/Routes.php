@@ -98,18 +98,16 @@ $routes->post('packinglist/store', 'PackingList::store');
 $routes->post('packinglist/delete', 'PackingList::delete');
 $routes->post('packinglist/update', 'PackingList::update/$1');
 $routes->get('/packinglist/(:any)', 'PackingList::detail/$1');
+$routes->post('packinglistcarton/store', 'PackingList::cartonstore');
+$routes->get('packinglistcarton/edit', 'PackingList::cartonedit');
+$routes->post('packinglistcarton/update', 'PackingList::cartonupdate');
+$routes->post('packinglistcarton/delete', 'PackingList::cartondelete');
 
 // Purchase Order
 $routes->get('purchaseorder', 'PurchaseOrder::index');
 $routes->get('purchaseorder/store', 'PurchaseOrder::store');
 $routes->get('purchaseorder/(:any)', 'PurchaseOrder::detail/$1');
 $routes->post('purchaseorder/updatedetail', 'PurchaseOrder::updatedetail');
-
-// Packing List Carton
-$routes->post('packinglistcarton/store', 'PackingList::cartonstore');
-$routes->get('packinglistcarton/edit', 'PackingList::cartonedit');
-$routes->post('packinglistcarton/update', 'PackingList::cartonupdate');
-$routes->post('packinglist/cartondelete', 'PackingList::cartondelete');
 
 // Carton Barcode
 $routes->get('cartonbarcode', 'CartonBarcode::index');
