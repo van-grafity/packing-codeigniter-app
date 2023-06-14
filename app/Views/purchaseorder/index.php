@@ -59,8 +59,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="PO_No">PO No.</label>
-                        <input type="text" class="form-control" id="PO_No" name="PO_No" placeholder="PO No." required>
+                        <label for="po_no">PO No.</label>
+                        <input type="text" class="form-control" id="po_no" name="po_no" placeholder="PO No." required>
                     </div>
                     <div class="form-group">
                         <label>GL Number</label>

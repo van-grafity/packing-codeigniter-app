@@ -52,11 +52,11 @@ class PurchaseOrder extends BaseController
     public function savePO()
     {
         $data_po = array(
-            'PO_No'        => $this->request->getVar('PO_No'),
+            'po_no'        => $this->request->getVar('po_no'),
             'gl_id'        => $this->request->getVar('gl_no'),
             'shipdate'     => $this->request->getVar('shipdate'),
-            'PO_qty'       => $this->request->getVar('total_order_qty'),
-            'PO_amount'    => $this->request->getVar('total_amount'),
+            'po_qty'       => $this->request->getVar('total_order_qty'),
+            'po_amount'    => $this->request->getVar('total_amount'),
         );
 
         try {
@@ -81,7 +81,7 @@ class PurchaseOrder extends BaseController
                     $this->PurchaseOrderModel->transRollback();
                 }
             }
-            $po_number = $this->PurchaseOrderModel->find($po_id)['PO_No'];
+            $po_number = $this->PurchaseOrderModel->find($po_id)['po_no'];
             $sync_po = $this->PurchaseOrderModel->syncPurchaseOrderDetails($po_number);
 
             $this->PurchaseOrderModel->transComplete();

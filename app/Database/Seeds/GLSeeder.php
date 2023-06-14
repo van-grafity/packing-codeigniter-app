@@ -8,19 +8,26 @@ class GLSeeder extends Seeder
 {
     private $table = 'tblgl';
 
-    private const DATA = [
-        [
-            'id' => 1,
-            'gl_number' => '62358-00',
-            'season' => 'SS21',
-            'style_id' => 1,
-            'buyer_id' => 1,
-            'size_order' => 'XS - M',
-        ],
-    ];
-
     public function run()
     {
-        $this->db->table($this->table)->insertBatch(self::DATA);
+        $data = [
+            [
+                'id' => 1,
+                'gl_number' => '62358-00',
+                'season' => 'SS21',
+                'style_id' => 1,
+                'buyer_id' => 2,
+                'size_order' => 'XS - M',
+            ],
+            [
+                'id' => 2,
+                'gl_number' => '62842-00',
+                'season' => 'SUMMER 23',
+                'style_id' => 2,
+                'buyer_id' => 1,
+                'size_order' => 'XS - XL',
+            ],
+        ];
+        $this->db->table($this->table)->insertBatch($data);
     }
 }

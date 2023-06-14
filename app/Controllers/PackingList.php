@@ -40,13 +40,14 @@ class PackingList extends BaseController
     {
         $data = [
             'title'         => 'Factory Packing List',
-            'PackingList'   => $this->PackingListModel->getPackingList(),
+            'packinglist'   => $this->PackingListModel->getPackingList(),
             'po_list'       => $this->PurchaseOrderModel->getPO()->getResult(),
 
         ];
         if (!$this->session->isLoggedIn) {
             return redirect()->to('login');
         }
+        
         return view('packinglist/index', $data);
     }
 
@@ -124,7 +125,6 @@ class PackingList extends BaseController
                 'id' => $carton->id,
                 'carton_number_from' => $carton->carton_number_from,
                 'carton_number_to' => $carton->carton_number_to,
-                'colour' => $carton->colour,
                 'pcs_per_carton' => $carton->pcs_per_carton,
                 'carton_qty' => $carton->carton_qty,
                 'ship_qty' => $carton->pcs_per_carton * $carton->carton_qty,

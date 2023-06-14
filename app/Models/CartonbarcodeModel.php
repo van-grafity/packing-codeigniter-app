@@ -81,7 +81,7 @@ class CartonBarcodeModel extends Model
         $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id');
         $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
         $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
-        $builder->join('tblsizes as size', 'size.id = product.product_size_id');
+        $builder->join('tblsize as size', 'size.id = product.product_size_id');
         $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
         $builder->where('carton_barcode.barcode', $carton_barcode);
         $result = $builder->get()->getResult();
@@ -94,7 +94,7 @@ class CartonBarcodeModel extends Model
         if (!$carton_barcode) return null;
 
         $builder = $this->db->table('tblcartonbarcode as carton_barcode');
-        $builder->select('carton_barcode.id as carton_id, po.po_no as po_number, packinglist.id as packinglist_id, packinglist.packinglist_serial_number as pl_number, buyer.buyer_name as buyer, carton_barcode.carton_number_by_system as carton_number');
+        $builder->select('carton_barcode.id as carton_id, carton_barcode.flag_packed, po.po_no as po_number, packinglist.id as packinglist_id, packinglist.packinglist_serial_number as pl_number, buyer.buyer_name as buyer, carton_barcode.carton_number_by_system as carton_number');
         $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id');
         $builder->join('tblpackinglist as packinglist', 'packinglist.id = pl_carton.packinglist_id');
         $builder->join('tblpurchaseorder as po', 'po.id = packinglist.packinglist_po_id');
