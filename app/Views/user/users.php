@@ -32,7 +32,7 @@
             <div class="small-box bg-primary">
               <div class="inner">
                 <h5 class="card-title">New Users</h5>
-                <h3 class="card-text"><?= $newusers ?> <small class="small text-whitetext-muted">(in last 30 days)</small></h3>
+                <h3 class="card-text"><?= $newusers ?> <small class="small text-white text-muted">(in last 30 days)</small></h3>
               </div>
               <div class="icon">
                 <i class="ion ion-person-adds"></i>
@@ -49,7 +49,7 @@
                 <h3 class="card-text"><?= $percentofactiveusers ?>%</h3>
               </div>
               <div class="icon">
-                <i class="ion ion-bag"></i>
+                <i class="ion ion-android"></i>
               </div>
               <a href="<?php echo base_url('users'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -60,7 +60,7 @@
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3">
           <h1 class="h2">Users</h1>
           <div class="btn-toolbar mb-2 mb-md-0">
-            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#createuserformmodal"><i class="fas fa-user-plus"></i> Create User</button>
+            <button type="button" class="btn btn-sm btn-primary" id="btn-add-user"><i class="fas fa-user-plus"></i> Create User</button>
           </div>
         </div>
 
@@ -107,4 +107,64 @@
   </section>
 </div>
 <!-- /.content-wrapper -->
+
+<!-- Modal Add and Edit User Detail -->
+<div class="modal fade" id="addusermodal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form action="" method="post" id="user_form">
+        <input type="hidden" name="edit_user_id" value="" id="edit_user_id">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Add User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="name" class="col-form-label">Name :</label>
+            <input type="text" class="form-control" id="buyer_name" name="name" placeholder="Buyer Name" autofocus>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="btn_submit">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- End Modal Add and Edit User Detail-->
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    // ## prevent submit form when keyboard press enter
+    $('#user_form input').on('keyup keypress', function(e) {
+      var keyCode = e.keyCode || e.which;
+      if (keyCode === 13) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    $('#btn-add-user').on('click', function(event) {
+      $('#ModalLabel').text("Add User")
+      $('#btn_submit').text("Add User")
+      $('#user_form').attr('action', store_url);
+
+      $('#user_form').find("input[type=text], input[type=number], textarea").val("");
+      $('#user_form').find('select').val("").trigger('change');
+    })
+
+    // Call the Modal
+    $('#addusermodal').modal('show');
+  });
+</script>
+
+<script type="text/javascript">
+  const store_url = "../index.php/user/save";
+  const update_url = "../index.php/user/update";
+</script>
+
 <?= $this->endSection(); ?>

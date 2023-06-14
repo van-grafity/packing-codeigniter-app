@@ -33,8 +33,8 @@ $routes->set404Override();
 // $routes->get('/', 'Login::login');
 $routes->get('/', 'Welcome::index');
 
-$routes->get('/home', 'Home::index');
-$routes->get('/login', 'Login::index');
+$routes->get('home', 'Home::index');
+$routes->get('login', 'Login::index');
 
 // Login-out
 $routes->get('login', 'Login::index', ['as' => 'login']);
@@ -42,13 +42,13 @@ $routes->post('login', 'Login::attemptLogin');
 $routes->get('logout', 'Login::logout');
 
 // Users
-$routes->get('users', 'Users::users', ['as' => 'users']); // new
+$routes->get('users', 'Users::user');
 // $routes->get('users/enable/(:num)', 'Auth\UsersController::enable'); // new
 // $routes->get('users/edit/(:num)', 'Auth\UsersController::edit'); // new
 // $routes->post('users/update-user', 'Auth\UsersController::update'); // new
 // $routes->get('users/delete/(:num)', 'Auth\UsersController::delete'); // new
 // $routes->post('users/create-user', 'Auth\UsersController::createUser');
-// $routes->get('users/logs', 'Auth\UsersController::userLogs', ['as' => 'userlogs']); // new
+$routes->get('users/logs', 'Auth\UsersController::userLogs', ['as' => 'userlogs']); // new
 
 // Buyer
 $routes->get('buyer', 'Buyer::index');

@@ -27,13 +27,8 @@ class Users extends BaseController
         $this->session = Services::session();
     }
 
-    public function users()
+    public function user()
     {
-        // check if user is signed-in if not redirect to login page
-        if (!$this->session->isLoggedIn) {
-            return redirect()->to('login');
-        }
-
         // current year and month variable
         $ym = date("Y-m");
 
@@ -64,5 +59,10 @@ class Users extends BaseController
             'newusers' => $newusers,
             'percentofactiveusers' => $percentofactiveusers
         ]);
+
+        // check if user is signed-in if not redirect to login page
+        if (!$this->session->isLoggedIn) {
+            return redirect()->to('login');
+        }
     }
 }
