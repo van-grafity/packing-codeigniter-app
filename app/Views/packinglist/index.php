@@ -33,22 +33,8 @@
                                 <td><?= $PL->gl_number; ?></td>
                                 <td><?= $PL->season; ?></td>
                                 <td class="text-center align-middle">
-                                    <a class="btn btn-warning btn-sm btn-edit"
-                                        data-pl-serial-number = "<?= esc($PL->packinglist_serial_number)?>"
-                                        data-id = "<?= esc($PL->id)?>"
-                                        data-po-id = "<?= esc($PL->po_id)?>"
-                                        data-buyer-name = "<?= esc($PL->buyer_name)?>"
-                                        data-order-no = "<?= esc($PL->gl_number)?>"
-                                        data-order-qty = "<?= esc($PL->packinglist_qty)?>"
-                                        data-shipdate = "<?= esc($PL->shipdate)?>"
-                                        data-packinglist-date = "<?= esc($PL->packinglist_date)?>"
-                                        data-destination = "<?= esc($PL->destination)?>"
-                                        data-department = "<?= esc($PL->department)?>"
-                                    >Edit</a>
-                                    <a class="btn btn-danger btn-sm btn-delete" 
-                                        data-id = "<?= esc($PL->id)?>"
-                                        data-pl-serial-number = "<?= esc($PL->packinglist_serial_number)?>"
-                                    >Delete</a>
+                                    <a class="btn btn-warning btn-sm btn-edit" data-pl-serial-number="<?= esc($PL->packinglist_serial_number) ?>" data-id="<?= esc($PL->id) ?>" data-po-id="<?= esc($PL->po_id) ?>" data-buyer-name="<?= esc($PL->buyer_name) ?>" data-order-no="<?= esc($PL->gl_number) ?>" data-order-qty="<?= esc($PL->packinglist_qty) ?>" data-shipdate="<?= esc($PL->shipdate) ?>" data-packinglist-date="<?= esc($PL->packinglist_date) ?>" data-destination="<?= esc($PL->destination) ?>" data-department="<?= esc($PL->department) ?>">Edit</a>
+                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= esc($PL->id) ?>" data-pl-serial-number="<?= esc($PL->packinglist_serial_number) ?>">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach;  ?>
@@ -80,12 +66,7 @@
                         <select id="po_no" name="po_no" class="form-control" required>
                             <option value="">Select PO No </option>
                             <?php foreach ($po_list as $key => $po) { ?>
-                                <option value="<?= esc($po->id) ?>"
-                                    data-gl-number="<?= esc($po->gl_number) ?>"    
-                                    data-buyer-name="<?= esc($po->buyer_name) ?>"    
-                                    data-po-qty="<?= esc($po->PO_Qty) ?>"    
-                                    data-shipdate="<?= esc($po->Shipdate) ?>"    
-                                ><?= esc($po->PO_No) ?></option>
+                                <option value="<?= esc($po->id) ?>" data-gl-number="<?= esc($po->gl_number) ?>" data-buyer-name="<?= esc($po->buyer_name) ?>" data-po-qty="<?= esc($po->po_qty) ?>" data-shipdate="<?= esc($po->shipdate) ?>"><?= esc($po->po_no) ?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -156,7 +137,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="../index.php/packinglist/delete" method="post">
-                <input type="hidden" name="packinglist_id" id ="packinglist_id" >
+                <input type="hidden" name="packinglist_id" id="packinglist_id">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Delete Packing List</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -183,77 +164,77 @@
 <?= $this->Section('page_script'); ?>
 
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#btn_modal_create').on('click', function(e) {
-        clear_form({
-            modal_id : 'packinglist_modal',
-            modal_title: "Add Packing List",
-            modal_btn_submit: "Add Packing List",
-            form_action_url: store_url,
+    $(document).ready(function() {
+        $('#btn_modal_create').on('click', function(e) {
+            clear_form({
+                modal_id: 'packinglist_modal',
+                modal_title: "Add Packing List",
+                modal_btn_submit: "Add Packing List",
+                form_action_url: store_url,
+            });
+            // date_filter: ,
+
+            let date_today = new Date().toJSON().slice(0, 10);
+            $('#packinglist_date').val(date_today);
+            $('#packinglist_modal').modal('show');
+
         });
-                        // date_filter: ,
-        
-        let date_today = new Date().toJSON().slice(0, 10);
-        $('#packinglist_date').val(date_today);
-        $('#packinglist_modal').modal('show');
-        
-    });
 
-    $('.btn-edit').on('click', function() {
-        let serial_number = $(this).data('pl-serial-number');
-        let id = $(this).data('id');
-        let po_id = $(this).data('po-id');
-        let buyer_name = $(this).data('buyer-name');
-        let order_no = $(this).data('order-no');
-        let order_qty = $(this).data('order-qty');
-        let shipdate = $(this).data('shipdate');
-        let packinglist_date = $(this).data('packinglist-date');
-        let destination = $(this).data('destination');
-        let department = $(this).data('department');
+        $('.btn-edit').on('click', function() {
+            let serial_number = $(this).data('pl-serial-number');
+            let id = $(this).data('id');
+            let po_id = $(this).data('po-id');
+            let buyer_name = $(this).data('buyer-name');
+            let order_no = $(this).data('order-no');
+            let order_qty = $(this).data('order-qty');
+            let shipdate = $(this).data('shipdate');
+            let packinglist_date = $(this).data('packinglist-date');
+            let destination = $(this).data('destination');
+            let department = $(this).data('department');
 
-        $('.modal-title').text(`Edit Packing List (${serial_number})`);
-        $('.btn-submit').text("Save")
-        $('#packinglist_form').attr('action', update_url);
+            $('.modal-title').text(`Edit Packing List (${serial_number})`);
+            $('.btn-submit').text("Save")
+            $('#packinglist_form').attr('action', update_url);
 
-        $('#edit_packinglist_id').val(id);
-        $('#po_no').val(po_id).trigger('change');
-        $('#order_no').val(order_no);
-        $('#order_qty').val(order_qty);
-        $('#shipdate').val(shipdate);
-        $('#packinglist_date').val(packinglist_date);
-        $('#destination').val(destination);
-        $('#department').val(department);
-
-        $('#packinglist_modal').modal('show');
-    })
-
-    $('.btn-delete').on('click', function() {
-        let id = $(this).data('id');
-        let serial_number = $(this).data('pl-serial-number');
-        $('#packinglist_id').val(id);
-        if (id) {
-            $('#delete_message').text(`Are you sure want to delete Packing List (${serial_number})?`);
-        }
-        $('#deleteModal').modal('show');
-    });
-
-    $('#po_no').on('change', function(event) {
-
-        let buyer_name = $(this).find($('option:selected')).data('buyer-name');
-        let order_no = $(this).find($('option:selected')).data('gl-number');
-        let order_qty = $(this).find($('option:selected')).data('po-qty');
-        let shipdate = $(this).find($('option:selected')).data('shipdate');
-
-        if ($(this).val()) {
-            $('#buyer_name').val(buyer_name);
+            $('#edit_packinglist_id').val(id);
+            $('#po_no').val(po_id).trigger('change');
             $('#order_no').val(order_no);
             $('#order_qty').val(order_qty);
             $('#shipdate').val(shipdate);
-        } else {
-            $('#order_qty').val();
-        }
+            $('#packinglist_date').val(packinglist_date);
+            $('#destination').val(destination);
+            $('#department').val(department);
+
+            $('#packinglist_modal').modal('show');
+        })
+
+        $('.btn-delete').on('click', function() {
+            let id = $(this).data('id');
+            let serial_number = $(this).data('pl-serial-number');
+            $('#packinglist_id').val(id);
+            if (id) {
+                $('#delete_message').text(`Are you sure want to delete Packing List (${serial_number})?`);
+            }
+            $('#deleteModal').modal('show');
+        });
+
+        $('#po_no').on('change', function(event) {
+
+            let buyer_name = $(this).find($('option:selected')).data('buyer-name');
+            let order_no = $(this).find($('option:selected')).data('gl-number');
+            let order_qty = $(this).find($('option:selected')).data('po-qty');
+            let shipdate = $(this).find($('option:selected')).data('shipdate');
+
+            if ($(this).val()) {
+                $('#buyer_name').val(buyer_name);
+                $('#order_no').val(order_no);
+                $('#order_qty').val(order_qty);
+                $('#shipdate').val(shipdate);
+            } else {
+                $('#order_qty').val();
+            }
+        })
     })
-})
 </script>
 
 <script type="text/javascript">
@@ -262,4 +243,3 @@ $(document).ready(function() {
 </script>
 
 <?= $this->endSection('page_script'); ?>
-

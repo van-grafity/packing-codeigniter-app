@@ -15,14 +15,14 @@
                 <table id="table1" class="table table-bordered table-striped">
                     <thead>
                         <tr class="table-primary">
-                            <th class="text-center align-middle" scope="col">SN</th>
-                            <th class="text-center align-middle" scope="col">Prod Code</th>
-                            <th class="text-center align-middle" scope="col">ASIN #</th>
-                            <th class="text-center align-middle" scope="col">Category</th>
-                            <th class="text-center align-middle" scope="col">Style</th>
-                            <th class="text-center align-middle" scope="col">Description</th>
-                            <th class="text-center align-middle" scope="col">Price</th>
-                            <th class="text-center align-middle" scope="col">Action</th>
+                            <th class="text-center align-middle" width="5%">SN</th>
+                            <th class="text-center align-middle" width="10%">Prod Code</th>
+                            <th class="text-center align-middle" width="10%">ASIN #</th>
+                            <th class="text-center align-middle" width="10%">Category</th>
+                            <th class="text-center align-middle" width="22%">Style</th>
+                            <th class="text-center align-middle" width="20%">Description</th>
+                            <th class="text-center align-middle" width="8%">Price</th>
+                            <th class="text-center align-middle" width="15%">Action</th>
                         </tr>
                     </thead>
 
@@ -37,7 +37,7 @@
                                 <td><?= $p->style_description; ?></td>
                                 <td><?= $p->product_name; ?></td>
                                 <td class="text-right"><?= number_to_currency($p->product_price, 'USD', 'en_US', 2); ?></td>
-                                <td>
+                                <td class="text-center">
                                     <a class="btn btn-success btn-sm btn-detail" data-id="<?= $p->id; ?>" data-product-code="<?= $p->product_code; ?>" data-product-asin="<?= $p->product_asin_id; ?>" data-category_id="<?= $p->product_category_id; ?>" data-style_id="<?= $p->product_style_id; ?>" data-colour_id="<?= $p->product_colour_id; ?>" data-size_id="<?= $p->product_size_id; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>">Details</a>
                                     <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $p->id; ?>" data-product-code="<?= $p->product_code; ?>" data-product-asin="<?= $p->product_asin_id; ?>" data-category_id="<?= $p->product_category_id; ?>" data-style_id="<?= $p->product_style_id; ?>" data-colour_id="<?= $p->product_colour_id; ?>" data-size_id="<?= $p->product_size_id; ?>" data-name="<?= $p->product_name; ?>" data-price="<?= $p->product_price; ?>">Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $p->id; ?>" data-product-code="<?= $p->product_code; ?>">Delete</a>

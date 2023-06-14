@@ -40,7 +40,6 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="css/adminlte.min.css">
 
-
     <!-- Custom style -->
     <link rel="stylesheet" href="css/scanpack.css">
 
@@ -77,7 +76,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="../index.php/user" class="nav-link">
+                                    <a href="<?php echo base_url('users') ?>" class="nav-link">
                                         <i class="nav-icon fas fa-users"></i>
                                         <p>User Management</p>
                                     </a>
@@ -127,12 +126,10 @@
                                 </li>
                             </ul>
                         </li>
-
                         <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-exchange-alt"></i>
-                                <p>
-                                    Transaction
+                                <p>Transaction
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -220,7 +217,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= url_to('') ?>" class="nav-link">
+                            <a href="<?php echo base_url('logout') ?>" class="nav-link">
                                 <i class="fas fa-sign-out-alt nav-icon"></i>
                                 <p>Logout</p>
                             </a>
@@ -344,14 +341,14 @@
         $(document).ready(function() {
             /*** add active class and stay opened when selected ***/
             var url = window.location;
-    
+
             // for sidebar menu entirely but not cover treeview
             $('ul.nav-sidebar a').filter(function() {
                 if (this.href) {
                     return this.href == url || url.href.indexOf(this.href) == 0;
                 }
             }).addClass('active');
-    
+
             // for the treeview
             $('ul.nav-treeview a').filter(function() {
                 if (this.href) {
@@ -359,7 +356,6 @@
                 }
             }).parentsUntil(".nav-sidebar > .nav-treeview").addClass('menu-open').prev('a').addClass('active');
         });
-
     </script>
 </body>
 

@@ -15,11 +15,11 @@
                  <table id="table1" class="table table-bordered table-striped">
                      <thead>
                          <tr class="table-primary">
-                             <th class="text-center align-middle">SN</th>
-                             <th class="text-center align-middle">Factory Name</th>
-                             <th class="text-center align-middle">In-Charge</th>
-                             <th class="text-center align-middle">Remarks</th>
-                             <th class="text-center align-middle">Action</th>
+                             <th class="text-center align-middle" width="10%">SN</th>
+                             <th class="text-center align-middle" width="25%">Factory Name</th>
+                             <th class="text-center align-middle" width="25%">In-Charge</th>
+                             <th class="text-center align-middle" width="25%">Remarks</th>
+                             <th class="text-center align-middle" width="15%">Action</th>
                          </tr>
                      </thead>
 
@@ -31,7 +31,7 @@
                                  <td><?= $fty->name; ?></td>
                                  <td><?= $fty->incharge; ?></td>
                                  <td><?= $fty->remarks; ?></td>
-                                 <td>
+                                 <td class="text-center">
                                      <a class="btn btn-success btn-sm btn-detail" data-id="<?= $fty->id; ?>" data-factory-name="<?= $fty->name; ?>" data-incharge="<?= $fty->incharge; ?>" data-remarks="<?= $fty->remarks ?>">Details</a>
                                      <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $fty->id; ?>" data-factory-name="<?= $fty->name; ?>" data-incharge="<?= $fty->incharge; ?>" data-remarks="<?= $fty->remarks ?>">Edit</a>
                                      <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $fty->id; ?>" data-factory-name="<?= $fty->name; ?>">Delete</a>

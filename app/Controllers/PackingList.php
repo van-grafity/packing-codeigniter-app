@@ -2,8 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
-
+use Config\Services;
 use App\Models\PackingListModel;
 use App\Models\BuyerModel;
 use App\Models\PurchaseOrderModel;
@@ -23,6 +22,7 @@ class PackingList extends BaseController
     protected $ProductModel;
     protected $PackinglistCartonModel;
     protected $CartonDetailModel;
+    protected $session;
 
     public function __construct()
     {
@@ -33,6 +33,7 @@ class PackingList extends BaseController
         $this->ProductModel = new ProductModel();
         $this->PackinglistCartonModel = new PackinglistCartonModel();
         $this->CartonDetailModel = new CartonDetailModel();
+        $this->session = Services::session();
     }
 
     public function index()
@@ -43,18 +44,21 @@ class PackingList extends BaseController
             'po_list'       => $this->PurchaseOrderModel->getPO()->getResult(),
 
         ];
+        if (!$this->session->isLoggedIn) {
+            return redirect()->to('login');
+        }
         return view('packinglist/index', $data);
     }
 
     public function store()
     {
         $request_data = $this->request->getPost();
-        
+
         $month_filter = date('m');
         $packinglist_this_month = $this->PackingListModel->getLastPackinglistByMonth($month_filter);
         $next_packinglist_number = $packinglist_this_month->packinglist_number + 1;
         $next_packinglist_serial_number = $this->generate_serial_number($next_packinglist_number);
-        
+
         $packinglist_data = [
             'packinglist_number' => $next_packinglist_number,
             'packinglist_serial_number' => $next_packinglist_serial_number,
@@ -64,12 +68,12 @@ class PackingList extends BaseController
             'destination' => $this->request->getPost('destination'),
             'department' => $this->request->getPost('department'),
         ];
-        
+
         $packing_id = $this->PackingListModel->insert($packinglist_data);
         return redirect()->to('packinglist');
     }
 
-    public function update() 
+    public function update()
     {
         $packinglist_data = [
             'packinglist_po_id' => $this->request->getPost('po_no'),
@@ -78,7 +82,7 @@ class PackingList extends BaseController
             'department' => $this->request->getPost('department'),
         ];
         $id = $this->request->getPost('edit_packinglist_id');
-        $this->PackingListModel->update($id,$packinglist_data);
+        $this->PackingListModel->update($id, $packinglist_data);
         return redirect()->to('packinglist');
     }
 
@@ -105,7 +109,7 @@ class PackingList extends BaseController
                         'size_id' => $size->id,
                         'size_size' => $size->size,
                     ];
-                    if($product->size_id == $size->id){
+                    if ($product->size_id == $size->id) {
                         $ratio_per_size->size_qty = $product->product_qty;
                     } else {
                         $ratio_per_size->size_qty = 0;
@@ -115,7 +119,7 @@ class PackingList extends BaseController
                 }
                 $products_in_carton[$key]->ratio_by_size_list = $product_ratio_by_size_list;
             }
-            
+
             $packinglist_carton_data[] = (object)[
                 'id' => $carton->id,
                 'carton_number_from' => $carton->carton_number_from,
@@ -134,7 +138,7 @@ class PackingList extends BaseController
         $packinglist = $this->PackingListModel->getPackingList($id);
         $packinglist->total_carton = $this->PackingListModel->getTotalCarton($id);
         $packinglist->percentage_ship = $this->PackingListModel->getShipmentPercentage($id);
-        
+
         $data = [
             'title'         => 'Packing List Detail',
             'packinglist'   => $packinglist,
@@ -146,7 +150,7 @@ class PackingList extends BaseController
         ];
 
         // dd($data['products']);
-        
+
         return view('packinglist/detail', $data);
     }
 
@@ -178,22 +182,22 @@ class PackingList extends BaseController
                     $this->CartonDetailModel->insert($carton_detail_data);
                 }
             }
-    
+
             $sync_prosses = $this->PackingListModel->syncWithPackinglistCarton($packinglist_id);
             $this->PackinglistCartonModel->transComplete();
         } catch (DatabaseException $e) {
             // Automatically rolled back already.
 
         }
-        return redirect()->to('packinglist/'.$packinglist_id);
+        return redirect()->to('packinglist/' . $packinglist_id);
     }
 
-    public function cartonedit() 
+    public function cartonedit()
     {
         $id = $this->request->getGet('id');
         $packinglist_carton = $this->PackinglistCartonModel->find($id);
         $carton_detail = $this->PackinglistCartonModel->getProductsInCarton($id);
-        
+
         $data_return = [
             'status' => 'success',
             'message' => 'successfully get data carton',
@@ -205,10 +209,10 @@ class PackingList extends BaseController
         return $this->response->setJSON($data_return);
     }
 
-    public function cartonupdate() 
+    public function cartonupdate()
     {
         $packinglist_carton_id = $this->request->getPost('edit_packinglist_carton_id');
-        
+
         $packinglist_id = $this->request->getPost('packinglist_id');
         $products_in_carton = $this->request->getPost('products_in_carton');
         $products_in_carton_qty = $this->request->getPost('products_in_carton_qty');
@@ -224,8 +228,8 @@ class PackingList extends BaseController
                 'carton_number_from' => $this->request->getPost('carton_number_from'),
                 'carton_number_to' => $this->request->getPost('carton_number_to'),
             ];
-            $this->PackinglistCartonModel->update($packinglist_carton_id,$packinglist_carton_data);
-            
+            $this->PackinglistCartonModel->update($packinglist_carton_id, $packinglist_carton_data);
+
             $this->CartonDetailModel->where('packinglist_carton_id', $packinglist_carton_id)->delete();
             if ($products_in_carton) {
                 foreach ($products_in_carton as $key => $product_id) {
@@ -243,10 +247,10 @@ class PackingList extends BaseController
             // Automatically rolled back already.
 
         }
-        return redirect()->to('packinglist/'.$packinglist_id);
+        return redirect()->to('packinglist/' . $packinglist_id);
     }
-    
-    public function cartondelete() 
+
+    public function cartondelete()
     {
         $id = $this->request->getPost('packinglist_carton_id');
         $packinglist_id = $this->request->getPost('packinglist_id');
@@ -255,12 +259,12 @@ class PackingList extends BaseController
         $sync_prosses = $this->PackingListModel->syncWithPackinglistCarton($packinglist_id);
 
         $sync_prosses = $this->PackingListModel->syncWithPackinglistCarton($packinglist_id);
-        return redirect()->to('packinglist/'. $packinglist_id);
+        return redirect()->to('packinglist/' . $packinglist_id);
     }
 
     private function generate_serial_number($number)
     {
-        $serial_number = 'PL-'. date('ym') . '-' . str_pad($number, 3, '0',STR_PAD_LEFT);
+        $serial_number = 'PL-' . date('ym') . '-' . str_pad($number, 3, '0', STR_PAD_LEFT);
         return $serial_number;
     }
 }

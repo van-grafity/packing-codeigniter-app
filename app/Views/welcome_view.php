@@ -45,7 +45,7 @@
         <div class="pesan">
             <div class="h1">SCAN AND PACK APPLICATION</div>
             <div class="h2">An Application for Shipping Department</div>
-            <a href="index.php/home">Masuk</a>
+            <a href="index.php/login">Login</a>
         </div>
     </div>
     </div>

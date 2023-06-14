@@ -2,16 +2,19 @@
 
 namespace App\Controllers;
 
+use Config\Services;
 use App\Models\BuyerModel;
 
 class Buyer extends BaseController
 {
     protected $buyerModel;
     protected $helpers = ['number', 'form'];
+    protected $session;
 
     public function __construct()
     {
         $this->buyerModel = new BuyerModel();
+        $this->session = Services::session();
     }
 
     public function index()
@@ -21,6 +24,9 @@ class Buyer extends BaseController
             'buyer'  => $this->buyerModel->getBuyer()->getResult()
         ];
 
+        if (!$this->session->isLoggedIn) {
+            return redirect()->to('login');
+        }
         return view('buyer/index', $data);
     }
 
@@ -65,14 +71,13 @@ class Buyer extends BaseController
     public function update()
     {
         $id = $this->request->getVar('edit_buyer_id');
-
         $data = array(
             'buyer_name'    => $this->request->getVar('name'),
             'offadd'        => $this->request->getVar('offadd'),
             'shipadd'       => $this->request->getVar('shipadd'),
             'country' => $this->request->getVar('country'),
         );
-        // dd($this->request->getvar());
+
         $this->buyerModel->updateBuyer($data, $id);
         session()->setFlashdata('pesan', 'Data Updated');
         return redirect()->to('buyer');

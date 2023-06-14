@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Config\Services;
 use App\Models\BuyerModel;
 use App\Models\GLModel;
 use App\Models\PurchaseOrderModel;
@@ -19,6 +20,7 @@ class PurchaseOrder extends BaseController
     protected $PurchaseOrderDetailModel;
     protected $ProductModel;
     protected $SizeModel;
+    protected $session;
 
     public function __construct()
     {
@@ -28,6 +30,7 @@ class PurchaseOrder extends BaseController
         $this->PurchaseOrderDetailModel = new PurchaseOrderDetailModel();
         $this->ProductModel = new ProductModel();
         $this->SizeModel = new SizeModel();
+        $this->session = Services::session();
     }
 
     public function index()
@@ -40,6 +43,9 @@ class PurchaseOrder extends BaseController
             'Product'   => $this->ProductModel->getProduct()->getResult(),
             'Sizes'     => $this->SizeModel->getSize()->getResult(),
         ];
+        if (!$this->session->isLoggedIn) {
+            return redirect()->to('login');
+        }
         return view('purchaseorder/index', $data);
     }
 

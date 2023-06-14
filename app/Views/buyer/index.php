@@ -16,11 +16,11 @@
                 <table id="table1" class="table table-bordered table-striped">
                     <thead>
                         <tr class="table-primary">
-                            <th class="text-center align-middle">SN</th>
-                            <th class="text-center align-middle">Buyer Name</th>
-                            <th class="text-center align-middle">Office Address</th>
-                            <th class="text-center align-middle">Ship Address</th>
-                            <th class="text-center align-middle">Action</th>
+                            <th class="text-center align-middle" width="10%">SN</th>
+                            <th class="text-center align-middle" width="15%">Buyer Name</th>
+                            <th class="text-center align-middle" width="30%">Office Address</th>
+                            <th class="text-center align-middle" width="30%">Ship Address</th>
+                            <th class="text-center align-middle" width="15%">Action</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -30,13 +30,13 @@
                         <?php foreach ($BuyerPO as $po) : ?>
                             <tr>
                                 <td class="text-center" scope="row"><?= $i++; ?></td>
-                                <td class="text-center"><a href="<?= '../index.php/purchaseorder/' . $po->PO_No; ?>"><?= $po->PO_No; ?></a></td>
+                                <td class="text-center"><a href="<?= '../index.php/purchaseorder/' . $po->po_no; ?>"><?= $po->po_no; ?></a></td>
                                 <td class="text-center"><?= $po->gl_number; ?></td>
-                                <td class="text-center"><?= $po->Shipdate; ?></td>
-                                <td class="text-center"><?= $po->PO_Qty; ?></td>
-                                <td class="text-right"><?= number_to_currency($po->PO_Amount, 'USD', 'en_US', 2); ?></td>
+                                <td class="text-center"><?= $po->shipdate; ?></td>
+                                <td class="text-center"><?= $po->po_qty; ?></td>
+                                <td class="text-right"><?= number_to_currency($po->po_amount, 'USD', 'en_US', 2); ?></td>
                                 <td class="text-center">
-                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $po->id; ?>" data-po-number="<?= $po->PO_No; ?>">Delete</a>
+                                    <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $po->id; ?>" data-po-number="<?= $po->po_no; ?>">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

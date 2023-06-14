@@ -2,15 +2,18 @@
 
 namespace App\Controllers;
 
+use Config\Services;
 use App\Models\FactoryModel;
 
 class Factory extends BaseController
 {
     protected $FactoryModel;
+    protected $session;
 
     public function __construct()
     {
         $this->FactoryModel = new FactoryModel();
+        $this->session = Services::session();
     }
 
     public function index()
@@ -19,6 +22,9 @@ class Factory extends BaseController
             'title'     => 'Factory List',
             'factory'   => $this->FactoryModel->getFactory()->getResult()
         ];
+        if (!$this->session->isLoggedIn) {
+            return redirect()->to('login');
+        }
         return view('factory/index', $data);
     }
 
@@ -39,7 +45,6 @@ class Factory extends BaseController
         $id = $this->request->getVar('edit_factory_id');
 
         $data = array(
-            'id'        => $this->request->getVar('id'),
             'name'      => $this->request->getVar('name'),
             'incharge'  => $this->request->getVar('incharge'),
             'remarks'   => $this->request->getVar('remarks'),

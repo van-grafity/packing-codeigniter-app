@@ -27,7 +27,7 @@
                             <tr>
                                 <th class="text-center" scope="row"><?= $i++; ?></th>
                                 <td><?= $c->colour_name; ?></td>
-                                <td>
+                                <td class="text-center">
                                     <a class="btn btn-success btn-sm btn-detail" data-id="<?= $c->id; ?>" data-colour-name="<?= $c->colour_name ?>">Details</a>
                                     <a class=" btn btn-warning btn-sm btn-edit" data-id="<?= $c->id; ?>" data-colour-name="<?= $c->colour_name ?>">Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $c->id; ?>" data-colour-name="<?= $c->colour_name ?>">Delete</a>

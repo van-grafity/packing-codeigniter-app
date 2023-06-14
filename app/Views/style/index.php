@@ -16,10 +16,10 @@
                 <table id="table1" class="table table-bordered table-striped">
                     <thead>
                         <tr class="table-primary">
-                            <th class="text-center align-middle">No</th>
-                            <th class="text-center align-middle">Style No</th>
-                            <th class="text-center align-middle">Style Description</th>
-                            <th class="text-center align-middle">Action</th>
+                            <th class="text-center align-middle" width="10%">No</th>
+                            <th class="text-center align-middle" width="20%">Style No</th>
+                            <th class="text-center align-middle" width="55%">Style Description</th>
+                            <th class="text-center align-middle" width="15%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,7 +29,7 @@
                                 <th class="text-center" scope="row"><?= $i++; ?></th>
                                 <td><?= $st->style_no; ?></td>
                                 <td><?= $st->style_description ?></td>
-                                <td>
+                                <td class="text-center">
                                     <a class="btn btn-success btn-sm btn-detail" data-id="<?= $st->id; ?>" data-number="<?= $st->style_no; ?>" data-description="<?= $st->style_description; ?>">Details</a>
                                     <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $st->id; ?>" data-number="<?= $st->style_no; ?>" data-description="<?= $st->style_description; ?>">Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $st->id; ?>" data-number="<?= $st->style_no; ?>">Delete</a>

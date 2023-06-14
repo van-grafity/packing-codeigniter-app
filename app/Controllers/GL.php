@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Config\Services;
 use App\Models\BuyerModel;
 use App\Models\GlModel;
 use App\Models\StyleModel;
@@ -11,12 +12,14 @@ class GL extends BaseController
     protected $BuyerModel;
     protected $glModel;
     protected $StyleModel;
+    protected $session;
 
     public function __construct()
     {
         $this->glModel = new GlModel();
         $this->BuyerModel = new BuyerModel();
         $this->StyleModel = new StyleModel();
+        $this->session = Services::session();
     }
 
     public function index()
@@ -28,8 +31,9 @@ class GL extends BaseController
             'style'     => $this->StyleModel->getStyle()->getResult(),
         ];
 
-        // $glku = $this->glModel->getGL()->getResult();
-        // dd($glku);
+        if (!$this->session->isLoggedIn) {
+            return redirect()->to('login');
+        }
         return view('gl/index', $data);
     }
 
@@ -51,7 +55,6 @@ class GL extends BaseController
     {
         $id = $this->request->getVar('edit_gl_id');
         $data = array(
-            'id'             => $this->request->getVar('id'),
             'gl_number'     => $this->request->getVar('number'),
             'season'        => $this->request->getVar('season'),
             'buyer_id'      => $this->request->getVar('gl_buyer'),

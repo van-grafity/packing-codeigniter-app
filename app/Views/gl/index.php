@@ -17,12 +17,12 @@
                     <thead>
                         <tr class="table-primary">
                             <th class="text-center align-middle" width="5%">SN</th>
-                            <th class="text-center align-middle" width="15%">GL No.</th>
-                            <th class="text-center align-middle" width="20%">Buyer</th>
-                            <th class="text-center align-middle" width="20%">Style</th>
-                            <th class="text-center align-middle" width="20%">Season</th>
-                            <th class="text-center align-middle" width="20%">Size Order</th>
-                            <th class="text-center align-middle" width="20%">Action</th>
+                            <th class="text-center align-middle" width="10%">GL No.</th>
+                            <th class="text-center align-middle" width="10%">Buyer</th>
+                            <th class="text-center align-middle" width="30%">Style</th>
+                            <th class="text-center align-middle" width="15%">Season</th>
+                            <th class="text-center align-middle" width="15%">Size Order</th>
+                            <th class="text-center align-middle" width="15%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,7 +35,7 @@
                                 <td><?= $g->style_description; ?></td>
                                 <td><?= $g->season; ?></td>
                                 <td><?= $g->size_order; ?></td>
-                                <td>
+                                <td class="text-center">
                                     <a class="btn btn-success btn-sm btn-detail" data-id="<?= $g->id; ?>" data-gl-number="<?= $g->gl_number; ?>" data-buyer_id="<?= $g->buyer_id; ?>" data-style_id="<?= $g->style_id; ?>" data-season="<?= $g->season; ?>" data-size_order="<?= $g->size_order ?>">Details</a>
                                     <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $g->id; ?>" data-gl-number="<?= $g->gl_number; ?>" data-buyer_id="<?= $g->buyer_id; ?>" data-style_id="<?= $g->style_id; ?>" data-season="<?= $g->season; ?>" data-size_order="<?= $g->size_order ?>">Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $g->id; ?>" data-gl-number="<?= $g->gl_number; ?>">Delete</a>

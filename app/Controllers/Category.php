@@ -2,15 +2,18 @@
 
 namespace App\Controllers;
 
+use Config\Services;
 use App\Models\CategoryModel;
 
 class Category extends BaseController
 {
     protected $CategoryModel;
+    protected $session;
 
     public function __construct()
     {
         $this->CategoryModel = new CategoryModel();
+        $this->session = Services::session();
     }
 
     public function index()
@@ -19,6 +22,10 @@ class Category extends BaseController
             'title' => 'List of Product Type',
             'category' => $this->CategoryModel->getCategory()->getResult()
         ];
+
+        if (!$this->session->isLoggedIn) {
+            return redirect()->to('login');
+        }
         return view('category/index', $data);
     }
 

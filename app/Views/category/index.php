@@ -17,8 +17,8 @@
                     <thead>
                         <tr class="table-primary">
                             <th class="text-center align-middle" width="10%">No</th>
-                            <th class="text-center align-middle">Product Type Name</th>
-                            <th class="text-center align-middle" width="20%">Action</th>
+                            <th class="text-center align-middle" width="75%">Product Type Name</th>
+                            <th class="text-center align-middle" width="15%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,7 +27,7 @@
                             <tr>
                                 <th class="text-center" scope="row"><?= $i++; ?></th>
                                 <td><?= $c->category_name; ?></td>
-                                <td>
+                                <td class="text-center">
                                     <a class="btn btn-success btn-sm btn-detail" data-id="<?= $c->id ?>" data-category-name="<?= $c->category_name ?>">Details</a>
                                     <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $c->id ?>" data-category-name="<?= $c->category_name ?>">Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $c->id ?>" data-category-name="<?= $c->category_name ?>">Delete</a>

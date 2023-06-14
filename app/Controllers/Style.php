@@ -2,15 +2,18 @@
 
 namespace App\Controllers;
 
+use Config\Services;
 use App\Models\StyleModel;
 
 class Style extends BaseController
 {
     protected $StyleModel;
+    protected $session;
 
     public function __construct()
     {
         $this->StyleModel = new StyleModel();
+        $this->session = Services::session();
     }
 
     public function index()
@@ -19,6 +22,9 @@ class Style extends BaseController
             'title' => 'List of Styling',
             'styles' => $this->StyleModel->getStyle()->getResult()
         ];
+        if (!$this->session->isLoggedIn) {
+            return redirect()->to('login');
+        }
         return view('style/index', $data);
     }
 
