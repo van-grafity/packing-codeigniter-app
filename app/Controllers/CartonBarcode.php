@@ -80,7 +80,7 @@ class CartonBarcode extends BaseController
             'carton_list' => $carton_list,
         ];
 
-        return view('carton-barcode/detail', $data);
+        return view('cartonbarcode/detail', $data);
     }
 
     public function importexcel()
