@@ -112,8 +112,16 @@ $routes->post('purchaseorder/updatedetail', 'PurchaseOrder::updatedetail');
 
 // Carton Barcode
 $routes->get('cartonbarcode', 'CartonBarcode::index');
+$routes->post('cartonbarcode/importexcel', 'CartonBarcode::importexcel');
+$routes->get('cartonbarcode/detailcarton', 'CartonBarcode::detailcarton');
 $routes->get('cartonbarcode/(:num)', 'CartonBarcode::detail/$1');
-$routes->get('cartonbarcode/generatecarton', 'CartonBarcode::generatecarton');
+$routes->post('cartonbarcode/generatecarton', 'CartonBarcode::generatecarton');
+
+// Scan and Pack
+$routes->get('scanpack', 'Scanpack::index');
+$routes->get('scanpack/detailcarton', 'Scanpack::detailcarton');
+$routes->post('scanpack/packcarton', 'Scanpack::packcarton');
+
 
 // $routes->get('/packinglist/get_by_po/(:any)', 'PackingList::getByPoId/$1');
 // $routes->get('/packinglist/get_style_by_po/(:any)', 'PackingList::getStyleByPoId/$1');

@@ -228,6 +228,7 @@ function reset_carton_info() {
         </tr>
     `;
     $('#carton_detail_table tbody').html(empty_row);
+    $('#carton_detail_table tfoot').html('');
 
     $('#product_code').attr('disabled',true);
     $('#btn_pack_carton').attr('disabled',true);
