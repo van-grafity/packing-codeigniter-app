@@ -312,7 +312,7 @@ function scan_product_code(product_code) {
     let scanned_count = parseInt(product_row.find('td.scanned_count').text());
     
     if(scanned_count >= product_qty){
-        alert('This Product has been Fulfilled!, please input another Product Code!');
+        swal_warning({title: "This Product has been Fulfilled!"})
         return false;
     }
     scanned_count++;
