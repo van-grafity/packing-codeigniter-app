@@ -10,7 +10,7 @@
             </div>
             <div class="card-body">
                 <button type="button" class="btn btn-secondary mb-2" id="btn_modal_create">Add New</button>
-                <table id="table1" class="table table-bordered table-striped table-responsive">
+                <table id="packinglist_table" class="table table-bordered table-striped">
                     <thead>
                         <tr class="table-primary text-center">
                             <th width="5%">No</th>
@@ -259,6 +259,28 @@
 <script type="text/javascript">
     const store_url = "../index.php/packinglist/store";
     const update_url = "../index.php/packinglist/update";
+</script>
+
+<script type="text/javascript">
+    $('#packinglist_table').DataTable({
+        // processing: true,
+        // serverSide: true,
+        // ajax: dtable_url,
+        columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                { data: 'packinglist_number', name: 'packinglist_number'},
+                { data: 'buyer_name', name: 'buyer_name' },
+                { data: 'po_number', name: 'po_number' },
+                { data: 'gl_number', name: 'gl_number' },
+                { data: 'season', name: 'season' },
+                { data: 'action', name: 'action', orderable: false, searchable: false },
+        ],
+        paging: true,
+        responsive: true,
+        lengthChange: true,
+        searching: true,
+        autoWidth: false,
+    });
 </script>
 
 <?= $this->endSection('page_script'); ?>
