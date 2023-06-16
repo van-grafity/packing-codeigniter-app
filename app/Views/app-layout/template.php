@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> <?= $title ?></title>
 
-    <base href="<?php echo base_url('public/assets') ?>/">
+    <base href="<?php echo base_url('assets') ?>/">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -227,7 +227,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="<?= base_url('public/assets'); ?>/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+            <img class="animation__shake" src="<?= base_url('assets'); ?>/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
         </div>
 
         <?= $this->renderSection('content'); ?>
