@@ -124,6 +124,8 @@ $routes->get('scanpack', 'Scanpack::index');
 $routes->get('scanpack/detailcarton', 'Scanpack::detailcarton');
 $routes->post('scanpack/packcarton', 'Scanpack::packcarton');
 
+$routes->get('logs', "LogViewerController::index");
+
 
 // $routes->get('/packinglist/get_by_po/(:any)', 'PackingList::getByPoId/$1');
 // $routes->get('/packinglist/get_style_by_po/(:any)', 'PackingList::getStyleByPoId/$1');

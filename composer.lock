@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6316c17909fb744ca516eca53fdff5f9",
+    "content-hash": "b0fa1df0bae8336b750ae2146bee344a",
     "packages": [
         {
             "name": "codeigniter4/framework",
@@ -816,6 +816,57 @@
                 "source": "https://github.com/php-fig/simple-cache/tree/3.0.0"
             },
             "time": "2021-10-29T13:26:27+00:00"
+        },
+        {
+            "name": "seunmatt/codeigniter-log-viewer",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SeunMatt/codeigniter-log-viewer.git",
+                "reference": "043b5c58bac65eeb9c536216c8d8d97b82abf08c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SeunMatt/codeigniter-log-viewer/zipball/043b5c58bac65eeb9c536216c8d8d97b82abf08c",
+                "reference": "043b5c58bac65eeb9c536216c8d8d97b82abf08c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CILogViewer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Miguel Martinez",
+                    "email": "rodilla@gmail.com"
+                },
+                {
+                    "name": "Seun Matt",
+                    "email": "smatt382@gmail.com"
+                }
+            ],
+            "description": "This is a simple Log Viewer for viewing CodeIgniter log files on the browser",
+            "keywords": [
+                "CI4",
+                "Code Igniter",
+                "Code Igniter 4",
+                "log viewer",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/SeunMatt/codeigniter-log-viewer/issues",
+                "source": "https://github.com/SeunMatt/codeigniter-log-viewer/tree/2.0.1"
+            },
+            "time": "2022-10-09T06:17:17+00:00"
         }
     ],
     "packages-dev": [
