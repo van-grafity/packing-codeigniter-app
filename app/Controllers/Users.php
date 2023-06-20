@@ -66,6 +66,34 @@ class Users extends BaseController
         }
     }
 
+    public function enable()
+    {
+        // get the user id
+        $id = $this->request->uri->getSegment(3);
+
+        // validation does not work when data is not submitted via post form
+        // $rules = [
+        // 	'id'	=> 'required|integer',
+        // ];
+
+        // if (! $this->validate($rules)) {
+        // 	return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        // }
+
+        $users = new UserModel();
+
+        $user = [
+            'id'      => $id,
+            'active'      => 1,
+        ];
+
+        if (!$users->save($user)) {
+            return redirect()->back()->withInput()->with('errors', $users->errors());
+        }
+
+        return redirect()->back()->with('success', lang('Auth.enableUser'));
+    }
+
     public function createUser()
     {
         helper('text');
@@ -76,15 +104,15 @@ class Users extends BaseController
         $users->setValidationRules($getRule);
 
         $user = [
-            'firstname'              => $this->request->getPost('firstname'),
-            'lastname'              => $this->request->getPost('lastname'),
-            'name'              => $this->request->getPost('name'),
-            'email'             => $this->request->getPost('email'),
-            'password'             => $this->request->getPost('password'),
-            'password_confirm'    => $this->request->getPost('password_confirm'),
+            'firstname'     => $this->request->getPost('firstname'),
+            'lastname'      => $this->request->getPost('lastname'),
+            'name'          => $this->request->getPost('name'),
+            'email'         => $this->request->getPost('email'),
+            'password'      => $this->request->getPost('password'),
+            'password_confirm'  => $this->request->getPost('password_confirm'),
             'activate_hash'     => random_string('alnum', 32)
         ];
-        // dd($users->test_model());
+
         if (!$users->insert($user)) {
             // dd($users);
             return redirect()->back()->withInput()->with('errors', $users->errors());
@@ -98,5 +126,71 @@ class Users extends BaseController
 
         // success
         return redirect()->back()->with('success', 'Success! You created a new account');
+    }
+
+    public function edit()
+    {
+        // get the user id
+        $id = $this->request->uri->getSegment(3);
+
+        // load user model
+        $users = new UserModel();
+
+        // get user data using the id
+        $user = $users->where('id', $id)->first();
+
+        // load the view with session data
+        return view('user/edit-user', [
+            'title' => "Edit User",
+            'userData' => $this->session->userData,
+            'user' => $user,
+        ]);
+    }
+
+    public function update()
+    {
+        $rules = [
+            'id'        => 'required|is_natural',
+            'name'      => 'required|alpha_space|min_length[2]',
+            'firstname' => 'required|alpha_space|min_length[2]',
+            'lastname'  => 'required|alpha_space|min_length[2]',
+            'email'     => 'required|valid_email|is_unique[tblusers.email,id,{id}]',
+            'active'    => 'required|integer',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $users = new UserModel();
+
+        $user = [
+            'id'      => $this->request->getPost('id'),
+            'name'     => $this->request->getPost('name'),
+            'firstname'     => $this->request->getPost('firstname'),
+            'lastname'     => $this->request->getPost('lastname'),
+            'email'     => $this->request->getPost('email'),
+            'active'     => $this->request->getPost('active')
+        ];
+
+        if (!$users->save($user)) {
+            return redirect()->back()->withInput()->with('errors', $users->errors());
+        }
+
+        return redirect()->back()->with('success', lang('Auth.updateSuccess'));
+    }
+
+    public function delete()
+    {
+        // get the user id
+        $id = $this->request->uri->getSegment(3);
+
+        // load user model
+        $users = new UserModel();
+
+        // delete user using the id
+        $users->delete($id);
+
+        return redirect()->back()->with('success', lang('Auth.accountDeleted'));
     }
 }

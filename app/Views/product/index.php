@@ -12,9 +12,9 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <button type="button" class="btn btn-secondary mb-2" id="btn-add-detail">Add New</button>
-                <table id="table1" class="table table-bordered table-striped">
+                <table id="table1" class="table table-bordered table-striped table-hover">
                     <thead>
-                        <tr class="table-primary">
+                        <tr class=" table-primary">
                             <th class="text-center align-middle" width="5%">SN</th>
                             <th class="text-center align-middle" width="10%">Prod Code</th>
                             <th class="text-center align-middle" width="10%">ASIN #</th>

@@ -44,12 +44,11 @@ $routes->get('logout', 'Login::logout');
 // Users
 $routes->get('users', 'Users::user');
 $routes->post('users/save', 'Users::createUser');
-// $routes->get('users/enable/(:num)', 'Auth\UsersController::enable'); // new
-// $routes->get('users/edit/(:num)', 'Auth\UsersController::edit'); // new
-// $routes->post('users/update-user', 'Auth\UsersController::update'); // new
+$routes->get('users/enable/(:num)', 'Users::enable');
+$routes->post('users/update-user', 'Users::update');
+$routes->get('users/edit/(:num)', 'Users::edit');
 // $routes->get('users/delete/(:num)', 'Auth\UsersController::delete'); // new
-// $routes->post('users/create-user', 'Auth\UsersController::createUser');
-$routes->get('users/logs', 'Auth\UsersController::userLogs', ['as' => 'userlogs']); // new
+$routes->get('users/logs', 'Users::userLogs', ['as' => 'userlogs']);
 
 // Buyer
 $routes->get('buyer', 'Buyer::index');

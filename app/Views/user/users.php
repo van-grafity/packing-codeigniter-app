@@ -92,7 +92,7 @@
                       <a class="btn btn-outline-secondary btn-sm" href="<?= site_url('users/enable/') . $item['id'] ?>"><i class="fas fa-user-check"></i> Enable</a>
                     <?php endif ?>
                     <a class="btn btn-outline-secondary btn-sm" href="<?= site_url('users/edit/') . $item['id'] ?>"><i class="fas fa-edit"></i> Edit</a>
-                    <a class="btn btn-outline-secondary btn-sm" href="<?= site_url('users/delete/') . $item['id'] ?>"><i class="fas fa-trash"></i> Delete</a>
+                    <a class="btn btn-outline-secondary btn-sm btn-delete" data-id="<?= $item['id']; ?>"><i class="fas fa-trash"></i> Delete</a>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -108,13 +108,13 @@
 </div>
 <!-- /.content-wrapper -->
 
-<!-- Modal Add and Edit User Detail -->
+<!-- Modal Add User Detail -->
 <div class="modal fade" id="addusermodal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <form action="" method="post" id="user_form">
+        <!-- <input type="hidden" name="edit_user_id" value="" id="edit_user_id"> -->
         <?= csrf_field() ?>
-        <input type="hidden" name="edit_user_id" value="" id="edit_user_id">
 
         <div class="modal-header">
           <h5 class="modal-title" id="ModalLabel">Add New User</h5>
@@ -126,27 +126,27 @@
           <div class="form-group row">
             <div class="col">
               <label for="firstname">First name</label>
-              <input class="form-control" required type="text" name="firstname" value="<?= old('firstname') ?>" placeholder="First name" />
+              <input type="text" class="form-control" id="firstname" required name="firstname" placeholder="First name" />
             </div>
             <div class="col">
               <label for="lastname">Last name</label>
-              <input class="form-control" required type="text" name="lastname" value="<?= old('lastname') ?>" placeholder="Last name" />
+              <input type="text" class="form-control" id="lastname" required name="lastname" placeholder="Last name" />
             </div>
           </div>
           <div class="form-group">
             <label for="name">Nickname</label>
-            <input class="form-control" required type="text" name="name" value="<?= old('name') ?>" placeholder="Nickname" />
+            <input type="text" class="form-control" id="name" required name="name" placeholder="Nickname" />
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input class="form-control" required type="email" name="email" value="<?= old('email') ?>" placeholder="<?= lang('Auth.email') ?>" />
+            <input type="email" class="form-control" id="email" required name="email" placeholder="<?= lang('Auth.email') ?>" />
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input class="form-control" required type="password" name="password" value="" placeholder="<?= lang('Auth.password') ?>" />
+            <input type="password" class="form-control" id="password" required name="password" placeholder="<?= lang('Auth.password') ?>" />
           </div>
           <div class="form-group">
-            <input class="form-control" required type="password" name="password_confirm" value="" placeholder="Confirm Password" />
+            <input type="password" class="form-control" id="password_confirm" required name="password_confirm" placeholder="Confirm Password" />
           </div>
         </div>
         <div class="modal-footer">
@@ -157,7 +157,64 @@
     </div>
   </div>
 </div>
-<!-- End Modal Add and Edit User Detail-->
+<!-- End Modal Add User Detail-->
+
+<!-- Modal Edit User Detail -->
+<!-- <div class="modal fade" id="editusermodal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form action="" method="post" id="edituser_form">
+        <input type="hidden" id="edit_user_id" name="edit_user_id">
+        <?= csrf_field() ?>
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Edit User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="firstname">First name</label>
+            <input type="text" class="form-control" required id="1stname" name="1stname">
+          </div>
+          <div class="form-group">
+            <label for="lastname">Last name</label>
+            <input type="text" class="form-control" required id="lstname" name="lstname">
+          </div>
+          <div class="form-group">
+            <label for="name">Nickname</label>
+            <input type="text" class="form-control" required id="username" name="username">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" required id="useremail" name="useremail">
+          </div>
+          <div class="form-group">
+            <label for="active">Status</label>
+            <select class="form-control" name="active" required>
+              <?php if ($item['active'] === 1) : ?>
+                <option value="1" selected>Enable</option>
+              <?php else : ?>
+                <option value="1">Enable</option>
+              <?php endif ?>
+
+              <?php if ($item['active'] === 0) : ?>
+                <option value="0" selected>Disable</option>
+              <?php else : ?>
+                <option value="0">Disable</option>
+              <?php endif ?>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="btn_update">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> -->
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -182,13 +239,34 @@
       $('#addusermodal').modal('show');
     })
 
+    // $('.btn-edit').on('click', function(event) {
+    //   // get data from button edit
+    //   let id = $(this).data('id');
+    //   let firstname = $(this).data('firstname');
+    //   let lastname = $(this).data('lastname');
+    //   let name = $(this).data('name');
+    //   let email = $(this).data('email');
 
+    //   $('#ModalLabel').text("Edit User")
+    //   $('#btn_update').text("Update User")
+    //   $('#edituser_form').attr('action', update_url);
+
+    //   // set data to Form
+    //   $('#edit_user_id').val(id);
+    //   $('#1stname').val(firstname);
+    //   $('#lstname').val(lastname);
+    //   $('#username').val(name);
+    //   $('#useremail').val(email);
+
+    //   // call the Modal
+    //   $('#editusermodal').modal('show');
+    // })
   });
 </script>
 
 <script type="text/javascript">
-  const store_url = "../index.php/users/save";
-  const update_url = "../index.php/users/update";
+  const store_url = "<?php echo base_url('users/save') ?>";
+  // const update_url = "<?php echo base_url('users/update') ?>";
 </script>
 
 <?= $this->endSection(); ?>
