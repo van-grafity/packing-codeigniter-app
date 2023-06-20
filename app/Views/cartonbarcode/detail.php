@@ -95,7 +95,7 @@
             <div class="card-body">
                 <div class="row mb-5">
                     <div class="col-sm-6">
-                        <form action="<?= base_url('cartonbarcode/import_excel')?>" method="post" id="packinglist_form" enctype="multipart/form-data">
+                        <form action="<?= base_url('cartonbarcode/importexcel')?>" method="post" id="packinglist_form" enctype="multipart/form-data">
                             <?= csrf_field(); ?>
                             <input type="hidden" name="packinglist_id" value="<?= $packinglist->id?>">
                             <div class="row">

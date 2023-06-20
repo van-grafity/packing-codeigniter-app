@@ -11,5 +11,10 @@
             </li>
         </ul>
     </ul>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link"><?=session()->get()['userData']['name'];?></a>
+        </li>
+    </ul>
 </nav>
 <!-- /.navbar -->

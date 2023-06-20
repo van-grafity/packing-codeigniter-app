@@ -105,7 +105,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'id' => 8,
-                'product_code' => '94416079',
+                'product_code' => '94416087',
                 'product_asin_id' => '',
                 'product_category_id' => 2,
                 'product_style_id' => 2,
