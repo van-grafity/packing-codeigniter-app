@@ -64,6 +64,7 @@ class PackingListModel extends Model
         $builder->join('tblsize as size', 'size.id = product.product_size_id');
         $builder->where('packinglist.id', $packinglist_id);
         $builder->groupBy('size.id');
+        $builder->orderBy('size.id');
         $result = $builder->get()->getResult();
         return $result;
     }

@@ -99,3 +99,12 @@ const swal_failed = (data) => {
         showConfirmButton: true,
     });
 }
+
+const swal_warning = (data) => {
+    Swal.fire({
+        icon: "warning",
+        title: data.title ? data.title : "Caution!",
+        text: data.text ? data.text : null,
+        showConfirmButton: true,
+    });
+}
