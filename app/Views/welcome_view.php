@@ -45,7 +45,7 @@
         <div class="pesan">
             <div class="h1">SCAN AND PACK APPLICATION</div>
             <div class="h2">An Application for Shipping Department</div>
-            <a href="index.php/login">Login</a>
+            <a href="<?php echo base_url('login'); ?>">Login</a>
         </div>
     </div>
     </div>
