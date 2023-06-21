@@ -113,7 +113,7 @@ class PackingList extends BaseController
                     if ($product->size_id == $size->id) {
                         $ratio_per_size->size_qty = $product->product_qty;
                     } else {
-                        $ratio_per_size->size_qty = 0;
+                        $ratio_per_size->size_qty = '';
                     }
 
                     $product_ratio_by_size_list[] =  $ratio_per_size;

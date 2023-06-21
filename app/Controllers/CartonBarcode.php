@@ -80,7 +80,7 @@ class CartonBarcode extends BaseController
             'carton_list' => $carton_list,
         ];
 
-        return view('carton-barcode/detail', $data);
+        return view('cartonbarcode/detail', $data);
     }
 
     public function importexcel()
@@ -89,10 +89,10 @@ class CartonBarcode extends BaseController
             $packinglist_id = $this->request->getPost('packinglist_id');
             $file = $this->request->getFile('file_excel');
             $rules = [
-                'file_excel' => 'ext_in[file_excel,csv]',
+                'file_excel' => 'ext_in[file_excel,csv,xlsx,xls]',
             ];
             if (!$this->validate($rules)) {
-                return redirect()->to('cartonbarcode/' . $packinglist_id)->with('error', 'Please upload on CSV format');
+                return redirect()->to('cartonbarcode/' . $packinglist_id)->with('error', 'Please upload on csv / xlsx / xls format');
             }
 
             $spreadsheet = IOFactory::load($file->getTempName());
