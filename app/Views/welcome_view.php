@@ -45,7 +45,11 @@
         <div class="pesan">
             <div class="h1">SCAN AND PACK APPLICATION</div>
             <div class="h2">An Application for Shipping Department</div>
-            <a href="index.php/login">Login</a>
+            <?php if (session()->get('isLoggedIn')) : ?>
+                <a href="index.php/home">home</a>
+            <?php else : ?>
+                <a href="index.php/login">Login</a>
+            <?php endif ?>
         </div>
     </div>
     </div>
