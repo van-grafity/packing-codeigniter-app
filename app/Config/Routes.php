@@ -41,14 +41,14 @@ $routes->get('login', 'Login::index', ['as' => 'login']);
 $routes->post('login', 'Login::attemptLogin');
 $routes->get('logout', 'Login::logout');
 
-// Users
-$routes->get('users', 'Users::user');
-$routes->post('users/save', 'Users::createUser');
-$routes->get('users/enable/(:num)', 'Users::enable');
-$routes->post('users/update-user', 'Users::update');
-$routes->get('users/edit/(:num)', 'Users::edit');
-// $routes->get('users/delete/(:num)', 'Auth\UsersController::delete'); // new
-$routes->get('users/logs', 'Users::userLogs', ['as' => 'userlogs']);
+// User
+$routes->get('users', 'User::index');
+$routes->post('user/save', 'User::createUser');
+$routes->get('user/enable/(:num)', 'User::enable');
+$routes->post('user/update-user', 'User::update');
+$routes->get('user/edit/(:num)', 'User::edit');
+$routes->post('user/delete', 'User::delete');
+$routes->get('user/logs', 'User::userLogs', ['as' => 'userlogs']);
 
 // Buyer
 $routes->get('buyer', 'Buyer::index');

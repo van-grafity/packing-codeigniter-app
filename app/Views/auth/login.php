@@ -12,11 +12,11 @@
         <form action="<?= site_url('login'); ?>" method="POST" accept-charset="UTF-8">
             <?= csrf_field() ?>
             <div class="form-group">
-                <input name="email" type="email" class="form-control" placeholder="<?= lang('Auth.email') ?>" value="<?= old('email') ?>">
+                <input name="email" type="email" class="form-control" placeholder="<?= lang('email') ?>" value="<?= old('email') ?>">
             </div>
 
             <div class="form-group">
-                <input name="password" type="password" class="form-control" placeholder="<?= lang('Auth.password') ?>">
+                <input name="password" type="password" class="form-control" placeholder="<?= lang('password') ?>">
             </div>
 
             <div class="form-group text-left">

@@ -81,6 +81,12 @@ class UserModel extends Model
         return $data;
     }
 
+    public function deleteUser($id)
+    {
+        $query = $this->db->table('tblusers')->delete(array('id' => $id));
+        return $query;
+    }
+
     public function test_model()
     {
         return 'success';

@@ -8,8 +8,9 @@ use App\Models\ColourModel;
 use App\Models\ProductModel;
 use App\Models\SizeModel;
 use App\Models\StyleModel;
+use Faker\Extension\Helper;
 
-helper('number');
+Helper('number');
 
 class Product extends BaseController
 {

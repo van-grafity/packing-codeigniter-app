@@ -9,10 +9,8 @@
         <!-- Default box -->
         <div class="card card-primary">
             <div class="card-header d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3">
-                <h3 class="card-title"><?= $title ?></h3>
-                <div class="btn-toolbar mb-2 mb-md-0">
-                    <a href="<?= site_url('users') ?>" class="btn btn-sm btn-secondary"><i class="fas fa-arrow-left"></i> Return</a>
-                </div>
+                <h3 class="card-title "><?= $title ?></h3>
+                <a href="<?= site_url('users') ?>" class="btn btn-sm btn-secondary"><i class="fas fa-arrow-left"></i>Return</a>
             </div>
             <!-- /.card-header -->
             <div class="card-body">

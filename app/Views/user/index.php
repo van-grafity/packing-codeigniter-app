@@ -58,7 +58,7 @@
         </div>
         <!-- ./row -->
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3">
-          <h1 class="h2">Users</h1>
+          <h1 class="h2"><?php $card_title ?></h1>
           <div class="btn-toolbar mb-2 mb-md-0">
             <button type="button" class="btn btn-sm btn-primary" id="btn-add-user"><i class="fas fa-user-plus"></i> Create User</button>
           </div>
@@ -92,7 +92,7 @@
                       <a class="btn btn-outline-secondary btn-sm" href="<?= site_url('users/enable/') . $item['id'] ?>"><i class="fas fa-user-check"></i> Enable</a>
                     <?php endif ?>
                     <a class="btn btn-outline-secondary btn-sm" href="<?= site_url('users/edit/') . $item['id'] ?>"><i class="fas fa-edit"></i> Edit</a>
-                    <a class="btn btn-outline-secondary btn-sm btn-delete" data-id="<?= $item['id']; ?>"><i class="fas fa-trash"></i> Delete</a>
+                    <a class="btn btn-outline-secondary btn-sm btn-delete" data-id="<?= $item['id']; ?>" data-name="<?= $item['name'] ?>"><i class="fas fa-trash"></i> Delete</a>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -160,7 +160,7 @@
 <!-- End Modal Add User Detail-->
 
 <!-- Modal Edit User Detail -->
-<!-- <div class="modal fade" id="editusermodal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+<div class="modal fade" id="editusermodal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <form action="" method="post" id="edituser_form">
@@ -176,11 +176,11 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="firstname">First name</label>
-            <input type="text" class="form-control" required id="1stname" name="1stname">
+            <input type="text" class="form-control" required id="firstname" name="1astname">
           </div>
           <div class="form-group">
             <label for="lastname">Last name</label>
-            <input type="text" class="form-control" required id="lstname" name="lstname">
+            <input type="text" class="form-control" required id="lastname" name="lastname">
           </div>
           <div class="form-group">
             <label for="name">Nickname</label>
@@ -214,7 +214,32 @@
       </form>
     </div>
   </div>
-</div> -->
+</div>
+
+<!-- Modal Delete Style-->
+<form action="../index.php/user/delete" method="post">
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Delete User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h4 id="delete_message">Are you sure want to delete user ?</h4>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" name="user_id" id="user_id">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <button type="submit" class="btn btn-primary">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<!-- End Modal Delete Style-->
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -237,6 +262,22 @@
 
       // Call the Modal
       $('#addusermodal').modal('show');
+    })
+
+    // get Delete User
+    $('.btn-delete').on('click', function() {
+      // get data from button delete
+      let id = $(this).data('id');
+      let name = $(this).data('name');
+
+      // Set data to Form Delete
+      $('#user_id').val(id);
+      if (name) {
+        $('#delete_message').text(`Are you sure want to delete user (${name}) from this database ?`);
+      }
+
+      // Call Modal Delete
+      $('#deleteModal').modal('show');
     })
 
     // $('.btn-edit').on('click', function(event) {
@@ -266,7 +307,7 @@
 
 <script type="text/javascript">
   const store_url = "<?php echo base_url('users/save') ?>";
-  // const update_url = "<?php echo base_url('users/update') ?>";
+  const update_url = "<?php echo base_url('users/update') ?>";
 </script>
 
 <?= $this->endSection(); ?>
