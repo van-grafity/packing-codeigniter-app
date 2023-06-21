@@ -184,8 +184,8 @@
 </script>
 
 <script type="text/javascript">
-    const store_url = "../index.php/category/save";
-    const update_url = "../index.php/category/update";
+    const store_url = "<?php echo base_url('category/save'); ?>";
+    const update_url = "<?php echo base_url('category/update'); ?>";
 </script>
 
 <?= $this->endSection(); ?>

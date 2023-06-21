@@ -218,8 +218,8 @@
 </script>
 
 <script type="text/javascript">
-    const store_url = "../index.php/buyer/save";
-    const update_url = "../index.php/buyer/update";
+    const store_url = "<?php echo base_url('buyer/save'); ?>";
+    const update_url = "<?php echo base_url('buyer/update'); ?>";
 </script>
 
 <?= $this->endSection('content'); ?>

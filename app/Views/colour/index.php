@@ -180,7 +180,7 @@
 </script>
 
 <script type="text/javascript">
-    const store_url = "../index.php/colour/save";
-    const update_url = "../index.php/colour/update";
+    const store_url = "<?php echo base_url('colour/save'); ?>";
+    const update_url = "<?php echo base_url('colour/update'); ?>";
 </script>
 <?= $this->endSection(); ?>

@@ -195,8 +195,8 @@
 </script>
 
 <script type="text/javascript">
-    const store_url = "../index.php/style/save";
-    const update_url = "../index.php/style/update";
+    const store_url = "<?php echo base_url('style/save') ?>";
+    const update_url = "<?php echo base_url('style/update') ?>";
 </script>
 
 <?= $this->endSection(); ?>

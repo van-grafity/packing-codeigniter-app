@@ -2,9 +2,9 @@
 
 <?= $this->Section('content'); ?>
 <style>
-#carton_detail_table tbody td {
-    vertical-align: middle
-}
+    #carton_detail_table tbody td {
+        vertical-align: middle
+    }
 </style>
 
 <div class="content-wrapper">
@@ -25,8 +25,7 @@
                             <?= csrf_field(); ?>
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="carton_barcode" name="carton_barcode"
-                                        placeholder="Input Barcode Here" autofocus>
+                                    <input type="text" class="form-control" id="carton_barcode" name="carton_barcode" placeholder="Input Barcode Here" autofocus>
                                     <div class="ml-2">
                                         <button type="submit" class="btn btn-success" id="btn_submit_form">Search</button>
                                     </div>
@@ -110,84 +109,84 @@
 
 <?= $this->Section('page_script'); ?>
 <script type="text/javascript">
-$(document).ready(function() {
+    $(document).ready(function() {
 
-    reset_field();
+        reset_field();
 
-    $('#barcode_form').on('submit', function(e) {
-        e.preventDefault();
-        let carton_barcode = $('#carton_barcode').val();
-        $('#carton_barcode').val('');
+        $('#barcode_form').on('submit', function(e) {
+            e.preventDefault();
+            let carton_barcode = $('#carton_barcode').val();
+            $('#carton_barcode').val('');
 
-        // ## If no Entry Barcode Skip;
-        if (!carton_barcode) return false;
-        show_detail_carton(carton_barcode)
-    });
+            // ## If no Entry Barcode Skip;
+            if (!carton_barcode) return false;
+            show_detail_carton(carton_barcode)
+        });
 
-})
+    })
 </script>
 
 <script type="text/javascript">
-const detail_carton_url = '<?= base_url('scanpack/detailcarton')?>';
-const scan_product_url =  '<?= base_url('scanpack/scanproduct/:id') ?>';
+    const detail_carton_url = '<?= base_url('scanpack/detailcarton') ?>';
+    const scan_product_url = '<?= base_url('scanpack/scanproduct/:id') ?>';
 
-async function show_detail_carton(carton_barcode) {
-    params_data = {
-        carton_barcode
-    };
-    result = await using_fetch(detail_carton_url, params_data, "GET");
+    async function show_detail_carton(carton_barcode) {
+        params_data = {
+            carton_barcode
+        };
+        result = await using_fetch(detail_carton_url, params_data, "GET");
 
-    if (result.status == 'error') {
-        reset_field();
-        return false;
+        if (result.status == 'error') {
+            reset_field();
+            return false;
+        }
+        let data_po = result.data.data_po;
+        let carton_detail = result.data.carton_detail;
+
+        set_po_detail(data_po);
+        set_carton_detail(carton_detail)
+
     }
-    let data_po = result.data.data_po;
-    let carton_detail = result.data.carton_detail;
 
-    set_po_detail(data_po);
-    set_carton_detail(carton_detail)
+    function reset_field() {
+        $('#po_number').text('-');
+        $('#pl_number').text('-');
+        $('#buyer').text('-');
+        $('#carton_number').text('-');
+        $('#total_carton').text('-');
+        $('#total_pcs').text('-');
 
-}
-
-function reset_field() {
-    $('#po_number').text('-');
-    $('#pl_number').text('-');
-    $('#buyer').text('-');
-    $('#carton_number').text('-');
-    $('#total_carton').text('-');
-    $('#total_pcs').text('-');
-
-    let empty_row = `
+        let empty_row = `
         <tr class="text-center">
             <td colspan="6">Empty Data</td>
         </tr>
     `;
-    $('#carton_detail_table tbody').html(empty_row);
+        $('#carton_detail_table tbody').html(empty_row);
 
-    $('#btn_pack_carton').attr('href','#');
-    $('#btn_pack_carton').addClass('disabled');
-}
+        $('#btn_pack_carton').attr('href', '#');
+        $('#btn_pack_carton').addClass('disabled');
+    }
 
-function set_po_detail(data_po) {
-    $('#po_number').text(data_po.po_number);
-    $('#pl_number').text(data_po.pl_number);
-    $('#buyer').text(data_po.buyer);
-    $('#carton_number').text(data_po.carton_number);
-    $('#total_carton').text(data_po.total_carton);
-    $('#total_pcs').text(data_po.total_pcs);
+    function set_po_detail(data_po) {
+        $('#po_number').text(data_po.po_number);
+        $('#pl_number').text(data_po.pl_number);
+        $('#buyer').text(data_po.buyer);
+        $('#carton_number').text(data_po.carton_number);
+        $('#total_carton').text(data_po.total_carton);
+        $('#total_pcs').text(data_po.total_pcs);
 
-    let scan_product_url_id = scan_product_url.replace(':id',data_po.carton_id);
-    $('#btn_pack_carton').attr('href',scan_product_url_id);
-    $('#btn_pack_carton').removeClass('disabled');
-}
+        let scan_product_url_id = scan_product_url.replace(':id', data_po.carton_id);
+        $('#btn_pack_carton').attr('href', scan_product_url_id);
+        $('#btn_pack_carton').removeClass('disabled');
+    }
 
-function set_carton_detail(carton_detail) {
+    function set_carton_detail(carton_detail) {
 
-    $('#carton_detail_table tbody').html('');
+        $('#carton_detail_table tbody').html('');
 
-    let total = 0;
-    carton_detail.forEach((data, key) => {
-        let row = `
+        let total = 0;
+        carton_detail.forEach((data, key) => {
+            let row = `
                 <tr class="text-center">
                     <td>${key+1}</td>
                     <td>${data.product_code}</td>
@@ -197,17 +196,17 @@ function set_carton_detail(carton_detail) {
                     <td>${data.product_qty}</td>
                 </tr>
             `;
-        $('#carton_detail_table tbody').append(row);
+            $('#carton_detail_table tbody').append(row);
 
-        total += parseInt(data.product_qty);
-    });
-    let row_footer = `
+            total += parseInt(data.product_qty);
+        });
+        let row_footer = `
             <tr>
                 <td colspan="5" class="text-right">Total PCS :</td>
                 <td colspan="1">${total}</td>
             </tr>
         `;
-    $('#carton_detail_table tfoot').html(row_footer);
-}
+        $('#carton_detail_table tfoot').html(row_footer);
+    }
 </script>
 <?= $this->endSection('page_script'); ?>
