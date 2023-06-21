@@ -82,44 +82,43 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../index.php/buyer" class="nav-link">
+                                    <a href="<?php echo base_url('buyer'); ?>" class="nav-link">
                                         <i class="nav-icon fa fa-user-tie"></i>
                                         <p>Buyer</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../index.php/colour" class="nav-link">
+                                    <a href=".<?php echo base_url('colour'); ?>" class="nav-link">
                                         <i class="nav-icon fa fa-palette"></i>
                                         <p>Colour</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../index.php/category" class="nav-link">
+                                    <a href="<?php echo base_url('category'); ?>" class="nav-link">
                                         <i class="nav-icon fas fa-tags"></i>
                                         <p>Product Type</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../index.php/product" class="nav-link">
+                                    <a href="<?php echo base_url('product'); ?>" class="nav-link">
                                         <i class="nav-icon fas fa-tshirt"></i>
                                         <p>Products</p>
                                     </a>
                                 </li>
-
                                 <li class="nav-item">
-                                    <a href="../index.php/factory" class="nav-link">
+                                    <a href="<?php echo base_url('factory'); ?>" class="nav-link">
                                         <i class="nav-icon fas fa-industry"></i>
                                         <p>Factory</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../index.php/gl" class="nav-link">
+                                    <a href="<?php echo base_url('gl'); ?>" class="nav-link">
                                         <i class="nav-icon fas fa-file-contract"></i>
                                         <p>GL</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../index.php/style" class="nav-link">
+                                    <a href="<?php echo base_url('style'); ?>" class="nav-link">
                                         <i class="nav-icon fas fa-paint-brush"></i>
                                         <p>Style</p>
                                     </a>
@@ -135,7 +134,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="../index.php/purchaseorder" class="nav-link">
+                                    <a href="<?php echo base_url('purchaseorder'); ?>" class="nav-link">
                                         <i class="nav-icon far fa-file text-warning"></i>
                                         <p>Buyer PO</p>
                                     </a>
@@ -212,12 +211,12 @@
                             </a>
                         </li>
                         <br>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="https://adminlte.io/docs/3.1/" class="nav-link">
                                 <i class="nav-icon fas fa-file"></i>
                                 <p>Documentation</p>
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

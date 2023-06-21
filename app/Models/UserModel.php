@@ -87,8 +87,8 @@ class UserModel extends Model
         return $query;
     }
 
-    public function test_model()
-    {
-        return 'success';
-    }
+    // public function test_model()
+    // {
+    //     return 'success';
+    // }
 }
