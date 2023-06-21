@@ -70,6 +70,8 @@ class User extends BaseController
 
     public function createUser()
     {
+        // dd($this->request->getVar());
+        
         helper('text');
 
         // save new user, validation happens in the model
@@ -93,32 +95,31 @@ class User extends BaseController
         return redirect()->back()->with('success', 'Success! You created a new account');
     }
 
-    public function enable()
+    public function enable($id = null)
     {
-        // get the user id
-        $id = $this->request->uri->getSegment(3);
-
-        // validation does not work when data is not submitted via post form
-        // $rules = [
-        // 	'id'	=> 'required|integer',
-        // ];
-
-        // if (! $this->validate($rules)) {
-        // 	return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        // }
-
         $users = new UserModel();
-
         $user = [
             'id'      => $id,
             'active'      => 1,
         ];
-
         if (!$users->save($user)) {
             return redirect()->back()->withInput()->with('errors', $users->errors());
         }
+        return redirect()->back()->with('success', "User successfully activated");
+    }
+    
+    public function disable($id)
+    {
+        $users = new UserModel();
+        $user = [
+            'id'      => $id,
+            'active'      => 0,
+        ];
+        if (!$users->save($user)) {
+            return redirect()->back()->withInput()->with('errors', $users->errors());
+        }
+        return redirect()->back()->with('success', "User successfully deativated");
 
-        return redirect()->back()->with('success', lang('Auth.enableUser'));
     }
 
     public function edit()
@@ -153,21 +154,24 @@ class User extends BaseController
             'firstname' => $this->request->getPost('firstname'),
             'lastname'  => $this->request->getPost('lastname'),
             'email'     => $this->request->getPost('email'),
-            'active'    => $this->request->getPost('active')
         ];
 
         if (!$users->save($user)) {
             return redirect()->back()->withInput()->with('errors', $users->errors());
         }
-
-        return redirect('user');
+        return redirect('user')->with('success', 'The account successfully updated!');
     }
 
     public function delete()
     {
+        $users = new UserModel();
+
         $id = $this->request->getVar('user_id');
-        // dd($id);
-        $this->UserModel->deleteUser($id);
-        return redirect()->to('user');
+        $users->deleteUser($id);
+
+        if (!$users->deleteUser($id)) {
+            return redirect()->back()->withInput()->with('errors', $users->errors());
+        }
+        return redirect('user')->with('success', 'The account successfully deleted!');
     }
 }
