@@ -11,7 +11,7 @@ class UserModel extends Model
     protected $useSoftDeletes   = false;
     protected $allowedFields    = [
         'name', 'firstname', 'lastname', 'email', 'new_email', 'password', 'password_confirm',
-        'activate_hash', 'reset_hash', 'reset_expires', 'active'
+        'activate_hash', 'reset_hash', 'reset_expires', 'active','role_id'
     ];
 
     // Dates
@@ -24,28 +24,29 @@ class UserModel extends Model
     protected $dynamicRules      = [
         'registration' => [
             'firstname'         => 'required|alpha_space|min_length[2]',
-            'lastname'             => 'required|alpha_space|min_length[2]',
-            'name'                 => 'required|alpha_space|min_length[2]',
+            'lastname'          => 'required|alpha_space|min_length[2]',
+            'name'              => 'required|alpha_space|min_length[2]',
             'email'             => 'required|valid_email|is_unique[tblusers.email,id,{id}]',
-            'password'            => 'required|min_length[5]',
-            'password_confirm'    => 'matches[password]'
+            'password'          => 'required|min_length[5]',
+            'password_confirm'  => 'matches[password]',
+            'role'              => 'required',
         ],
         'updateAccount' => [
-            'id'    => 'required|is_natural',
-            'name'    => 'required|alpha_space|min_length[2]'
+            'id'                => 'required|is_natural',
+            'name'              => 'required|alpha_space|min_length[2]'
         ],
         'updateProfile' => [
-            'id'    => 'required|is_natural',
-            'name'    => 'required|alpha_space|min_length[2]',
-            'firstname'    => 'required|alpha_space|min_length[2]',
-            'lastname'    => 'required|alpha_space|min_length[2]',
-            'email'    => 'required|valid_email|is_unique[tblusers.email,id,{id}]',
-            'active'    => 'required|integer',
+            'id'                => 'required|is_natural',
+            'name'              => 'required|alpha_space|min_length[2]',
+            'firstname'         => 'required|alpha_space|min_length[2]',
+            'lastname'          => 'required|alpha_space|min_length[2]',
+            'email'             => 'required|valid_email|is_unique[tblusers.email,id,{id}]',
+            'role'              => 'required',
         ],
         'changeEmail' => [
-            'id'            => 'required|is_natural',
-            'new_email'        => 'required|valid_email|is_unique[tblusers.email]',
-            'activate_hash'    => 'required'
+            'id'                => 'required|is_natural',
+            'new_email'         => 'required|valid_email|is_unique[tblusers.email]',
+            'activate_hash'     => 'required'
         ],
         'enableuser' => [
             'id'    => 'required|is_natural',
@@ -87,8 +88,13 @@ class UserModel extends Model
         return $query;
     }
 
-    // public function test_model()
-    // {
-    //     return 'success';
-    // }
+    public function getData()
+    {
+        $builder = $this->db->table('tblusers user');
+        $builder->select('user.*, role.role');
+        $builder->join('tblrole as role', 'role.id = user.role_id','LEFT');
+        $result = $builder->get()->getResultArray();
+
+        return $result;
+    }
 }

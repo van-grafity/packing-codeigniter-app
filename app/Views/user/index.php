@@ -72,6 +72,7 @@
                                 <th class="text-center align-middle">No</th>
                                 <th class="text-center align-middle">Name</th>
                                 <th class="text-center align-middle">Email</th>
+                                <th class="text-center align-middle">Role</th>
                                 <th class="text-center align-middle">Status</th>
                                 <th class="text-center align-middle">Action</th>
                             </tr>
@@ -82,6 +83,7 @@
                                 <th class="text-center"><?= $item['id'] ?></th>
                                 <td><?= $item['name'] ?></td>
                                 <td><?= $item['email'] ?></td>
+                                <td><?= $item['role'] ?></td>
                                 <td><?php if ($item['active'] == 1) : ?>
                                     Active
                                     <?php else : ?>
@@ -96,8 +98,11 @@
                                     <?php endif ?>
                                     <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $item['id']; ?>"
                                         data-firstname="<?= $item['firstname']; ?>"
-                                        data-lastname="<?= $item['lastname']; ?>" data-name="<?= $item['name']; ?>"
-                                        data-email="<?= $item['email']; ?>"><i class="fas fa-edit"></i>Edit</a>
+                                        data-lastname="<?= $item['lastname']; ?>" 
+                                        data-name="<?= $item['name']; ?>"
+                                        data-email="<?= $item['email']; ?>"
+                                        data-role="<?= $item['role_id']; ?>"
+                                    ><i class="fas fa-edit"></i>Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $item['id']; ?>"
                                         data-name="<?= $item['name'] ?>"><i class="fas fa-trash"></i> Delete</a>
                                 </td>
@@ -149,6 +154,15 @@
                         <input type="email" class="form-control" id="email" required name="email" placeholder="<?= lang('Auth.email') ?>" />
                     </div>
                     <div class="form-group">
+                        <label>Role</label>
+                        <select name="role" id="role" class="form-control" required>
+                            <option value="">-Select Role-</option>
+                            <?php foreach ($roles as $role) : ?>
+                                <option value="<?= $role->id; ?>"><?= $role->role; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" required name="password" placeholder="<?= lang('Auth.password') ?>" />
                     </div>
@@ -196,6 +210,15 @@
                     <div class="form-group">
                         <label for="edit_email">Email</label>
                         <input type="email" class="form-control" required id="edit_email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select name="role" id="edit_role" class="form-control" required>
+                            <option value="">-Select Role-</option>
+                            <?php foreach ($roles as $role) : ?>
+                                <option value="<?= $role->id; ?>"><?= $role->role; ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -295,6 +318,7 @@ $(document).ready(function() {
         let lastname = $(this).data('lastname');
         let name = $(this).data('name');
         let email = $(this).data('email');
+        let role = $(this).data('role');
 
         $('#ModalLabel').text("Edit User")
         $('#btn_update').text("Update User")
@@ -311,6 +335,7 @@ $(document).ready(function() {
         $('#edit_lastname').val(lastname);
         $('#edit_name').val(name);
         $('#edit_email').val(email);
+        $('#edit_role').val(role);
 
         // call the Modal
         $('#editusermodal').modal('show');
@@ -332,6 +357,7 @@ function set_old_input_form(old_input_data, errors) {
         $('#edit_lastname').val(old_input_data.lastname);
         $('#edit_name').val(old_input_data.name);
         $('#edit_email').val(old_input_data.email);
+        $('#edit_role').val(old_input_data.role);
 
         $('#ModalLabel').text("Edit User");
         $('#btn_update').text("Update User");
@@ -344,6 +370,7 @@ function set_old_input_form(old_input_data, errors) {
         $('#lastname').val(old_input_data.lastname);
         $('#name').val(old_input_data.name);
         $('#email').val(old_input_data.email);
+        $('#role').val(old_input_data.role);
 
         $('#ModalLabel').text("Add New User");
         $('#btn_submit').text("Save");
@@ -353,9 +380,10 @@ function set_old_input_form(old_input_data, errors) {
     }
     $(element_modal_id).modal('show');
 
+    // ## Show Error Messages
     for (let [key, value] of Object.entries(errors)) {
         let error_message = `<span id="${key}-error" class="error invalid-feedback">${value}</span>`
-        let input_element = $(element_modal_id).find(`input[name=${key}]`);
+        let input_element = $(element_modal_id).find(`[name=${key}]`);
         input_element.addClass('is-invalid');
         input_element.parent().append(error_message);
     }

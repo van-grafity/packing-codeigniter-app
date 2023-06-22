@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use Config\Services;
 use App\Models\UserModel;
 use App\Models\LogsModel;
+use App\Models\RoleModel;
 
 class User extends BaseController
 {
@@ -37,7 +38,7 @@ class User extends BaseController
         $users = new UserModel();
 
         // getall users
-        $allusers = $users->findAll();
+        $allusers = $users->getData();
 
         // count all rows in tbluser table
         $countusers = $users->countAll();
@@ -51,6 +52,11 @@ class User extends BaseController
         // calculate active users in how many percents
         $percentofactiveusers = ($activeusers / $countusers) * 100;
 
+
+        $roles = new RoleModel();
+        $roles = $roles->findAll();
+
+
         // load the view with session data
         return view('user/index', [
             'title' => 'User Management',
@@ -59,7 +65,8 @@ class User extends BaseController
             'data' => $allusers,
             'usercount' => $countusers,
             'newusers' => $newusers,
-            'percentofactiveusers' => $percentofactiveusers
+            'percentofactiveusers' => $percentofactiveusers,
+            'roles' => $roles,
         ]);
 
         // check if user is signed-in if not redirect to login page
@@ -84,6 +91,8 @@ class User extends BaseController
             'lastname'      => $this->request->getPost('lastname'),
             'name'          => $this->request->getPost('name'),
             'email'         => $this->request->getPost('email'),
+            'role_id'       => $this->request->getPost('role'),
+            'role'          => $this->request->getPost('role'),
             'password'      => $this->request->getPost('password'),
             'password_confirm'  => $this->request->getPost('password_confirm'),
             'activate_hash'     => random_string('alnum', 32)
@@ -143,6 +152,8 @@ class User extends BaseController
 
     public function update()
     {
+        // dd($this->request->getVar());
+        
         // edit existing user, validation happens in the model
         $users = new UserModel();
         $getRule = $users->getRule('updateProfile');
@@ -154,6 +165,8 @@ class User extends BaseController
             'firstname' => $this->request->getPost('firstname'),
             'lastname'  => $this->request->getPost('lastname'),
             'email'     => $this->request->getPost('email'),
+            'role'      => $this->request->getPost('role'),
+            'role_id'   => $this->request->getPost('role'),
         ];
 
         if (!$users->save($user)) {
