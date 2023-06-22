@@ -108,8 +108,7 @@ class Login extends BaseController
      */
     public function logout()
     {
-        $this->session->remove(['isLoggedIn', 'userData']);
-
+        session()->destroy();
         return redirect()->to('/');
     }
 }

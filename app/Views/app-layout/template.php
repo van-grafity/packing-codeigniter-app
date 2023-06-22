@@ -76,7 +76,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="<?php echo base_url('users') ?>" class="nav-link">
+                                    <a href="<?php echo base_url('user') ?>" class="nav-link">
                                         <i class="nav-icon fas fa-users"></i>
                                         <p>User Management</p>
                                     </a>

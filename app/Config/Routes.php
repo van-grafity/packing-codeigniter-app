@@ -41,10 +41,11 @@ $routes->post('login', 'Login::attemptLogin');
 $routes->get('logout', 'Login::logout');
 
 // User
-$routes->get('users', 'User::index');
+$routes->get('user', 'User::index');
 $routes->post('user/save', 'User::createUser');
-$routes->get('user/enable/(:num)', 'User::enable');
-$routes->post('user/update-user', 'User::update');
+$routes->get('user/enable/(:num)', 'User::enable/$1');
+$routes->get('user/disable/(:num)', 'User::disable/$1');
+$routes->put('user/update', 'User::update');
 $routes->get('user/edit/(:num)', 'User::edit');
 $routes->post('user/delete', 'User::delete');
 $routes->get('user/logs', 'User::userLogs', ['as' => 'userlogs']);
