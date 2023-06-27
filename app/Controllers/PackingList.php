@@ -57,7 +57,7 @@ class PackingList extends BaseController
 
         $month_filter = date('m');
         $packinglist_this_month = $this->PackingListModel->getLastPackinglistByMonth($month_filter);
-        $next_packinglist_number = $packinglist_this_month->packinglist_number + 1;
+        $next_packinglist_number = $packinglist_this_month ? $packinglist_this_month->packinglist_number + 1 : 1;
         $next_packinglist_serial_number = $this->generate_serial_number($next_packinglist_number);
 
         $packinglist_data = [
