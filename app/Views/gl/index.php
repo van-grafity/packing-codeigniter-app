@@ -111,7 +111,7 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="../index.php/gl/delete" method="post">
+            <form action="<?= base_url('gl/delete')?>" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">Delete GL</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

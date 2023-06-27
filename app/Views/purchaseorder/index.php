@@ -30,7 +30,7 @@
                         <?php foreach ($BuyerPO as $po) : ?>
                             <tr>
                                 <td class="text-center" scope="row"><?= $i++; ?></td>
-                                <td class="text-center"><a href="<?= '../index.php/purchaseorder/' . $po->po_no; ?>"><?= $po->po_no; ?></a></td>
+                                <td class="text-center"><a href="<?= base_url('purchaseorder/') . $po->po_no; ?>"><?= $po->po_no; ?></a></td>
                                 <td class="text-center"><?= $po->gl_number; ?></td>
                                 <td class="text-center"><?= $po->shipdate; ?></td>
                                 <td class="text-center"><?= $po->po_qty; ?></td>
@@ -50,7 +50,7 @@
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
-            <form action="../index.php/purchaseorder/savePO" method="post" id="purchase_order_form">
+            <form action="<?= base_url('purchaseorder/savePO')?>" method="post" id="purchase_order_form">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">Add New Purchase Order</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -116,7 +116,7 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="../index.php/purchaseorder/delete" method="post">
+            <form action="<?= base_url('purchaseorder/delete')?>" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Delete Purchase Order</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

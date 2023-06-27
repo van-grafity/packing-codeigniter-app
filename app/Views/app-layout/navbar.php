@@ -7,7 +7,7 @@
         </li>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" href="<?php echo base_url('index.php/home') ?>">Home</a>
+                <a class="nav-link active" href="<?= base_url('home') ?>">Home</a>
             </li>
         </ul>
     </ul>

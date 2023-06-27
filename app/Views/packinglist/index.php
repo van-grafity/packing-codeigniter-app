@@ -27,7 +27,7 @@
                         <?php foreach ($packinglist as $pl) : ?>
                             <tr>
                                 <td class="text-center" scope="row"><?= $i++; ?></td>
-                                <td><a href="<?= '../index.php/packinglist/' . $pl->id; ?>"><?= $pl->packinglist_serial_number; ?></a></td>
+                                <td><a href="<?= base_url('packinglist/') . $pl->id; ?>"><?= $pl->packinglist_serial_number; ?></a></td>
                                 <td><?= $pl->buyer_name; ?></td>
                                 <td><?= $pl->po_no; ?></td>
                                 <td><?= $pl->gl_number; ?></td>
@@ -155,7 +155,7 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="../index.php/packinglist/delete" method="post">
+            <form action=".<?= base_url('packinglist/delete')?>" method="post">
                 <input type="hidden" name="packinglist_id" id="packinglist_id">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Delete Packing List</h5>
@@ -257,8 +257,8 @@
 </script>
 
 <script type="text/javascript">
-    const store_url = "../index.php/packinglist/store";
-    const update_url = "../index.php/packinglist/update";
+    const store_url = "<?= base_url('packinglist/store')?>";
+    const update_url = "<?= base_url('packinglist/update')?>";
 </script>
 
 <script type="text/javascript">

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> <?= $title ?></title>
 
-    <base href="<?php echo base_url('assets') ?>/">
+    <base href="<?= base_url('assets') ?>/">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -54,7 +54,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="<?php echo base_url('home') ?>" class="brand-link">
+            <a href="<?= base_url('home') ?>" class="brand-link">
                 <img src="img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Scan & Pack</span>
             </a>
@@ -76,49 +76,49 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="<?php echo base_url('user') ?>" class="nav-link">
+                                    <a href="<?= base_url('user') ?>" class="nav-link">
                                         <i class="nav-icon fas fa-users"></i>
                                         <p>User Management</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?php echo base_url('buyer'); ?>" class="nav-link">
+                                    <a href="<?= base_url('buyer'); ?>" class="nav-link">
                                         <i class="nav-icon fa fa-user-tie"></i>
                                         <p>Buyer</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href=".<?php echo base_url('colour'); ?>" class="nav-link">
+                                    <a href="<?= base_url('colour'); ?>" class="nav-link">
                                         <i class="nav-icon fa fa-palette"></i>
                                         <p>Colour</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?php echo base_url('category'); ?>" class="nav-link">
+                                    <a href="<?= base_url('category'); ?>" class="nav-link">
                                         <i class="nav-icon fas fa-tags"></i>
                                         <p>Product Type</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?php echo base_url('product'); ?>" class="nav-link">
+                                    <a href="<?= base_url('product'); ?>" class="nav-link">
                                         <i class="nav-icon fas fa-tshirt"></i>
                                         <p>Products</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?php echo base_url('factory'); ?>" class="nav-link">
+                                    <a href="<?= base_url('factory'); ?>" class="nav-link">
                                         <i class="nav-icon fas fa-industry"></i>
                                         <p>Factory</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?php echo base_url('gl'); ?>" class="nav-link">
+                                    <a href="<?= base_url('gl'); ?>" class="nav-link">
                                         <i class="nav-icon fas fa-file-contract"></i>
                                         <p>GL</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?php echo base_url('style'); ?>" class="nav-link">
+                                    <a href="<?= base_url('style'); ?>" class="nav-link">
                                         <i class="nav-icon fas fa-paint-brush"></i>
                                         <p>Style</p>
                                     </a>
@@ -134,13 +134,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="<?php echo base_url('purchaseorder'); ?>" class="nav-link">
+                                    <a href="<?= base_url('purchaseorder'); ?>" class="nav-link">
                                         <i class="nav-icon far fa-file text-warning"></i>
                                         <p>Buyer PO</p>
                                     </a>
                                 </li>
                                 <li class="nav-item" <?php if ($title == 'Factory Packing List') echo 'active' ?>>
-                                    <a class="nav-link" href="<?php echo base_url('packinglist') ?>">
+                                    <a class="nav-link" href="<?= base_url('packinglist') ?>">
                                         <i class="nav-icon far fa-file text-info"></i>
                                         <p>Packing List</p>
                                     </a>
@@ -157,7 +157,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="<?php echo base_url('cartonbarcode') ?>">
+                                    <a class="nav-link" href="<?= base_url('cartonbarcode') ?>">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>Carton Barcode & Rasio</p>
                                     </a>
@@ -165,7 +165,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo base_url('scanpack') ?>" class="nav-link">
+                            <a href="<?= base_url('scanpack') ?>" class="nav-link">
                                 <i class="nav-icon fas fa-barcode"></i>
                                 <p>Scan & Pack</p>
                             </a>
@@ -205,7 +205,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo base_url('logout') ?>" class="nav-link">
+                            <a href="<?= base_url('logout') ?>" class="nav-link">
                                 <i class="fas fa-sign-out-alt nav-icon"></i>
                                 <p>Logout</p>
                             </a>

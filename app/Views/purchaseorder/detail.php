@@ -109,7 +109,7 @@
         <div class=" card-footer">
             <div class="row">
                 <div class="col-12">
-                    <a href="../index.php/purchaseorder" class="btn btn-secondary">Back</a>
+                    <a href="<?= base_url('purchaseorder')?>" class="btn btn-secondary">Back</a>
                 </div>
             </div>
         </div>
@@ -183,7 +183,7 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="../index.php/purchaseorder/deletedetail" method="post">
+            <form action="<?= base_url('purchaseorder/deletedetail')?>" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Delete Product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -279,8 +279,8 @@
 </script>
 
 <script type="text/javascript">
-    const store_url = "../index.php/purchaseorder/adddetail";
-    const update_url = "../index.php/purchaseorder/updatedetail";
+    const store_url = "<?= base_url('purchaseorder/adddetail')?>";
+    const update_url = "<?= base_url('purchaseorder/updatedetail')?>";
 </script>
 
 <?= $this->endSection(); ?>

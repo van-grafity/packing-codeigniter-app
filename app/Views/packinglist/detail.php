@@ -331,7 +331,7 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="../index.php/packinglistcarton/delete" method="post">
+            <form action="<?= base_url('packinglistcarton/delete')?>" method="post">
                 <input type="hidden" name="packinglist_id" value="<?= $packinglist->id  ?>">
                 <input type="hidden" name="packinglist_carton_id" id="packinglist_carton_id">
                 <div class="modal-header">

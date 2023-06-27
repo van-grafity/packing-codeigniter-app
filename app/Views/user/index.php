@@ -230,8 +230,8 @@
     </div>
 </div>
 
-<!-- Modal Delete Style-->
-<form action="../index.php/user/delete" method="post">
+<!-- Modal Delete User-->
+<form action="<?= base_url('user/delete')?>" method="post">
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -254,7 +254,7 @@
         </div>
     </div>
 </form>
-<!-- End Modal Delete Style-->
+<!-- End Modal Delete User-->
 
 <script type="text/javascript">
 $(document).ready(function() {

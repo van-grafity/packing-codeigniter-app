@@ -106,7 +106,8 @@ $routes->post('packinglistcarton/delete', 'PackingList::cartondelete');
 // Purchase Order
 $routes->get('purchaseorder', 'PurchaseOrder::index');
 $routes->post('purchaseorder/savePO', 'PurchaseOrder::savePO');
-$routes->get('purchaseorder/store', 'PurchaseOrder::store');
+$routes->post('purchaseorder/store', 'PurchaseOrder::store');
+$routes->post('purchaseorder/delete', 'PurchaseOrder::delete');
 $routes->get('purchaseorder/(:any)', 'PurchaseOrder::detail/$1');
 $routes->post('purchaseorder/adddetail', 'PurchaseOrder::adddetail');
 $routes->post('purchaseorder/updatedetail', 'PurchaseOrder::updatedetail');
