@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'reset_hash' => NULL,
             'reset_expires' => Null,
             'active' => 1,
+            'role_id' => 1,
             'created_at' => '2023-06-12 21:07:50',
             'updated_at' => '2023-06-12 21:07:50',
         ],

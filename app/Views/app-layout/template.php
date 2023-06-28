@@ -66,6 +66,8 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <!--<li class="nav-item menu-open"> -->
+                        
+                        <?php if(in_array(session()->get('role_id'),[1,2,3])) : ?>
                         <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-database"></i>
@@ -75,12 +77,15 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
+                                <?php if(in_array(session()->get('role_id'),[1])) : ?>
                                 <li class="nav-item">
                                     <a href="<?= base_url('user') ?>" class="nav-link">
                                         <i class="nav-icon fas fa-users"></i>
                                         <p>User Management</p>
                                     </a>
                                 </li>
+                                <?php endif ?>
+
                                 <li class="nav-item">
                                     <a href="<?= base_url('buyer'); ?>" class="nav-link">
                                         <i class="nav-icon fa fa-user-tie"></i>
@@ -125,6 +130,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <?php endif ?>
+                        
+                        <?php if(in_array(session()->get('role_id'),[1,2,3,4])) : ?>
                         <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-exchange-alt"></i>
@@ -147,6 +155,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <?php endif ?>
+                        
+                        <?php if(in_array(session()->get('role_id'),[1,2,4])) : ?>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-box-open"></i>
@@ -164,12 +175,18 @@
                                 </li>
                             </ul>
                         </li>
+                        <?php endif ?>
+                        
+                        <?php if(in_array(session()->get('role_id'),[1,2,5])) : ?>
                         <li class="nav-item">
                             <a href="<?= base_url('scanpack') ?>" class="nav-link">
                                 <i class="nav-icon fas fa-barcode"></i>
                                 <p>Scan & Pack</p>
                             </a>
                         </li>
+                        <?php endif ?>
+
+                        <?php if(in_array(session()->get('role_id'),[1,2])) : ?>
                         <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-file-invoice"></i>
@@ -204,6 +221,7 @@
                                 </li>
                             </ul>
                         </li>
+                        <?php endif ?>
                         <li class="nav-item">
                             <a href="<?= base_url('logout') ?>" class="nav-link">
                                 <i class="fas fa-sign-out-alt nav-icon"></i>

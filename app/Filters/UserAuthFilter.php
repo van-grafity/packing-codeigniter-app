@@ -25,6 +25,8 @@ class UserAuthFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
+        // dd(session()->get());
+        
         if(is_null(session()->get('isLoggedIn')))
         {
             return redirect()->to(base_url('login'));

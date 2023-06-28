@@ -8,6 +8,7 @@ class DataSeeder extends Seeder
 {
     public function run()
     {
+        $this->call('RoleSeeder');
         $this->call('UserSeeder');
         $this->call('BuyerSeeder');
         $this->call('StyleSeeder');

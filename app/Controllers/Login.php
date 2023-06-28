@@ -73,13 +73,15 @@ class Login extends BaseController
 
         // login OK, save user data to session
         $this->session->set('isLoggedIn', true);
+        $this->session->set('role_id', $user["role_id"]);
         $this->session->set('userData', [
             'id'            => $user["id"],
             'name'          => $user["name"],
             'firstname'     => $user["firstname"],
             'lastname'      => $user["lastname"],
             'email'         => $user["email"],
-            'new_email'     => $user["new_email"]
+            'new_email'     => $user["new_email"],
+            'active'        => $user["active"]
         ]);
 
         // save login info to user login logs for tracking
