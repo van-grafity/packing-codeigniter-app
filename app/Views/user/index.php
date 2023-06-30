@@ -78,9 +78,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($data as $item) : ?>
+                            <?php foreach ($data as $key => $item) : ?>
                             <tr>
-                                <th class="text-center"><?= $item['id'] ?></th>
+                                <th class="text-center"><?= $key + 1 ?></th>
                                 <td><?= $item['name'] ?></td>
                                 <td><?= $item['email'] ?></td>
                                 <td><?= $item['role'] ?></td>
