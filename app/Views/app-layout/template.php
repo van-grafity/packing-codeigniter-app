@@ -66,161 +66,161 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <!--<li class="nav-item menu-open"> -->
-                        
-                        <?php if(in_array(session()->get('role_id'),[1,2,3])) : ?>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-database"></i>
-                                <p>
-                                    Master Data
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <?php if(in_array(session()->get('role_id'),[1])) : ?>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('user') ?>" class="nav-link">
-                                        <i class="nav-icon fas fa-users"></i>
-                                        <p>User Management</p>
-                                    </a>
-                                </li>
-                                <?php endif ?>
 
-                                <li class="nav-item">
-                                    <a href="<?= base_url('buyer'); ?>" class="nav-link">
-                                        <i class="nav-icon fa fa-user-tie"></i>
-                                        <p>Buyer</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('colour'); ?>" class="nav-link">
-                                        <i class="nav-icon fa fa-palette"></i>
-                                        <p>Colour</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('category'); ?>" class="nav-link">
-                                        <i class="nav-icon fas fa-tags"></i>
-                                        <p>Product Type</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('product'); ?>" class="nav-link">
-                                        <i class="nav-icon fas fa-tshirt"></i>
-                                        <p>Products</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('factory'); ?>" class="nav-link">
-                                        <i class="nav-icon fas fa-industry"></i>
-                                        <p>Factory</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('gl'); ?>" class="nav-link">
-                                        <i class="nav-icon fas fa-file-contract"></i>
-                                        <p>GL</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('style'); ?>" class="nav-link">
-                                        <i class="nav-icon fas fa-paint-brush"></i>
-                                        <p>Style</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <?php endif ?>
-                        
-                        <?php if(in_array(session()->get('role_id'),[1,2,3,4])) : ?>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-exchange-alt"></i>
-                                <p>Transaction
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= base_url('purchaseorder'); ?>" class="nav-link">
-                                        <i class="nav-icon far fa-file text-warning"></i>
-                                        <p>Buyer PO</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item" <?php if ($title == 'Factory Packing List') echo 'active' ?>>
-                                    <a class="nav-link" href="<?= base_url('packinglist') ?>">
-                                        <i class="nav-icon far fa-file text-info"></i>
-                                        <p>Packing List</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <?php endif ?>
-                        
-                        <?php if(in_array(session()->get('role_id'),[1,2,4])) : ?>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-box-open"></i>
-                                <p>
-                                    Carton & Ratio
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="<?= base_url('cartonbarcode') ?>">
-                                        <i class="nav-icon far fa-circle"></i>
-                                        <p>Carton Barcode & Rasio</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <?php endif ?>
-                        
-                        <?php if(in_array(session()->get('role_id'),[1,2,5])) : ?>
-                        <li class="nav-item">
-                            <a href="<?= base_url('scanpack') ?>" class="nav-link">
-                                <i class="nav-icon fas fa-barcode"></i>
-                                <p>Scan & Pack</p>
-                            </a>
-                        </li>
+                        <?php if (in_array(session()->get('role_id'), [1, 2, 3])) : ?>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-database"></i>
+                                    <p>
+                                        Master Data
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <?php if (in_array(session()->get('role_id'), [1])) : ?>
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('user') ?>" class="nav-link">
+                                                <i class="nav-icon fas fa-users"></i>
+                                                <p>User Management</p>
+                                            </a>
+                                        </li>
+                                    <?php endif ?>
+
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('buyer'); ?>" class="nav-link">
+                                            <i class="nav-icon fa fa-user-tie"></i>
+                                            <p>Buyer</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('colour'); ?>" class="nav-link">
+                                            <i class="nav-icon fa fa-palette"></i>
+                                            <p>Colour</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('category'); ?>" class="nav-link">
+                                            <i class="nav-icon fas fa-tags"></i>
+                                            <p>Product Type</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('product'); ?>" class="nav-link">
+                                            <i class="nav-icon fas fa-tshirt"></i>
+                                            <p>Products</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('factory'); ?>" class="nav-link">
+                                            <i class="nav-icon fas fa-industry"></i>
+                                            <p>Factory</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('gl'); ?>" class="nav-link">
+                                            <i class="nav-icon fas fa-file-contract"></i>
+                                            <p>GL</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('style'); ?>" class="nav-link">
+                                            <i class="nav-icon fas fa-paint-brush"></i>
+                                            <p>Style</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         <?php endif ?>
 
-                        <?php if(in_array(session()->get('role_id'),[1,2])) : ?>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-file-invoice"></i>
-                                <p>Reports
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nva nav-treeview">
-                                <li class="nav-item">
-                                    <a href="" class="nav-link">
-                                        <i class="nav-icon far fa-circle"></i>
-                                        <p>Print Shipment Report</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Total PO</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Total Packing List</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="" class="nav-link">
-                                        <i class="nav-icon far fa-circle"></i>
-                                        <p>Total Carton Shipped</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        <?php if (in_array(session()->get('role_id'), [1, 2, 3, 4])) : ?>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-exchange-alt"></i>
+                                    <p>Transaction
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('purchaseorder'); ?>" class="nav-link">
+                                            <i class="nav-icon far fa-file text-warning"></i>
+                                            <p>Buyer PO</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" <?php if ($title == 'Factory Packing List') echo 'active' ?>>
+                                        <a class="nav-link" href="<?= base_url('packinglist') ?>">
+                                            <i class="nav-icon far fa-file text-info"></i>
+                                            <p>Packing List</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        <?php endif ?>
+
+                        <?php if (in_array(session()->get('role_id'), [1, 2, 4])) : ?>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-box-open"></i>
+                                    <p>
+                                        Carton & Ratio
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="<?= base_url('cartonbarcode') ?>">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>Carton Barcode & Rasio</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        <?php endif ?>
+
+                        <?php if (in_array(session()->get('role_id'), [1, 2, 5])) : ?>
+                            <li class="nav-item">
+                                <a href="<?= base_url('scanpack') ?>" class="nav-link">
+                                    <i class="nav-icon fas fa-barcode"></i>
+                                    <p>Scan & Pack</p>
+                                </a>
+                            </li>
+                        <?php endif ?>
+
+                        <?php if (in_array(session()->get('role_id'), [1, 2])) : ?>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-file-invoice"></i>
+                                    <p>Reports
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nva nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('rptpackinglist') ?>" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Packing List</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="" class="nav-link">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>Print Shipment Report</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Total PO</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="" class="nav-link">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>Total Carton Shipped</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         <?php endif ?>
                         <li class="nav-item">
                             <a href="<?= base_url('logout') ?>" class="nav-link">

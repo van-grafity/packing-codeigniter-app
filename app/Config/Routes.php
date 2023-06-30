@@ -126,6 +126,8 @@ $routes->post('scanpack/packcarton', 'Scanpack::packcarton');
 
 $routes->get('logs', "LogViewerController::index");
 
+// Reports Menu
+$routes->get('rptpackinglist', "RptPackingList::index");
 
 // $routes->get('/packinglist/get_by_po/(:any)', 'PackingList::getByPoId/$1');
 // $routes->get('/packinglist/get_style_by_po/(:any)', 'PackingList::getStyleByPoId/$1');
