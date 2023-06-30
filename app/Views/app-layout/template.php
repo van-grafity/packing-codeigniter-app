@@ -180,7 +180,7 @@
                             </li>
                         <?php endif ?>
 
-                        <?php if (in_array(session()->get('role_id'), [1, 2])) : ?>
+                        <?php if (in_array(session()->get('role_id'), [1])) : ?>
                             <li class="nav-item">
                                 <a href="" class="nav-link">
                                     <i class="nav-icon fas fa-file-invoice"></i>
@@ -202,9 +202,9 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="" class="nav-link">
+                                        <a href="<?= base_url('rptpackinglist') ?>" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>Total Packing List</p>
+                                            <p>Packing List</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -313,10 +313,10 @@
             $("#table1").DataTable({
                 "buttons": ["excel", "pdf", "print"],
                 "lengthMenu": [
-                    ['superadmin'
+                    [
                         0, 20, 50, 100, -1
                     ],
-                    ['superadmin'
+                    [
                         0, 20, 50, 100, 'All'
                     ],
                 ],
