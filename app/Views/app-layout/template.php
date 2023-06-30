@@ -67,7 +67,7 @@
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <!--<li class="nav-item menu-open"> -->
                         
-                        <?php if(in_array(session()->get('role_id'),[1,2,3])) : ?>
+                        <?php if(in_array(session()->get('role'),['superadmin','admin','merchandiser'])) : ?>
                         <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-database"></i>
@@ -77,7 +77,7 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                <?php if(in_array(session()->get('role_id'),[1])) : ?>
+                                <?php if(in_array(session()->get('role'),['superadmin'])) : ?>
                                 <li class="nav-item">
                                     <a href="<?= base_url('user') ?>" class="nav-link">
                                         <i class="nav-icon fas fa-users"></i>
@@ -132,7 +132,7 @@
                         </li>
                         <?php endif ?>
                         
-                        <?php if(in_array(session()->get('role_id'),[1,2,4])) : ?>
+                        <?php if(in_array(session()->get('role'),['superadmin','admin','packing'])) : ?>
                         <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-exchange-alt"></i>
@@ -157,7 +157,7 @@
                         </li>
                         <?php endif ?>
                         
-                        <?php if(in_array(session()->get('role_id'),[1,2,4])) : ?>
+                        <?php if(in_array(session()->get('role'),['superadmin','admin','packing'])) : ?>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-box-open"></i>
@@ -177,7 +177,7 @@
                         </li>
                         <?php endif ?>
                         
-                        <?php if(in_array(session()->get('role_id'),[1,2,5])) : ?>
+                        <?php if(in_array(session()->get('role'),['superadmin','admin','packing','shipping'])) : ?>
                         <li class="nav-item">
                             <a href="<?= base_url('scanpack') ?>" class="nav-link">
                                 <i class="nav-icon fas fa-barcode"></i>
@@ -186,7 +186,7 @@
                         </li>
                         <?php endif ?>
 
-                        <?php if(in_array(session()->get('role_id'),[1,2])) : ?>
+                        <?php if(in_array(session()->get('role'),['superadmin','admin'])) : ?>
                         <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-file-invoice"></i>
@@ -319,8 +319,8 @@
             $("#table1").DataTable({
                 "buttons": ["excel", "pdf", "print"],
                 "lengthMenu": [
-                    [10, 20, 50, 100, -1],
-                    [10, 20, 50, 100, 'All'],
+                    ['superadmin'0, 20, 50, 100, -1],
+                    ['superadmin'0, 20, 50, 100, 'All'],
                 ],
                 dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>" +
                     "<'row'<'col-md-12'tr>>" +

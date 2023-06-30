@@ -60,7 +60,8 @@ class Login extends BaseController
         // check credentials
         $users = new UserModel();
 
-        $user = $users->where('email', $this->request->getPost('email'))->first();
+        $user = $users->where('email', $this->request->getPost('email'))->join('tblrole role','role.id = tblusers.role_id')->first();
+        
         if(!$user) {
             return redirect()->to('login')->withInput()->with('error', "Email not found.");
         }
@@ -77,6 +78,7 @@ class Login extends BaseController
         // login OK, save user data to session
         $this->session->set('isLoggedIn', true);
         $this->session->set('role_id', $user["role_id"]);
+        $this->session->set('role', $user["role"]);
         $this->session->set('userData', [
             'id'            => $user["id"],
             'name'          => $user["name"],
