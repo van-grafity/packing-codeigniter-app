@@ -51,8 +51,8 @@ class CartonBarcode extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('packinglist_id', 'tblpackinglist', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('packinglist_carton_id', 'tblpackinglistcarton', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('packinglist_id', 'tblpackinglist', 'id', 'RESTRICT', 'RESTRICT');
+        $this->forge->addForeignKey('packinglist_carton_id', 'tblpackinglistcarton', 'id', 'RESTRICT', 'RESTRICT');
         $this->forge->createTable($this->table);
     }
 

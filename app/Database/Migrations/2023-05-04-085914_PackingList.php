@@ -70,7 +70,7 @@ class PackingList extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('packinglist_po_id', 'tblpurchaseorder', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('packinglist_po_id', 'tblpurchaseorder', 'id', 'RESTRICT', 'RESTRICT');
         $this->forge->createTable('tblpackinglist');
     }
 

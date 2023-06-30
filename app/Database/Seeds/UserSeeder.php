@@ -8,27 +8,42 @@ class UserSeeder extends Seeder
 {
     private $table = 'tblusers';
 
-    private const DATA = [
-        [
-            'id' => 1,
-            'email' => 'admin@ghimli.com',
-            'new_email' => NULL,
-            'password_hash' => '$2y$10$/clmNLUUxGnREFHqraU7P.aVfJ5Mk0iEKRgKVz8.ZKOZIUGJGXlya',
-            'name' => 'Admin',
-            'firstname' => 'Admin',
-            'lastname' => 'User',
-            'activate_hash' => 'ZEWv2TUIY5oDqgw9FkjnmAS78zJNKfpL',
-            'reset_hash' => NULL,
-            'reset_expires' => Null,
-            'active' => 1,
-            'role_id' => 1,
-            'created_at' => '2023-06-12 21:07:50',
-            'updated_at' => '2023-06-12 21:07:50',
-        ],
-    ];
-
     public function run()
     {
-        $this->db->table($this->table)->insertBatch(self::DATA);
+        $data = [
+            [
+                'id' => 1,
+                'email' => 'admin@ghimli.com',
+                'new_email' => NULL,
+                'password_hash' => password_hash('ghimli@2024', PASSWORD_DEFAULT),
+                'name' => 'Admin',
+                'firstname' => 'Admin',
+                'lastname' => 'User',
+                'activate_hash' => random_string('alnum', 32),
+                'reset_hash' => NULL,
+                'reset_expires' => Null,
+                'active' => 1,
+                'role_id' => 1,
+                'created_at' => '2023-06-12 21:07:50',
+                'updated_at' => '2023-06-12 21:07:50',
+            ],
+            [
+                'id' => 2,
+                'email' => 'itprogrammer@ghimli.com',
+                'new_email' => NULL,
+                'password_hash' => password_hash('admin123', PASSWORD_DEFAULT),
+                'name' => 'IT Programmer',
+                'firstname' => 'IT',
+                'lastname' => 'Programmer',
+                'activate_hash' => random_string('alnum', 32),
+                'reset_hash' => NULL,
+                'reset_expires' => Null,
+                'active' => 1,
+                'role_id' => 1,
+                'created_at' => '2023-06-12 21:07:50',
+                'updated_at' => '2023-06-12 21:07:50',
+            ],
+        ];
+        $this->db->table($this->table)->insertBatch($data);
     }
 }

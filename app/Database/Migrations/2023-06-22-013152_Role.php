@@ -43,7 +43,7 @@ class Role extends Migration
             ],
         ];
         $this->forge->addColumn('tblusers', $fields);
-        $this->forge->addForeignKey('role_id', 'tblrole', 'id');
+        $this->forge->addForeignKey('role_id', 'tblrole', 'id', 'RESTRICT', 'RESTRICT');
         $this->forge->processIndexes('tblusers');
     }
 

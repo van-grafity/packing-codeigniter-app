@@ -61,14 +61,17 @@ class Login extends BaseController
         $users = new UserModel();
 
         $user = $users->where('email', $this->request->getPost('email'))->first();
+        if(!$user) {
+            return redirect()->to('login')->withInput()->with('error', "Email not found.");
+        }
 
         if (is_null($user) || !password_verify($this->request->getPost('password'), $user['password_hash'])) {
-            return redirect()->to('login')->withInput()->with('error', lang('Auth.wrongCredentials'));
+            return redirect()->to('login')->withInput()->with('error', "Wrong Password!");
         }
 
         // check activation
         if (!$user['active']) {
-            return redirect()->to('login')->withInput()->with('error', lang('Auth.notActivated'));
+            return redirect()->to('login')->withInput()->with('error', 'Your account is not active.');
         }
 
         // login OK, save user data to session

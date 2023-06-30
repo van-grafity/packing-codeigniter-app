@@ -84,6 +84,12 @@
                                         <p>User Management</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="<?= base_url('factory'); ?>" class="nav-link">
+                                        <i class="nav-icon fas fa-industry"></i>
+                                        <p>Factory</p>
+                                    </a>
+                                </li>
                                 <?php endif ?>
 
                                 <li class="nav-item">
@@ -105,15 +111,15 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= base_url('product'); ?>" class="nav-link">
-                                        <i class="nav-icon fas fa-tshirt"></i>
-                                        <p>Products</p>
+                                    <a href="<?= base_url('style'); ?>" class="nav-link">
+                                        <i class="nav-icon fas fa-paint-brush"></i>
+                                        <p>Style</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= base_url('factory'); ?>" class="nav-link">
-                                        <i class="nav-icon fas fa-industry"></i>
-                                        <p>Factory</p>
+                                    <a href="<?= base_url('product'); ?>" class="nav-link">
+                                        <i class="nav-icon fas fa-tshirt"></i>
+                                        <p>Products</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -122,17 +128,11 @@
                                         <p>GL</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('style'); ?>" class="nav-link">
-                                        <i class="nav-icon fas fa-paint-brush"></i>
-                                        <p>Style</p>
-                                    </a>
-                                </li>
                             </ul>
                         </li>
                         <?php endif ?>
                         
-                        <?php if(in_array(session()->get('role_id'),[1,2,3,4])) : ?>
+                        <?php if(in_array(session()->get('role_id'),[1,2,4])) : ?>
                         <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-exchange-alt"></i>
