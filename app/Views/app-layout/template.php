@@ -105,27 +105,21 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
+                                        <a href="<?= base_url('style'); ?>" class="nav-link">
+                                            <i class="nav-icon fas fa-paint-brush"></i>
+                                            <p>Style</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="<?= base_url('product'); ?>" class="nav-link">
                                             <i class="nav-icon fas fa-tshirt"></i>
                                             <p>Products</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?= base_url('factory'); ?>" class="nav-link">
-                                            <i class="nav-icon fas fa-industry"></i>
-                                            <p>Factory</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a href="<?= base_url('gl'); ?>" class="nav-link">
                                             <i class="nav-icon fas fa-file-contract"></i>
                                             <p>GL</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="<?= base_url('style'); ?>" class="nav-link">
-                                            <i class="nav-icon fas fa-paint-brush"></i>
-                                            <p>Style</p>
                                         </a>
                                     </li>
                                 </ul>
@@ -196,12 +190,6 @@
                                 </a>
                                 <ul class="nva nav-treeview">
                                     <li class="nav-item">
-                                        <a href="<?= base_url('rptpackinglist') ?>" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Packing List</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a href="" class="nav-link">
                                             <i class="nav-icon far fa-circle"></i>
                                             <p>Print Shipment Report</p>
@@ -211,6 +199,12 @@
                                         <a href="" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Total PO</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Total Packing List</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -319,8 +313,12 @@
             $("#table1").DataTable({
                 "buttons": ["excel", "pdf", "print"],
                 "lengthMenu": [
-                    [10, 20, 50, 100, -1],
-                    [10, 20, 50, 100, 'All'],
+                    ['superadmin'
+                        0, 20, 50, 100, -1
+                    ],
+                    ['superadmin'
+                        0, 20, 50, 100, 'All'
+                    ],
                 ],
                 dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>" +
                     "<'row'<'col-md-12'tr>>" +

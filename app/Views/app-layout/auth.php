@@ -10,6 +10,9 @@
 
     <base href="<?php echo base_url('assets') ?>/">
     <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
+        <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="plugins/sweetalert2/sweetalert2.min.css">
+
     <link rel="stylesheet" href="css/auth.css">
 </head>
 
@@ -21,8 +24,14 @@
         </div>
     </div>
 
-    <script src="plugins/jquery/jquery.min.js" type="text/javascript"></script>
-    <script src="<?= base_url("plugins/bootstrap/js/bootstrap.bundle.min.js") ?>" type="text/javascript"></script>
+    <script src="<?= base_url("assets/plugins/jquery/jquery.min.js") ?>" type="text/javascript"></script>
+    <script src="<?= base_url("assets/plugins/bootstrap/js/bootstrap.bundle.min.js") ?>" type="text/javascript"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+    <script src="<?= base_url(); ?>assets/js/utils.js"></script>
+    
+    <?= $this->renderSection('page_script') ?>
 </body>
 
 </html>

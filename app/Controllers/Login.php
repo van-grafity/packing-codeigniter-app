@@ -60,20 +60,25 @@ class Login extends BaseController
         // check credentials
         $users = new UserModel();
 
-        $user = $users->where('email', $this->request->getPost('email'))->first();
+        $user = $users->where('email', $this->request->getPost('email'))->join('tblrole role','role.id = tblusers.role_id')->first();
+        
+        if(!$user) {
+            return redirect()->to('login')->withInput()->with('error', "Email not found.");
+        }
 
         if (is_null($user) || !password_verify($this->request->getPost('password'), $user['password_hash'])) {
-            return redirect()->to('login')->withInput()->with('error', lang('Auth.wrongCredentials'));
+            return redirect()->to('login')->withInput()->with('error', "Wrong Password!");
         }
 
         // check activation
         if (!$user['active']) {
-            return redirect()->to('login')->withInput()->with('error', lang('Auth.notActivated'));
+            return redirect()->to('login')->withInput()->with('error', 'Your account is not active.');
         }
 
         // login OK, save user data to session
         $this->session->set('isLoggedIn', true);
         $this->session->set('role_id', $user["role_id"]);
+        $this->session->set('role', $user["role"]);
         $this->session->set('userData', [
             'id'            => $user["id"],
             'name'          => $user["name"],

@@ -44,8 +44,8 @@ class GL extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('buyer_id', 'tblbuyer', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('style_id', 'tblstyle', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('buyer_id', 'tblbuyer', 'id', 'RESTRICT', 'RESTRICT');
+        $this->forge->addForeignKey('style_id', 'tblstyle', 'id', 'RESTRICT', 'RESTRICT');
         $this->forge->createTable('tblgl');
     }
 

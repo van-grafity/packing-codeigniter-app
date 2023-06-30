@@ -31,13 +31,13 @@ class RoleSeeder extends Seeder
             ],
             [
                 'id' => 4,
-                'role' => "shipping",
+                'role' => "packing",
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'id' => 5,
-                'role' => "packing",
+                'role' => "shipping",
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ],
