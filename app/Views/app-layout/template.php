@@ -58,7 +58,6 @@
                 <img src="img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Scan & Pack</span>
             </a>
-
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar Menu -->
@@ -190,21 +189,21 @@
                                 </a>
                                 <ul class="nva nav-treeview">
                                     <li class="nav-item">
-                                        <a href="" class="nav-link">
-                                            <i class="nav-icon far fa-circle"></i>
-                                            <p>Print Shipment Report</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Total PO</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a href="<?= base_url('rptpackinglist') ?>" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Packing List</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>List of Total PO</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="" class="nav-link">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>Shipment Report</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">

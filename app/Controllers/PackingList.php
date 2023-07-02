@@ -47,7 +47,7 @@ class PackingList extends BaseController
         if (!$this->session->isLoggedIn) {
             return redirect()->to('login');
         }
-        
+
         return view('packinglist/index', $data);
     }
 
@@ -266,5 +266,11 @@ class PackingList extends BaseController
     {
         $serial_number = 'PL-' . date('ym') . '-' . str_pad($number, 3, '0', STR_PAD_LEFT);
         return $serial_number;
+    }
+
+    private function report()
+    {
+
+        return view('report/packinglist');
     }
 }
