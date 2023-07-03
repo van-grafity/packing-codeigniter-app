@@ -25,6 +25,8 @@
 # app_baseURL = ''
 # app.forceGlobalSecureRequests = false
 # app.CSPEnabled = false
+# app.applicationName='Scan & Pack Demo'
+
 
 #--------------------------------------------------------------------
 # DATABASE
