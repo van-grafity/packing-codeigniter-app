@@ -21,22 +21,17 @@ class ProductModel extends Model
 
     public function getProduct($code = false)
     {
-        if ($code == false) {
-            $builder = $this->db->table('tblproduct');
-            $builder->select('tblproduct.*, tblstyle.style_description, tblcategory.category_name ');
-            $builder->join('tblcategory', 'tblcategory.id = product_category_id', 'left');
-            $builder->join('tblstyle', 'tblstyle.id = product_style_id', 'left');
-            $builder->join('tblcolour', 'tblcolour.id = product_colour_id', 'left');
-            $builder->join('tblsize', 'tblsize.id = product_size_id', 'left');
-            return $builder->get();
-        }
         $builder = $this->db->table('tblproduct');
         $builder->select('tblproduct.*, tblstyle.style_description, tblcategory.category_name ');
         $builder->join('tblcategory', 'tblcategory.id = product_category_id', 'left');
         $builder->join('tblstyle', 'tblstyle.id = product_style_id', 'left');
         $builder->join('tblcolour', 'tblcolour.id = product_colour_id', 'left');
         $builder->join('tblsize', 'tblsize.id = product_size_id', 'left');
-        return $builder->where(['code' => $code])->get();
+        if ($code) {
+            $builder->where(['code' => $code]);
+        }
+        $builder->orderBy('created_at','DESC');
+        return $builder->get();
     }
 
     public function updateProduct($data, $id)
