@@ -140,18 +140,22 @@
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+
                                     <li class="nav-item">
                                         <a href="<?= base_url('purchaseorder'); ?>" class="nav-link">
                                             <i class="nav-icon far fa-file text-warning"></i>
                                             <p>Buyer PO</p>
                                         </a>
                                     </li>
+                                    <?php if (in_array(session()->get('role'), ['superadmin','admin', 'packing'])) : ?>
+
                                     <li class="nav-item" <?php if ($title == 'Factory Packing List') echo 'active' ?>>
                                         <a class="nav-link" href="<?= base_url('packinglist') ?>">
                                             <i class="nav-icon far fa-file text-info"></i>
                                             <p>Packing List</p>
                                         </a>
                                     </li>
+                                    <?php endif ?>
                                 </ul>
                             </li>
                         <?php endif ?>
