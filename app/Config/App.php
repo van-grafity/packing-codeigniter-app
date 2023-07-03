@@ -442,4 +442,17 @@ class App extends BaseConfig
      * @see http://www.w3.org/TR/CSP/
      */
     public bool $CSPEnabled = false;
+
+
+    /**
+     * * --------------------------------------------------------------------------
+     * * APP NAME
+     * * --------------------------------------------------------------------------
+     * 
+     * Default name for the application. Can be set from .env file
+     * This variable to make more flexible app type. like for demo, debug, development etc
+     * 
+     * @var string
+     */
+    public string $applicationName = "Scan & Pack";
 }
