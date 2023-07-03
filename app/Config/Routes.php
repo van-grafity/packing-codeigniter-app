@@ -73,6 +73,7 @@ $routes->get('product', 'Product::index');
 $routes->post('product/save', 'Product::save');
 $routes->post('product/update', 'Product::update/$1');
 $routes->post('product/delete', 'Product::delete/$1');
+$routes->post('product/importexcel', 'Product::importexcel');
 
 // Factory
 $routes->get('factory', 'Factory::index');

@@ -30,4 +30,15 @@ class ColourModel extends Model
         $query = $this->db->table('tblcolour')->delete(array('id' => $id));
         return $query;
     }
+
+    public function getOrCreateColourByName(String $colour_name)
+    {
+        $get_colour = $colourModel->where('colour_name', $colour_name)->first();
+        if(!$get_colour){
+            $colour_id = $colourModel->insert(['colour_name'=> $colour_name]);
+        } else {
+            $colour_id = $get_colour['id'];
+        }
+        return $colour_id;
+    }
 }

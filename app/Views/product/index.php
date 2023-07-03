@@ -12,6 +12,7 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <button type="button" class="btn btn-secondary mb-2" id="btn-add-detail">Add New</button>
+                <button type="button" class="btn btn-success ml-2 mb-2" id="btn-import-product" onclick="show_import_modal()">Add Product via Import</button>
                 <table id="table1" class="table table-bordered table-striped table-hover">
                     <thead>
                         <tr class=" table-primary">
@@ -156,6 +157,9 @@
 </div>
 <!-- End Modal Delete Product-->
 
+
+<?= $this->include('product/modal_import_excel') ?>
+
 <script>
     $(document).ready(function() {
         // ## prevent submit form when keyboard press enter
@@ -166,6 +170,10 @@
                 return false;
             }
         });
+
+        // ## Show Flash Message
+        let session = <?= json_encode(session()->getFlashdata()) ?>;
+        show_flash_message(session);
 
         $('#btn-add-detail').on('click', function(event) {
             $('#ModalLabel').text("Add Product")

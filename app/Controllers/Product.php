@@ -10,7 +10,7 @@ use App\Models\SizeModel;
 use App\Models\StyleModel;
 use Faker\Extension\Helper;
 
-Helper('number');
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Product extends BaseController
 {
@@ -92,4 +92,138 @@ class Product extends BaseController
         $this->ProductModel->deleteProduct($id);
         return redirect()->to('/product');
     }
+
+    public function importexcel()
+    {
+        try {
+            $packinglist_id = $this->request->getPost('packinglist_id');
+            $file = $this->request->getFile('file_excel');
+            $rules = [
+                'file_excel' => 'ext_in[file_excel,csv,xlsx,xls]',
+            ];
+            if (!$this->validate($rules)) {
+                return redirect()->to('product/' . $packinglist_id)->with('error', 'Please upload on csv / xlsx / xls format');
+            }
+
+            $spreadsheet = IOFactory::load($file->getTempName());
+            $worksheet = $spreadsheet->getActiveSheet();
+
+            $is_valid = $this->is_valid_header($worksheet);
+            if (!$is_valid) {
+                return redirect()->to('product')->with('error', 'Incorrect header format');
+            }
+
+            $excel_to_array = $this->parse_excel_to_array($worksheet);
+            $data_to_update = $excel_to_array['data'];
+            
+            $adjusted_array = $this->adjust_array_to_insert($data_to_update);
+            dd($adjusted_array);
+            
+
+
+            array_walk($data_to_update, function (&$item, $key) use ($packinglist_id) {
+                $item['packinglist_id'] = $packinglist_id;
+                $item['carton_number_by_system'] = $item['carton_number'];
+                unset($item['carton_number']);
+            });
+
+            $this->CartonBarcodeModel->transException(true)->transStart();
+
+            $updateCartonBarcode = $this->CartonBarcodeModel->updateCartonBarcode($data_to_update);
+
+            $this->CartonBarcodeModel->transComplete();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        return redirect()->to('product');
+    }
+
+    private function is_valid_header($worksheet)
+    {
+        // ## get first row in worksheet and check valid name
+        $header_from_excel = $worksheet->toArray()[0];;
+        $header_list = ['upc', 'product_name','style','style_description','colour','size','product_type','price','product_asin'];
+        // $header_list = ['carton_number', 'barcode'];
+        foreach ($header_list as $key => $header) {
+            if ($header != $header_from_excel[$key]) return false;
+        }
+        return true;
+    }
+
+    private function parse_excel_to_array($worksheet)
+    {
+        $data = [];
+        $firstRow = true;
+        $header = [];
+
+        foreach ($worksheet->getRowIterator() as $row) {
+            if ($firstRow) {
+                foreach ($row->getCellIterator() as $cell) {
+                    $header[$cell->getColumn()] = $cell->getValue();
+                }
+                $firstRow = false;
+            } else {
+                $rowData = [];
+                $cellIterator = $row->getCellIterator();
+                $cellIterator->setIterateOnlyExistingCells(false);
+
+                foreach ($cellIterator as $cell) {
+                    $columnIndex = $cell->getColumn();
+                    $headerIndex = array_key_exists($columnIndex, $header);
+                    if ($headerIndex !== false) {
+                        $rowData[$header[$columnIndex]] = $cell->getValue();
+                    }
+                }
+                if (!empty($rowData)) {
+                    $data[] = $rowData;
+                }
+            }
+        }
+
+        $data_return = [
+            'header' => $header,
+            'data' => $data,
+        ];
+
+        return $data_return;
+    }
+
+    private function adjust_array_to_insert($data_array_from_excel)
+    {
+        // [
+        //     'product_code'        => $this->request->getVar('product_code'),
+        //     'product_asin_id'     => $this->request->getVar('product_asin_id'),
+        //     *'product_colour_id'    => $this->request->getVar('product_colour_id'),
+        //     *'product_style_id'    => $this->request->getVar('product_style_id'),
+        //     *'product_size_id'    => $this->request->getVar('product_size_id'),
+        //     *'product_category_id' => $this->request->getVar('product_category'),
+        //     'product_name'        => $this->request->getVar('product_name'),
+        //     'product_price'       => $this->request->getVar('product_price')
+        // ]
+
+
+        $data_return = [];
+        // dd($data_array_from_excel);
+        $colour_list = $this->getDistictValueByKey($data_array_from_excel, 'colour');
+        $style_list = $this->getDistictValueByKey($data_array_from_excel, 'style');
+        $size_list = $this->getDistictValueByKey($data_array_from_excel, 'size');
+        $product_type_list = $this->getDistictValueByKey($data_array_from_excel, 'product_type');
+        dd($product_type_list);
+        
+        foreach ($data_array_from_excel as $key => $product) {
+            $colourModel = $this->ColourModel->getOrCreateColourByName($product['colour']);
+            // $colourModel->transRollback();
+            dd("stop");
+            
+        }
+        
+
+        return $data_return;
+    }
+
+    private function getDistictValueByKey(Array $data_array_from_excel, String $array_key) : array
+    {
+        return array_unique(array_column($data_array_from_excel,$array_key));
+    }
+
 }
