@@ -143,7 +143,7 @@ class Product extends BaseController
     {
         // ## get first row in worksheet and check valid name
         $header_from_excel = $worksheet->toArray()[0];;
-        $header_list = ['upc', 'product_name','style','style_description','colour','size','product_type','price','product_asin'];
+        $header_list = ['upc', 'product_name','style_no','style_description','colour','size','product_type','price','product_asin'];
         // $header_list = ['carton_number', 'barcode'];
         foreach ($header_list as $key => $header) {
             if ($header != $header_from_excel[$key]) return false;
@@ -205,24 +205,28 @@ class Product extends BaseController
 
         $data_return = [];
         
+        // ## set list of header and model to create master data
         $header_and_model = [
-            // [
-            //     'name' => 'colour',
-            //     'model' => $this->ColourModel,
-            // ],
             [
-                'name' => 'style',
-                'model' => $this->StyleModel,
-                'column_to_insert' => ['style','style_description']
+                'name' => 'colour',
+                'model' => $this->ColourModel,
+                'column_to_insert' => ['colour']
             ],
-            // [
-            //     'name' => 'size',
-            //     'model' => $this->SizeModel,
-            // ],
-            // [
-            //     'name' => 'product_type',
-            //     'model' => $this->CategoryModel,
-            // ],
+            [
+                'name' => 'style_no',
+                'model' => $this->StyleModel,
+                'column_to_insert' => ['style_no','style_description']
+            ],
+            [
+                'name' => 'size',
+                'model' => $this->SizeModel,
+                'column_to_insert' => ['size']
+            ],
+            [
+                'name' => 'product_type',
+                'model' => $this->CategoryModel,
+                'column_to_insert' => ['product_type']
+            ],
         ];
         $statusCreate = $this->createMasterDataIfNotExists($data_array_from_excel, $header_and_model);
         dd($statusCreate);
@@ -242,9 +246,7 @@ class Product extends BaseController
                 $filtered_unique_data_by_key = $this->filterUniqueValueByKey($data_array_from_excel, $header['name']);
                 $filtered_data_to_insert = $this->filterArrayByKeys($filtered_unique_data_by_key, $header['column_to_insert']);
                 
-                dd(($filtered_data_to_insert));
-                
-                foreach ($unique_value_from_this_header as $value) {
+                foreach ($filtered_data_to_insert as $value) {
                     $model_data = $header['model']->getOrCreateDataByName($value);
                 }
             }

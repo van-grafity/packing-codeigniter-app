@@ -29,4 +29,17 @@ class CategoryModel extends Model
         $query = $this->db->table('tblcategory')->delete(array('id' => $id));
         return $query;
     }
+
+    public function getOrCreateDataByName(Array $data_to_insert)
+    {
+        $CategoryModel = model('CategoryModel');
+        $product_type = $data_to_insert['product_type'];
+        $get_category = $CategoryModel->where('category_name', $product_type)->first();
+        if(!$get_category){
+            $category_id = $CategoryModel->insert(['category_name'=> $product_type]);
+        } else {
+            $category_id = $get_category['id'];
+        }
+        return $category_id;
+    }
 }

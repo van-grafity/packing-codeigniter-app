@@ -31,9 +31,10 @@ class ColourModel extends Model
         return $query;
     }
 
-    public function getOrCreateDataByName(String $colour_name)
+    public function getOrCreateDataByName(Array $data_to_insert)
     {
         $ColourModel = model('ColourModel');
+        $colour_name = $data_to_insert['colour'];
         $get_colour = $ColourModel->where('colour_name', $colour_name)->first();
         if(!$get_colour){
             $colour_id = $ColourModel->insert(['colour_name'=> $colour_name]);

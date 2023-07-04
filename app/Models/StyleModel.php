@@ -33,12 +33,18 @@ class StyleModel extends Model
         return $query;
     }
 
-    public function getOrCreateDataByName(String $style_no, String $style_desc)
+    public function getOrCreateDataByName(Array $data_to_insert)
     {
         $StyleModel = model('StyleModel');
+        $style_no = $data_to_insert['style_no'];
+        $style_description = $data_to_insert['style_description'];
+        
         $get_style = $StyleModel->where('style_no', $style_no)->first();
         if(!$get_style){
-            $style_id = $StyleModel->insert(['style_no'=> $style_no, $style_desc]);
+            $style_id = $StyleModel->insert([
+                'style_no'=> $style_no,
+                'style_description'=> $style_description,
+            ]);
         } else {
             $style_id = $get_style['id'];
         }

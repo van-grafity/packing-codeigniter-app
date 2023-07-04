@@ -32,4 +32,18 @@ class SizeModel extends Model
         $query = $this->db->table('tblsize')->delete(array('id' => $id));
         return $query;
     }
+
+    public function getOrCreateDataByName(Array $data_to_insert)
+    {
+        $SizeModel = model('SizeModel');
+        $size = $data_to_insert['size'];
+        $get_size = $SizeModel->where('size', $size)->first();
+        
+        if(!$get_size){
+            $size_id = $SizeModel->insert(['size'=> $size]);
+        } else {
+            $size_id = $get_size->id;
+        }
+        return $size_id;
+    }
 }
