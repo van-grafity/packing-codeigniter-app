@@ -229,6 +229,12 @@ class Product extends BaseController
             ],
         ];
         $statusCreate = $this->createMasterDataIfNotExists($data_array_from_excel, $header_and_model);
+
+        if(!$statusCreate) {
+            return false;
+        }
+
+        
         dd($statusCreate);
         
         dd("harusnya ga sampe sini");
