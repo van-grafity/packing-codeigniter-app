@@ -23,6 +23,7 @@ class Product extends BaseController
 
     public function __construct()
     {
+        $this->db = db_connect();
         $this->CategoryModel = new CategoryModel();
         $this->ColourModel = new ColourModel();
         $this->ProductModel = new ProductModel();
@@ -113,10 +114,10 @@ class Product extends BaseController
                 return redirect()->to('product')->with('error', 'Incorrect header format');
             }
 
-            $excel_to_array = $this->parse_excel_to_array($worksheet);
+            $excel_to_array = $this->parseExceltoArray($worksheet);
             $data_to_update = $excel_to_array['data'];
             
-            $adjusted_array = $this->adjust_array_to_insert($data_to_update);
+            $adjusted_array = $this->adjustArrayToInsert($data_to_update);
             dd($adjusted_array);
             
 
@@ -150,7 +151,7 @@ class Product extends BaseController
         return true;
     }
 
-    private function parse_excel_to_array($worksheet)
+    private function parseExceltoArray($worksheet)
     {
         $data = [];
         $firstRow = true;
@@ -188,7 +189,7 @@ class Product extends BaseController
         return $data_return;
     }
 
-    private function adjust_array_to_insert($data_array_from_excel)
+    private function adjustArrayToInsert($data_array_from_excel)
     {
         // [
         //     'product_code'        => $this->request->getVar('product_code'),
@@ -203,27 +204,105 @@ class Product extends BaseController
 
 
         $data_return = [];
-        // dd($data_array_from_excel);
-        $colour_list = $this->getDistictValueByKey($data_array_from_excel, 'colour');
-        $style_list = $this->getDistictValueByKey($data_array_from_excel, 'style');
-        $size_list = $this->getDistictValueByKey($data_array_from_excel, 'size');
-        $product_type_list = $this->getDistictValueByKey($data_array_from_excel, 'product_type');
-        dd($product_type_list);
         
-        foreach ($data_array_from_excel as $key => $product) {
-            $colourModel = $this->ColourModel->getOrCreateColourByName($product['colour']);
-            // $colourModel->transRollback();
-            dd("stop");
-            
-        }
+        $header_and_model = [
+            // [
+            //     'name' => 'colour',
+            //     'model' => $this->ColourModel,
+            // ],
+            [
+                'name' => 'style',
+                'model' => $this->StyleModel,
+                'column_to_insert' => ['style','style_description']
+            ],
+            // [
+            //     'name' => 'size',
+            //     'model' => $this->SizeModel,
+            // ],
+            // [
+            //     'name' => 'product_type',
+            //     'model' => $this->CategoryModel,
+            // ],
+        ];
+        $statusCreate = $this->createMasterDataIfNotExists($data_array_from_excel, $header_and_model);
+        dd($statusCreate);
         
-
+        dd("harusnya ga sampe sini");
+        
         return $data_return;
     }
 
-    private function getDistictValueByKey(Array $data_array_from_excel, String $array_key) : array
+
+    private function createMasterDataIfNotExists(Array $data_array_from_excel, Array $header_and_model)
     {
-        return array_unique(array_column($data_array_from_excel,$array_key));
+        try {
+            $this->db->transException(true)->transStart();
+            foreach ($header_and_model as $key => $header) {
+
+                $filtered_unique_data_by_key = $this->filterUniqueValueByKey($data_array_from_excel, $header['name']);
+                $filtered_data_to_insert = $this->filterArrayByKeys($filtered_unique_data_by_key, $header['column_to_insert']);
+                
+                dd(($filtered_data_to_insert));
+                
+                foreach ($unique_value_from_this_header as $value) {
+                    $model_data = $header['model']->getOrCreateDataByName($value);
+                }
+            }
+
+            $this->db->transComplete();
+            return $this->db->transStatus();
+        } catch (DatabaseException $e) {
+            exit($e->getMessage());
+        }
+    }
+
+
+    private function filterUniqueValueByKey(array $data_array, String $key) : array
+    {
+        /*
+         * filter array to get only unique values base on column name(key)
+         * mengembalikan array yang memiliki nilai unik pada kolom yang sudah ditentukan
+         * ------------------------------------------------------------------------------------------------
+         * step: 
+         * array mentah => $data_array
+         * pilih kolom => $key
+         * ambil seluruh nilai dari kolom $key menggunakan array_column()
+         * ambil nilai unik dari kolom $key menggunakan array_unique()
+         * ambil nilai untuk semua kolom di baris yang sama (1 baris full) pada array_unique yang sebelumnya, menggunakan array_intersect_key()
+         * atur ulang keys atau index pada array, karena index masih mengikuti data_array yang belum di filter.
+         */
+
+        $result = array();
+        $unique_values_by_key = array_unique(array_column($data_array, $key)); // only get unique values from 1 column
+        $unique_row_by_key = (array_intersect_key($data_array, $unique_values_by_key)); // get 1 row by the unique values
+        $result = array_values($unique_row_by_key); // reset index or keys of array
+        return $result;
+    }
+
+    private function filterArrayByKeys(array $data_array, array $allowed_keys) : array
+    {
+        /*
+         * filter array to get only allowed keys
+         * mengembalikan array yang berisi kolom atau key tertentu saja => $allowed_keys
+         * ------------------------------------------------------------------------------------------------
+         * step: 
+         * array mentah => $data_array
+         * key yang diinginkan => $allowed_keys
+         * array yang berisi allowed keys ($allowed_keys) ditukar antara keys dan value nya menggunakan array_flip()
+         * tujuan ditukar agar dapat digunakan sebagai parameter dalam intersect key (proses selanjutnya)
+         * perulangan pada $data_array
+         * untuk setiap baris dicari yang cocok dengan $allowed_keys menggunakan array_intersect_key()
+         * hasil pencocokan ditampung dalam $result
+         */
+
+        $result      = array();
+        $allowed_keys = array_flip($allowed_keys); // switch keys and values. key as value and value as key
+        
+        foreach ($data_array as $key => $data_row) {
+            // getting only those key value pairs, which matches $allowed_keys
+            $result[$key] = array_intersect_key($data_row, $allowed_keys);
+        }
+        return $result;
     }
 
 }

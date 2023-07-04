@@ -32,4 +32,16 @@ class StyleModel extends Model
         $query = $this->db->table('tblstyle')->delete(array('id' => $id));
         return $query;
     }
+
+    public function getOrCreateDataByName(String $style_no, String $style_desc)
+    {
+        $StyleModel = model('StyleModel');
+        $get_style = $StyleModel->where('style_no', $style_no)->first();
+        if(!$get_style){
+            $style_id = $StyleModel->insert(['style_no'=> $style_no, $style_desc]);
+        } else {
+            $style_id = $get_style['id'];
+        }
+        return $style_id;
+    }
 }

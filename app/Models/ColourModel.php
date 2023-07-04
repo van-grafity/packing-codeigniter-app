@@ -31,11 +31,12 @@ class ColourModel extends Model
         return $query;
     }
 
-    public function getOrCreateColourByName(String $colour_name)
+    public function getOrCreateDataByName(String $colour_name)
     {
-        $get_colour = $colourModel->where('colour_name', $colour_name)->first();
+        $ColourModel = model('ColourModel');
+        $get_colour = $ColourModel->where('colour_name', $colour_name)->first();
         if(!$get_colour){
-            $colour_id = $colourModel->insert(['colour_name'=> $colour_name]);
+            $colour_id = $ColourModel->insert(['colour_name'=> $colour_name]);
         } else {
             $colour_id = $get_colour['id'];
         }
