@@ -22,7 +22,7 @@ class ProductModel extends Model
     public function getProduct($code = false)
     {
         $builder = $this->db->table('tblproduct');
-        $builder->select('tblproduct.*, tblstyle.style_description, tblcategory.category_name ');
+        $builder->select('tblproduct.*, tblstyle.style_description, tblcategory.category_name, tblsize.size as product_size');
         $builder->join('tblcategory', 'tblcategory.id = product_category_id', 'left');
         $builder->join('tblstyle', 'tblstyle.id = product_style_id', 'left');
         $builder->join('tblcolour', 'tblcolour.id = product_colour_id', 'left');

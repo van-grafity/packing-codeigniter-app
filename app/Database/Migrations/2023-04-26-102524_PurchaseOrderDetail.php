@@ -22,10 +22,6 @@ class PurchaseOrderDetail extends Migration
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
-            'size_id' => [
-                'type' => 'BIGINT',
-                'unsigned' => true,
-            ],
             'qty' => [
                 'type' => 'INT',
                 'constraint' => 11,
@@ -42,7 +38,6 @@ class PurchaseOrderDetail extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('order_id', 'tblpurchaseorder', 'id', 'RESTRICT', 'RESTRICT');
-        $this->forge->addForeignKey('size_id', 'tblsize', 'id', 'RESTRICT', 'RESTRICT');
         $this->forge->addForeignKey('product_id', 'tblproduct', 'id', 'RESTRICT', 'RESTRICT');
         $this->forge->createTable('tblpurchaseorderdetail');
     }
