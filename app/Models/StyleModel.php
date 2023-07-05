@@ -50,4 +50,11 @@ class StyleModel extends Model
         }
         return $style_id;
     }
+
+    public function getIdByName(String $name)
+    {
+        $StyleModel = model('StyleModel');
+        $style_id = $StyleModel->where('style_no',$name)->first()['id'];
+        return $style_id;
+    }
 }

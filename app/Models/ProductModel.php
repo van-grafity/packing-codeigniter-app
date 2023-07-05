@@ -62,4 +62,13 @@ class ProductModel extends Model
         $result = $builder->get()->getResult();
         return $result;
     }
+
+    public function insertProduct($data_array)
+    {
+        $additionalUpdateField = ['updated_at' => new RawSql('CURRENT_TIMESTAMP')];
+        $builder = $this->db->table('tblcartonbarcode');
+        $builder->updateFields($additionalUpdateField, true);
+        $result = $builder->updateBatch($data_array, ['packinglist_id', 'carton_number_by_system']);
+        return $result;
+    }
 }

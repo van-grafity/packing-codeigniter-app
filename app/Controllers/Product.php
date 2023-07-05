@@ -56,8 +56,8 @@ class Product extends BaseController
                 'product_asin_id'     => $this->request->getVar('product_asin_id'),
                 'product_category_id' => $this->request->getVar('product_category'),
                 'product_style_id'    => $this->request->getVar('product_style_id'),
-                'product_colour_id'    => $this->request->getVar('product_colour_id'),
-                'product_size_id'    => $this->request->getVar('product_size_id'),
+                'product_colour_id'   => $this->request->getVar('product_colour_id'),
+                'product_size_id'     => $this->request->getVar('product_size_id'),
                 'product_name'        => $this->request->getVar('product_name'),
                 'product_price'       => $this->request->getVar('product_price')
             ]
@@ -74,12 +74,11 @@ class Product extends BaseController
             'product_asin_id'     => $this->request->getVar('product_asin_id'),
             'product_category_id' => $this->request->getVar('product_category'),
             'product_style_id'    => $this->request->getVar('product_style_id'),
-            'product_colour_id'    => $this->request->getVar('product_colour_id'),
-            'product_size_id'    => $this->request->getVar('product_size_id'),
+            'product_colour_id'   => $this->request->getVar('product_colour_id'),
+            'product_size_id'     => $this->request->getVar('product_size_id'),
             'product_name'        => $this->request->getVar('product_name'),
             'product_price'       => $this->request->getVar('product_price'),
         );
-        // dd($id);
         $this->ProductModel->updateProduct($data, $id);
         session()->setFlashdata('pesan', 'Data Updated');
         return redirect()->to('product');
@@ -87,9 +86,7 @@ class Product extends BaseController
 
     public function delete()
     {
-
         $id = $this->request->getVar('product_id');
-        // dd($id);
         $this->ProductModel->deleteProduct($id);
         return redirect()->to('/product');
     }
@@ -109,49 +106,54 @@ class Product extends BaseController
             $spreadsheet = IOFactory::load($file->getTempName());
             $worksheet = $spreadsheet->getActiveSheet();
 
-            $is_valid = $this->is_valid_header($worksheet);
+            $is_valid = $this->isValidHeader($worksheet);
             if (!$is_valid) {
                 return redirect()->to('product')->with('error', 'Incorrect header format');
             }
 
             $excel_to_array = $this->parseExceltoArray($worksheet);
             $data_to_update = $excel_to_array['data'];
+
+
+            // ## set required Column. cannot be empty / null on excel
+            $required_column = ['upc', 'product_name','style_no','style_description','colour','size','product_type','price']; 
+            $cleaned_data = $this->removeEmptyData($data_to_update, $required_column);
+
+            $is_duplicate_on_excel = $this->isDuplicateProductCodeOnExcel($cleaned_data);
+            if($is_duplicate_on_excel) { 
+                return redirect()->to('product')->with('error', 'There is a duplicate UPC in your excel! Please double check the data you provide' );
+            }
+
+            $is_duplicate_on_system = $this->isDuplicateProductCodeOnSystem($cleaned_data);
+            if($is_duplicate_on_system) { 
+                return redirect()->to('product')->with('error', 'There is a UPC already registered in the system! Please double check the data you provide' );
+            }
             
-            $adjusted_array = $this->adjustArrayToInsert($data_to_update);
-            dd($adjusted_array);
+            $adjusted_array = $this->adjustArrayToInsert($cleaned_data);
             
-
-
-            array_walk($data_to_update, function (&$item, $key) use ($packinglist_id) {
-                $item['packinglist_id'] = $packinglist_id;
-                $item['carton_number_by_system'] = $item['carton_number'];
-                unset($item['carton_number']);
-            });
-
-            $this->CartonBarcodeModel->transException(true)->transStart();
-
-            $updateCartonBarcode = $this->CartonBarcodeModel->updateCartonBarcode($data_to_update);
-
-            $this->CartonBarcodeModel->transComplete();
+            $this->ProductModel->transException(true)->transStart();
+            $insertedProduct = $this->ProductModel->insertBatch($adjusted_array);
+            $this->ProductModel->transComplete();
+            
         } catch (\Throwable $th) {
             throw $th;
         }
-        return redirect()->to('product');
+        return redirect()->to('product')->with('success', 'Successfully Submitted ' . $insertedProduct . ' Products' );
     }
 
-    private function is_valid_header($worksheet)
+    private function isValidHeader($worksheet)
     {
         // ## get first row in worksheet and check valid name
-        $header_from_excel = $worksheet->toArray()[0];;
+        $header_from_excel = $worksheet->toArray()[0];
+        
         $header_list = ['upc', 'product_name','style_no','style_description','colour','size','product_type','price','product_asin'];
-        // $header_list = ['carton_number', 'barcode'];
         foreach ($header_list as $key => $header) {
             if ($header != $header_from_excel[$key]) return false;
         }
         return true;
     }
 
-    private function parseExceltoArray($worksheet)
+    private function parseExceltoArray($worksheet) : array
     {
         $data = [];
         $firstRow = true;
@@ -189,33 +191,21 @@ class Product extends BaseController
         return $data_return;
     }
 
-    private function adjustArrayToInsert($data_array_from_excel)
+    private function adjustArrayToInsert($data_array_from_excel) : array
     {
-        // [
-        //     'product_code'        => $this->request->getVar('product_code'),
-        //     'product_asin_id'     => $this->request->getVar('product_asin_id'),
-        //     *'product_colour_id'    => $this->request->getVar('product_colour_id'),
-        //     *'product_style_id'    => $this->request->getVar('product_style_id'),
-        //     *'product_size_id'    => $this->request->getVar('product_size_id'),
-        //     *'product_category_id' => $this->request->getVar('product_category'),
-        //     'product_name'        => $this->request->getVar('product_name'),
-        //     'product_price'       => $this->request->getVar('product_price')
-        // ]
+        $result = [];
 
-
-        $data_return = [];
-        
         // ## set list of header and model to create master data
         $header_and_model = [
-            [
-                'name' => 'colour',
-                'model' => $this->ColourModel,
-                'column_to_insert' => ['colour']
-            ],
             [
                 'name' => 'style_no',
                 'model' => $this->StyleModel,
                 'column_to_insert' => ['style_no','style_description']
+            ],
+            [
+                'name' => 'colour',
+                'model' => $this->ColourModel,
+                'column_to_insert' => ['colour']
             ],
             [
                 'name' => 'size',
@@ -229,21 +219,47 @@ class Product extends BaseController
             ],
         ];
         $statusCreate = $this->createMasterDataIfNotExists($data_array_from_excel, $header_and_model);
+        if(!$statusCreate) { return false; }
 
-        if(!$statusCreate) {
-            return false;
-        }
-
-        
-        dd($statusCreate);
-        
-        dd("harusnya ga sampe sini");
-        
-        return $data_return;
+        $result = $this->recreateArrayToUseID($data_array_from_excel);
+        return $result;
     }
 
+    private function removeEmptyData(Array $data_array_from_excel, Array $required_column) : array
+    {
+        $result = array();
+        foreach ($data_array_from_excel as $key => $product) {
+            $is_valid_data = true;
+            foreach ($required_column as $column) {
+                if(!$product[$column]){
+                    $is_valid_data = false;
+                    break;
+                }
+            }
+            if($is_valid_data) {
+                $result[] = $product; 
+            }
+        }
+        return $result;
+    }
 
-    private function createMasterDataIfNotExists(Array $data_array_from_excel, Array $header_and_model)
+    private function isDuplicateProductCodeOnExcel(Array $data_array_from_excel) : bool
+    {
+        $array_upc = array_column($data_array_from_excel,'upc');
+        if(count(array_unique($array_upc))<count($array_upc)) { return true; }
+        return false;
+    }
+
+    private function isDuplicateProductCodeOnSystem(Array $data_array_from_excel) : bool 
+    {
+        foreach ($data_array_from_excel as $key => $product) {
+            $product = $this->ProductModel->where('product_code', $product['upc'])->first();
+            if($product) { return true; }
+        }
+        return false;
+    }
+
+    private function createMasterDataIfNotExists(Array $data_array_from_excel, Array $header_and_model) : bool
     {
         try {
             $this->db->transException(true)->transStart();
@@ -309,6 +325,27 @@ class Product extends BaseController
         foreach ($data_array as $key => $data_row) {
             // getting only those key value pairs, which matches $allowed_keys
             $result[$key] = array_intersect_key($data_row, $allowed_keys);
+        }
+        return $result;
+    }
+
+    private function recreateArrayToUseID($data_array_from_excel)
+    {
+        // ## Recreate array to use ID instead Name of the Master Data. Only for Master Data Column.
+        $result = array();
+        
+        foreach ($data_array_from_excel as $key => $product) {
+            $new_format = [
+                'product_code' => $product['upc'],
+                'product_asin_id' => $product['product_asin'],
+                'product_colour_id' => $this->ColourModel->getIdByName($product['colour']),
+                'product_style_id' => $this->StyleModel->getIdByName($product['style_no']),
+                'product_size_id' => $this->SizeModel->getIdByName($product['size']),
+                'product_category_id' => $this->CategoryModel->getIdByName($product['product_type']),
+                'product_name' => $product['product_name'],
+                'product_price' => $product['price'],
+            ];
+            $result[$key] = $new_format; 
         }
         return $result;
     }

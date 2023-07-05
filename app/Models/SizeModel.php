@@ -46,4 +46,11 @@ class SizeModel extends Model
         }
         return $size_id;
     }
+
+    public function getIdByName(String $name)
+    {
+        $SizeModel = model('SizeModel');
+        $size_id = $SizeModel->where('size',$name)->first()->id;
+        return $size_id;
+    }
 }

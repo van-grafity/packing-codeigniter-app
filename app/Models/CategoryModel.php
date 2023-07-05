@@ -42,4 +42,11 @@ class CategoryModel extends Model
         }
         return $category_id;
     }
+
+    public function getIdByName(String $name)
+    {
+        $CategoryModel = model('CategoryModel');
+        $category_id = $CategoryModel->where('category_name',$name)->first()['id'];
+        return $category_id;
+    }
 }

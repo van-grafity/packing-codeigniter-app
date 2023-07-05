@@ -43,4 +43,11 @@ class ColourModel extends Model
         }
         return $colour_id;
     }
+
+    public function getIdByName(String $name)
+    {
+        $ColourModel = model('ColourModel');
+        $colour_id = $ColourModel->where('colour_name',$name)->first()['id'];
+        return $colour_id;
+    }
 }
