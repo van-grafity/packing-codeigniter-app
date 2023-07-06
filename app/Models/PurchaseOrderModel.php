@@ -15,7 +15,6 @@ class PurchaseOrderModel extends Model
         'shipdate',
         'PO_qty',
         'PO_amount',
-        // 'PO_product_id',
     ];
 
     public function getPO($id = null)
@@ -51,15 +50,8 @@ class PurchaseOrderModel extends Model
         return $result;
     }
 
-    public function updatePO($data, $id)
-    {
-        $query = $this->db->table('tblpurchaseorder')->update($data, array('id' => $id));
-        return $query;
-    }
-
     public function syncPurchaseOrderDetails($po_id)
     {
-
         // ## Get PO details
         $builder = $this->db->table('tblpurchaseorderdetail as pod');
         $builder->select('pod.qty as order_qty, product.product_name, product.product_price, (product.product_price * pod.qty) as amount_per_detail');
