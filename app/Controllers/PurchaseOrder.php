@@ -36,7 +36,7 @@ class PurchaseOrder extends BaseController
     public function index()
     {
         $data = [
-            'title'     => 'Buyer Purchase Order',
+            'title'     => 'Purchase Order',
             'Buyer'     => $this->BuyerModel->getBuyer()->getResult(),
             'GL'        => $this->GLModel->getGL()->getResult(),
             'BuyerPO'   => $this->PurchaseOrderModel->getPO()->getResult(),

@@ -12,6 +12,7 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <button type="button" class="btn btn-secondary mb-2" data-toggle="modal" data-target="#addModal">Add New</button>
+                <button type="button" class="btn btn-success ml-2 mb-2" id="btn-import-product" onclick="show_import_modal()">Add PO via Import</button>
 
                 <table id="table1" class="table table-bordered table-striped">
                     <thead>
@@ -136,6 +137,9 @@
     </div>
 </div>
 <!-- End Modal Delete Purchase Order -->
+
+<?php $data_partial = ['status'=> "success"] ?>
+<?= $this->include('purchaseorder/modal_import_excel', $data_partial) ?>
 
 
 <script>
