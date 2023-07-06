@@ -119,6 +119,7 @@ class Product extends BaseController
             $required_column = ['upc', 'product_name','style_no','style_description','colour','size','product_type','price']; 
             $cleaned_data = $this->removeEmptyData($data_to_update, $required_column);
 
+
             $is_duplicate_on_excel = $this->isDuplicateProductCodeOnExcel($cleaned_data);
             if($is_duplicate_on_excel) { 
                 return redirect()->to('product')->with('error', 'There is a duplicate UPC in your excel! Please double check the data you provide' );
@@ -239,6 +240,10 @@ class Product extends BaseController
             if($is_valid_data) {
                 $result[] = $product; 
             }
+        }
+
+        foreach ($result as $key => $product) {
+            $result[$key] = array_filter($product, fn($key_product) => $key_product !== '', ARRAY_FILTER_USE_KEY);  
         }
         return $result;
     }
