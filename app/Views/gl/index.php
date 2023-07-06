@@ -132,6 +132,10 @@
 </div>
 <!-- End Modal Delete GL -->
 
+<?= $this->endSection('content'); ?>
+
+
+<?= $this->Section('page_script'); ?>
 <script>
     $(document).ready(function() {
         // ## prevent submit form when keyboard press enter
@@ -234,7 +238,10 @@
             $('#size_order').val(sizeorder);
             $('#modal_gl_detail').modal('show');
         })
-    });
+
+        $('#number').inputmask("99999-99");  //static mask
+
+});
 </script>
 
 <script type="text/javascript">
@@ -242,4 +249,4 @@
     const update_url = "<?php echo base_url('gl/update'); ?>";
 </script>
 
-<?= $this->endSection('content'); ?>
+<?= $this->endSection('page_script'); ?>
