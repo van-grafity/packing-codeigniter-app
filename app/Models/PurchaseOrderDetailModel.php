@@ -11,7 +11,6 @@ class PurchaseOrderDetailModel extends Model
     protected $allowedFields = [
         'order_id',
         'product_id',
-        'size_id',
         'qty',
     ];
 }

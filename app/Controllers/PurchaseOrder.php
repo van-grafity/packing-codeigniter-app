@@ -41,11 +41,7 @@ class PurchaseOrder extends BaseController
             'GL'        => $this->GLModel->getGL()->getResult(),
             'BuyerPO'   => $this->PurchaseOrderModel->getPO()->getResult(),
             'Product'   => $this->ProductModel->getProduct()->getResult(),
-            'Sizes'     => $this->SizeModel->getSize()->getResult(),
         ];
-        if (!$this->session->isLoggedIn) {
-            return redirect()->to('login');
-        }
         return view('purchaseorder/index', $data);
     }
 
@@ -73,7 +69,6 @@ class PurchaseOrder extends BaseController
                 $data_po_detail = [
                     'order_id' => $po_id,
                     'product_id' => $this->request->getPost('product_code')[$key],
-                    'size_id' => $this->request->getPost('size')[$key],
                     'qty' => $this->request->getPost('order_qty')[$key],
                 ];
                 $po_detail = $this->PurchaseOrderDetailModel->insert($data_po_detail);
@@ -100,7 +95,6 @@ class PurchaseOrder extends BaseController
             'purchase_order'   => $this->PurchaseOrderModel->getPO($code)->getRow(),
             'purchase_order_details'   => $this->PurchaseOrderModel->getPODetails($code),
             'products'   => $this->ProductModel->getProduct()->getResult(),
-            'sizes'     => $this->SizeModel->getSize()->getResult(),
         ];
         return view('purchaseorder/detail', $data);
     }
@@ -117,7 +111,6 @@ class PurchaseOrder extends BaseController
         $data_po_detail = array(
             'order_id'        => $this->request->getVar('order_id'),
             'product_id'        => $this->request->getVar('product'),
-            'size_id'        => $this->request->getVar('size'),
             'qty'        => $this->request->getVar('order_qty'),
         );
         $this->PurchaseOrderDetailModel->insert($data_po_detail);
@@ -134,7 +127,6 @@ class PurchaseOrder extends BaseController
         $data_po_detail = array(
             'order_id'        => $this->request->getVar('order_id'),
             'product_id'        => $this->request->getVar('product'),
-            'size_id'        => $this->request->getVar('size'),
             'qty'        => $this->request->getVar('order_qty'),
         );
         $this->PurchaseOrderDetailModel->update($id, $data_po_detail);

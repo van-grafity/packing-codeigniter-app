@@ -207,9 +207,11 @@
         if (optionElement.val()) {
             optionElement.parents('tr').find('input[name="product_name[]"]').val(productData.productName);
             optionElement.parents('tr').find('input[name="product_price[]"]').val(productData.productPrice);
+            optionElement.parents('tr').find('input[name="product_size[]"]').val(productData.productSize);
         } else {
             optionElement.parents('tr').find('input[name="product_name[]"]').val('');
             optionElement.parents('tr').find('input[name="product_price[]"]').val('');
+            optionElement.parents('tr').find('input[name="product_size[]"]').val('');
         }
     }
 
@@ -241,20 +243,13 @@
                 <select class="form-control" type="text" name="product_code[]" onchange="javascript:set_product_info();" required>
                     <option value="">-Product Code-</option>
                     <?php foreach ($Product as $p) : ?>
-                        <option value="<?= $p->id; ?>" data-product-name="<?= $p->product_name; ?>" data-product-price="<?= $p->product_price; ?>"><?= $p->product_code; ?></option>
+                        <option value="<?= $p->id; ?>" data-product-name="<?= $p->product_name; ?>" data-product-price="<?= $p->product_price; ?>" data-product-size="<?= $p->product_size; ?>"><?= $p->product_code; ?></option>
                     <?php endforeach; ?>
                 </select>
             </td>
             <td><input type="text" readonly name="product_name[]" class="form-control" placeholder="Product Name"/></td>
             <td><input type="text" readonly name="product_price[]" class="form-control" placeholder="Unit Price" /></td>
-            <td>
-                <select name="size[]" class="form-control" required>
-                    <option value="">-Select Size-</option>
-                    <?php foreach ($Sizes as $s) : ?>
-                        <option value="<?= $s->id; ?>"><?= $s->size; ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </td>
+            <td><input type="text" readonly name="product_size[]" class="form-control" placeholder="Product Size" /></td>
             <td><input type="number" class="form-control" name="order_qty[]" placeholder="Order Qty" onkeydown="if(event.key==='.'){event.preventDefault();}" required></td>
             <td style="text-align: center;">
                 <a type="button" href="javascript:void(0);" onclick="delete_po_detail(this);" class="btn btn-danger btn-sm btn-detail-delete"><i class="fas fa-minus"></i></a>

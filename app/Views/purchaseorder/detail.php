@@ -92,7 +92,7 @@
                                                 <td><?= $detail->qty ?></td>
                                                 <td><?= number_to_currency($detail->total_amount, 'USD', 'en_US', 2); ?></td>
                                                 <td class="text-center">
-                                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $detail->id ?>" data-product-id="<?= $detail->product_id ?>" data-product-code="<?= $detail->product_code ?>" data-product-name="<?= $detail->product_name ?>" data-order-size-id="<?= $detail->size_id ?>" data-order-qty="<?= $detail->qty ?>" data-total-amount="<?= $detail->total_amount ?>">Edit</a>
+                                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $detail->id ?>" data-product-id="<?= $detail->product_id ?>" data-product-code="<?= $detail->product_code ?>" data-product-name="<?= $detail->product_name ?>" data-order-qty="<?= $detail->qty ?>" data-total-amount="<?= $detail->total_amount ?>">Edit</a>
                                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $detail->id ?>" data-product-code="<?= $detail->product_code ?>">Delete</a>
                                                 </td>
                                             </tr>
@@ -138,7 +138,11 @@
                         <select id="product" name="product" class="form-control" required>
                             <option value="">-Select Product Code-</option>
                             <?php foreach ($products as $product) : ?>
-                                <option value="<?= $product->id; ?>" data-product-name="<?= $product->product_name; ?>" data-product-price="<?= $product->product_price; ?>"><?= $product->product_code; ?>
+                                <option value="<?= $product->id; ?>" 
+                                data-product-name="<?= $product->product_name; ?>" 
+                                data-product-price="<?= $product->product_price; ?>" 
+                                data-product-size="<?= $product->product_size; ?>"
+                                ><?= $product->product_code; ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -152,17 +156,12 @@
                         <input type="text" readonly class="form-control" id="product_price" name="product_price" placeholder="Please Select Product Code">
                     </div>
                     <div class="form-group">
-                        <label for="size">Size</label>
-                        <select name="size" class="form-control" id="size" required>
-                            <option value="">-Select Size-</option>
-                            <?php foreach ($sizes as $size) : ?>
-                                <option value="<?= $size->id; ?>"><?= $size->size; ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <label for="product_size">Unit Size</label>
+                        <input type="text" readonly class="form-control" id="product_size" name="product_size" placeholder="Please Select Product Code">
                     </div>
                     <div class="form-group">
                         <label for="order_qty">Order Qty</label>
-                        <input type="number" class="form-control" id="order_qty" name="order_qty" placeholder="Order Qty">
+                        <input type="number" class="form-control" id="order_qty" name="order_qty" placeholder="Order Qty" required>
                     </div>
                     <div class="form-group">
                         <label for="total_amount">Total Amount</label>
@@ -212,16 +211,19 @@
 
             let product_name = $(this).find($('option:selected')).data('product-name');
             let product_price = $(this).find($('option:selected')).data('product-price');
+            let product_size = $(this).find($('option:selected')).data('product-size');
 
             if ($(this).val()) {
                 $('#product_name').val(product_name);
                 $('#product_price').val(product_price);
+                $('#product_size').val(product_size);
 
                 let total_amount = $('#order_qty').val() * $('#product_price').val();
                 $('#total_amount').val(total_amount);
             } else {
                 $('#product_name').val();
                 $('#product_price').val();
+                $('#product_size').val();
             }
         })
 
@@ -259,7 +261,6 @@
             let product_code = $(this).data('product-code');
             let product_name = $(this).data('product-name');
             let product_price = $(this).data('product-price');
-            let order_size = $(this).data('order-size-id');
             let order_qty = $(this).data('order-qty');
             let total_amount = $(this).data('total-amount');
 
@@ -269,7 +270,6 @@
 
             $('#edit_po_detail_id').val(id);
             $('#product').val(product_id).trigger('change');
-            $('#size').val(order_size);
             $('#order_qty').val(order_qty);
             $('#total_amount').val(total_amount);
 

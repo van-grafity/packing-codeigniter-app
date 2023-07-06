@@ -35,10 +35,10 @@ class PurchaseOrderModel extends Model
     public function getPODetails($code = null)
     {
         $builder = $this->db->table('tblpurchaseorderdetail');
-        $builder->select('tblpurchaseorderdetail.*, tblproduct.product_name, tblproduct.product_price, tblproduct.product_code,tblsize.size,tblpurchaseorder.po_qty,tblpurchaseorder.po_amount, tblstyle.style_no, (tblproduct.product_price * tblpurchaseorderdetail.qty ) as total_amount, tblcategory.category_name');
+        $builder->select('tblpurchaseorderdetail.*, tblproduct.product_name, tblproduct.product_price, tblproduct.product_code, tblsize.id as size_id, tblsize.size, tblpurchaseorder.po_qty,tblpurchaseorder.po_amount, tblstyle.style_no, (tblproduct.product_price * tblpurchaseorderdetail.qty ) as total_amount, tblcategory.category_name');
         $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpurchaseorderdetail.order_id');
-        $builder->join('tblsize', 'tblsize.id = tblpurchaseorderdetail.size_id');
         $builder->join('tblproduct', 'tblproduct.id = tblpurchaseorderdetail.product_id');
+        $builder->join('tblsize', 'tblsize.id = tblproduct.product_size_id');
         $builder->join('tblstyle', 'tblstyle.id = tblproduct.product_style_id');
         $builder->join('tblcategory', 'tblcategory.id = tblproduct.product_category_id');
 
