@@ -194,7 +194,7 @@
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="po_detail_id" id="po_detail_id">
-                    <input type="hidden" name="po_number" value="<?= $purchase_order->po_no ?>">
+                    <input type="hidden" name="order_id" value="<?= $purchase_order->id ?>">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                     <button type="submit" class="btn btn-primary">Yes</button>
                 </div>

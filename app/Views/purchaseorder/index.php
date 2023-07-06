@@ -30,7 +30,7 @@
                         <?php foreach ($BuyerPO as $po) : ?>
                             <tr>
                                 <td class="text-center" scope="row"><?= $i++; ?></td>
-                                <td class="text-center"><a href="<?= base_url('purchaseorder/') . $po->po_no; ?>"><?= $po->po_no; ?></a></td>
+                                <td class="text-center"><a href="<?= base_url('purchaseorder/') . $po->id; ?>"><?= $po->po_no; ?></a></td>
                                 <td class="text-center"><?= $po->gl_number; ?></td>
                                 <td class="text-center"><?= $po->shipdate; ?></td>
                                 <td class="text-center"><?= $po->po_qty; ?></td>

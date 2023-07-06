@@ -18,21 +18,22 @@ class PurchaseOrderModel extends Model
         // 'PO_product_id',
     ];
 
-    public function getPO($code = null)
+    public function getPO($id = null)
     {
         $builder = $this->db->table('tblpurchaseorder');
         $builder->select('tblpurchaseorder.*, tblbuyer.buyer_name, tblgl.gl_number,tblgl.season');
         $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id');
         $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id');
 
-        if ($code) {
-            $builder->where(['po_no' => $code]);
+        if ($id) {
+            $builder->where(['tblpurchaseorder.id' => $id]);
         }
+        $builder->orderBy('tblpurchaseorder.created_at','DESC');
         $result = $builder->get();
         return $result;
     }
 
-    public function getPODetails($code = null)
+    public function getPODetails($po_id = null)
     {
         $builder = $this->db->table('tblpurchaseorderdetail');
         $builder->select('tblpurchaseorderdetail.*, tblproduct.product_name, tblproduct.product_price, tblproduct.product_code, tblsize.id as size_id, tblsize.size, tblpurchaseorder.po_qty,tblpurchaseorder.po_amount, tblstyle.style_no, (tblproduct.product_price * tblpurchaseorderdetail.qty ) as total_amount, tblcategory.category_name');
@@ -42,22 +43,12 @@ class PurchaseOrderModel extends Model
         $builder->join('tblstyle', 'tblstyle.id = tblproduct.product_style_id');
         $builder->join('tblcategory', 'tblcategory.id = tblproduct.product_category_id');
 
-        if ($code) {
-            $builder->where(['po_no' => $code]);
+        if ($po_id) {
+            $builder->where(['tblpurchaseorder.id' => $po_id]);
         }
 
         $result = $builder->get()->getResult();
         return $result;
-    }
-
-    public function savePO($data)
-    {
-        $query = $this->db->table('tblpurchaseorder')->insert($data);
-        if ($query) {
-            return $this->db->insertID();
-        } else {
-            return $query;
-        }
     }
 
     public function updatePO($data, $id)
@@ -66,7 +57,7 @@ class PurchaseOrderModel extends Model
         return $query;
     }
 
-    public function syncPurchaseOrderDetails($po_number)
+    public function syncPurchaseOrderDetails($po_id)
     {
 
         // ## Get PO details
@@ -74,7 +65,7 @@ class PurchaseOrderModel extends Model
         $builder->select('pod.qty as order_qty, product.product_name, product.product_price, (product.product_price * pod.qty) as amount_per_detail');
         $builder->join('tblpurchaseorder as po', 'po.id = pod.order_id');
         $builder->join('tblproduct as product', 'product.id = pod.product_id');
-        $builder->where('po.po_no', $po_number);
+        $builder->where('po.id', $po_id);
         $po_details = $builder->get()->getResult();
 
         // ## Calculate
@@ -88,10 +79,10 @@ class PurchaseOrderModel extends Model
         ];
 
         $builder_po = $this->db->table('tblpurchaseorder');
-        $builder_po->where('po_no', $po_number);
+        $builder_po->where('id', $po_id);
         $builder_po->update($data_update);
 
-        $result = $builder_po->where('po_no', $po_number)->get()->getRow();
+        $result = $builder_po->where('id', $po_id)->get()->getRow();
         return $result;
     }
 }

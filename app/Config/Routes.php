@@ -109,9 +109,10 @@ $routes->get('purchaseorder', 'PurchaseOrder::index');
 $routes->post('purchaseorder/savePO', 'PurchaseOrder::savePO');
 $routes->post('purchaseorder/store', 'PurchaseOrder::store');
 $routes->post('purchaseorder/delete', 'PurchaseOrder::delete');
-$routes->get('purchaseorder/(:any)', 'PurchaseOrder::detail/$1');
+$routes->get('purchaseorder/(:num)', 'PurchaseOrder::detail/$1');
 $routes->post('purchaseorder/adddetail', 'PurchaseOrder::adddetail');
 $routes->post('purchaseorder/updatedetail', 'PurchaseOrder::updatedetail');
+$routes->post('purchaseorder/deletedetail', 'PurchaseOrder::deletedetail');
 
 // Carton Barcode
 $routes->get('cartonbarcode', 'CartonBarcode::index');
