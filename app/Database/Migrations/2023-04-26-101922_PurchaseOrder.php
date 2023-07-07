@@ -28,10 +28,14 @@ class PurchaseOrder extends Migration
             'po_qty' => [
                 'type' => 'INT',
                 'constraint' => 11,
+                'null' => true,
+                'default' => 0,
             ],
             'po_amount' => [
                 'type' => 'INT',
                 'constraint' => 11,
+                'null' => true,
+                'default' => 0,
             ],
             'created_at' => [
                 'type' => 'TIMESTAMP',

@@ -77,4 +77,22 @@ class PurchaseOrderModel extends Model
         $result = $builder_po->where('id', $po_id)->get()->getRow();
         return $result;
     }
+
+    public function getOrCreateDataByName(Array $data_po)
+    {
+        
+        $PurchaseOrderModel = model('PurchaseOrderModel');
+        $data_to_insert = [
+            'po_no' => $data_po['po_no'],
+            'gl_id' => $data_po['gl_id'],
+            'shipdate' => $data_po['shipdate'],
+        ];
+        $get_po = $PurchaseOrderModel->where('po_no', $data_po['po_no'])->first();
+        if(!$get_po){
+            $po_id = $PurchaseOrderModel->insert($data_to_insert);
+        } else {
+            $po_id = $get_po['id'];
+        }
+        return $po_id;
+    }
 }

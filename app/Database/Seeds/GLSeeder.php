@@ -27,6 +27,14 @@ class GLSeeder extends Seeder
                 'buyer_id' => 1,
                 'size_order' => 'XS - XL',
             ],
+            [
+                'id' => 3,
+                'gl_number' => '63169-00',
+                'season' => "HOL'23",
+                'style_id' => 2,
+                'buyer_id' => 5,
+                'size_order' => 'S - XL',
+            ],
         ];
         $this->db->table($this->table)->insertBatch($data);
     }

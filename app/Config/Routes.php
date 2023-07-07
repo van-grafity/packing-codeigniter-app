@@ -113,6 +113,8 @@ $routes->get('purchaseorder/(:num)', 'PurchaseOrder::detail/$1');
 $routes->post('purchaseorder/adddetail', 'PurchaseOrder::adddetail');
 $routes->post('purchaseorder/updatedetail', 'PurchaseOrder::updatedetail');
 $routes->post('purchaseorder/deletedetail', 'PurchaseOrder::deletedetail');
+$routes->post('purchaseorder/importexcel', 'PurchaseOrder::importexcel');
+
 
 // Carton Barcode
 $routes->get('cartonbarcode', 'CartonBarcode::index');

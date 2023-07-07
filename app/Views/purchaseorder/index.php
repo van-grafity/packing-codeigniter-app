@@ -145,6 +145,10 @@
 <script>
     $(document).ready(function() {
 
+        // ## Show Flash Message
+        let session = <?= json_encode(session()->getFlashdata()) ?>;
+        show_flash_message(session);
+        
         //## Check PO Details, at least 1 product
         if (count_po_details() <= 0) {
             add_po_detail();

@@ -94,13 +94,12 @@ class Product extends BaseController
     public function importexcel()
     {
         try {
-            $packinglist_id = $this->request->getPost('packinglist_id');
             $file = $this->request->getFile('file_excel');
             $rules = [
                 'file_excel' => 'ext_in[file_excel,csv,xlsx,xls]',
             ];
             if (!$this->validate($rules)) {
-                return redirect()->to('product/' . $packinglist_id)->with('error', 'Please upload on csv / xlsx / xls format');
+                return redirect()->to('product')->with('error', 'Please upload on csv / xlsx / xls format');
             }
 
             $spreadsheet = IOFactory::load($file->getTempName());
