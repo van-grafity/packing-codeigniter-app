@@ -77,7 +77,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="po_no">PO No :</label>
-                        <select id="po_no" name="po_no" class="form-control" required>
+                        <select id="po_no" name="po_no" class="form-control select2" required>
                             <option value="">Select PO No </option>
                             <?php foreach ($po_list as $key => $po) { ?>
                                 <option value="<?= esc($po->id) ?>"
@@ -181,7 +181,16 @@
 
 
 <?= $this->Section('page_script'); ?>
-
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#po_no.select2').select2({
+            dropdownParent: $('#packinglist_modal')
+        });
+        $('#po_no.select2').on('select2:open', function (e) {
+            document.querySelector('.select2-search__field').focus();
+        });
+    });
+</script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('#btn_modal_create').on('click', function(e) {
