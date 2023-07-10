@@ -6,6 +6,7 @@ use Config\Services;
 use App\Models\CartonBarcodeModel;
 use App\Models\PackingListModel;
 use App\Models\PackinglistCartonModel;
+use App\Models\StyleModel;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -14,6 +15,7 @@ class CartonBarcode extends BaseController
     protected $CartonBarcodeModel;
     protected $PackingListModel;
     protected $PackinglistCartonModel;
+    protected $StyleModel;
     protected $session;
 
     public function __construct()
@@ -21,6 +23,7 @@ class CartonBarcode extends BaseController
         $this->CartonBarcodeModel = new CartonBarcodeModel();
         $this->PackingListModel = new PackingListModel();
         $this->PackinglistCartonModel = new PackinglistCartonModel();
+        $this->StyleModel = new StyleModel();
         $this->session = Services::session();
     }
 
@@ -64,6 +67,10 @@ class CartonBarcode extends BaseController
         $packinglist = $this->PackingListModel->getPackingList($id);
         $packinglist->total_carton = $this->PackingListModel->getTotalCarton($id);
         $packinglist->percentage_ship = $this->PackingListModel->getShipmentPercentage($id);
+
+        $style_by_gl = $this->StyleModel->getStyleByPO($packinglist->packinglist_po_id);
+        $packinglist->style_no = implode(' | ', (array_column($style_by_gl, 'style_no')));
+        $packinglist->style_description = implode(' | ', (array_column($style_by_gl, 'style_description')));
 
         $carton_list = $this->CartonBarcodeModel->getCartonByPackinglist($id);
         array_walk($carton_list, function (&$item, $key) {

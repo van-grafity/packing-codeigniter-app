@@ -35,7 +35,7 @@
                                 <td><?= $p->product_code; ?></td>
                                 <td><?= $p->product_asin_id; ?></td>
                                 <td><?= $p->category_name; ?></td>
-                                <td><?= $p->style_description; ?></td>
+                                <td><?= '('.$p->style_no.') '. $p->style_description; ?></td>
                                 <td><?= $p->product_name; ?></td>
                                 <td class="text-right"><?= number_to_currency($p->product_price, 'USD', 'en_US', 2); ?></td>
                                 <td class="text-center">

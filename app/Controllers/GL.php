@@ -10,13 +10,13 @@ use App\Models\StyleModel;
 class GL extends BaseController
 {
     protected $BuyerModel;
-    protected $glModel;
+    protected $GlModel;
     protected $StyleModel;
     protected $session;
 
     public function __construct()
     {
-        $this->glModel = new GlModel();
+        $this->GlModel = new GlModel();
         $this->BuyerModel = new BuyerModel();
         $this->StyleModel = new StyleModel();
         $this->session = Services::session();
@@ -24,16 +24,16 @@ class GL extends BaseController
 
     public function index()
     {
+        $gl_list = $this->GlModel->getGL()->getResult();
+        foreach ($gl_list as $key => $gl) {
+            $style_by_gl = $this->StyleModel->getStyleByGL($gl->id);
+            $gl_list[$key]->style_no = implode(' | ', (array_column($style_by_gl, 'style_no')));
+        }
         $data = [
             'title'     => 'List of GL',
-            'gl'        => $this->glModel->getGL()->getResult(),
+            'gl'        => $gl_list,
             'buyer'     => $this->BuyerModel->getBuyer()->getResult(),
-            'style'     => $this->StyleModel->getStyle()->getResult(),
         ];
-
-        if (!$this->session->isLoggedIn) {
-            return redirect()->to('login');
-        }
         return view('gl/index', $data);
     }
 
@@ -47,7 +47,7 @@ class GL extends BaseController
             'season'        => $this->request->getVar('season'),
             'size_order'    => $this->request->getVar('size_order'),
         );
-        $this->glModel->save($data);
+        $this->GlModel->save($data);
         return redirect()->to('/gl');
     }
 
@@ -61,13 +61,13 @@ class GL extends BaseController
             'style_id'      => $this->request->getVar('gl_style'),
             'size_order'    => $this->request->getVar('size_order'),
         );
-        $this->glModel->updateGL($data, $id);
-        return redirect()->to('/gl');
+        $this->GlModel->update($id, $data);
+        return redirect()->to('gl');
     }
     public function delete()
     {
         $id = $this->request->getVar('gl_id');
-        $this->glModel->deleteGL($id);
+        $this->GlModel->delete($id);
         return redirect()->to('gl');
     }
 }

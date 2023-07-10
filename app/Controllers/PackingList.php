@@ -10,6 +10,7 @@ use App\Models\SizeModel;
 use App\Models\ProductModel;
 use App\Models\PackinglistCartonModel;
 use App\Models\CartonDetailModel;
+use App\Models\StyleModel;
 
 helper('number', 'form', 'url', 'text');
 
@@ -22,6 +23,7 @@ class PackingList extends BaseController
     protected $ProductModel;
     protected $PackinglistCartonModel;
     protected $CartonDetailModel;
+    protected $StyleModel;
     protected $session;
 
     public function __construct()
@@ -33,6 +35,7 @@ class PackingList extends BaseController
         $this->ProductModel = new ProductModel();
         $this->PackinglistCartonModel = new PackinglistCartonModel();
         $this->CartonDetailModel = new CartonDetailModel();
+        $this->StyleModel = new StyleModel();
         $this->session = Services::session();
     }
 
@@ -138,6 +141,10 @@ class PackingList extends BaseController
         $packinglist = $this->PackingListModel->getPackingList($id);
         $packinglist->total_carton = $this->PackingListModel->getTotalCarton($id);
         $packinglist->percentage_ship = $this->PackingListModel->getShipmentPercentage($id);
+
+        $style_by_gl = $this->StyleModel->getStyleByPO($packinglist->packinglist_po_id);
+        $packinglist->style_no = implode(' | ', (array_column($style_by_gl, 'style_no')));
+        $packinglist->style_description = implode(' | ', (array_column($style_by_gl, 'style_description')));
 
         $data = [
             'title'         => 'Packing List Detail',

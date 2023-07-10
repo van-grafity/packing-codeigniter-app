@@ -25,10 +25,9 @@ class PackingListModel extends Model
     public function getPackingList($id = false)
     {
         $builder = $this->db->table('tblpackinglist');
-        $builder->select('tblpackinglist.*, tblpurchaseorder.id as po_id, tblpurchaseorder.po_no, tblpurchaseorder.shipdate , tblbuyer.buyer_name, tblgl.gl_number, tblgl.season, tblgl.size_order, style.style_no, style.style_description');
+        $builder->select('tblpackinglist.*, tblpurchaseorder.id as po_id, tblpurchaseorder.po_no, tblpurchaseorder.shipdate , tblbuyer.buyer_name, tblgl.gl_number, tblgl.season, tblgl.size_order, tblgl.id as gl_id');
         $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id');
         $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id');
-        $builder->join('tblstyle as style', 'style.id = tblgl.style_id');
         $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id');
         $builder->orderBy('tblpackinglist.id', 'ASC');
 

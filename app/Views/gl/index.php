@@ -32,12 +32,12 @@
                                 <td class="text-center" scope="row"><?= $i++; ?></th>
                                 <td><?= $g->gl_number; ?></td>
                                 <td><?= $g->buyer_name; ?></td>
-                                <td><?= $g->style_description; ?></td>
+                                <td><?= $g->style_no; ?></td>
                                 <td><?= $g->season; ?></td>
                                 <td><?= $g->size_order; ?></td>
                                 <td class="text-center">
-                                    <a class="btn btn-success btn-sm btn-detail" data-id="<?= $g->id; ?>" data-gl-number="<?= $g->gl_number; ?>" data-buyer_id="<?= $g->buyer_id; ?>" data-style_id="<?= $g->style_id; ?>" data-season="<?= $g->season; ?>" data-size_order="<?= $g->size_order ?>">Details</a>
-                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $g->id; ?>" data-gl-number="<?= $g->gl_number; ?>" data-buyer_id="<?= $g->buyer_id; ?>" data-style_id="<?= $g->style_id; ?>" data-season="<?= $g->season; ?>" data-size_order="<?= $g->size_order ?>">Edit</a>
+                                    <a class="btn btn-success btn-sm btn-detail" data-id="<?= $g->id; ?>" data-gl-number="<?= $g->gl_number; ?>" data-buyer_id="<?= $g->buyer_id; ?>" data-season="<?= $g->season; ?>" data-size_order="<?= $g->size_order ?>">Details</a>
+                                    <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $g->id; ?>" data-gl-number="<?= $g->gl_number; ?>" data-buyer_id="<?= $g->buyer_id; ?>" data-season="<?= $g->season; ?>" data-size_order="<?= $g->size_order ?>">Edit</a>
                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $g->id; ?>" data-gl-number="<?= $g->gl_number; ?>">Delete</a>
                                 </td>
                             </tr>
@@ -76,15 +76,6 @@
                             <option value="">-Select Buyer-</option>
                             <?php foreach ($buyer as $b) : ?>
                                 <option value="<?= $b->id; ?>"><?= $b->buyer_name; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="style" class="col-form-label">Style :</label>
-                        <select id="gl_style" name="gl_style" class="form-control" required>
-                            <option value="">-Select Style-</option>
-                            <?php foreach ($style as $s) : ?>
-                                <option value="<?= $s->id; ?>"><?= $s->style_description; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -179,7 +170,6 @@
             let id = $(this).data('id');
             let gl_number = $(this).data('gl-number');
             let buyer = $(this).data('buyer_id');
-            let style = $(this).data('style_id');
             let season = $(this).data('season');
             let sizeorder = $(this).data('size_order');
 
@@ -192,7 +182,6 @@
             $('#edit_gl_id').attr("readonly", false);
             $('#number').attr("readonly", false);
             $('#gl_buyer').attr("readonly", false);
-            $('#gl_style').attr("readonly", false);
             $('#season').attr("readonly", false);
             $('#size_order').attr("readonly", false);
 
@@ -200,7 +189,6 @@
             $('#edit_gl_id').val(id);
             $('#number').val(gl_number);
             $('#gl_buyer').val(buyer);
-            $('#gl_style').val(style);
             $('#season').val(season);
             $('#size_order').val(sizeorder);
 
@@ -212,7 +200,6 @@
             let id = $(this).data('id');
             let gl_number = $(this).data('gl-number');
             let buyer = $(this).data('buyer_id');
-            let style = $(this).data('style_id');
             let season = $(this).data('season');
             let sizeorder = $(this).data('size_order');
 
@@ -225,7 +212,6 @@
             $('#edit_gl_id').attr("readonly", true);
             $('#number').attr("readonly", true);
             $('#gl_buyer').attr("readonly", true);
-            $('#gl_style').attr("readonly", true);
             $('#season').attr("readonly", true);
             $('#size_order').attr("readonly", true);
 
@@ -233,7 +219,6 @@
             $('#edit_gl_id').val(id);
             $('#number').val(gl_number);
             $('#gl_buyer').val(buyer);
-            $('#gl_style').val(style);
             $('#season').val(season);
             $('#size_order').val(sizeorder);
             $('#modal_gl_detail').modal('show');

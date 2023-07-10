@@ -26,10 +26,6 @@ class GL extends Migration
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
-            'style_id' => [
-                'type' => 'BIGINT',
-                'unsigned' => true,
-            ],
             'size_order' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
@@ -45,7 +41,6 @@ class GL extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('buyer_id', 'tblbuyer', 'id', 'RESTRICT', 'RESTRICT');
-        $this->forge->addForeignKey('style_id', 'tblstyle', 'id', 'RESTRICT', 'RESTRICT');
         $this->forge->createTable('tblgl');
     }
 
