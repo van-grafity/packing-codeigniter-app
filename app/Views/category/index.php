@@ -115,8 +115,9 @@
         $('#btn-add-detail').on('click', function(event) {
             $('#ModalLabel').text("Add Product Type")
             $('#btn_submit').text("Add Product Type")
-            $('#category_form').attr('action', store_url);
             $('#btn_submit').attr('hidden', false);
+            
+            $('#category_form').attr('action', store_url);
             $('#category_form').find("input[type=text], input[type=number], textarea").val("");
             $('#category_form').find('select').val("").trigger('change');
 
@@ -144,8 +145,8 @@
             let id = $(this).data('id');
             let name = $(this).data('category-name');
 
-            $('#ModalLabel').text("Edit Category")
-            $('#btn_submit').text("Update Category")
+            $('#ModalLabel').text("Edit Product Type")
+            $('#btn_submit').text("Update Product Type")
             $('#btn_submit').attr('hidden', false);
             $('#category_form').attr('action', update_url);
 
@@ -166,7 +167,7 @@
             let id = $(this).data('id');
             let name = $(this).data('category-name');
 
-            $('#ModalLabel').text("Category Details")
+            $('#ModalLabel').text("Product Type Details")
             $('#btn_submit').attr('hidden', true);
 
             // Set ReadOnly the textboxes

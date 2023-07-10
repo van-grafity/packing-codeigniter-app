@@ -116,6 +116,7 @@
             $('#colour_form').find("input[type=text], input[type=number], textarea").val("");
             $('#colour_form').find('select').val("").trigger('change');
 
+            $('#btn_submit').text("Save")
             $('#modal_colour_detail').modal('show');
         })
 

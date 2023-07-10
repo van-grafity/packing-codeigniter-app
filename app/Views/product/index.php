@@ -177,8 +177,10 @@
 
         $('#btn-add-detail').on('click', function(event) {
             $('#ModalLabel').text("Add Product")
-            $('#product_form').attr('action', store_url);
+            $('#btn_submit').text("Add Product Type")
             $('#btn_submit').attr('hidden', false);
+
+            $('#product_form').attr('action', store_url);
             $('#product_form').find("input[type=text], input[type=number], textarea").val("");
             $('#product_form').find('select').val("").trigger('change');
 
@@ -254,6 +256,9 @@
             let size = $(this).data('size_id');
             let name = $(this).data('name');
             let price = $(this).data('price');
+
+            $('#ModalLabel').text("Product Details")
+            $('#btn_submit').attr('hidden', true);
 
             // Set ReadOnly the textboxes
             $('#edit_product_id').attr("readonly", true);
