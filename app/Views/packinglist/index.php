@@ -155,7 +155,7 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action=".<?= base_url('packinglist/delete')?>" method="post">
+            <form action="<?= base_url('packinglist/delete')?>" method="post">
                 <input type="hidden" name="packinglist_id" id="packinglist_id">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Delete Packing List</h5>

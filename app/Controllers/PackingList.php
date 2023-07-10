@@ -12,7 +12,7 @@ use App\Models\PackinglistCartonModel;
 use App\Models\CartonDetailModel;
 use App\Models\StyleModel;
 
-helper('number', 'form', 'url', 'text');
+// helper('number', 'form', 'url', 'text');
 
 class PackingList extends BaseController
 {
@@ -156,8 +156,6 @@ class PackingList extends BaseController
             'size_rowspan'   => count($packinglist_size_list) ?  1 : 2,
         ];
 
-        // dd($data['products']);
-
         return view('packinglist/detail', $data);
     }
 
@@ -277,7 +275,7 @@ class PackingList extends BaseController
 
     private function report()
     {
-
         return view('report/packinglist');
     }
+
 }

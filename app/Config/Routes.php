@@ -98,7 +98,7 @@ $routes->get('packinglist', 'PackingList::index');
 $routes->post('packinglist/store', 'PackingList::store');
 $routes->post('packinglist/delete', 'PackingList::delete');
 $routes->post('packinglist/update', 'PackingList::update/$1');
-$routes->get('/packinglist/(:any)', 'PackingList::detail/$1');
+$routes->get('packinglist/(:any)', 'PackingList::detail/$1');
 $routes->post('packinglistcarton/store', 'PackingList::cartonstore');
 $routes->get('packinglistcarton/edit', 'PackingList::cartonedit');
 $routes->post('packinglistcarton/update', 'PackingList::cartonupdate');
