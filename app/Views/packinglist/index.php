@@ -49,6 +49,7 @@
                                         data-id = "<?= esc($pl->id)?>"
                                         data-pl-serial-number = "<?= esc($pl->packinglist_serial_number)?>"
                                     >Delete</a>
+                                    <a href="<?= base_url('report/packinglist/'.$pl->id)?>" target="_blank" class="btn btn-info btn-sm" >Print Report</a>
                                 </td>
                             </tr>
                         <?php endforeach;  ?>

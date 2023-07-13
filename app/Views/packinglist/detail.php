@@ -57,7 +57,7 @@
                             </tr>
                             <tr>
                                 <td><b>Order Qty.</b></td>
-                                <td><?= esc($packinglist->packinglist_qty); ?></td>
+                                <td><?= esc($packinglist->po_qty); ?></td>
                                 <td><b>Destination</b></td>
                                 <td> <?= esc($packinglist->destination); ?> </td>
                             </tr>

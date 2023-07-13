@@ -18,53 +18,53 @@
                     </tr>
                     <tr>
                         <td colspan="2" class="text-bold">GL Number:</td>
-                        <td>87001-00</td>
+                        <td><?= $packinglist->gl_number ?></td>
                         <td colspan="2" class="text-bold">Buyer PO:</td>
-                        <td>TJKM90812309</td>
+                        <td><?= $packinglist->po_no ?></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="text-bold">Buyer:</td>
-                        <td colspan="4">Batam Retails Store</td>
+                        <td colspan="4"><?= $packinglist->buyer_name ?></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="text-bold">Style:</td>
-                        <td>BRS-WQ087896</td>
+                        <td><?= $packinglist->style_no ?></td>
                         <td colspan="2" class="text-bold">Description:</td>
-                        <td></td>
+                        <td><?= $packinglist->style_description ?></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="text-bold">Order Qty:</td>
-                        <td>1000 pcs</td>
+                        <td><?= $packinglist->po_qty ?></td>
                         <td colspan="2" class="text-bold">Destination:</td>
-                        <td></td>
+                        <td><?= $packinglist->destination ?></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="text-bold">Cut Qty:</td>
-                        <td>1010 pcs</td>
+                        <td><?= $packinglist->packinglist_cutting_qty ?></td>
                         <td colspan="2" class="text-bold">Customer Code:</td>
-                        <td></td>
+                        <td> xxxxx </td>
                     </tr>
                     <tr>
                         <td colspan="2" class="text-bold">Ship Qty:</td>
-                        <td>1000 pcs</td>
+                        <td><?= $packinglist->packinglist_ship_qty ?></td>
                         <td colspan="2" class="text-bold">Department:</td>
-                        <td></td>
+                        <td> <?= esc($packinglist->department); ?> </td>
                     </tr>
                     <tr>
                         <td colspan="2" class="text-bold">Total Carton:</td>
-                        <td>100 ctn</td>
+                        <td> <?= esc($packinglist->total_carton); ?> </td>
                         <td colspan="2" class="text-bold">Ship Date:</td>
-                        <td>2023-07-01</td>
-
+                        <td><?= esc($packinglist->shipdate); ?></td>
+                        
                     </tr>
                     <tr>
                         <td colspan="2" class="text-bold">Total Pieces:</td>
-                        <td>1000 pcs</td>
+                        <td> <?= esc($packinglist->packinglist_qty); ?> </td>
                         <td colspan="3" rowspan="2" class="text-bold">Remarks:</td>
                     </tr>
                     <tr>
                         <td colspan="2" class="text-bold">Percentage Ship:</td>
-                        <td>100%</td>
+                        <td> <?= esc($packinglist->percentage_ship); ?> </td>
                     </tr>
                 </table>
                 <table class="table table-bordered">
