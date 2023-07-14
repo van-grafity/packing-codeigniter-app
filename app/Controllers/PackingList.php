@@ -335,10 +335,25 @@ class PackingList extends BaseController
             'size_rowspan'   => count($packinglist_size_list) ?  1 : 2,
         ];
 
-        // dd($data);
+        $filename = $packinglist->packinglist_serial_number;
         
+        // return view('report/packinglist_pdf', $data);
 
-        return view('report/packinglist', $data);
+        $dompdf = new \Dompdf\Dompdf(); 
+        $dompdf->loadHtml(view('report/packinglist_pdf', $data));
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $dompdf->stream($filename, ['Attachment' => false]);
+        
+        // return view('report/packinglist', $data);
+    }
+
+    public function htmlToPDF(){
+        $dompdf = new \Dompdf\Dompdf(); 
+        $dompdf->loadHtml(view('pdf_view'));
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $dompdf->stream();
     }
 
 }

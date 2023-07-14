@@ -134,6 +134,7 @@
                                 <?php foreach ($carton->products_in_carton as $key_product => $product) : ?>
                                     <?php if ($key_product > 0) : ?>
                                         <tr class="text-center">
+                                            <td> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
                                             <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
                                             <td> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
                                             <?php foreach ($product->ratio_by_size_list as $key_size => $size) { ?>
