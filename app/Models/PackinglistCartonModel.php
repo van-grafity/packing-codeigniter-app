@@ -64,7 +64,7 @@ class PackinglistCartonModel extends Model
             $product_data = $this->db->table('tblproduct as product')
                 ->join('tblcolour as colour', 'colour.id = product.product_colour_id')
                 ->join('tblsize as size', 'size.id = product.product_size_id')
-                ->select('product.id as product_id, product_name, product_code, colour.colour_name as colour, size.id as size_id, size.size')
+                ->select('product.id as product_id, product_name, product_code, product_asin_id, colour.colour_name as colour, size.id as size_id, size.size')
                 ->where('product.id', $product->product_id)
                 ->get()->getRow();
 

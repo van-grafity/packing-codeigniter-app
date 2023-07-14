@@ -1,6 +1,18 @@
 <?= $this->extend('app-layout/template'); ?>
 
 <?= $this->Section('content'); ?>
+<style>
+    .table-wrapper {
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    #packinglist_carton_table th,
+    #packinglist_carton_table td {
+        vertical-align: middle !important;
+    }
+</style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Main content -->
@@ -60,82 +72,87 @@
                     <tr>
                         <td colspan="2" class="text-bold">Total Pieces:</td>
                         <td> <?= esc($packinglist->packinglist_qty); ?> </td>
-                        <td colspan="3" rowspan="2" class="text-bold">Remarks:</td>
+                        <td colspan="2" class="text-bold">Contract Qty:</td>
+                        <td><?= esc($packinglist->contract_qty); ?></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="text-bold">Percentage Ship:</td>
                         <td> <?= esc($packinglist->percentage_ship); ?> </td>
+                        <td colspan="3" rowspan="2" class="text-bold">Remarks:</td>
                     </tr>
                 </table>
-                <table class="table table-bordered">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th colspan="2" class="text-center">Carton Number</th>
-                                <th rowspan="2" class="text-center align-middle">ASIN</th>
-                                <th rowspan="2" class="text-center align-middle">PID/UPC</th>
-                                <th rowspan="2" class="text-center align-middle">Colour Code/Name</th>
-                                <th colspan="3" class="text-center align-middle">Size</th>
-                                <th rowspan="2" class="text-center align-middle">Total (Pcs)</th>
-                                <th rowspan="2" class="text-center align-middle">Contract Qty</th>
-                                <th rowspan="2" class="text-center align-middle">Cut Qty</th>
-                                <th rowspan="2" class="text-center align-middle">Ship Qty</th>
-                                <th rowspan="2" class="text-center align-middle">Total CTN</th>
-                                <th rowspan="2" class="text-center align-middle">G.W. (Kgs)</th>
-                                <th rowspan="2" class="text-center align-middle">N.W. (Kgs)</th>
-                                <th rowspan="2" class="text-center align-middle">Measurement CTN</th>
-                                <th rowspan="2" class="text-center align-middle">+/-</th>
+                <table class="table table-bordered" id="packinglist_carton_table">
+                    <thead>
+                        <tr class="text-center">
+                            <th rowspan="1" colspan="2">Carton Number</th>
+                            <th rowspan="2" colspan="1">ASIN</th>
+                            <th rowspan="2" colspan="1">PID/UPC</th>
+                            <th rowspan="2" colspan="1">Colour Code/Name</th>
+                            <th rowspan="<?= $size_rowspan ?>" colspan="<?= $size_colspan; ?>">Size</th>
+                            <th rowspan="2" colspan="1">Total (Pcs)</th>
+                            <!-- <th rowspan="2" colspan="1">Contract Qty</th> -->
+                            <!-- <th rowspan="2" colspan="1">Cut Qty</th> -->
+                            <th rowspan="2" colspan="1">Total CTN</th>
+                            <th rowspan="2" colspan="1">Ship Qty</th>
+                            <th rowspan="2" colspan="1">G.W. (Kgs)</th>
+                            <th rowspan="2" colspan="1">N.W. (Kgs)</th>
+                            <th rowspan="2" colspan="1">Measurement CTN</th>
+                            <th rowspan="2" colspan="1">+/-</th>
+                        </tr>
+                        <tr class="text-center">
+                            <th>From</th>
+                            <th>To</th>
+                            <?php foreach ($packinglist_size_list as $key => $size) { ?>
+                                <th><?= $size->size ?></th>
+                            <?php } ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($packinglist_carton as $key => $carton) { ?>
+                            <tr class="text-center">
+                                <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_from ?> </td>
+                                <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_to ?> </td>
+                                <?php foreach ($carton->products_in_carton as $key_product => $product) { ?>
+                                    <?php if ($key_product == 0) { ?>
+                                        <td> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
+                                        <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
+                                        <td> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
+                                        <?php foreach ($product->ratio_by_size_list as $key_size => $size) : ?>
+                                            <td> <?= $size->size_qty ?> </td>
+                                        <?php endforeach ?>
+                                    <?php } ?>
+                                <?php } ?>
+                                <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->pcs_per_carton ?> </td>
+                                <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_qty ?> </td>
+                                <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->ship_qty ?> </td>
+                                <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight ?> </td>
+                                <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight ?> </td>
+                                <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> xxxxx </td>
+                                <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> xxxxx </td>
                             </tr>
-                            <tr>
-                                <td>From</td>
-                                <td>To</td>
-                                <td>S</td>
-                                <td>M</td>
-                                <td>L</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $i = 1; ?>
-                            <tr>
-                                <td class="text-center"><?= $i++; ?></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center"><?= $i++; ?></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <?php if ($carton->number_of_product_per_carton > 1) :  ?>
+                                <?php foreach ($carton->products_in_carton as $key_product => $product) : ?>
+                                    <?php if ($key_product > 0) : ?>
+                                        <tr class="text-center">
+                                            <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
+                                            <td> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
+                                            <?php foreach ($product->ratio_by_size_list as $key_size => $size) { ?>
+                                                <td> <?= $size->size_qty ?> </td>
+                                            <?php } ?>
+                                        </tr>
+                                    <?php endif ?>
+                                <?php endforeach ?>
+                            <?php endif ?>
+                        <?php } ?>
+                    </tbody>
+                    <tfoot class="footer">
+                        <tr class="text-center">
+                            <td colspan="<?= 5 + $size_colspan + 1; ?>" class="text-right">Total : </td>
+                            <td colspan=""><?= $packinglist_carton_total->total_carton ?></td>
+                            <td colspan=""><?= $packinglist_carton_total->total_ship ?></td>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
             <!-- /.card-body -->
         </div>

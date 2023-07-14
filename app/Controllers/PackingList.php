@@ -272,11 +272,15 @@ class PackingList extends BaseController
         $packinglist_carton = $this->PackinglistCartonModel->getDataByPackinglist($id);
         $packinglist_size_list = $this->PackingListModel->getSizeList($id);
         $packinglist_carton_data = [];
+        $packinglist_carton_total_data = (object)[
+            'total_carton' => 0,
+            'total_ship' => 0,
+        ];
 
         foreach ($packinglist_carton as $key => $carton) {
             $products_in_carton = $this->PackinglistCartonModel->getProductsInCarton($carton->id);
 
-            foreach ($products_in_carton as $key => $product) {
+            foreach ($products_in_carton as $key_product => $product) {
                 $product_ratio_by_size_list = [];
                 foreach ($packinglist_size_list as $key_size => $size) {
                     $ratio_per_size = (object)[
@@ -291,7 +295,7 @@ class PackingList extends BaseController
 
                     $product_ratio_by_size_list[] =  $ratio_per_size;
                 }
-                $products_in_carton[$key]->ratio_by_size_list = $product_ratio_by_size_list;
+                $products_in_carton[$key_product]->ratio_by_size_list = $product_ratio_by_size_list;
             }
 
             $packinglist_carton_data[] = (object)[
@@ -306,14 +310,15 @@ class PackingList extends BaseController
                 'gross_weight' => $carton->gross_weight,
                 'net_weight' => $carton->net_weight,
             ];
+
+            $packinglist_carton_total_data->total_carton += $packinglist_carton_data[$key]->carton_qty;
+            $packinglist_carton_total_data->total_ship += $packinglist_carton_data[$key]->ship_qty;
         }
 
         $packinglist = $this->PackingListModel->getPackingList($id);
         $packinglist->total_carton = $this->PackingListModel->getTotalCarton($id);
         $packinglist->percentage_ship = $this->PackingListModel->getShipmentPercentage($id);
-
-        // dd($packinglist);
-        
+        $packinglist->contract_qty = $this->PackingListModel->getContractQty($id);
 
         $style_by_gl = $this->StyleModel->getStyleByPO($packinglist->packinglist_po_id);
         $packinglist->style_no = implode(' | ', (array_column($style_by_gl, 'style_no')));
@@ -324,6 +329,7 @@ class PackingList extends BaseController
             'packinglist'   => $packinglist,
             'products'   => $this->ProductModel->getByPurchaseOrderID($packinglist->po_id),
             'packinglist_carton'   => $packinglist_carton_data,
+            'packinglist_carton_total'   => $packinglist_carton_total_data,
             'packinglist_size_list'   => $packinglist_size_list,
             'size_colspan'   => count($packinglist_size_list),
             'size_rowspan'   => count($packinglist_size_list) ?  1 : 2,
