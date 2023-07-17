@@ -168,6 +168,7 @@ class PackingList extends BaseController
                 'net_weight' => $this->request->getPost('net_weight'),
                 'carton_number_from' => $this->request->getPost('carton_number_from'),
                 'carton_number_to' => $this->request->getPost('carton_number_to'),
+                'measurement_ctn' => $this->request->getPost('measurement_ctn'),
             ];
             $packinglist_carton_id = $this->PackinglistCartonModel->insert($packinglist_carton_data);
 
@@ -226,6 +227,7 @@ class PackingList extends BaseController
                 'net_weight' => $this->request->getPost('net_weight'),
                 'carton_number_from' => $this->request->getPost('carton_number_from'),
                 'carton_number_to' => $this->request->getPost('carton_number_to'),
+                'measurement_ctn' => $this->request->getPost('measurement_ctn'),
             ];
             $this->PackinglistCartonModel->update($packinglist_carton_id, $packinglist_carton_data);
 

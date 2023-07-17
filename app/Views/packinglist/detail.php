@@ -314,6 +314,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="measurement_ctn">Measurement CTN :</label>
+                                <input type="text" class="form-control" id="measurement_ctn" name="measurement_ctn" placeholder="10L x 10W x 5H"></input>
+                            </div>
+    
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -577,7 +586,6 @@
         clear_carton_contents('empty');
 
         carton_detail.forEach(data => {
-            console.log(data);
             let data_element = {
                 product_id: data.product_id,
                 product_code: data.product_code,
@@ -597,6 +605,7 @@
         $('#net_weight').val(packinglist_carton.net_weight);
         $('#carton_number_from').val(packinglist_carton.carton_number_from);
         $('#carton_number_to').val(packinglist_carton.carton_number_to);
+        $('#measurement_ctn').val(packinglist_carton.measurement_ctn);
         $('#edit_packinglist_carton_id').val(packinglist_carton.id);
 
 

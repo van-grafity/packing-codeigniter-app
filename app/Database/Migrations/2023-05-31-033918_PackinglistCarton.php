@@ -40,6 +40,11 @@ class PackinglistCarton extends Migration
                 'constraint' => '2',
                 'default' => 'N',
             ],
+            'measurement_ctn' => [
+                'type' => 'varchar',
+                'constraint' => 255,
+                'null' => true,
+            ],
             'created_at'  => [
                 'type' => 'datetime', 
                 'null' => true

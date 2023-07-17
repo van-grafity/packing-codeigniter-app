@@ -17,6 +17,7 @@ class PackinglistCartonModel extends Model
         'carton_number_from',
         'carton_number_to',
         'flag_generate_carton',
+        'measurement_ctn',
     ];
 
     public function getDataByPackinglist($packinglist_id = null)
