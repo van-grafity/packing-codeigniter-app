@@ -17,21 +17,13 @@
             margin-bottom: 0cm;
         }
 
-        @media print {
-            .no-page-break {
-                break-inside: avoid;
-            }
-        }
-        .no-page-break {
-            break-inside: avoid;
-        }
-        
         body {
             height: 100%;
         }
 
         table {
             width: 100%;
+            /* border-collapse: collapse; */
             border-spacing: 0px;
             font-weight: Normal;
         }
@@ -53,13 +45,11 @@
 
         .table-wrapper {
             border-radius: 5px;
-            /* margin-bottom: 10px; */
+            margin-bottom: 10px;
             font-family: sans-serif;
             
             position: relative;
             min-height: 100vh;
-
-            margin-bottom: 20px;
         }
 
         .company-section {
@@ -109,6 +99,8 @@
         .assignment-section td {
             border: 0px;
         }
+
+        
 
 	</style>
 </head>
@@ -192,6 +184,8 @@
                         <th rowspan="2" colspan="1">Colour Code/Name</th>
                         <th rowspan="<?= $size_rowspan ?>" colspan="<?= $size_colspan; ?>">Size</th>
                         <th rowspan="2" colspan="1">Total (Pcs)</th>
+                        <!-- <th rowspan="2" colspan="1">Contract Qty</th> -->
+                        <!-- <th rowspan="2" colspan="1">Cut Qty</th> -->
                         <th rowspan="2" colspan="1">Total CTN</th>
                         <th rowspan="2" colspan="1">Ship Qty</th>
                         <th rowspan="2" colspan="1">G.W. (Kgs)</th>
@@ -209,8 +203,8 @@
                 </thead>
                 <tbody>
                     <?php foreach ($packinglist_carton as $key => $carton) { ?>
-                        <tr class="text-center no-page-break">
-                            <td class="" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_from ?> </td>
+                        <tr class="text-center">
+                            <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_from ?> </td>
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_to ?> </td>
                             <?php foreach ($carton->products_in_carton as $key_product => $product) { ?>
                                 <?php if ($key_product == 0) { ?>
@@ -255,7 +249,6 @@
                     </tr>
                 </tfoot>
             </table>
-
         </div>
 
         <div class="assignment-section">

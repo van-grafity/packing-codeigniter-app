@@ -20,10 +20,12 @@
         @media print {
             .no-page-break {
                 break-inside: avoid;
+                background-color: aquamarine;
             }
         }
         .no-page-break {
-            break-inside: avoid;
+            background-color: aquamarine;
+            break-inside: avoid !important;
         }
         
         body {
@@ -32,6 +34,7 @@
 
         table {
             width: 100%;
+            /* border-collapse: collapse; */
             border-spacing: 0px;
             font-weight: Normal;
         }
@@ -53,13 +56,11 @@
 
         .table-wrapper {
             border-radius: 5px;
-            /* margin-bottom: 10px; */
+            margin-bottom: 10px;
             font-family: sans-serif;
             
             position: relative;
             min-height: 100vh;
-
-            margin-bottom: 20px;
         }
 
         .company-section {
@@ -109,6 +110,8 @@
         .assignment-section td {
             border: 0px;
         }
+
+        
 
 	</style>
 </head>
@@ -192,6 +195,8 @@
                         <th rowspan="2" colspan="1">Colour Code/Name</th>
                         <th rowspan="<?= $size_rowspan ?>" colspan="<?= $size_colspan; ?>">Size</th>
                         <th rowspan="2" colspan="1">Total (Pcs)</th>
+                        <!-- <th rowspan="2" colspan="1">Contract Qty</th> -->
+                        <!-- <th rowspan="2" colspan="1">Cut Qty</th> -->
                         <th rowspan="2" colspan="1">Total CTN</th>
                         <th rowspan="2" colspan="1">Ship Qty</th>
                         <th rowspan="2" colspan="1">G.W. (Kgs)</th>
@@ -209,7 +214,7 @@
                 </thead>
                 <tbody>
                     <?php foreach ($packinglist_carton as $key => $carton) { ?>
-                        <tr class="text-center no-page-break">
+                        <tr class="text-center">
                             <td class="" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_from ?> </td>
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_to ?> </td>
                             <?php foreach ($carton->products_in_carton as $key_product => $product) { ?>
@@ -245,6 +250,32 @@
                             <?php endforeach ?>
                         <?php endif ?>
                     <?php } ?>
+                    <tr class="no-page-break">
+                    <td rowspan="2">186</td>
+                    <td rowspan="2">187</td>
+                    <td>Sel 1</td>
+                    <td>Sel 1</td>
+                    <td>Sel 1</td>
+                    <td>Sel 1</td>
+                    <td>Sel 1</td>
+                </tr>
+                <tr class="no-page-break">
+                    <td>Sel 2 TR</td>
+                    <td>Sel 2 TR</td>
+                    <td>Sel 2 TR</td>
+                </tr>
+                <tr class="no-page-break">
+                    <td rowspan="2">186</td>
+                    <td rowspan="2">187</td>
+                    <td>Sel 1</td>
+                    <td>Sel 1</td>
+                    <td>Sel 1</td>
+                    <td>Sel 1</td>
+                    <td>Sel 1</td>
+                </tr>
+                <tr class="no-page-break">
+                    <td>Sel 2 TR</td>
+                </tr>
                 </tbody>
                 <tfoot class="footer">
                     <tr class="text-center">

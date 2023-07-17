@@ -311,6 +311,7 @@ class PackingList extends BaseController
                 'number_of_product_per_carton' => count($products_in_carton),
                 'gross_weight' => $carton->gross_weight,
                 'net_weight' => $carton->net_weight,
+                'measurement_ctn' => $carton->measurement_ctn,
             ];
 
             $packinglist_carton_total_data->total_carton += $packinglist_carton_data[$key]->carton_qty;
@@ -346,8 +347,6 @@ class PackingList extends BaseController
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
         $dompdf->stream($filename, ['Attachment' => false]);
-        
-        // return view('report/packinglist', $data);
     }
 
     public function htmlToPDF(){

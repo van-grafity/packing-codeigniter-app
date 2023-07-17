@@ -134,13 +134,14 @@ class PackingListModel extends Model
     public function getContractQty($packinglist_id = null)
     {
         $builder = $this->db->table('tblpackinglist as packinglist');
-        $builder->select('po_detail.qty, size.size');
+        $builder->select('sum(po_detail.qty) as qty, size.size');
         $builder->join('tblpurchaseorder as po', 'po.id = packinglist.packinglist_po_id');
         $builder->join('tblpurchaseorderdetail as po_detail', 'po_detail.order_id = po.id');
         $builder->join('tblproduct as product', 'product.id = po_detail.product_id');
         $builder->join('tblsize as size','size.id = product.product_size_id');
         $builder->where('packinglist.id', $packinglist_id);
         $builder->orderBy('size.id');
+        $builder->groupBy('size.id');
         $result = $builder->get()->getResult();
 
         $contract_qty_per_size = array();

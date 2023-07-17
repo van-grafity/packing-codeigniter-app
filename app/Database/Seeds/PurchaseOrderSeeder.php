@@ -26,7 +26,7 @@ class PurchaseOrderSeeder extends Seeder
                 'po_no' => '0000804646',
                 'gl_id' => 2,
                 'shipdate' => '2023-05-23',
-                'po_qty' => 396,
+                'po_qty' => 6284,
                 'po_amount' => 34652,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
