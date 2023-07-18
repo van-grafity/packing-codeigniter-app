@@ -153,4 +153,32 @@ class PackingListModel extends Model
 
         return $contract_qty_all_size;
     }
+
+    public function getShipmentPercentageEachProduct($packinglist_id = null)
+    {
+        $builder = $this->db->table('tblpackinglist as packinglist');
+        $builder->select('product.id as product_id, product.product_code as upc, colour.colour_name as colour, size.size, sum((pl_carton.carton_qty*carton_detail.product_qty)) as shipment_qty');
+        $builder->join('tblpackinglistcarton as pl_carton','pl_carton.packinglist_id = packinglist.id');
+        $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
+        $builder->join('tblproduct as product','product.id = carton_detail.product_id');
+        $builder->join('tblcolour as colour','colour.id = product.product_colour_id');
+        $builder->join('tblsize as size','size.id = product.product_size_id');
+        $builder->where('packinglist.id', $packinglist_id);
+        $builder->groupBy('product.id');
+        $result = $builder->get()->getResult();
+        
+        return $result;
+    }
+
+    public function getContractQtyEachProduct($packinglist_id = null)
+    {
+        $builder = $this->db->table('tblpackinglist as packinglist');
+        $builder->select('product.id as product_id, product.product_code as upc, po_detail.qty as po_qty');
+        $builder->join('tblpurchaseorder as po', 'po.id = packinglist.packinglist_po_id');
+        $builder->join('tblpurchaseorderdetail as po_detail', 'po_detail.order_id = po.id');
+        $builder->join('tblproduct as product', 'product.id = po_detail.product_id');
+        $builder->where('packinglist.id', $packinglist_id);
+        $result = $builder->get()->getResult();
+        return $result;
+    }
 }

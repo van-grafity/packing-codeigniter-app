@@ -95,10 +95,30 @@
         .packinglist-carton-section tfoot {
             background-color: #ddd;
         }
-
+        
         .content-wrap {
-            padding-bottom: 5.5rem;    /* Footer height */
+            padding-bottom: 4.5rem;    /* Footer height */
         }
+        
+        .shipment-detail-table {
+            width: 60%;
+            margin-top: 2rem;
+        }
+
+        .shipment-detail-table th,
+        .shipment-detail-table td {
+            font-size:8pt;
+        }
+
+        .shipment-detail-table th {
+            background-color: #ddd;
+            padding: 10px;
+        }
+        
+        .shipment-detail-title {
+            font-size: 11px;
+        }
+        
         .assignment-section {
             position: absolute;
             bottom: 0;
@@ -197,7 +217,6 @@
                         <th rowspan="2" colspan="1">G.W. (Kgs)</th>
                         <th rowspan="2" colspan="1">N.W. (Kgs)</th>
                         <th rowspan="2" colspan="1">Measurement CTN</th>
-                        <th rowspan="2" colspan="1">+/-</th>
                     </tr>
                     <tr class="text-center">
                         <th>From</th>
@@ -228,7 +247,6 @@
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight ?> </td>
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight ?> </td>
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->measurement_ctn ?> </td>
-                            <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> xxxxx </td>
                         </tr>
                         <?php if ($carton->number_of_product_per_carton > 1) :  ?>
                             <?php foreach ($carton->products_in_carton as $key_product => $product) : ?>
@@ -256,6 +274,33 @@
                 </tfoot>
             </table>
 
+            <table class="shipment-detail-table">
+                <thead>
+                    <tr>
+                        <th colspan="6" class="shipment-detail-title">Shipment Detail per UPC</th>
+                    </tr>
+                    <tr>
+                        <th>UPC</th>
+                        <th>Colour</th>
+                        <th>Size</th>
+                        <th>Ship Qty</th>
+                        <th>PO Qty</th>
+                        <th>Ship Percentage / UPC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($shipment_percentage_each_upc as $key => $product) { ?>
+                        <tr>
+                            <td><?= $product->upc ?></td>
+                            <td><?= $product->colour ?></td>
+                            <td><?= $product->size ?></td>
+                            <td><?= $product->shipment_qty ?></td>
+                            <td><?= $product->po_qty ?></td>
+                            <td><?= $product->percentage ?></td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
         </div>
 
         <div class="assignment-section">

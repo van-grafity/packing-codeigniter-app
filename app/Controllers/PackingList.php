@@ -327,6 +327,18 @@ class PackingList extends BaseController
         $packinglist->style_no = implode(' | ', (array_column($style_by_gl, 'style_no')));
         $packinglist->style_description = implode(' | ', (array_column($style_by_gl, 'style_description')));
 
+
+        //## Get Shipment Percentage per UPC
+        $shipment_percentage_each_upc = $this->PackingListModel->getShipmentPercentageEachProduct($id);
+        $contract_qty_each_product = $this->PackingListModel->getContractQtyEachProduct($id);
+
+        foreach ($shipment_percentage_each_upc as $key => $product) {
+            $product_id = $product->product_id;
+            $po_qty = $this->searchInArrayByProductID($product_id, $contract_qty_each_product)['po_qty'];
+            $shipment_percentage_each_upc[$key]->po_qty = $po_qty;
+            $shipment_percentage_each_upc[$key]->percentage = $product->shipment_qty / $po_qty * 100 . '%';
+        }
+
         $data = [
             'title'         => 'Packing List Detail',
             'packinglist'   => $packinglist,
@@ -334,6 +346,7 @@ class PackingList extends BaseController
             'packinglist_carton'   => $packinglist_carton_data,
             'packinglist_carton_total'   => $packinglist_carton_total_data,
             'packinglist_size_list'   => $packinglist_size_list,
+            'shipment_percentage_each_upc'   => $shipment_percentage_each_upc,
             'size_colspan'   => count($packinglist_size_list),
             'size_rowspan'   => count($packinglist_size_list) ?  1 : 2,
         ];
@@ -355,6 +368,16 @@ class PackingList extends BaseController
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
         $dompdf->stream();
+    }
+
+    private function searchInArrayByProductID(String $product_id, Array $array_po) : Array
+    {
+        foreach ($array_po as $key => $product) {
+            if(isset($product->product_id) && $product->product_id == $product_id){
+                return (array)$product;
+            }
+        }
+        return [];
     }
 
 }
