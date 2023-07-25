@@ -42,8 +42,8 @@
 
         table tr td,
 		table tr th {
-			font-size: 9pt;
-            padding: 5px 7px;
+			font-size: 8pt;
+            padding: 3px 5px;
             border: .1px solid  #858a8f;
 		}
 
@@ -62,6 +62,13 @@
             margin-bottom: 20px;
         }
 
+        .date-printed {
+            top: -12;
+            right:0;
+            position: absolute;
+            font-size: 7pt;
+        }
+
         .company-section {
             /* border: 2px solid #ced4da; */
         }
@@ -72,15 +79,15 @@
 
         .company-name {
             font-weight: bold;
-            font-size: 18px;
+            font-size: 14px;
         }
 
         .company-address {
-            font-size: 14px;
+            font-size: 11px;
         }
 
         .form-name {
-            font-size: 14px;
+            font-size: 11px;
         }
 
         .packinglist-info-section tr {
@@ -97,7 +104,7 @@
         }
         
         .content-wrap {
-            padding-bottom: 4.5rem;    /* Footer height */
+            padding-bottom: 6.5rem;    /* Footer height */
         }
         
         .shipment-detail-table {
@@ -107,15 +114,15 @@
 
         .shipment-detail-table th,
         .shipment-detail-table td {
-            font-size:8pt;
+            font-size:7pt;
         }
 
         .shipment-detail-table th {
             background-color: #ddd;
-            padding: 10px;
+            padding: 5px;
         }
         
-        .shipment-detail-title {
+        th.shipment-detail-title {
             font-size: 11px;
         }
         
@@ -134,6 +141,9 @@
 </head>
 <body>
     <div class="table-wrapper">
+        <div class="date-printed">
+            Date Printed: <?= $date_printed ?>
+        </div>
         <div class="content-wrap">
             <table class="company-section">
                 <thead>

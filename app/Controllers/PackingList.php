@@ -12,6 +12,8 @@ use App\Models\PackinglistCartonModel;
 use App\Models\CartonDetailModel;
 use App\Models\StyleModel;
 
+use CodeIgniter\I18n\Time;
+
 class PackingList extends BaseController
 {
     protected $PackingListModel;
@@ -281,7 +283,7 @@ class PackingList extends BaseController
 
         foreach ($packinglist_carton as $key => $carton) {
             $products_in_carton = $this->PackinglistCartonModel->getProductsInCarton($carton->id);
-
+            
             foreach ($products_in_carton as $key_product => $product) {
                 $product_ratio_by_size_list = [];
                 foreach ($packinglist_size_list as $key_size => $size) {
@@ -336,8 +338,11 @@ class PackingList extends BaseController
             $product_id = $product->product_id;
             $po_qty = $this->searchInArrayByProductID($product_id, $contract_qty_each_product)['po_qty'];
             $shipment_percentage_each_upc[$key]->po_qty = $po_qty;
-            $shipment_percentage_each_upc[$key]->percentage = $product->shipment_qty / $po_qty * 100 . '%';
+            $shipment_percentage_each_upc[$key]->percentage = round($product->shipment_qty / $po_qty * 100) . '%';
         }
+
+        $date_printed = new Time('now');
+        $date_printed = $date_printed->toLocalizedString('eeee, dd-MMMM-yyyy HH:mm');
 
         $data = [
             'title'         => 'Packing List Detail',
@@ -349,6 +354,7 @@ class PackingList extends BaseController
             'shipment_percentage_each_upc'   => $shipment_percentage_each_upc,
             'size_colspan'   => count($packinglist_size_list),
             'size_rowspan'   => count($packinglist_size_list) ?  1 : 2,
+            'date_printed' => $date_printed
         ];
 
         $filename = $packinglist->packinglist_serial_number;
@@ -366,6 +372,9 @@ class PackingList extends BaseController
         $dompdf = new \Dompdf\Dompdf(); 
         $dompdf->loadHtml(view('pdf_view'));
         $dompdf->setPaper('A4', 'landscape');
+        $dompdf->set_option('defaultMediaType', 'all');
+        $dompdf->set_option('isFontSubsettingEnabled', true);
+        $dompdf->set_option('isPhpEnabled', true);
         $dompdf->render();
         $dompdf->stream();
     }

@@ -60,7 +60,14 @@ class PackinglistCartonModel extends Model
         if (!$carton_id) return null;
 
         $data_return = [];
-        $products_in_carton = model('App\Models\CartonDetailModel')->where('packinglist_carton_id', $carton_id)->find();
+        $products_in_carton = model('App\Models\CartonDetailModel')
+            ->select('tblcartondetail.*')
+            ->join('tblproduct as product','product.id = tblcartondetail.product_id')
+            ->where('packinglist_carton_id', $carton_id)
+            ->orderBy('product.id')
+            ->orderBy('product.product_size_id')
+            ->find();
+        
         foreach ($products_in_carton as $key => $product) {
             $product_data = $this->db->table('tblproduct as product')
                 ->join('tblcolour as colour', 'colour.id = product.product_colour_id')
