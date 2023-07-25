@@ -344,8 +344,10 @@ class PackingList extends BaseController
         $date_printed = new Time('now');
         $date_printed = $date_printed->toLocalizedString('eeee, dd-MMMM-yyyy HH:mm');
 
+        
+        $filename = 'Factory Packing List - ('. $packinglist->packinglist_serial_number .') - PO#' . $packinglist->po_no;
         $data = [
-            'title'         => 'Packing List Detail',
+            'title'         => $filename,
             'packinglist'   => $packinglist,
             'products'   => $this->ProductModel->getByPurchaseOrderID($packinglist->po_id),
             'packinglist_carton'   => $packinglist_carton_data,
@@ -357,8 +359,6 @@ class PackingList extends BaseController
             'date_printed' => $date_printed
         ];
 
-        $filename = $packinglist->packinglist_serial_number;
-        
         // return view('report/packinglist_pdf', $data);
 
         $dompdf = new \Dompdf\Dompdf(); 
