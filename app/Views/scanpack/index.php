@@ -140,7 +140,6 @@
 
         <div class="row text-right">
             <div class="col-12">
-                <a href="" class="btn btn-secondary">Back</a>
             </div>
         </div>
     </section>
