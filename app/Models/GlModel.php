@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class GLModel extends Model
+class GlModel extends Model
 {
     protected $table = 'tblgl';
     protected $useTimestamps = true;
