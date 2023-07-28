@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class ProductModel extends Model
 {
-    protected $table = 'tblProduct';
+    protected $table = 'tblproduct';
     protected $useTimestamps = true;
     protected $allowedFields = [
         'product_code',

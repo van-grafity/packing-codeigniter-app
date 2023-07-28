@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use Config\Services;
 use App\Models\BuyerModel;
-use App\Models\GLModel;
+use App\Models\GlModel;
 use App\Models\PurchaseOrderModel;
 use App\Models\PurchaseOrderDetailModel;
 use App\Models\ProductModel;
@@ -18,7 +18,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 class PurchaseOrder extends BaseController
 {
     protected $BuyerModel;
-    protected $GLModel;
+    protected $GlModel;
     protected $PurchaseOrderModel;
     protected $PurchaseOrderDetailModel;
     protected $ProductModel;
@@ -32,7 +32,7 @@ class PurchaseOrder extends BaseController
     {
         $this->db = db_connect();
         $this->BuyerModel = new BuyerModel();
-        $this->GLModel = new GLModel();
+        $this->GlModel = new GlModel();
         $this->PurchaseOrderModel = new PurchaseOrderModel();
         $this->PurchaseOrderDetailModel = new PurchaseOrderDetailModel();
         $this->ProductModel = new ProductModel();
@@ -48,7 +48,7 @@ class PurchaseOrder extends BaseController
         $data = [
             'title'     => 'Purchase Order',
             'Buyer'     => $this->BuyerModel->getBuyer()->getResult(),
-            'GL'        => $this->GLModel->getGL()->getResult(),
+            'GL'        => $this->GlModel->getGL()->getResult(),
             'BuyerPO'   => $this->PurchaseOrderModel->getPO()->getResult(),
             'Product'   => $this->ProductModel->getProduct()->getResult(),
         ];
@@ -327,7 +327,7 @@ class PurchaseOrder extends BaseController
     {
         $array_gl_number = array_column($data_array_from_excel,'gl_number');
         foreach ($array_gl_number as $key => $gl_number) {
-            $gl = $this->GLModel->where('gl_number', $gl_number)->first();
+            $gl = $this->GlModel->where('gl_number', $gl_number)->first();
             if($gl) { return true; }
         }
         return false;
@@ -465,7 +465,7 @@ class PurchaseOrder extends BaseController
             foreach ($data_array_from_excel as $key => $product) {
                 $data_po = [
                     'po_no' => $product['po_number'],
-                    'gl_id' => $this->GLModel->where('gl_number',$product['gl_number'])->first()['id'],
+                    'gl_id' => $this->GlModel->where('gl_number',$product['gl_number'])->first()['id'],
                     'shipdate' => $product['shipdate'],
                 ];
                 $po_id = $this->PurchaseOrderModel->getOrCreateDataByName($data_po);
