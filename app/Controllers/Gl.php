@@ -7,7 +7,7 @@ use App\Models\BuyerModel;
 use App\Models\GlModel;
 use App\Models\StyleModel;
 
-class GL extends BaseController
+class Gl extends BaseController
 {
     protected $BuyerModel;
     protected $GlModel;

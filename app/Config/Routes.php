@@ -82,7 +82,7 @@ $routes->post('factory/update', 'Factory::update/$1');
 $routes->post('factory/delete', 'Factory::delete/$1');
 
 // GL
-$routes->get('gl', 'GL::index');
+$routes->get('gl', 'Gl::index');
 $routes->post('gl/save', 'Gl::save');
 $routes->post('gl/update', 'Gl::update/$1');
 $routes->post('gl/delete', 'Gl::delete/$1');
