@@ -23,7 +23,7 @@
                             <th class="text-center align-middle">Ship Date</th>
                             <th class="text-center align-middle">Total Qty</th>
                             <th class="text-center align-middle">Total Amount</th>
-                            <th class="text-center align-middle">Action</th>
+                            <th class="text-center align-middle <?= $action_field_class; ?>">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,7 +36,7 @@
                                 <td class="text-center"><?= $po->shipdate; ?></td>
                                 <td class="text-center"><?= $po->po_qty; ?></td>
                                 <td class="text-right"><?= number_to_currency($po->po_amount, 'USD', 'en_US', 2); ?></td>
-                                <td class="text-center">
+                                <td class="text-center <?= $action_field_class; ?>">
                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $po->id; ?>" data-po-number="<?= $po->po_no; ?>">Delete</a>
                                 </td>
                             </tr>

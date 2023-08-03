@@ -45,13 +45,21 @@ class PurchaseOrder extends BaseController
 
     public function index()
     {
+        if (in_array(session()->get('role'), ['superadmin', 'admin','merchandiser'])) {
+            $action_field_class = '';
+        } else {
+            $action_field_class = 'd-none';
+        }
+
         $data = [
             'title'     => 'Purchase Order',
             'Buyer'     => $this->BuyerModel->getBuyer()->getResult(),
             'GL'        => $this->GlModel->getGL()->getResult(),
             'BuyerPO'   => $this->PurchaseOrderModel->getPO()->getResult(),
             'Product'   => $this->ProductModel->getProduct()->getResult(),
+            'action_field_class' => $action_field_class,
         ];
+        
         return view('purchaseorder/index', $data);
     }
 
