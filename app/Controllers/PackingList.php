@@ -343,7 +343,12 @@ class PackingList extends BaseController
 
         $date_printed = new Time('now');
         $date_printed = $date_printed->toLocalizedString('eeee, dd-MMMM-yyyy HH:mm');
-
+        
+        $asin_style = 'display: none';
+        $buyer = $this->PackingListModel->getBuyerByPackinglistId($id);
+        if($buyer->buyer_name == 'AMAZON') {
+            $asin_style = '';
+        }
         
         $filename = 'Factory Packing List - ('. $packinglist->packinglist_serial_number .') - PO#' . $packinglist->po_no;
         $data = [
@@ -356,7 +361,8 @@ class PackingList extends BaseController
             'shipment_percentage_each_upc'   => $shipment_percentage_each_upc,
             'size_colspan'   => count($packinglist_size_list),
             'size_rowspan'   => count($packinglist_size_list) ?  1 : 2,
-            'date_printed' => $date_printed
+            'date_printed' => $date_printed,
+            'asin_style' => $asin_style,
         ];
 
         // return view('report/packinglist_pdf', $data);

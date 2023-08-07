@@ -181,4 +181,20 @@ class PackingListModel extends Model
         $result = $builder->get()->getResult();
         return $result;
     }
+
+    public function getBuyerByPackinglistId($packinglist_id = null)
+    {
+        if ($packinglist_id == null) {
+            return null;
+        }
+
+        $builder = $this->db->table('tblpackinglist as packinglist');
+        $builder->select('buyer.id as buyer_id,buyer.buyer_name as buyer_name');
+        $builder->join('tblpurchaseorder as po', 'po.id = packinglist.packinglist_po_id');
+        $builder->join('tblgl as gl', 'gl.id = po.gl_id');
+        $builder->join('tblbuyer as buyer', 'buyer.id = gl.buyer_id');
+        $builder->where('packinglist.id', $packinglist_id);
+        $result = $builder->get()->getRow();
+        return $result;
+    }
 }

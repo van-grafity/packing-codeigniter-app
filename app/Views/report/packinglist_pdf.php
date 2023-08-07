@@ -62,9 +62,17 @@
             margin-bottom: 20px;
         }
 
+        .iso-number {
+            text-align:right;
+            top: -20;
+            right:2;
+            position: absolute;
+            font-size: 7pt;
+        }
         .date-printed {
-            top: -12;
-            right:0;
+            text-align:right;
+            top: 2;
+            right:2;
             position: absolute;
             font-size: 7pt;
         }
@@ -141,6 +149,10 @@
 </head>
 <body>
     <div class="table-wrapper">
+        <div class="iso-number">
+            <div>FM-GLA-PAC-002</div>
+            <i>Rev 0</i>
+        </div>
         <div class="date-printed">
             Date Printed: <?= $date_printed ?>
         </div>
@@ -185,7 +197,7 @@
                         <td colspan="2" class="text-bold">Cut Qty:</td>
                         <td><?= $packinglist->packinglist_cutting_qty ?></td>
                         <td colspan="2" class="text-bold">Customer Code:</td>
-                        <td> xxxxx </td>
+                        <td> - </td>
                     </tr>
                     <tr>
                         <td colspan="2" class="text-bold">Ship Qty:</td>
@@ -217,7 +229,7 @@
                 <thead>
                     <tr class="text-center">
                         <th rowspan="1" colspan="2">Carton Number</th>
-                        <th rowspan="2" colspan="1">ASIN</th>
+                        <th rowspan="2" colspan="1" style="<?= $asin_style ?>">ASIN</th>
                         <th rowspan="2" colspan="1">PID/UPC</th>
                         <th rowspan="2" colspan="1">Colour Code/Name</th>
                         <th rowspan="<?= $size_rowspan ?>" colspan="<?= $size_colspan; ?>">Size</th>
@@ -243,7 +255,7 @@
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_to ?> </td>
                             <?php foreach ($carton->products_in_carton as $key_product => $product) { ?>
                                 <?php if ($key_product == 0) { ?>
-                                    <td> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
+                                    <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
                                     <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
                                     <td> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
                                     <?php foreach ($product->ratio_by_size_list as $key_size => $size) : ?>
@@ -262,7 +274,7 @@
                             <?php foreach ($carton->products_in_carton as $key_product => $product) : ?>
                                 <?php if ($key_product > 0) : ?>
                                     <tr class="text-center">
-                                        <td> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
+                                        <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
                                         <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
                                         <td> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
                                         <?php foreach ($product->ratio_by_size_list as $key_size => $size) { ?>
