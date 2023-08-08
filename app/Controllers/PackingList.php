@@ -258,6 +258,9 @@ class PackingList extends BaseController
         $id = $this->request->getPost('packinglist_carton_id');
         $packinglist_id = $this->request->getPost('packinglist_id');
 
+        // ## Before Deleting Packinglist, must delete carton_detail first 
+        $delete_carton_detail = $this->CartonDetailModel->where('packinglist_carton_id',$id)->delete();
+
         $delete = $this->PackinglistCartonModel->delete($id);
         $sync_prosses = $this->PackingListModel->syncWithPackinglistCarton($packinglist_id);
 
