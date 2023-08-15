@@ -33,7 +33,7 @@ class PurchaseOrderModel extends Model
         return $result;
     }
 
-    public function getPurchaseOrder($id = null)
+    public function getPurchaseOrder_bc($id = null)
     {
         $builder = $this->db->table('tblpurchaseorder as po');
         $builder->select('po.*');
@@ -45,6 +45,28 @@ class PurchaseOrderModel extends Model
         }
         $result = $builder->get()->getResult();
         return $result;
+    }
+
+    public function getPurchaseOrder($id = null)
+    {
+        $GlModel = model('GlModel');
+
+        $builder = $this->db->table('tblpurchaseorder as po');
+        $builder->select('po.*');
+        $builder->orderBy('po.created_at','DESC');
+        if ($id) {
+            $builder->where(['po.id' => $id]);
+            $purchase_order = $builder->get()->getRow();
+            $purchase_order = $GlModel->set_gl_info_on_po($purchase_order,$purchase_order->id);
+            return $purchase_order;
+        }
+        
+        $purchase_order_list = $builder->get()->getResult();
+        foreach ($purchase_order_list as $key => $po) {
+            $po = $GlModel->set_gl_info_on_po($po, $po->id);
+        }
+        
+        return $purchase_order_list;
     }
 
     public function getPODetails($po_id = null)

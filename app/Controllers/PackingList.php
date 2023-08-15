@@ -44,8 +44,7 @@ class PackingList extends BaseController
         $data = [
             'title'         => 'Factory Packing List',
             'packinglist'   => $this->PackingListModel->getPackingList(),
-            'po_list'       => $this->PurchaseOrderModel->getPO()->getResult(),
-
+            'po_list'       => $this->PurchaseOrderModel->getPurchaseOrder(),
         ];
         return view('packinglist/index', $data);
     }

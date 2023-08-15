@@ -22,7 +22,7 @@ class PackingListModel extends Model
         'flag_generate_carton',
     ];
 
-    public function getPackingList($id = false)
+    public function getPackingList_bc($id = false)
     {
         $builder = $this->db->table('tblpackinglist as pl');
         $builder->select('pl.*, po.id as po_id, po.po_no, po.po_qty, po.shipdate , tblbuyer.buyer_name, gl.gl_number, gl.season, gl.size_order, gl.id as gl_id');
@@ -37,6 +37,31 @@ class PackingListModel extends Model
             $result = $builder->get()->getRow();
         } else {
             $result = $builder->get()->getResult();
+        }
+        return $result;
+    }
+
+    public function getPackingList($id = false)
+    {
+        $GlModel = model('GlModel');
+
+        $builder = $this->db->table('tblpackinglist as pl');
+        $builder->select('pl.*, po.id as po_id, po.po_no, po.po_qty, po.shipdate');
+        $builder->join('tblpurchaseorder as po', 'po.id = pl.packinglist_po_id');
+        // $builder->join('tblgl_po as gl_po', 'gl_po.po_id = po.id');
+        // $builder->join('tblgl as gl', 'gl.id = gl_po.gl_id');
+        // $builder->join('tblbuyer', 'tblbuyer.id = gl.buyer_id');
+        $builder->orderBy('pl.id', 'ASC');
+
+        if ($id) {
+            $builder->where(['pl.id' => $id]);
+            $result = $builder->get()->getRow();
+            $result = $GlModel->set_gl_info_on_po($result, $result->po_id);
+        } else {
+            $result = $builder->get()->getResult();
+            foreach ($result as $key => $po) {
+                $po = $GlModel->set_gl_info_on_po($po, $po->po_id);
+            }
         }
         return $result;
     }

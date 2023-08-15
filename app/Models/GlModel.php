@@ -45,7 +45,7 @@ class GlModel extends Model
             return $emptyGl;
         }
         $builder = $this->db->table('tblgl as gl');
-        $builder->select('gl.gl_number, buyer.buyer_name');
+        $builder->select('gl.gl_number, gl.season, buyer.buyer_name');
         $builder->join('tblgl_po as gl_po', 'gl_po.gl_id = gl.id');
         $builder->join('tblpurchaseorder as po', 'po.id = gl_po.po_id');
         $builder->join('tblbuyer as buyer', 'buyer.id = gl.buyer_id');
@@ -61,11 +61,27 @@ class GlModel extends Model
 
         $gl_number_list = array_map(function ($gl) { return $gl->buyer_name; }, $gl_list);
         $buyer_name = implode(', ', $gl_number_list);
+
+        $gl_number_list = array_map(function ($gl) { return $gl->season; }, $gl_list);
+        $season = implode(', ', $gl_number_list);
         
         $result = (object)[
             'gl_number' => $gl_number,
             'buyer_name' => $buyer_name,
+            'season' => $season,
         ];
         return $result;
+    }
+
+    // ## Set GL info on 1 PO
+    public function set_gl_info_on_po($purchase_order, $po_id)
+    {
+        if(!$purchase_order){ return false; }
+
+        $gl_in_string = $this->getGlListByPo($po_id);
+        $purchase_order->gl_number = $gl_in_string->gl_number;
+        $purchase_order->buyer_name = $gl_in_string->buyer_name;
+        $purchase_order->season = $gl_in_string->season;
+        return $purchase_order;
     }
 }

@@ -51,19 +51,13 @@ class PurchaseOrder extends BaseController
             $action_field_class = 'd-none';
         }
 
-        $purchase_order_list = $this->PurchaseOrderModel->getPurchaseOrder();
-        foreach ($purchase_order_list as $key => $po) {
-            $gl_in_string = $this->GlModel->getGlListByPo($po->id);
-            $po->gl_number = $gl_in_string->gl_number;
-        }
-
         $data = [
             'title'     => 'Purchase Order',
             'GL'        => $this->GlModel->getGL()->getResult(),
-            'BuyerPO'   => $this->PurchaseOrderModel->getPurchaseOrder(),
+            // 'BuyerPO'   => $this->PurchaseOrderModel->getPurchaseOrder(),
             'Product'   => $this->ProductModel->getProduct()->getResult(),
             'action_field_class' => $action_field_class,
-            'purchase_order_list' => $purchase_order_list,
+            'purchase_order_list' => $this->PurchaseOrderModel->getPurchaseOrder(),
         ];
 
         return view('purchaseorder/index', $data);
@@ -125,14 +119,9 @@ class PurchaseOrder extends BaseController
 
     public function detail($id = null)
     {
-        $purchase_order = $this->PurchaseOrderModel->getPurchaseOrder($id);
-        $gl_in_string = $this->GlModel->getGlListByPo($purchase_order->id);
-        $purchase_order->gl_number = $gl_in_string->gl_number;
-        $purchase_order->buyer_name = $gl_in_string->buyer_name;
-        
         $data = [
             'title'     => 'Purchase Order Detail',
-            'purchase_order'   => $purchase_order,
+            'purchase_order'   => $this->PurchaseOrderModel->getPurchaseOrder($id),
             'purchase_order_details'   => $this->PurchaseOrderModel->getPODetails($id),
             'products'   => $this->ProductModel->getProduct()->getResult(),
         ];
