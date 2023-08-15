@@ -19,16 +19,31 @@ class PurchaseOrderModel extends Model
 
     public function getPO($id = null)
     {
-        $builder = $this->db->table('tblpurchaseorder');
-        $builder->select('tblpurchaseorder.*, tblbuyer.buyer_name, tblgl.gl_number,tblgl.season');
-        $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id');
-        $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id');
+        $builder = $this->db->table('tblpurchaseorder as po');
+        $builder->select('po.*, buyer.buyer_name, gl.gl_number,gl.season');
+        $builder->join('tblgl_po as gl_po', 'gl_po.po_id = po.id');
+        $builder->join('tblgl as gl', 'gl.id = gl_po.gl_id');
+        $builder->join('tblbuyer as buyer', 'buyer.id = gl.buyer_id');
 
         if ($id) {
-            $builder->where(['tblpurchaseorder.id' => $id]);
+            $builder->where(['po.id' => $id]);
         }
-        $builder->orderBy('tblpurchaseorder.created_at','DESC');
+        $builder->orderBy('po.created_at','DESC');
         $result = $builder->get();
+        return $result;
+    }
+
+    public function getPurchaseOrder($id = null)
+    {
+        $builder = $this->db->table('tblpurchaseorder as po');
+        $builder->select('po.*');
+        $builder->orderBy('po.created_at','DESC');
+        if ($id) {
+            $builder->where(['po.id' => $id]);
+            $result = $builder->get()->getRow();
+            return $result;
+        }
+        $result = $builder->get()->getResult();
         return $result;
     }
 

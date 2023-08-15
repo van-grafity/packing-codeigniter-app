@@ -62,7 +62,8 @@ class StyleModel extends Model
     {
         $builder = $this->db->table('tblgl');
         $builder->select('style.style_no, style.style_description');
-        $builder->join('tblpurchaseorder as po', 'po.gl_id = tblgl.id');
+        $builder->join('tblgl_po as gl_po', 'gl_po.gl_id = tblgl.id');
+        $builder->join('tblpurchaseorder as po', 'po.id = gl_po.po_id');
         $builder->join('tblpurchaseorderdetail as po_detail', 'po_detail.order_id = po.id');
         $builder->join('tblproduct as product', 'product.id = po_detail.product_id');
         $builder->join('tblstyle as style', 'style.id = product.product_style_id');

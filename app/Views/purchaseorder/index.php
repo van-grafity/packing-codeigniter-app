@@ -28,7 +28,7 @@
                     </thead>
                     <tbody>
                         <?php $i = 1; ?>
-                        <?php foreach ($BuyerPO as $po) : ?>
+                        <?php foreach ($purchase_order_list as $po) : ?>
                             <tr>
                                 <td class="text-center" scope="row"><?= $i++; ?></td>
                                 <td class="text-center"><a href="<?= base_url('purchaseorder/') . $po->id; ?>"><?= $po->po_no; ?></a></td>
@@ -65,12 +65,13 @@
                     </div>
                     <div class="form-group">
                         <label>GL Number</label>
-                        <select name="gl_no" class="form-control" required>
-                            <option value="">-Select GL No-</option>
+                        <select id="gl_no" name="gl_no[]" class="form-control select2" multiple="multiple" data-placeholder="Choose GL" placeholder="Choose GL" required>
                             <?php foreach ($GL as $g) : ?>
                                 <option value="<?= $g->id; ?>"><?= $g->gl_number; ?></option>
                             <?php endforeach; ?>
                         </select>
+                        <!-- <select class="select2bs4" multiple="multiple" data-placeholder="Select a State"
+                          style="width: 100%;"> -->
                     </div>
                     <div class="form-group">
                         <label for="shipdate">Ship Date</label>
@@ -140,6 +141,14 @@
 
 <?= $this->include('purchaseorder/modal_import_excel') ?>
 
+<script>
+    $(document).ready(function() {
+        $('#gl_no.select2').select2({
+            theme: 'bootstrap4',
+            dropdownParent: $('#addModal')
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function() {

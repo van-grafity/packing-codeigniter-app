@@ -100,7 +100,8 @@ class CartonBarcodeModel extends Model
         $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id');
         $builder->join('tblpackinglist as packinglist', 'packinglist.id = pl_carton.packinglist_id');
         $builder->join('tblpurchaseorder as po', 'po.id = packinglist.packinglist_po_id');
-        $builder->join('tblgl as gl', 'gl.id = po.gl_id');
+        $builder->join('tblgl_po as gl_po', 'gl_po.po_id = po.id');
+        $builder->join('tblgl as gl', 'gl.id = gl_po.gl_id');
         $builder->join('tblbuyer as buyer', 'buyer.id = gl.buyer_id');
 
         $builder->where('carton_barcode.barcode', $carton_barcode);

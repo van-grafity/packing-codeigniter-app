@@ -24,15 +24,16 @@ class PackingListModel extends Model
 
     public function getPackingList($id = false)
     {
-        $builder = $this->db->table('tblpackinglist');
-        $builder->select('tblpackinglist.*, tblpurchaseorder.id as po_id, tblpurchaseorder.po_no, tblpurchaseorder.po_qty, tblpurchaseorder.shipdate , tblbuyer.buyer_name, tblgl.gl_number, tblgl.season, tblgl.size_order, tblgl.id as gl_id');
-        $builder->join('tblpurchaseorder', 'tblpurchaseorder.id = tblpackinglist.packinglist_po_id');
-        $builder->join('tblgl', 'tblgl.id = tblpurchaseorder.gl_id');
-        $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id');
-        $builder->orderBy('tblpackinglist.id', 'ASC');
+        $builder = $this->db->table('tblpackinglist as pl');
+        $builder->select('pl.*, po.id as po_id, po.po_no, po.po_qty, po.shipdate , tblbuyer.buyer_name, gl.gl_number, gl.season, gl.size_order, gl.id as gl_id');
+        $builder->join('tblpurchaseorder as po', 'po.id = pl.packinglist_po_id');
+        $builder->join('tblgl_po as gl_po', 'gl_po.po_id = po.id');
+        $builder->join('tblgl as gl', 'gl.id = gl_po.gl_id');
+        $builder->join('tblbuyer', 'tblbuyer.id = gl.buyer_id');
+        $builder->orderBy('pl.id', 'ASC');
 
         if ($id) {
-            $builder->where(['tblpackinglist.id' => $id]);
+            $builder->where(['pl.id' => $id]);
             $result = $builder->get()->getRow();
         } else {
             $result = $builder->get()->getResult();
@@ -191,7 +192,8 @@ class PackingListModel extends Model
         $builder = $this->db->table('tblpackinglist as packinglist');
         $builder->select('buyer.id as buyer_id,buyer.buyer_name as buyer_name');
         $builder->join('tblpurchaseorder as po', 'po.id = packinglist.packinglist_po_id');
-        $builder->join('tblgl as gl', 'gl.id = po.gl_id');
+        $builder->join('tblgl_po as gl_po', 'gl_po.po_id = po.id');
+        $builder->join('tblgl as gl', 'gl.id = gl_po.gl_id');
         $builder->join('tblbuyer as buyer', 'buyer.id = gl.buyer_id');
         $builder->where('packinglist.id', $packinglist_id);
         $result = $builder->get()->getRow();

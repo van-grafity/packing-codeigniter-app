@@ -51,15 +51,21 @@ class PurchaseOrder extends BaseController
             $action_field_class = 'd-none';
         }
 
+        $purchase_order_list = $this->PurchaseOrderModel->getPurchaseOrder();
+        foreach ($purchase_order_list as $key => $po) {
+            $gl_in_string = $this->GlModel->getGlListByPo($po->id);
+            $po->gl_number = $gl_in_string->gl_number;
+        }
+
         $data = [
             'title'     => 'Purchase Order',
-            'Buyer'     => $this->BuyerModel->getBuyer()->getResult(),
             'GL'        => $this->GlModel->getGL()->getResult(),
-            'BuyerPO'   => $this->PurchaseOrderModel->getPO()->getResult(),
+            'BuyerPO'   => $this->PurchaseOrderModel->getPurchaseOrder(),
             'Product'   => $this->ProductModel->getProduct()->getResult(),
             'action_field_class' => $action_field_class,
+            'purchase_order_list' => $purchase_order_list,
         ];
-        
+
         return view('purchaseorder/index', $data);
     }
 
@@ -67,7 +73,6 @@ class PurchaseOrder extends BaseController
     {
         $data_po = array(
             'po_no'        => $this->request->getVar('po_no'),
-            'gl_id'        => $this->request->getVar('gl_no'),
             'shipdate'     => $this->request->getVar('shipdate'),
             'po_qty'       => $this->request->getVar('total_order_qty'),
             'po_amount'    => $this->request->getVar('total_amount'),
@@ -80,6 +85,18 @@ class PurchaseOrder extends BaseController
             
             if (!$po_id) {
                 $this->PurchaseOrderModel->transRollback();
+            }
+            $gl_id_list = $this->request->getVar('gl_no');
+            foreach ($gl_id_list as $key => $gl_id) {
+                $data_gl_po = [
+                    'po_id' => $po_id,
+                    'gl_id' => $gl_id,
+                ];
+                $insert_gl_po = $this->GlModel->insertGL_PO($data_gl_po);
+                if(!$insert_gl_po) { 
+                    $this->PurchaseOrderModel->transRollback();
+                    throw new Exception("Error Insert GL PO", 1);
+                }
             }
 
             // ## insert PO Detail
@@ -108,9 +125,14 @@ class PurchaseOrder extends BaseController
 
     public function detail($id = null)
     {
+        $purchase_order = $this->PurchaseOrderModel->getPurchaseOrder($id);
+        $gl_in_string = $this->GlModel->getGlListByPo($purchase_order->id);
+        $purchase_order->gl_number = $gl_in_string->gl_number;
+        $purchase_order->buyer_name = $gl_in_string->buyer_name;
+        
         $data = [
             'title'     => 'Purchase Order Detail',
-            'purchase_order'   => $this->PurchaseOrderModel->getPO($id)->getRow(),
+            'purchase_order'   => $purchase_order,
             'purchase_order_details'   => $this->PurchaseOrderModel->getPODetails($id),
             'products'   => $this->ProductModel->getProduct()->getResult(),
         ];

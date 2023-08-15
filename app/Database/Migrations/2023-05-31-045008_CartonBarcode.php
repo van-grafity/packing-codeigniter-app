@@ -10,6 +10,7 @@ class CartonBarcode extends Migration
 
     public function up()
     {
+        // ## ada column packinglist_id adalah untuk kebutuhan insertbatch saat insert carton via excel
         $this->forge->addField([
             'id' => [
                 'type' => 'bigint',
