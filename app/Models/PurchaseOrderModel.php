@@ -119,14 +119,20 @@ class PurchaseOrderModel extends Model
     {
         
         $PurchaseOrderModel = model('PurchaseOrderModel');
+        
         $data_to_insert = [
             'po_no' => $data_po['po_no'],
-            'gl_id' => $data_po['gl_id'],
             'shipdate' => $data_po['shipdate'],
         ];
         $get_po = $PurchaseOrderModel->where('po_no', $data_po['po_no'])->first();
         if(!$get_po){
             $po_id = $PurchaseOrderModel->insert($data_to_insert);
+            $data_gl_po = [
+                'gl_id' => $data_po['gl_id'],
+                'po_id' => $po_id,
+            ];
+            $builder = $this->db->table('tblgl_po');
+            $builder->insert($data_gl_po);
         } else {
             $po_id = $get_po['id'];
         }
