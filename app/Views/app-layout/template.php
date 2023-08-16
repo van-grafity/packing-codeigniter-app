@@ -228,6 +228,14 @@
                                 </ul>
                             </li>
                         <?php endif ?>
+                        <?php if (in_array(session()->get('role'), ['superadmin','admin'])) : ?>
+                            <li class="nav-item">
+                                <a href="<?= base_url('cartoninspection') ?>" class="nav-link">
+                                    <i class="nav-icon fas fa-file-invoice"></i>
+                                    <p>Carton Inspection</p>
+                                </a>
+                            </li>
+                        <?php endif ?>
                         <li class="nav-item">
                             <a href="<?= base_url('logout') ?>" class="nav-link">
                                 <i class="fas fa-sign-out-alt nav-icon"></i>

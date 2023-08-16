@@ -131,6 +131,12 @@ $routes->get('scanpack', 'Scanpack::index');
 $routes->get('scanpack/detailcarton', 'Scanpack::detailcarton');
 $routes->post('scanpack/packcarton', 'Scanpack::packcarton');
 
+// Carton Inspection
+$routes->get('cartoninspection', 'CartonInspection::index');
+$routes->post('cartoninspection/save', 'CartonInspection::save');
+$routes->post('cartoninspection/update', 'CartonInspection::update/$1');
+$routes->post('cartoninspection/delete', 'CartonInspection::delete/$1');
+
 $routes->get('logs', "LogViewerController::index");
 
 // Reports Menu

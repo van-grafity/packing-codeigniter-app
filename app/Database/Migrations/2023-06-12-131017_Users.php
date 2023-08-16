@@ -15,6 +15,11 @@ class Users extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
+            'name' => [
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+                'null' => false,
+            ],
             'email' => [
                 'type' => 'VARCHAR',
                 'constraint' => 100,
@@ -26,11 +31,6 @@ class Users extends Migration
                 'null' => true,
             ],
             'password_hash' => [
-                'type' => 'VARCHAR',
-                'constraint' => 100,
-                'null' => false,
-            ],
-            'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => 100,
                 'null' => false,
