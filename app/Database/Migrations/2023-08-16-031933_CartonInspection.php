@@ -20,14 +20,18 @@ class CartonInspection extends Migration
                 'type' => 'bigint',
                 'unsigned' => true,
             ],
-            'opened_by' => [
-                'type' => 'bigint',
-                'unsigned' => true,
+            'issued_by' => [
+                'type' => 'varchar',
+                'constraint' => 255,
             ],
-            'opened_at'  => [
+            'received_by' => [
+                'type' => 'varchar',
+                'constraint' => 255,
+            ],
+            'received_at'  => [
                 'type' => 'datetime',
             ],
-            'packed_at'  => [
+            'repacked_at'  => [
                 'type' => 'datetime', 
                 'null' => true
             ],
@@ -42,9 +46,7 @@ class CartonInspection extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('carton_barcode_id', 'tblcartonbarcode', 'id');
-        $this->forge->addForeignKey('opened_by', 'tblusers', 'id');
         $this->forge->createTable($this->table);
-
     }
 
     public function down()
