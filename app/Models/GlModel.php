@@ -84,4 +84,22 @@ class GlModel extends Model
         $purchase_order->season = $gl_in_string->season;
         return $purchase_order;
     }
+
+    public function set_gl_info_on_carton($carton, $carton_id)
+    {
+        if(!$carton){ return false; }
+
+        $builder_po = $this->db->table('tblpurchaseorder as po');
+        $builder_po->select('po.id as po_id');
+        $builder_po->join('tblpackinglist as pl','pl.packinglist_po_id = po.id');
+        $builder_po->join('tblcartonbarcode as carton_barcode','carton_barcode.packinglist_id = pl.id');
+        $builder_po->where('carton_barcode.id',$carton_id);
+        $po_id = $builder_po->get()->getRow()->po_id;
+
+        $gl_in_string = $this->getGlListByPo($po_id);
+        $carton->gl_number = $gl_in_string->gl_number;
+        $carton->buyer_name = $gl_in_string->buyer_name;
+        $carton->season = $gl_in_string->season;
+        return $carton;
+    }
 }

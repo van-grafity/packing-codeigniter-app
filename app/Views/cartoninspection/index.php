@@ -11,7 +11,7 @@
                 <h3 class="card-title"><?= $title ?></h3>
             </div>
             <div class="card-body">
-                <button type="button" class="btn btn-secondary mb-2" id="btn-add-carton">Add Carton</button>
+                <a href="<?= url_to('cartoninspection/create')?>" type="button" class="btn btn-secondary mb-2" id="btn-add-carton">New Inspection</a>
                 <h3 class="mb-4">Carton Inspection</h3>
                 <table id="packinglist_table" class="table table-bordered table-hover">
                     <thead>
@@ -47,33 +47,6 @@
 
     </section>
 </div>
-
-
-<!-- Modal Generate Carton -->
-<div class="modal fade" id="modal_carton_inspection" tabindex="-1" role="dialog" aria-labelledby="modal_label"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form action="" method="post" id="generate_carton_form">
-                <input type="hidden" name="packinglist_id" id="packinglist_id" value="">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal_label">Generate Carton</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h4 id="confirm_message">Add Carton for Inspection</h4>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Oke</button>
-                    <!-- <button type="submit" class="btn btn-primary" id="modal_btn_submit">Yes</button> -->
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- End Modal Generate Carton -->
 
 <?= $this->endSection(); ?>
 
@@ -111,29 +84,6 @@ $(document).ready(function() {
     let session = <?= json_encode(session()->getFlashdata()) ?>;
     show_flash_message(session);
 
-    $('#btn-add-carton').on('click', function(event) {
-        // $('#ModalLabel').text("Add Carton")
-        // $('#btn_submit').text("Add Carton")
-        // $('#buyer_form').attr('action', store_url);
-        // // $('#buyer_form').find("input[type=text], input[type=number], textarea").val("");
-        // $('#buyer_form').find('select').val("").trigger('change');
-
-        $('#modal_carton_inspection').modal('show');
-    })
-
-    $('.btn-generate-carton').on('click', function() {
-        let id = $(this).data('id');
-        let packinglist_number = $(this).data('packinglist-number');
-
-        $('#confirm_message').text(
-            `Are you sure want to Generate Carton from Packinglist: ${packinglist_number}`)
-        $('#modal_label').text("Generate Carton")
-        $('#modal_btn_submit').text("Generate")
-        $('#generate_carton_form').attr('action', generate_carton_url);
-        $('#packinglist_id').val(id);
-
-        $('#generate_carton_modal').modal('show');
-    })
 })
 </script>
 

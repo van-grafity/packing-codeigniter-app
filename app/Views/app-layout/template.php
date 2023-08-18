@@ -200,7 +200,7 @@
                                         <i class="fas fa-angle-left right"></i>
                                     </p>
                                 </a>
-                                <ul class="nva nav-treeview">
+                                <ul class="nav nav-treeview">
                                     <li class="nav-item">
                                         <a href="<?= base_url('rptpackinglist') ?>" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -229,11 +229,25 @@
                             </li>
                         <?php endif ?>
                         <?php if (in_array(session()->get('role'), ['superadmin','admin'])) : ?>
-                            <li class="nav-item">
-                                <a href="<?= base_url('cartoninspection') ?>" class="nav-link">
-                                    <i class="nav-icon fas fa-file-invoice"></i>
-                                    <p>Carton Inspection</p>
+                            <li class="nav-item has-treeview">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-dolly-flatbed"></i>
+                                    <p>Carton Inspection <i class="fas fa-angle-left right"></i></p>
                                 </a>
+                                <ul class="nav nav-treeview pl-3">
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('cartoninspection/create') ?>" class="nav-link">
+                                            <i class="far fa-plus-square nav-icon"></i>
+                                            <p>New Inspection</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('cartoninspection') ?>" class="nav-link">
+                                            <i class="fas fa-list-ul nav-icon"></i>
+                                            <p>Inspection List</p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         <?php endif ?>
                         <li class="nav-item">
@@ -249,6 +263,8 @@
                                 <p>Documentation</p>
                             </a>
                         </li> -->
+                        
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -364,21 +380,21 @@
     <script>
         $(document).ready(function() {
             /*** add active class and stay opened when selected ***/
-            var url = window.location;
+            $(function () {
+                var url = window.location;
+                // for single sidebar menu
+                $('ul.nav-sidebar a').filter(function () {
+                    return this.href == url;
+                }).addClass('active');
 
-            // for sidebar menu entirely but not cover treeview
-            $('ul.nav-sidebar a').filter(function() {
-                if (this.href) {
-                    return this.href == url || url.href.indexOf(this.href) == 0;
-                }
-            }).addClass('active');
-
-            // for the treeview
-            $('ul.nav-treeview a').filter(function() {
-                if (this.href) {
-                    return this.href == url || url.href.indexOf(this.href) == 0;
-                }
-            }).parentsUntil(".nav-sidebar > .nav-treeview").addClass('menu-open').prev('a').addClass('active');
+                // for sidebar menu and treeview
+                $('ul.nav-treeview a').filter(function () {
+                    return this.href == url;
+                }).parentsUntil(".nav-sidebar > .nav-treeview")
+                    .css({'display': 'block'})
+                    .addClass('menu-open').prev('a')
+                    .addClass('active');
+            });
         });
     </script>
 </body>

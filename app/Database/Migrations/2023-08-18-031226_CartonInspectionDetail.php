@@ -4,9 +4,9 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CartonInspection extends Migration
+class CartonInspectionDetail extends Migration
 {
-    private $table = 'tblcartoninspection';
+    private $table = 'tblcartoninspectiondetail';
 
     public function up()
     {
@@ -16,16 +16,9 @@ class CartonInspection extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'issued_by' => [
-                'type' => 'varchar',
-                'constraint' => 255,
-            ],
-            'received_by' => [
-                'type' => 'varchar',
-                'constraint' => 255,
-            ],
-            'received_date'  => [
-                'type' => 'date',
+            'carton_barcode_id' => [
+                'type' => 'bigint',
+                'unsigned' => true,
             ],
             'created_at'  => [
                 'type' => 'datetime', 
@@ -37,6 +30,7 @@ class CartonInspection extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('carton_barcode_id', 'tblcartonbarcode', 'id');
         $this->forge->createTable($this->table);
     }
 

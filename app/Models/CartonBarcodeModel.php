@@ -108,4 +108,23 @@ class CartonBarcodeModel extends Model
         $result = $builder->get()->getRow();
         return $result;
     }
+
+    public function getCartonInfoByBarcode_v2($carton_barcode = null)
+    {
+        if (!$carton_barcode) return null;
+
+        $GlModel = model('GlModel');
+        
+        $builder = $this->db->table('tblcartonbarcode as carton_barcode');
+        $builder->select('carton_barcode.id as carton_id, carton_barcode.flag_packed, carton_barcode.barcode as carton_barcode, po.po_no as po_number, packinglist.id as packinglist_id, packinglist.packinglist_serial_number as pl_number, carton_barcode.carton_number_by_system as carton_number');
+        $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id');
+        $builder->join('tblpackinglist as packinglist', 'packinglist.id = pl_carton.packinglist_id');
+        $builder->join('tblpurchaseorder as po', 'po.id = packinglist.packinglist_po_id');
+
+        $builder->where('carton_barcode.barcode', $carton_barcode);
+        $result = $builder->get()->getRow();
+
+        $carton_with_gl_info = $GlModel->set_gl_info_on_carton($result, $result->carton_id);
+        return $carton_with_gl_info;
+    }
 }

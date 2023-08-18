@@ -1,15 +1,23 @@
-    /* .table>tbody>tr>* {
-        vertical-align: middle;
-    }
+/* .table>tbody>tr>* {
+    vertical-align: middle;
+}
 
-    .table>thead {
-        text-align: center;
-    }
+.table>thead {
+    text-align: center;
+}
 
-    .gambar {
-        width: 90px;
-    } */
+.gambar {
+    width: 90px;
+} */
 
-    a.btn.disabled {
-        cursor: not-allowed !important;
-    }
+a.btn.disabled {
+    cursor: not-allowed !important;
+}
+
+/* .nav-item.menu-open.pl-3 > a {
+    max-width: 100%;
+} */
+    
+.nav.nav-treeview.pl-3 a {
+    max-width: 100%;
+}
