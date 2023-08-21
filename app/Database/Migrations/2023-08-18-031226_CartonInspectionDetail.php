@@ -16,6 +16,10 @@ class CartonInspectionDetail extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
+            'carton_inspection_id' => [
+                'type' => 'bigint',
+                'unsigned' => true,
+            ],
             'carton_barcode_id' => [
                 'type' => 'bigint',
                 'unsigned' => true,
@@ -30,6 +34,7 @@ class CartonInspectionDetail extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('carton_inspection_id', 'tblcartoninspection', 'id');
         $this->forge->addForeignKey('carton_barcode_id', 'tblcartonbarcode', 'id');
         $this->forge->createTable($this->table);
     }

@@ -31,13 +31,13 @@
                         <?php foreach ($carton_inspection as $carton) : ?>
                         <tr class="text-center">
                             <td><?= $i++; ?></td>
-                            <td><?= $carton->number; ?></td>
-                            <td><?= $carton->number; ?></td>
-                            <td><?= $carton->number; ?></td>
-                            <td><?= $carton->number; ?></td>
-                            <td><?= $carton->number; ?></td>
-                            <td><?= $carton->number; ?></td>
-                            <td><?= $carton->number; ?></td>
+                            <td><?= $carton['carton_number']; ?></td>
+                            <td><?= $carton['carton_number']; ?></td>
+                            <td><?= $carton['carton_number']; ?></td>
+                            <td><?= $carton['carton_number']; ?></td>
+                            <td><?= $carton['carton_number']; ?></td>
+                            <td><?= $carton['carton_number']; ?></td>
+                            <td><?= $carton['carton_number']; ?></td>
                         </tr>
                         <?php endforeach;  ?>
                     </tbody>

@@ -9,5 +9,5 @@ class CartonInspectionModel extends Model
     protected $table            = 'tblcartoninspection';
     protected $useTimestamps    = true;
     protected $returnType       = 'array';
-    protected $allowedFields    = ['carton_barcode_id','opened_by','opened_at','packed_at'];
+    protected $allowedFields    = ['issued_by','received_by','received_date'];
 }

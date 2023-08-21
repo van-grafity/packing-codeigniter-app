@@ -135,7 +135,7 @@ $routes->post('scanpack/packcarton', 'Scanpack::packcarton');
 $routes->get('cartoninspection', 'CartonInspection::index');
 $routes->get('cartoninspection/create', 'CartonInspection::create');
 $routes->get('cartoninspection/detailcarton', 'CartonInspection::detailcarton');
-$routes->get('cartoninspection/store', 'CartonInspection::store');
+$routes->post('cartoninspection/store', 'CartonInspection::store');
 // $routes->post('cartoninspection/update', 'CartonInspection::update/$1');
 // $routes->post('cartoninspection/delete', 'CartonInspection::delete/$1');
 
