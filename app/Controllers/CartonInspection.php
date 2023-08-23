@@ -106,7 +106,7 @@ class CartonInspection extends BaseController
         } catch (\Throwable $th) {
             // dd($th);
             
-            throw $th->getMessage();
+            throw $th;
 
         }
         
