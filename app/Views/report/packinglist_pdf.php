@@ -17,15 +17,6 @@
             margin-bottom: 0cm;
         }
 
-        @media print {
-            .no-page-break {
-                break-inside: avoid;
-            }
-        }
-        .no-page-break {
-            break-inside: avoid;
-        }
-        
         body {
             height: 100%;
         }
@@ -59,7 +50,7 @@
             position: relative;
             min-height: 100vh;
 
-            margin-bottom: 20px;
+            /* margin-bottom: 20px; */
         }
 
         .iso-number {
@@ -144,6 +135,11 @@
         .assignment-section td {
             border: 0px;
         }
+
+        .page-break { 
+            page-break-before: always !important; 
+        }
+
 
 	</style>
 </head>
@@ -249,9 +245,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php $count_main_tr = 0;?>
+                    <?php $estimate_tr = 0;?>
+                    <?php $max_tr_first_page = 17;?>
+                    <?php $flag_break = true;?>
+                    
                     <?php foreach ($packinglist_carton as $key => $carton) { ?>
-                        <tr class="text-center no-page-break">
-                            <td class="" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_from ?> </td>
+                        
+
+                        <tr class="text-center">
+                            <td class="" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_from ?></td>
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_to ?> </td>
                             <?php foreach ($carton->products_in_carton as $key_product => $product) { ?>
                                 <?php if ($key_product == 0) { ?>
@@ -270,6 +273,12 @@
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight ?> </td>
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->measurement_ctn ?> </td>
                         </tr>
+                        
+                        <?php $count_main_tr++;?>
+                        
+
+                        
+
                         <?php if ($carton->number_of_product_per_carton > 1) :  ?>
                             <?php foreach ($carton->products_in_carton as $key_product => $product) : ?>
                                 <?php if ($key_product > 0) : ?>
@@ -284,14 +293,27 @@
                                 <?php endif ?>
                             <?php endforeach ?>
                         <?php endif ?>
+
+                        <?php 
+                            $estimate_tr = ($count_main_tr+1) * $carton->number_of_product_per_carton;
+                            if($estimate_tr >= $max_tr_first_page && $flag_break ) { ?>
+                                <div class="page-break"></div>
+                        <?php 
+                                $flag_break = false;
+                            }
+                        ?>
+
+
                     <?php } ?>
+
+
+
                 </tbody>
-                <tfoot class="footer">
                     <tr class="text-center">
-                        <th colspan="<?= 5 + $size_colspan + 1; ?>" class="text-right">Total : </th>
+                        <th colspan="<?= 4 + $size_colspan + 1; ?>" class="text-right">Total : </th>
                         <th colspan=""><?= $packinglist_carton_total->total_carton ?></th>
                         <th colspan=""><?= $packinglist_carton_total->total_ship ?></th>
-                        <th colspan="4"></th>
+                        <th colspan="3"></th>
                     </tr>
                 </tfoot>
             </table>
