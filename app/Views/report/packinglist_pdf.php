@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,139 +12,166 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 
     <style type="text/css">
-        @page {
-            margin-top: 1cm;
-            margin-left: 1cm;
-            margin-bottom: 0cm;
-        }
+    @page {
+        margin-top: 1cm;
+        margin-left: 1cm;
+        margin-bottom: 0cm;
+    }
 
-        body {
-            height: 100%;
-        }
+    body {
+        height: 100%;
+    }
 
-        table {
-            width: 100%;
-            border-spacing: 0px;
-            font-weight: Normal;
-        }
+    table {
+        width: 100%;
+        border-spacing: 0px;
+        font-weight: Normal;
+    }
 
-        table tr {
-            text-align: center;
-        }
+    table tr {
+        text-align: center;
+    }
 
-        table tr td,
-		table tr th {
-			font-size: 8pt;
-            padding: 3px 5px;
-            border: .1px solid  #858a8f;
-		}
+    table tr td,
+    table tr th {
+        font-size: 8pt;
+        padding: 3px 5px;
+        border: .1px solid #858a8f;
+    }
 
-        .text-left {
-            text-align:left;
-        }
+    .text-left {
+        text-align: left;
+    }
 
-        .table-wrapper {
-            border-radius: 5px;
-            /* margin-bottom: 10px; */
-            font-family: sans-serif;
-            
-            position: relative;
-            min-height: 100vh;
+    .table-wrapper {
+        border-radius: 5px;
+        /* margin-bottom: 10px; */
+        font-family: sans-serif;
 
-            /* margin-bottom: 20px; */
-        }
+        position: relative;
+        min-height: 100vh;
 
-        .iso-number {
-            text-align:right;
-            top: -20;
-            right:2;
-            position: absolute;
-            font-size: 7pt;
-        }
-        .date-printed {
-            text-align:right;
-            top: 2;
-            right:2;
-            position: absolute;
-            font-size: 7pt;
-        }
+        /* margin-bottom: 20px; */
+    }
 
-        .company-section {
-            /* border: 2px solid #ced4da; */
-        }
+    .iso-number {
+        text-align: right;
+        top: -20;
+        right: 2;
+        position: absolute;
+        font-size: 7pt;
+    }
 
-        .company-section td {
-            padding: 10px;
-        }
+    .date-printed {
+        text-align: right;
+        top: 2;
+        right: 2;
+        position: absolute;
+        font-size: 7pt;
+    }
 
-        .company-name {
-            font-weight: bold;
-            font-size: 14px;
-        }
+    .company-section {
+        /* border: 2px solid #ced4da; */
+    }
 
-        .company-address {
-            font-size: 11px;
-        }
+    .company-section td {
+        padding: 10px;
+    }
 
-        .form-name {
-            font-size: 11px;
-        }
+    .company-name {
+        font-weight: bold;
+        font-size: 14px;
+    }
 
-        .packinglist-info-section tr {
-            text-align: left;
-        }
+    .company-address {
+        font-size: 11px;
+    }
 
-        .packinglist-carton-section {
-            margin-top: 15px;
-        }
+    .form-name {
+        font-size: 11px;
+    }
 
-        .packinglist-carton-section thead,
-        .packinglist-carton-section tfoot {
-            background-color: #ddd;
-        }
-        
-        .content-wrap {
-            /* Footer height */
-            padding-bottom: 5.5rem;    
-        }
-        
-        .shipment-detail-table {
-            width: 60%;
-            margin-top: 2rem;
-        }
+    .packinglist-info-section tr {
+        text-align: left;
+    }
 
-        .shipment-detail-table th,
-        .shipment-detail-table td {
-            font-size:7pt;
-        }
+    .packinglist-carton-section {
+        margin-top: 15px;
+    }
 
-        .shipment-detail-table th {
-            background-color: #ddd;
-            padding: 5px;
-        }
-        
-        th.shipment-detail-title {
-            font-size: 11px;
-        }
-        
-        .assignment-section {
+    .packinglist-carton-section thead,
+    .packinglist-carton-section tfoot {
+        background-color: #ddd;
+    }
+
+    .content-wrap {
+        /* Footer height */
+        /* padding-bottom: 2.5rem; */
+    }
+
+    .shipment-detail-row {
+        width: 100%;
+        border: 0;
+    }
+
+    .shipment-detail-column {
+        width: 47.5%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .column-spacer {
+        width: 5%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .shipment-detail-table {
+        /* width: 45%; */
+        width: 100%;
+        margin-top: 2rem;
+    }
+
+    .shipment-detail-table th,
+    .shipment-detail-table td {
+        font-size: 7pt;
+    }
+
+    .shipment-detail-table th {
+        background-color: #ddd;
+        padding: 5px;
+    }
+
+    th.shipment-detail-title {
+        font-size: 11px;
+    }
+
+    /* .assignment-section {
             position: absolute;
             bottom: 0;
             width: 100%;
             height: 2.5rem;
-        }
+        } */
 
-        .assignment-section td {
-            border: 0px;
-        }
+    .assignment-section {
+        font-family : sans-serif;
+        margin-top: 30px;
+        margin-bottom: 3rem;
+        font-weight: bold;
+    }
 
-        .page-break { 
-            page-break-before: always !important; 
-        }
+    .assignment-section td {
+        border: 0px;
+    }
 
-
-	</style>
+    .page-break {
+        page-break-before: always !important;
+    }
+    </style>
 </head>
+
 <body>
     <div class="table-wrapper">
         <div class="iso-number">
@@ -207,7 +235,6 @@
                         <td> <?= esc($packinglist->total_carton); ?> </td>
                         <td colspan="2" class="text-bold">Ship Date:</td>
                         <td><?= esc($packinglist->shipdate); ?></td>
-                        
                     </tr>
                     <tr>
                         <td colspan="2" class="text-bold">Total Pieces:</td>
@@ -252,65 +279,62 @@
                     <?php $estimate_tr = 0;?>
 
                     <?php $is_first_page = true;?>
-                    <?php $max_tr_first_page = 16;?>
+                    <?php $max_tr_first_page = 20;?>
                     <?php $max_tr_next_page = 28;?>
                     <?php $max_tr_page = $max_tr_first_page;?>
-                    
                     <?php foreach ($packinglist_carton as $key => $carton) { ?>
-                        <tr class="text-center">
-                            <td class="" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_from ?></td>
-                            <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_to ?> </td>
-                            <?php foreach ($carton->products_in_carton as $key_product => $product) { ?>
-                                <?php if ($key_product == 0) { ?>
+                    <tr class="text-center">
+                        <td class="" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_from ?></td>
+                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_to ?> </td>
+                        <?php foreach ($carton->products_in_carton as $key_product => $product) { ?>
+                            <?php if ($key_product == 0) { ?>
+                                <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
+                                <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
+                                <td> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
+                                <?php foreach ($product->ratio_by_size_list as $key_size => $size) : ?>
+                                    <td> <?= $size->size_qty ?> </td>
+                                <?php endforeach ?>
+                            <?php } ?>
+                        <?php } ?>
+                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->pcs_per_carton ?> </td>
+                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_qty ?> </td>
+                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->ship_qty ?> </td>
+                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight ?> </td>
+                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight ?> </td>
+                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight_lbs ?> </td>
+                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight_lbs ?> </td>
+                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->measurement_ctn ?> </td>
+                    </tr>
+                    <?php $count_tr_page++;?>
+
+                    <?php if ($carton->number_of_product_per_carton > 1) :  ?>
+                        <?php foreach ($carton->products_in_carton as $key_product => $product) : ?>
+                            <?php if ($key_product > 0) : ?>
+
+                                <tr class="text-center">
                                     <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
                                     <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
                                     <td> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
-                                    <?php foreach ($product->ratio_by_size_list as $key_size => $size) : ?>
+                                    <?php foreach ($product->ratio_by_size_list as $key_size => $size) { ?>
                                         <td> <?= $size->size_qty ?> </td>
-                                    <?php endforeach ?>
-                                <?php } ?>
-                            <?php } ?>
-                            <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->pcs_per_carton ?> </td>
-                            <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_qty ?> </td>
-                            <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->ship_qty ?> </td>
-                            <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight ?> </td>
-                            <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight ?> </td>
-                            <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight_lbs ?> </td>
-                            <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight_lbs ?> </td>
-                            <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->measurement_ctn ?> </td>
-                        </tr>
-                        <?php $count_tr_page++;?>
-                        
-                        <?php if ($carton->number_of_product_per_carton > 1) :  ?>
-                            <?php foreach ($carton->products_in_carton as $key_product => $product) : ?>
-                                <?php if ($key_product > 0) : ?>
+                                    <?php } ?>
+                                </tr>
+                                <?php $count_tr_page++;?>
 
-                                    <tr class="text-center">
-                                        <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
-                                        <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
-                                        <td> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
-                                        <?php foreach ($product->ratio_by_size_list as $key_size => $size) { ?>
-                                            <td> <?= $size->size_qty ?> </td>
-                                        <?php } ?>
-                                    </tr>
-                                    <?php $count_tr_page++;?>
-                                    
-                                <?php endif ?>
-                            <?php endforeach ?>
-                        <?php endif ?>
+                            <?php endif ?>
+                        <?php endforeach ?>
+                    <?php endif ?>
 
-                        <?php 
-                            $estimate_tr = $count_tr_page + $carton->number_of_product_per_carton;
-                            if($estimate_tr > $max_tr_page && $is_first_page ) { ?>
-                                <div class="page-break"></div>
-                        <?php 
+                    <?php 
+                        $estimate_tr = $count_tr_page + $carton->number_of_product_per_carton;
+                        if($estimate_tr > $max_tr_page && $is_first_page ) { ?>
+                            <div class="page-break"></div>
+                            <?php 
                                 $is_first_page = false;
                                 $max_tr_page = $max_tr_next_page;
                                 $count_tr_page = 0;
-                            }
-                        ?>
-
-                    <?php } ?>
+                        }
+                    } ?>
 
                 </tbody>
                 <tfoot class="footer">
@@ -323,48 +347,90 @@
                 </tfoot>
             </table>
 
-            <table class="shipment-detail-table">
-                <thead>
-                    <tr>
-                        <th colspan="6" class="shipment-detail-title">Shipment Detail per UPC</th>
-                    </tr>
-                    <tr>
-                        <th>UPC</th>
-                        <th>Colour</th>
-                        <th>Size</th>
-                        <th>Ship Qty</th>
-                        <th>PO Qty</th>
-                        <th>Ship Percentage / UPC</th>
-                    </tr>
-                </thead>
+            <table class="shipment-detail-row">
                 <tbody>
-                    <?php foreach ($shipment_percentage_each_upc as $key => $product) { ?>
-                        <tr>
-                            <td><?= $product->upc ?></td>
-                            <td><?= $product->colour ?></td>
-                            <td><?= $product->size ?></td>
-                            <td><?= $product->shipment_qty ?></td>
-                            <td><?= $product->po_qty ?></td>
-                            <td><?= $product->percentage ?></td>
-                        </tr>
-                    <?php } ?>
+                    <tr>
+                        <td class="shipment-detail-column">
+                            <table class="shipment-detail-table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="6" class="shipment-detail-title">Shipment Detail per UPC</th>
+                                    </tr>
+                                    <tr>
+                                        <th>UPC</th>
+                                        <th>Colour</th>
+                                        <th>Size</th>
+                                        <th>Ship Qty</th>
+                                        <th>PO Qty</th>
+                                        <th>Ship Percentage / UPC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($shipment_percentage_each_upc_part1 as $key => $product) { ?>
+                                    <tr>
+                                        <td><?= $product->upc ?></td>
+                                        <td><?= $product->colour ?></td>
+                                        <td><?= $product->size ?></td>
+                                        <td><?= $product->shipment_qty ?></td>
+                                        <td><?= $product->po_qty ?></td>
+                                        <td><?= $product->percentage ?></td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="column-spacer"></td>
+                        <td class="shipment-detail-column">
+                            <?php if(count($shipment_percentage_each_upc_part2) > 0) :?>
+                            <table class="shipment-detail-table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="6" class="shipment-detail-title">Shipment Detail per UPC</th>
+                                    </tr>
+                                    <tr>
+                                        <th>UPC</th>
+                                        <th>Colour</th>
+                                        <th>Size</th>
+                                        <th>Ship Qty</th>
+                                        <th>PO Qty</th>
+                                        <th>Ship Percentage / UPC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($shipment_percentage_each_upc_part2 as $key => $product) { ?>
+                                    <tr>
+                                        <td><?= $product->upc ?></td>
+                                        <td><?= $product->colour ?></td>
+                                        <td><?= $product->size ?></td>
+                                        <td><?= $product->shipment_qty ?></td>
+                                        <td><?= $product->po_qty ?></td>
+                                        <td><?= $product->percentage ?></td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                            <?php endif ?>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="assignment-section">
-            <table class="">
-                <tbody>
-                    <tr>
-                        <td>Prepared By </td>
-                        <td>Packing Supervisor</td>
-                        <td>Asst Manager</td>
-                        <td>Prod Manager</td>
-                        <td>Asst GM (Production)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    </div>
+
+    <div class="assignment-section">
+        <table class="">
+            <tbody>
+                <tr>
+                    <td>Prepared By </td>
+                    <td>Packing Supervisor</td>
+                    <td>Asst Manager</td>
+                    <td>Prod Manager</td>
+                    <td>Asst GM (Production)</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
+
 </html>
