@@ -103,7 +103,8 @@
         }
         
         .content-wrap {
-            padding-bottom: 6.5rem;    /* Footer height */
+            /* Footer height */
+            padding-bottom: 5.5rem;    
         }
         
         .shipment-detail-table {
@@ -232,8 +233,10 @@
                         <th rowspan="2" colspan="1">Total (Pcs)</th>
                         <th rowspan="2" colspan="1">Total CTN</th>
                         <th rowspan="2" colspan="1">Ship Qty</th>
-                        <th rowspan="2" colspan="1">G.W. (Kgs)</th>
-                        <th rowspan="2" colspan="1">N.W. (Kgs)</th>
+                        <th rowspan="2" colspan="1">G.W. (LBS)</th>
+                        <th rowspan="2" colspan="1">N.W. (LBS)</th>
+                        <th rowspan="2" colspan="1">G.W. (KG)</th>
+                        <th rowspan="2" colspan="1">N.W. (KG)</th>
                         <th rowspan="2" colspan="1">Measurement CTN</th>
                     </tr>
                     <tr class="text-center">
@@ -245,14 +248,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $count_main_tr = 0;?>
+                    <?php $count_tr_page = 0;?>
                     <?php $estimate_tr = 0;?>
-                    <?php $max_tr_first_page = 17;?>
-                    <?php $flag_break = true;?>
+
+                    <?php $is_first_page = true;?>
+                    <?php $max_tr_first_page = 16;?>
+                    <?php $max_tr_next_page = 28;?>
+                    <?php $max_tr_page = $max_tr_first_page;?>
                     
                     <?php foreach ($packinglist_carton as $key => $carton) { ?>
-                        
-
                         <tr class="text-center">
                             <td class="" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_from ?></td>
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_to ?> </td>
@@ -271,17 +275,16 @@
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->ship_qty ?> </td>
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight ?> </td>
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight ?> </td>
+                            <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight_lbs ?> </td>
+                            <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight_lbs ?> </td>
                             <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->measurement_ctn ?> </td>
                         </tr>
+                        <?php $count_tr_page++;?>
                         
-                        <?php $count_main_tr++;?>
-                        
-
-                        
-
                         <?php if ($carton->number_of_product_per_carton > 1) :  ?>
                             <?php foreach ($carton->products_in_carton as $key_product => $product) : ?>
                                 <?php if ($key_product > 0) : ?>
+
                                     <tr class="text-center">
                                         <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
                                         <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
@@ -290,30 +293,32 @@
                                             <td> <?= $size->size_qty ?> </td>
                                         <?php } ?>
                                     </tr>
+                                    <?php $count_tr_page++;?>
+                                    
                                 <?php endif ?>
                             <?php endforeach ?>
                         <?php endif ?>
 
                         <?php 
-                            $estimate_tr = ($count_main_tr+1) * $carton->number_of_product_per_carton;
-                            if($estimate_tr >= $max_tr_first_page && $flag_break ) { ?>
+                            $estimate_tr = $count_tr_page + $carton->number_of_product_per_carton;
+                            if($estimate_tr > $max_tr_page && $is_first_page ) { ?>
                                 <div class="page-break"></div>
                         <?php 
-                                $flag_break = false;
+                                $is_first_page = false;
+                                $max_tr_page = $max_tr_next_page;
+                                $count_tr_page = 0;
                             }
                         ?>
 
-
                     <?php } ?>
 
-
-
                 </tbody>
+                <tfoot class="footer">
                     <tr class="text-center">
                         <th colspan="<?= 4 + $size_colspan + 1; ?>" class="text-right">Total : </th>
                         <th colspan=""><?= $packinglist_carton_total->total_carton ?></th>
                         <th colspan=""><?= $packinglist_carton_total->total_ship ?></th>
-                        <th colspan="3"></th>
+                        <th colspan="6"></th>
                     </tr>
                 </tfoot>
             </table>
@@ -351,7 +356,7 @@
             <table class="">
                 <tbody>
                     <tr>
-                        <td>Prepared By: </td>
+                        <td>Prepared By </td>
                         <td>Packing Supervisor</td>
                         <td>Asst Manager</td>
                         <td>Prod Manager</td>

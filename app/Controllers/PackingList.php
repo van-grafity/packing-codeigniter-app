@@ -315,6 +315,8 @@ class PackingList extends BaseController
                 'number_of_product_per_carton' => count($products_in_carton),
                 'gross_weight' => $carton->gross_weight,
                 'net_weight' => $carton->net_weight,
+                'gross_weight_lbs' => round($carton->gross_weight * 2.20462, 2),
+                'net_weight_lbs' => round($carton->net_weight * 2.20462, 2),
                 'measurement_ctn' => $carton->measurement_ctn,
             ];
 
