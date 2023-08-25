@@ -325,7 +325,8 @@ class PurchaseOrder extends BaseController
         $statusCreate = $this->createMasterDataIfNotExists($data_array_from_excel, $header_and_model);
         if(!$statusCreate) { return false; }
 
-        $result = $this->recreateArrayToUseID($data_array_from_excel);
+        $array_with_relation_id = $this->recreateArrayToUseID($data_array_from_excel);
+        $result = $this->removeWhitespace($array_with_relation_id);
         return $result;
     }
 
@@ -524,5 +525,16 @@ class PurchaseOrder extends BaseController
             ];
             return $result; 
         }        
+    }
+
+    private function removeWhitespace($product_array) : array
+    {
+        // ## Cleaning data. remove whitespace from beginning and end of string
+        foreach ($product_array as $key => $product) {
+            foreach ($product as $prop => $value) {
+                $product_array[$key][$prop] = trim($value);
+            }
+        }
+        return $product_array;
     }
 }
