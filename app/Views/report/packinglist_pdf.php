@@ -299,10 +299,10 @@
                         <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->pcs_per_carton ?> </td>
                         <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_qty ?> </td>
                         <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->ship_qty ?> </td>
-                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight ?> </td>
-                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight ?> </td>
                         <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight_lbs ?> </td>
                         <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight_lbs ?> </td>
+                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight ?> </td>
+                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight ?> </td>
                         <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->measurement_ctn ?> </td>
                     </tr>
                     <?php $count_tr_page++;?>
