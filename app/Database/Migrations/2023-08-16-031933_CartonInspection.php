@@ -24,7 +24,7 @@ class CartonInspection extends Migration
                 'type' => 'varchar',
                 'constraint' => 255,
             ],
-            'received_date'  => [
+            'issued_date'  => [
                 'type' => 'date',
             ],
             'created_at'  => [

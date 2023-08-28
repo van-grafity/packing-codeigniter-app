@@ -85,8 +85,8 @@
                                 </div>
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
-                                        <label for="received_date" class="col-form-label">Received Date :</label>
-                                        <input type="text" class="form-control" id="received_date" name="received_date" readonly>
+                                        <label for="issued_date" class="col-form-label">Issued Date :</label>
+                                        <input type="text" class="form-control" id="issued_date" name="issued_date" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -104,46 +104,6 @@
                 </form>
 
             </div>
-        </div>
-        <!-- <div class="card card-info mt-2 d-none">
-            <div class="card-header">
-                <div class="card-title">Inspection Form</div>
-            </div>
-            <div class="card-body">
-                <form action="<?= base_url('cartoninspection/store')?>" method="post" id="carton_inspection_form">
-                    <div class="row justify-content-center">
-                        <div class="col-sm-12 col-md-4">
-                            <div class="form-group">
-                                <label for="issued_by" class="col-form-label">Issued By</label>
-                                <input type="text" class="form-control" id="issued_by" name="issued_by" placeholder="Issued By">
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-4">
-                            <div class="form-group">
-                                <label for="received_by" class="col-form-label">Received By :</label>
-                                <input type="text" class="form-control" id="received_by" name="received_by" placeholder="Received By">
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-4">
-                            <div class="form-group">
-                                <label for="received_date" class="col-form-label">Received Date :</label>
-                                <input type="text" class="form-control" id="received_date" name="received_date" disabled>
-                            </div>
-                            <div class="text-right">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary" id="btn_submit">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-        </div> -->
-
-        <div class="row text-right">
-            <div class="col-12">
-            </div>
-
         </div>
     </section>
 </div>
@@ -166,7 +126,7 @@ $(document).ready(function() {
 
     });
 
-    $('#received_date').val(moment().format('YYYY-MM-DD'));
+    $('#issued_date').val(moment().format('YYYY-MM-DD'));
 
 })
 </script>
@@ -203,18 +163,6 @@ async function show_detail_carton(carton_barcode) {
     add_carton_to_table(carton_info);
 
 
-    // set_carton_info(carton_info);
-    // set_carton_detail(carton_detail, is_packed)
-
-    // $('#carton_barcode_show').text(carton_barcode);
-
-    // if (carton_info.flag_packed == 'N') {
-    //     $('#product_code').attr('disabled', false);
-    //     $('#product_code').focus();
-    // } else {
-    //     $('#product_code').attr('disabled', true);
-    //     $('#btn_pack_carton').attr('disabled', true);
-    // }
 }
 
 const create_element_tr = (carton_info) => {
@@ -268,114 +216,5 @@ const is_already_inputed = (carton_barcode) => {
     }
 }
 
-
-
-
-
-function set_carton_detail(carton_detail, is_packed = false) {
-
-    $('#carton_inspection_table tbody').html('');
-
-    let total = 0;
-    carton_detail.forEach((data, key) => {
-        let row;
-        if (!is_packed) {
-            row = `
-                <tr class="text-center">
-                    <td>${key+1}</td>
-                    <td class="product_code">${data.product_code}</td>
-                    <td>${data.product_name}</td>
-                    <td>${data.product_colour}</td>
-                    <td>${data.product_size}</td>
-                    <td class="product_qty">${data.product_qty}</td>
-                    <td class="scanned_count"> 0 </td>
-                    <td class="scanned_status"> <span class="badge bg-warning">Not Complete</span> </td>
-                </tr>
-            `;
-        } else {
-            row = `
-                <tr class="text-center">
-                    <td>${key+1}</td>
-                    <td class="product_code">${data.product_code}</td>
-                    <td>${data.product_name}</td>
-                    <td>${data.product_colour}</td>
-                    <td>${data.product_size}</td>
-                    <td class="product_qty">${data.product_qty}</td>
-                    <td class="scanned_count"> ${data.product_qty} </td>
-                    <td class="scanned_status"> <span class="badge bg-success">Complete</span> </td>
-                </tr>
-            `;
-        }
-        $('#carton_inspection_table tbody').append(row);
-
-        total += parseInt(data.product_qty);
-    });
-    let row_footer = `
-            <tr>
-                <td colspan="5" class="text-right title_total">Total :</td>
-                <td colspan="1" class="text-center total_product_qty">${total}</td>
-                <td colspan="1" class="text-center total_scanned_count">0</td>
-                <td colspan="1" class="text-center all_scanned_status"><span class="badge bg-warning">Not Complete</span></td>
-            </tr>
-        `;
-    $('#carton_inspection_table tfoot').html(row_footer);
-
-    update_total_scanned();
-    check_all_status();
-}
-
-function scan_product_code(product_code) {
-    let product_row = $("#carton_inspection_table tbody .product_code").filter(function() {
-        return $(this).text() == product_code;
-    }).closest("tr");
-
-    if (product_row.length <= 0) {
-        toastr.error('Invalid Product Code!')
-        return false;
-    }
-
-    let product_qty = parseInt(product_row.find('td.product_qty').text());
-    let scanned_count = parseInt(product_row.find('td.scanned_count').text());
-
-    if (scanned_count >= product_qty) {
-        swal_warning({
-            title: "This Product has been Fulfilled!"
-        })
-        return false;
-    }
-    scanned_count++;
-    product_row.find('td.scanned_count').text(scanned_count);
-
-
-    if (scanned_count == product_qty) {
-        product_row.find('td.scanned_status').html(`<span class="badge bg-success">Complete</span>`)
-    }
-
-    update_total_scanned();
-    check_all_status();
-}
-
-function update_total_scanned() {
-    let scanned_count_data = $("#carton_inspection_table tbody td.scanned_count");
-    let total_scanned_count = 0;
-    scanned_count_data.each((i, row) => {
-        total_scanned_count += parseInt($(row).text());
-    });
-    $('.total_scanned_count').text(total_scanned_count);
-}
-
-function check_all_status() {
-    total_row = $('#carton_inspection_table tfoot');
-    let total_product_qty = total_row.find('.total_product_qty').text();
-    let total_scanned_count = total_row.find('.total_scanned_count').text();
-
-    if (total_scanned_count == total_product_qty) {
-        total_row.find('td.all_scanned_status').html(`<span class="badge bg-success">All Complete</span>`)
-
-        $('#btn_pack_carton').attr('disabled', false);
-    } else {
-        total_row.find('td.all_scanned_status').html(`<span class="badge bg-warning">Not Complete</span>`)
-    }
-}
 </script>
 <?= $this->endSection('page_script'); ?>

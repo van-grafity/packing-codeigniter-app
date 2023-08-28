@@ -26,10 +26,7 @@ class CartonInspection extends BaseController
 
     public function index()
     {
-        $inspection_list = $this->CartonInspectionModel->findAll();
-        foreach ($inspection_list as $key => $inspection) {
-            $inspection_list[$key]['carton_number'] = '100';
-        } 
+        $inspection_list = $this->CartonInspectionModel->getCartonInspection();
         $data = [
             'title' => 'Carton Inspection',
             'carton_inspection' => $inspection_list,
@@ -84,7 +81,7 @@ class CartonInspection extends BaseController
             $carton_inspection = [
                 'issued_by' => $this->request->getPost('issued_by'),
                 'received_by' => $this->request->getPost('received_by'),
-                'received_date' => $this->request->getPost('received_date'),
+                'issued_date' => $this->request->getPost('issued_date'),
             ];
             $this->CartonInspectionModel->transException(true)->transStart();
             $carton_inspection_id = $this->CartonInspectionModel->insert($carton_inspection);
@@ -110,6 +107,11 @@ class CartonInspection extends BaseController
 
         }
         
+    }
+
+    public function detailinspection()
+    {
+
     }
 
 }
