@@ -203,6 +203,7 @@ class PurchaseOrder extends BaseController
             // ## set required Column. cannot be empty / null on excel
             $required_column = ['gl_number','po_number','shipdate','upc','style_no','style_description','colour','size','product_type','price','order_qty'];
             $cleaned_data = $this->removeEmptyData($data_to_update, $required_column);
+            $cleaned_data = $this->removeWhitespace($cleaned_data);
 
             $gl_available = $this->isGlNumberAvailable($cleaned_data);
             
@@ -325,8 +326,7 @@ class PurchaseOrder extends BaseController
         $statusCreate = $this->createMasterDataIfNotExists($data_array_from_excel, $header_and_model);
         if(!$statusCreate) { return false; }
 
-        $array_with_relation_id = $this->recreateArrayToUseID($data_array_from_excel);
-        $result = $this->removeWhitespace($array_with_relation_id);
+        $result = $this->recreateArrayToUseID($data_array_from_excel);
         return $result;
     }
 
