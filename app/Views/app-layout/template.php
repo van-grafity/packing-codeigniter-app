@@ -361,7 +361,7 @@
 
 
     <!-- ## Script for set Active Class depand on Active Page -->
-    <script>
+    <!-- <script>
         $(document).ready(function() {
             /*** add active class and stay opened when selected ***/
             var url = window.location;
@@ -379,6 +379,28 @@
                     return this.href == url || url.href.indexOf(this.href) == 0;
                 }
             }).parentsUntil(".nav-sidebar > .nav-treeview").addClass('menu-open').prev('a').addClass('active');
+        });
+    </script> -->
+
+    <!-- ## Script for set Active Class depand on Active Page -->
+    <script>
+        $(document).ready(function() {
+            /*** add active class and stay opened when selected ***/
+            $(function () {
+                var url = window.location;
+                // for single sidebar menu
+                $('ul.nav-sidebar a').filter(function () {
+                    return this.href == url;
+                }).addClass('active');
+
+                // for sidebar menu and treeview
+                $('ul.nav-treeview a').filter(function () {
+                    return this.href == url;
+                }).parentsUntil(".nav-sidebar > .nav-treeview")
+                    .css({'display': 'block'})
+                    .addClass('menu-open').prev('a')
+                    .addClass('active');
+            });
         });
     </script>
 </body>
