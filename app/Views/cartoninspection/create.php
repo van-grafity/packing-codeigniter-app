@@ -159,10 +159,7 @@ async function show_detail_carton(carton_barcode) {
     let is_packed = carton_info.flag_packed == 'Y' ? true : false;
     let carton_detail = result.data.carton_detail;
 
-    console.log(carton_info);
     add_carton_to_table(carton_info);
-
-
 }
 
 const create_element_tr = (carton_info) => {

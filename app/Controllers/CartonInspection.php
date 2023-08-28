@@ -109,9 +109,17 @@ class CartonInspection extends BaseController
         
     }
 
-    public function detailinspection()
+    public function detail()
     {
-
+        $inspection_id = $this->request->getGet('id');
+        $carton_inspection = $this->CartonInspectionModel->getCartonInspection($inspection_id);
+        
+        $data_return = [
+            'status' => 'success',
+            'inspection_id' => $inspection_id,
+            'carton_inspection' => $carton_inspection,
+        ];
+        return $this->response->setJSON($data_return);
     }
 
 }

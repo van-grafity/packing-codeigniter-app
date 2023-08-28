@@ -20,7 +20,13 @@ class CartonInspectionModel extends Model
         $builder->join('tblpackinglist as packinglist','packinglist.id = carton_barcode.packinglist_id');
         $builder->join('tblpurchaseorder as po','po.id = packinglist.packinglist_po_id');
         $builder->groupBy('inspection.id');
-        $result = $builder->get()->getResult();
+
+        if($id) {
+            $builder->where('inspection.id',$id);
+            $result = $builder->get()->getRow();   
+        } else {
+            $result = $builder->get()->getResult();
+        }
         return $result;
     }
 }
