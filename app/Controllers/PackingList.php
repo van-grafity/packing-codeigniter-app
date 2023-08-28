@@ -315,6 +315,8 @@ class PackingList extends BaseController
                 'number_of_product_per_carton' => count($products_in_carton),
                 'gross_weight' => $carton->gross_weight,
                 'net_weight' => $carton->net_weight,
+                'gross_weight_lbs' => round($carton->gross_weight * 2.20462, 2),
+                'net_weight_lbs' => round($carton->net_weight * 2.20462, 2),
                 'measurement_ctn' => $carton->measurement_ctn,
             ];
 
@@ -343,6 +345,25 @@ class PackingList extends BaseController
             $shipment_percentage_each_upc[$key]->percentage = round($product->shipment_qty / $po_qty * 100) . '%';
         }
 
+
+        // ## sparate to 2 array if upc more than 4. for better layout on form packinglist
+        $count_all_shipment_upc = count($shipment_percentage_each_upc);
+        $shipment_percentage_each_upc_part1 = [];
+        $shipment_percentage_each_upc_part2 = [];
+        if($count_all_shipment_upc > 4) {
+            $row_in_one_column = $count_all_shipment_upc /2;
+            foreach ($shipment_percentage_each_upc as $key => $upc) {
+                if($key < $row_in_one_column) {
+                    $shipment_percentage_each_upc_part1[] = $upc;
+                } else {
+                    $shipment_percentage_each_upc_part2[] = $upc;
+                }
+            }
+        } else {
+            $shipment_percentage_each_upc_part1 = $shipment_percentage_each_upc;
+        }
+
+
         $date_printed = new Time('now');
         $date_printed = $date_printed->toLocalizedString('eeee, dd-MMMM-yyyy HH:mm');
         
@@ -361,6 +382,8 @@ class PackingList extends BaseController
             'packinglist_carton_total'   => $packinglist_carton_total_data,
             'packinglist_size_list'   => $packinglist_size_list,
             'shipment_percentage_each_upc'   => $shipment_percentage_each_upc,
+            'shipment_percentage_each_upc_part1'   => $shipment_percentage_each_upc_part1,
+            'shipment_percentage_each_upc_part2'   => $shipment_percentage_each_upc_part2,
             'size_colspan'   => count($packinglist_size_list),
             'size_rowspan'   => count($packinglist_size_list) ?  1 : 2,
             'date_printed' => $date_printed,

@@ -203,32 +203,42 @@ class PurchaseOrder extends BaseController
             // ## set required Column. cannot be empty / null on excel
             $required_column = ['gl_number','po_number','shipdate','upc','style_no','style_description','colour','size','product_type','price','order_qty'];
             $cleaned_data = $this->removeEmptyData($data_to_update, $required_column);
+            $cleaned_data = $this->removeWhitespace($cleaned_data);
 
             $gl_available = $this->isGlNumberAvailable($cleaned_data);
             
             if(!$gl_available) { 
                 return redirect()->to('purchaseorder')->with('error', 'There is a GL Number has not registered in the system! Please create GL Master Data first' );
             }
-            $is_duplicate_on_excel = $this->isDuplicateProductCodeOnExcel($cleaned_data);
-            if($is_duplicate_on_excel) { 
-                return redirect()->to('purchaseorder')->with('error', 'There is a duplicate UPC in your excel! Please double check the data you provide' );
-            }
+            // $is_duplicate_on_excel = $this->isDuplicateProductCodeOnExcel($cleaned_data);
+            // if($is_duplicate_on_excel) { 
+            //     return redirect()->to('purchaseorder')->with('error', 'There is a duplicate UPC in your excel! Please double check the data you provide' );
+            // }
 
-            $is_duplicate_on_system = $this->isDuplicateProductCodeOnSystem($cleaned_data);
-            if($is_duplicate_on_system) { 
-                return redirect()->to('purchaseorder')->with('error', 'There is a UPC already registered in the system! Please double check the data you provide' );
-            }
+            // $is_duplicate_on_system = $this->isDuplicateProductCodeOnSystem($cleaned_data);
+            // if($is_duplicate_on_system) { 
+            //     return redirect()->to('purchaseorder')->with('error', 'There is a UPC already registered in the system! Please double check the data you provide' );
+            // }
             
             $adjusted_array_product = $this->adjustArrayProductToInsert($cleaned_data);
             
             $this->db->transException(true)->transStart();
             
-            $insertedProduct = $this->ProductModel->insertBatch($adjusted_array_product);
+            foreach ($adjusted_array_product as $key => $product) {
+                /* 
+                 * check apakah product sudah ada di Master Data. check product by their UPC / Product Code
+                 * kalau belum tambahkan product.
+                 * kalau sudah ada, tidak perlu menambahkan data baru. 
+                */
+                $product_ids[] = $this->ProductModel->getOrCreateProduct($product);
+            }
+            
+            // $insertedProduct = $this->ProductModel->insertBatch($adjusted_array_product);
             
             $add_products_to_purchase_order = $this->addProductToPurchaseOrder($cleaned_data);
             
             $this->db->transComplete();
-            return redirect()->to('purchaseorder')->with('success', 'Successfully Submitted ' . count($add_products_to_purchase_order['data']) . ' Products' );
+            return redirect()->to('purchaseorder')->with('success', 'Successfully Submitted ' . count($add_products_to_purchase_order['data']) . ' Product Orders' );
 
         } catch (\Throwable $th) {
             throw $th;
@@ -347,9 +357,9 @@ class PurchaseOrder extends BaseController
         $array_gl_number = array_column($data_array_from_excel,'gl_number');
         foreach ($array_gl_number as $key => $gl_number) {
             $gl = $this->GlModel->where('gl_number', $gl_number)->first();
-            if($gl) { return true; }
+            if(!$gl) { return false; }
         }
-        return false;
+        return true;
     }
 
     private function isDuplicateProductCodeOnExcel(Array $data_array_from_excel) : bool
@@ -468,7 +478,7 @@ class PurchaseOrder extends BaseController
         /*
          * =================================================================
          * Step :
-         * Perulangan untuk setiap data
+         * Perulangan untuk setiap data (product on PO)
          * check apakah sudah ada PO
          * ** kalau belum ada, buat PO berdasarkan nomor PO
          * ** field po => ['po_no','gl_id','shipdate']
@@ -515,5 +525,16 @@ class PurchaseOrder extends BaseController
             ];
             return $result; 
         }        
+    }
+
+    private function removeWhitespace($product_array) : array
+    {
+        // ## Cleaning data. remove whitespace from beginning and end of string
+        foreach ($product_array as $key => $product) {
+            foreach ($product as $prop => $value) {
+                $product_array[$key][$prop] = trim($value);
+            }
+        }
+        return $product_array;
     }
 }

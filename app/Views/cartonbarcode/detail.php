@@ -101,11 +101,11 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label for="exampleInputFile">Update Barcode via CSV</label>
+                                        <label for="exampleInputFile">Update Barcode via Excel / CSV</label>
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="file_excel" name="file_excel" required>
-                                                <label class="custom-file-label" for="file_excel">Choose CSV file</label>
+                                                <label class="custom-file-label" for="file_excel">Choose Excel / CSV file</label>
                                             </div>
                                         </div>
                                     </div>

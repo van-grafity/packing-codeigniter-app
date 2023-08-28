@@ -72,4 +72,15 @@ class ProductModel extends Model
         $result = $builder->updateBatch($data_array, ['packinglist_id', 'carton_number_by_system']);
         return $result;
     }
+
+    public function getOrCreateProduct($data_array)
+    {
+        $ProductModel = model('ProductModel');
+        $product = $ProductModel->where('product_code', $data_array['product_code'])->first();
+        if (!$product){
+            $last_id = $ProductModel->insert($data_array);
+            $product = $ProductModel->where('id', $last_id)->first();
+        }
+        return $product;
+    }
 }

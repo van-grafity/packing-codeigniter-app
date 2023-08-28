@@ -21,6 +21,7 @@ class Product extends Migration
             'product_asin_id' => [
                 'type' => 'VARCHAR',
                 'constraint' => 35,
+                'null' => true,
             ],
             'product_category_id' => [
                 'type' => 'BIGINT',
