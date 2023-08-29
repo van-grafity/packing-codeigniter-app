@@ -12,7 +12,6 @@
             </div>
             <div class="card-body">
                 <a href="<?= url_to('cartoninspection/create')?>" type="button" class="btn btn-secondary mb-2" id="btn-add-carton">New Inspection</a>
-                <h3 class="mb-4">Carton Inspection</h3>
                 <table id="carton_inspection_table" class="table table-bordered table-hover">
                     <thead>
                         <tr class="table-primary text-center">
@@ -82,13 +81,13 @@
                             <dt class="col-sm-3">Received By </dt>
                             <dd class="col-sm-9" id="inspection_detail_received_by"> : - </dd>
                             <dt class="col-sm-3">Received Date </dt>
-                            <dd class="col-sm-9" id="inspection_detail_received_date"> : - </dd>
+                            <dd class="col-sm-9" id="inspection_detail_issued_date"> : - </dd>
                         </dl>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <table class="table" id="detail_inspection_table">
+                        <table class="table table-bordered table-sm text-center" id="detail_inspection_table">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>No</th>
@@ -104,9 +103,18 @@
                         </table>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <dl class="row">
+                            <dt class="col-sm-2">Total Carton </dt>
+                            <dd class="col-sm-3" id="inspection_detail_total_carton"> : - </dd>
+                        </dl>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info" >Print Transfer Note</button>
             </div>
         </div>
     </div>
@@ -181,36 +189,50 @@ $(document).ready(function() {
 const detail_inspection_url = '<?= base_url('cartoninspection/detail')?>';
 
 async function detail_inspection(inspection_id) {
-    // $('#detail_inspection_table tbody').html('');
-    // let total = 0;
+    clear_inspection_detail_modal();
 
     params_data = { id : inspection_id };
     result = await using_fetch(detail_inspection_url, params_data, "GET");
     console.log(result);
-    // result.data.forEach((data, key) => {
-    //     let row = `
-    //         <tr>
-    //             <td>${key+1}</td>
-    //             <td>${data.product_code}</td>
-    //             <td>${data.product_name}</td>
-    //             <td>${data.product_colour}</td>
-    //             <td>${data.product_size}</td>
-    //             <td>${data.product_qty}</td>
-    //         </tr>
-    //     `;
-    //     $('#detail_inspection_table tbody').append(row);
 
-    //     total += parseInt(data.product_qty);
-    // });
-    // let row_footer = `
-    //     <tr>
-    //         <td colspan="5" class="text-right">Total PCS :</td>
-    //         <td colspan="1">${total}</td>
-    //     </tr>
-    // `;
-    // $('#detail_inspection_table tfoot').html(row_footer);
+    let inspection_data = result.data.carton_inspection;
+    $('#inspection_detail_gl_no').text(` : ${inspection_data.gl_number}`);
+    $('#inspection_detail_buyer').text(` : ${inspection_data.buyer_name}`);
+    $('#inspection_detail_po_no').text(` : ${inspection_data.po_number}`);
+    $('#inspection_detail_issued_by').text(` : ${inspection_data.issued_by}`);
+    $('#inspection_detail_received_by').text(` : ${inspection_data.received_by}`);
+    $('#inspection_detail_issued_date').text(` : ${inspection_data.issued_date}`);
+
+    let inspection_detail_data = result.data.carton_inspection_detail;
+
+    inspection_detail_data.forEach((data, key) => {
+        let row = `
+            <tr>
+                <td>${key+1}</td>
+                <td>${data.carton_number}</td>
+                <td>${data.carton_barcode}</td>
+                <td>${data.total_pcs}</td>
+            </tr>
+        `;
+        $('#detail_inspection_table tbody').append(row);
+
+    });
+
+    $('#inspection_detail_total_carton').text(` : ${inspection_detail_data.length} carton`);
 
     $('#detail_inspection_modal').modal('show');
+}
+
+const clear_inspection_detail_modal = () => {
+    $('#inspection_detail_gl_no').text(` : `);
+    $('#inspection_detail_buyer').text(` : `);
+    $('#inspection_detail_po_no').text(` : `);
+    $('#inspection_detail_issued_by').text(` : `);
+    $('#inspection_detail_received_by').text(` : `);
+    $('#inspection_detail_issued_date').text(` : `);
+    $('#inspection_detail_total_carton').text(` : `);
+
+    $('#detail_inspection_table tbody').html('');
 }
 </script>
 

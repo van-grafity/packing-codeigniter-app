@@ -123,7 +123,7 @@ $(document).ready(function() {
 
         show_detail_carton(carton_barcode)
         $('#carton_barcode').val('');
-
+        $('#carton_barcode').focus();
     });
 
     $('#issued_date').val(moment().format('YYYY-MM-DD'));
