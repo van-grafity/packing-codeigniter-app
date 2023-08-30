@@ -117,7 +117,6 @@ class PurchaseOrderModel extends Model
 
     public function getOrCreateDataByName(Array $data_po)
     {
-        
         $PurchaseOrderModel = model('PurchaseOrderModel');
         
         $data_to_insert = [

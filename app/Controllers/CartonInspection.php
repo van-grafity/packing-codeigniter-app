@@ -8,6 +8,9 @@ use App\Models\CartonInspectionDetailModel;
 use App\Models\CartonBarcodeModel;
 use App\Models\PackingListModel;
 
+use CodeIgniter\I18n\Time;
+
+
 class CartonInspection extends BaseController
 {
     protected $CartonInspectionModel;
@@ -124,6 +127,31 @@ class CartonInspection extends BaseController
             'message' => 'Success retrieving inspection details',
         ];
         return $this->response->setJSON($data_return);
+    }
+
+    public function transfernote($inspection_id)
+    {
+        // dd($inspection_id);
+        // dd($this->request->getGet());
+
+        $date_printed = new Time('now');
+        $date_printed = $date_printed->toLocalizedString('eeee, dd-MMMM-yyyy HH:mm');
+
+        $filename = 'Inspection Transfer Note - () - PO#' . '1804QWE';
+
+        $data = [
+            'title'         => $filename,
+            'date_printed'  => $date_printed,
+        ];
+
+        return view('cartoninspection/transfernote_pdf', $data);
+
+        $dompdf = new \Dompdf\Dompdf(); 
+        $dompdf->loadHtml(view('cartoninspection/transfernote_pdf', $data));
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $dompdf->stream($filename, ['Attachment' => false]);
+        
     }
 
 }

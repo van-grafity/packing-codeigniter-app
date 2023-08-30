@@ -114,7 +114,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info" >Print Transfer Note</button>
+                <a id="btn_print_transfer_note" href="" type="button" class="btn btn-info" >Print Transfer Note</a>
             </div>
         </div>
     </div>
@@ -219,6 +219,7 @@ async function detail_inspection(inspection_id) {
     });
 
     $('#inspection_detail_total_carton').text(` : ${inspection_detail_data.length} carton`);
+    $('#btn_print_transfer_note').attr('href',`<?= base_url('cartoninspection/transfernote/')?>${inspection_data.id}`)
 
     $('#detail_inspection_modal').modal('show');
 }
