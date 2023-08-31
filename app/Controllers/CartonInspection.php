@@ -33,6 +33,7 @@ class CartonInspection extends BaseController
         $data = [
             'title' => 'Carton Inspection',
             'carton_inspection' => $inspection_list,
+            'action_field_class' => '',
         ];
         
         return view('cartoninspection/index', $data);
@@ -90,6 +91,7 @@ class CartonInspection extends BaseController
             $carton_inspection_id = $this->CartonInspectionModel->insert($carton_inspection);
             
             foreach ($carton_ids as $key => $carton_id) {
+                $this->CartonBarcodeModel->update($carton_id, ['flag_packed' => 'N']);
                 $carton_inspection_detail = [
                     'carton_inspection_id' => $carton_inspection_id,
                     'carton_barcode_id' => $carton_id,
@@ -131,8 +133,8 @@ class CartonInspection extends BaseController
 
     public function transfernote($inspection_id)
     {
-        // dd($inspection_id);
-        // dd($this->request->getGet());
+        $carton_inspection = $this->CartonInspectionModel->getCartonInspection($inspection_id);
+        $carton_inspection_detail = $this->CartonInspectionModel->getCartonInspectionDetail($inspection_id);
 
         $date_printed = new Time('now');
         $date_printed = $date_printed->toLocalizedString('eeee, dd-MMMM-yyyy HH:mm');
@@ -142,15 +144,24 @@ class CartonInspection extends BaseController
         $data = [
             'title'         => $filename,
             'date_printed'  => $date_printed,
+            'carton_inspection' => $carton_inspection,
+            'carton_inspection_detail' => $carton_inspection_detail,
         ];
 
-        return view('cartoninspection/transfernote_pdf', $data);
+        // return view('cartoninspection/transfernote_pdf', $data);
 
         $dompdf = new \Dompdf\Dompdf(); 
         $dompdf->loadHtml(view('cartoninspection/transfernote_pdf', $data));
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
         $dompdf->stream($filename, ['Attachment' => false]);
+        
+    }
+    
+
+    public function delete()
+    {
+        dd("masuk");
         
     }
 

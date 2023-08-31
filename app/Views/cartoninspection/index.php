@@ -16,13 +16,12 @@
                     <thead>
                         <tr class="table-primary text-center">
                             <th width="5%">No</th>
-                            <th width="15%">PO Number</th>
-                            <th width="25%">Packinglist SN</th>
-                            <th width="15%">Total Carton</th>
-                            <th width="15%">Issued By</th>
-                            <th width="15%">Received By</th>
+                            <th width="10%">PO Number</th>
+                            <th width="15%">GL Number</th>
+                            <th width="25%">Buyer</th>
+                            <th width="10%">Total Carton</th>
                             <th width="15%">Issued Date</th>
-                            <th width="25%">Action</th>
+                            <th width="15%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,12 +30,16 @@
                         <tr class="text-center">
                             <td><?= $i++; ?></td>
                             <td><?= $inpsection->po_number; ?></td>
-                            <td><?= $inpsection->pl_number; ?></td>
+                            <td><?= $inpsection->gl_number; ?></td>
+                            <td><?= $inpsection->buyer_name; ?></td>
                             <td><?= $inpsection->total_carton; ?></td>
-                            <td><?= $inpsection->issued_by; ?></td>
-                            <td><?= $inpsection->received_by; ?></td>
                             <td><?= $inpsection->issued_date; ?></td>
-                            <td><a class="btn btn-info btn-sm mb-1 mr-2" onclick="detail_inspection(<?= $inpsection->id; ?>)">Detail</a></td>
+                            <td>
+                                <a class="btn btn-info btn-sm mb-1 mr-2" onclick="detail_inspection(<?= $inpsection->id; ?>)">Detail</a>
+                                <a class="btn btn-danger btn-sm mb-1 mr-2 btn-delete-inspection <?= $action_field_class ?>"
+                                     data-inspection-id="<?= $inpsection->id; ?>" 
+                                     data-po-number="<?= $inpsection->po_number; ?>">Delete</a>
+                            </td>
                         </tr>
                         <?php endforeach;  ?>
                     </tbody>
@@ -63,12 +66,12 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
                         <dl class="row">
-                            <dt class="col-sm-3">GL Number </dt>
-                            <dd class="col-sm-9" id="inspection_detail_gl_no"> : - </dd>
-                            <dt class="col-sm-3">Buyer </dt>
-                            <dd class="col-sm-9" id="inspection_detail_buyer"> : - </dd>
-                            <dt class="col-sm-3">Order No </dt>
+                            <dt class="col-sm-3">Buyer PO</dt>
                             <dd class="col-sm-9" id="inspection_detail_po_no"> : - </dd>
+                            <dt class="col-sm-3">GL Number</dt>
+                            <dd class="col-sm-9" id="inspection_detail_gl_no"> : - </dd>
+                            <dt class="col-sm-3">Buyer</dt>
+                            <dd class="col-sm-9" id="inspection_detail_buyer"> : - </dd>
                             <br>
                             <br>
                             
@@ -76,11 +79,11 @@
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <dl class="row">
-                            <dt class="col-sm-3">Issued By </dt>
+                            <dt class="col-sm-3">Issued By</dt>
                             <dd class="col-sm-9" id="inspection_detail_issued_by"> : - </dd>
-                            <dt class="col-sm-3">Received By </dt>
+                            <dt class="col-sm-3">Received By</dt>
                             <dd class="col-sm-9" id="inspection_detail_received_by"> : - </dd>
-                            <dt class="col-sm-3">Received Date </dt>
+                            <dt class="col-sm-3">Received Date</dt>
                             <dd class="col-sm-9" id="inspection_detail_issued_date"> : - </dd>
                         </dl>
                     </div>
@@ -114,12 +117,40 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a id="btn_print_transfer_note" href="" type="button" class="btn btn-info" >Print Transfer Note</a>
+                <a id="btn_print_transfer_note" href="" target="_blank" type="button" class="btn btn-info" >Print Transfer Note</a>
             </div>
         </div>
     </div>
 </div>
 <!-- End Modal Detail Inspection -->
+
+
+
+<!-- Modal Delete Carton Inspection -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="<?= base_url('cartoninspection/delete')?>" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Delete Carton Inspection</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 id="delete_message">Are you sure want to delete this Carton Inspection ?</h4>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="inspection_id" id="inspection_id">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</form>
+<!-- End Modal Delete Carton Inspection -->
 
 <?= $this->endSection(); ?>
 
@@ -142,20 +173,16 @@ $('#carton_inspection_table').DataTable({
             name: 'po_number'
         },
         {
-            data: 'packinglist_number',
-            name: 'packinglist_number'
+            data: 'buyer',
+            name: 'buyer'
+        },
+        {
+            data: 'gl_number',
+            name: 'gl_number'
         },
         {
             data: 'total_carton',
             name: 'total_carton'
-        },
-        {
-            data: 'issued_by',
-            name: 'issued_by'
-        },
-        {
-            data: 'received_by',
-            name: 'received_by'
         },
         {
             data: 'issued_date',
@@ -235,6 +262,17 @@ const clear_inspection_detail_modal = () => {
 
     $('#detail_inspection_table tbody').html('');
 }
+
+
+$('.btn-delete-inspection').on('click', function(event){
+    let inspection_id = $(this).data('inspection-id');
+    let po_number = $(this).data('po-number');
+    if (po_number) {
+        $('#delete_message').text(`Are you sure want to delete this Carton Inspection for PO ${po_number} ?`);
+    }
+    $('#inspection_id').val(inspection_id);
+    $('#deleteModal').modal('show');
+})
 </script>
 
 <?= $this->endSection('page_script'); ?>

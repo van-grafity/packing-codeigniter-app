@@ -43,7 +43,7 @@ class CartonInspectionModel extends Model
         if(!$inspection_id) { return null; }
 
         $builder = $this->db->table('tblcartoninspectiondetail as inspection_detail');
-        $builder->select('carton_barcode.carton_number_by_system as carton_number, carton_barcode.barcode as carton_barcode, sum(carton_detail.product_qty) as total_pcs');
+        $builder->select('carton_barcode.carton_number_by_system as carton_number, pl_carton.id as pl_carton_id, carton_barcode.barcode as carton_barcode, sum(carton_detail.product_qty) as total_pcs');
         $builder->join('tblcartoninspection as inspection', 'inspection.id = inspection_detail.carton_inspection_id');
         $builder->join('tblcartonbarcode as carton_barcode','carton_barcode.id = inspection_detail.carton_barcode_id');
         $builder->join('tblpackinglistcarton as pl_carton','pl_carton.id = carton_barcode.packinglist_carton_id');
@@ -51,6 +51,24 @@ class CartonInspectionModel extends Model
         $builder->groupBy('carton_barcode.id');
         $builder->where('inspection_detail.carton_inspection_id', $inspection_id);
         $result = $builder->get()->getResult();
+
+        foreach ($result as $carton_key => $carton) {
+            $builder_size = $this->db->table('tblpackinglistcarton as pl_carton');
+            $builder_size->select('size.size, carton_detail.product_qty as qty_size');
+            $builder_size->join('tblcartondetail as carton_detail','carton_detail.packinglist_carton_id = pl_carton.id');
+            $builder_size->join('tblproduct as product','product.id = carton_detail.product_id');
+            $builder_size->join('tblsize as size','size.id = product.product_size_id');
+            $builder_size->where('pl_carton.id', $carton->pl_carton_id);
+            $builder_size->orderBy('size.id', 'ASC');
+            $size_list = $builder_size->get()->getResult();
+
+            $qty_per_size = array();
+            foreach ($size_list as $size_key => $size) {
+                $qty_per_size[] = $size->size . ' = ' . $size->qty_size;
+            }
+            $qty_in_carton = join(' | ', $qty_per_size);
+            $result[$carton_key]->size_list = $qty_in_carton;
+        }
         
         return $result;
     }

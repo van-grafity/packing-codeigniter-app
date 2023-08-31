@@ -138,6 +138,7 @@ $routes->get('cartoninspection/detailcarton', 'CartonInspection::detailcarton');
 $routes->post('cartoninspection/store', 'CartonInspection::store');
 $routes->get('cartoninspection/detail', 'CartonInspection::detail');
 $routes->get('cartoninspection/transfernote/(:num)', 'CartonInspection::transfernote/$1');
+$routes->post('cartoninspection/delete', 'CartonInspection::delete');
 
 
 // Log Viewer
