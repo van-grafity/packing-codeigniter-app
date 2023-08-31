@@ -36,9 +36,11 @@
                             <td><?= $pl->po_no; ?></td>
                             <td><?= $pl->gl_number; ?></td>
                             <td class="text-center align-middle">
-                                <a class="btn btn-primary btn-sm mb-1 mr-2 btn-generate-carton <?= $pl->btn_generate_class?>"
+                                <a class="btn btn-primary btn-sm mb-1 mr-2 <?= $pl->btn_generate_class?>"
                                     data-id="<?= $pl->id ?>"
-                                    data-packinglist-number="<?= $pl->packinglist_serial_number?>">Generate Carton</a>
+                                    data-packinglist-number="<?= $pl->packinglist_serial_number?>"
+                                    onclick="generate_carton(this)"
+                                    >Generate Carton</a>
                                 <a href="<?= base_url('cartonbarcode/'.$pl->id)?>"
                                     class="btn btn-info btn-sm mb-1 mr-2 <?= $pl->btn_detail_class?> ">Detail</a>
                             </td>
@@ -84,38 +86,15 @@
 
 <?= $this->Section('page_script'); ?>
 <script type="text/javascript">
-const generate_carton_url = '<?= base_url('cartonbarcode/generatecarton')?>';
-</script>
-<script type="text/javascript">
-$('#packinglist_table').DataTable({
-    processing: true,
-    // serverSide: true,
-    // ajax: dtable_url,
-    columns: [
-            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-            { data: 'packinglist_number', name: 'packinglist_number'},
-            { data: 'buyer_name', name: 'buyer_name' },
-            { data: 'po_number', name: 'po_number' },
-            { data: 'gl_number', name: 'gl_number' },
-            { data: 'action', name: 'action', orderable: false, searchable: false },
-    ],
-    paging: true,
-    responsive: true,
-    lengthChange: true,
-    searching: true,
-    autoWidth: false,
-});
-</script>
-<script>
-$(document).ready(function() {
+    const generate_carton_url = '<?= base_url('cartonbarcode/generatecarton')?>';
 
     // ## Show Flash Message
     let session = <?= json_encode(session()->getFlashdata()) ?>;
     show_flash_message(session);
 
-    $('.btn-generate-carton').on('click', function() {
-        let id = $(this).data('id');
-        let packinglist_number = $(this).data('packinglist-number');
+    const generate_carton = (e) => {
+        let id = $(e).data('id');
+        let packinglist_number = $(e).data('packinglist-number');
 
         $('#confirm_message').text(
             `Are you sure want to Generate Carton from Packinglist: ${packinglist_number}`)
@@ -125,8 +104,28 @@ $(document).ready(function() {
         $('#packinglist_id').val(id);
 
         $('#generate_carton_modal').modal('show');
-    })
-})
+    }
+
+    
 </script>
 
+<script type="text/javascript">
+    $(function() {
+        $('#packinglist_table').DataTable({
+            columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                    { data: 'packinglist_number', name: 'packinglist_number'},
+                    { data: 'buyer_name', name: 'buyer_name' },
+                    { data: 'po_number', name: 'po_number' },
+                    { data: 'gl_number', name: 'gl_number' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false },
+            ],
+            paging: true,
+            lengthChange: true,
+            searching: true,
+            autoWidth: false,
+        });
+
+    });
+</script>
 <?= $this->endSection('page_script'); ?>
