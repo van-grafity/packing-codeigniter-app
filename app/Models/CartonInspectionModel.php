@@ -22,8 +22,9 @@ class CartonInspectionModel extends Model
         $builder->join('tblpackinglist as packinglist','packinglist.id = carton_barcode.packinglist_id');
         $builder->join('tblpurchaseorder as po','po.id = packinglist.packinglist_po_id');
         $builder->groupBy('inspection.id');
+        $builder->orderBy('inspection.created_at','ASC');
 
-        if($id) {
+        if($id){
             $builder->where('inspection.id',$id);
             $result = $builder->get()->getRow();
             $result = $GlModel->set_gl_info_on_po($result,$result->po_id);
@@ -77,7 +78,15 @@ class CartonInspectionModel extends Model
     {
         if(!$inspection_id) { return null; }
         $CartonInspectionDetailModel = model('CartonInspectionDetailModel');
+        $CartonBarcodeModel = model('CartonBarcodeModel');
         
-        // $CartonInspectionDetailModel->delete('')
+        $get_inspection_detail = $CartonInspectionDetailModel->where('carton_inspection_id',$inspection_id)->findAll();
+
+        foreach ($get_inspection_detail as $key => $inspection_detail) {
+            $CartonBarcodeModel->update($inspection_detail['carton_barcode_id'], ['flag_packed' => 'Y']);
+        }
+        $delete_inspection_detail = $CartonInspectionDetailModel->where('carton_inspection_id',$inspection_id)->delete();
+        
+        return count($get_inspection_detail);
     }
 }

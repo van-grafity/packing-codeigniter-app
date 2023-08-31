@@ -21,6 +21,7 @@ class CartonInspection extends BaseController
 
     public function __construct()
     {
+        $this->db = db_connect();
         $this->CartonInspectionModel = new CartonInspectionModel();
         $this->CartonInspectionDetailModel = new CartonInspectionDetailModel();
         $this->CartonBarcodeModel = new CartonBarcodeModel();
@@ -50,6 +51,17 @@ class CartonInspection extends BaseController
     public function detailcarton()
     {
         $carton_barcode = $this->request->getGet('carton_barcode');
+
+        $get_carton = $this->CartonBarcodeModel->where('barcode', $carton_barcode)->first();
+        if($get_carton['flag_packed'] == 'N'){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'Carton Not Packed Yet! Please select another carton',
+            ];
+            return $this->response->setJSON($data_return);
+        };
+        
+
         $carton_detail = $this->CartonBarcodeModel->getDetailCartonByBarcode($carton_barcode);
         if (!$carton_detail) {
             $data_return = [
@@ -161,8 +173,6 @@ class CartonInspection extends BaseController
 
     public function delete()
     {
-        dd("Stop dulu sampe sini");
-        
         $inspection_id = $this->request->getPost('inspection_id');
         
         $this->db->transException(true)->transStart();
