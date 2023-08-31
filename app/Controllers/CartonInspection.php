@@ -161,8 +161,16 @@ class CartonInspection extends BaseController
 
     public function delete()
     {
-        dd("masuk");
+        dd("Stop dulu sampe sini");
         
+        $inspection_id = $this->request->getPost('inspection_id');
+        
+        $this->db->transException(true)->transStart();
+        $delete_inspection_detail = $this->CartonInspectionModel->deleteInspectionDetail($inspection_id);
+        $delete_inspection = $this->CartonInspectionModel->delete($inspection_id);
+        $this->db->transComplete();
+        
+        return redirect()->to('cartoninspection');
     }
 
 }

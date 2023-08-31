@@ -72,4 +72,12 @@ class CartonInspectionModel extends Model
         
         return $result;
     }
+
+    public function deleteInspectionDetail($inspection_id = null)
+    {
+        if(!$inspection_id) { return null; }
+        $CartonInspectionDetailModel = model('CartonInspectionDetailModel');
+        
+        // $CartonInspectionDetailModel->delete('')
+    }
 }

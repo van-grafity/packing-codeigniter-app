@@ -36,9 +36,10 @@
                             <td><?= $inpsection->issued_date; ?></td>
                             <td>
                                 <a class="btn btn-info btn-sm mb-1 mr-2" onclick="detail_inspection(<?= $inpsection->id; ?>)">Detail</a>
-                                <a class="btn btn-danger btn-sm mb-1 mr-2 btn-delete-inspection <?= $action_field_class ?>"
+                                <a class="btn btn-danger btn-sm mb-1 mr-2 <?= $action_field_class ?>"
                                      data-inspection-id="<?= $inpsection->id; ?>" 
-                                     data-po-number="<?= $inpsection->po_number; ?>">Delete</a>
+                                     data-po-number="<?= $inpsection->po_number; ?>"
+                                     onclick="delete_inspection(this)">Delete</a>
                             </td>
                         </tr>
                         <?php endforeach;  ?>
@@ -263,16 +264,17 @@ const clear_inspection_detail_modal = () => {
     $('#detail_inspection_table tbody').html('');
 }
 
-
-$('.btn-delete-inspection').on('click', function(event){
-    let inspection_id = $(this).data('inspection-id');
-    let po_number = $(this).data('po-number');
+const delete_inspection = (e) => {
+    let inspection_id = $(e).data('inspection-id');
+    let po_number = $(e).data('po-number');
     if (po_number) {
         $('#delete_message').text(`Are you sure want to delete this Carton Inspection for PO ${po_number} ?`);
     }
     $('#inspection_id').val(inspection_id);
     $('#deleteModal').modal('show');
-})
+
+}
+
 </script>
 
 <?= $this->endSection('page_script'); ?>
