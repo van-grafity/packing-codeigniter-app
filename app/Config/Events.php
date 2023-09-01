@@ -22,6 +22,8 @@ use CodeIgniter\Exceptions\FrameworkException;
  *      Events::on('create', [$myInstance, 'myMethod']);
  */
 
+
+Events::on('post_controller_constructor', 'CodeigniterExt\MaintenanceMode\Controllers\MaintenanceMode::check');
 Events::on('pre_system', static function () {
     if (ENVIRONMENT !== 'testing') {
         if (ini_get('zlib.output_compression')) {
