@@ -21,7 +21,7 @@ class CartonInspectionModel extends Model
         $builder->join('tblcartonbarcode as carton_barcode','carton_barcode.id = inspection_detail.carton_barcode_id');
         $builder->join('tblpackinglist as packinglist','packinglist.id = carton_barcode.packinglist_id');
         $builder->join('tblpurchaseorder as po','po.id = packinglist.packinglist_po_id');
-        $builder->groupBy('inspection.id');
+        $builder->groupBy('inspection.id, po.id, po.po_no,packinglist.packinglist_serial_number, inspection.issued_by, inspection.received_by, inspection.issued_date');
         $builder->orderBy('inspection.created_at','ASC');
 
         if($id){
