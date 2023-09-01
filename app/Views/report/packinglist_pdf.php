@@ -279,7 +279,7 @@
                     <?php $estimate_tr = 0;?>
 
                     <?php $is_first_page = true;?>
-                    <?php $max_tr_first_page = 20;?>
+                    <?php $max_tr_first_page = 16;?>
                     <?php $max_tr_next_page = 28;?>
                     <?php $max_tr_page = $max_tr_first_page;?>
                     <?php foreach ($packinglist_carton as $key => $carton) { ?>
