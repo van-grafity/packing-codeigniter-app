@@ -97,7 +97,7 @@
                                     <th>No</th>
                                     <th>Carton No.</th>
                                     <th>Carton Barcode</th>
-                                    <th>Total PCS</th>
+                                    <th>Pcs / Ctn</th>
                                 </tr>
                             </thead>
                             <tbody>

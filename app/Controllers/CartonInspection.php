@@ -53,6 +53,13 @@ class CartonInspection extends BaseController
         $carton_barcode = $this->request->getGet('carton_barcode');
 
         $get_carton = $this->CartonBarcodeModel->where('barcode', $carton_barcode)->first();
+        if(!$get_carton){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'Carton Not Found!',
+            ];
+            return $this->response->setJSON($data_return);
+        };
         if($get_carton['flag_packed'] == 'N'){
             $data_return = [
                 'status' => 'error',

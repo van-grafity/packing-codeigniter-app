@@ -190,7 +190,7 @@
                         <th>Carton No.</th>
                         <th>Carton Barcode</th>
                         <th>Size</th>
-                        <th>Total pcs</th>
+                        <th>Pcs / Ctn</th>
                     </tr>
                 </thead>
                 <tbody>
