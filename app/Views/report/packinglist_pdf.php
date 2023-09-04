@@ -333,6 +333,10 @@
                                 $is_first_page = false;
                                 $max_tr_page = $max_tr_next_page;
                                 $count_tr_page = 0;
+                        } elseif($estimate_tr > $max_tr_page) {
+                            $count_tr_page = 0; ?>
+                            <div class="page-break"></div>
+                            <?php
                         }
                     } ?>
 
