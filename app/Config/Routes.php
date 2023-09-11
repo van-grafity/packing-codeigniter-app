@@ -96,6 +96,14 @@ $routes->post('style/save', 'Style::save');
 $routes->post('style/update', 'Style::update/$1');
 $routes->post('style/delete', 'Style::delete/$1');
 
+// Pallet
+$routes->get('pallet', 'Pallet::index');
+$routes->get('pallet/detail', 'Pallet::detail');
+$routes->get('pallet/list', 'Pallet::index_dt');
+$routes->post('pallet/save', 'Pallet::save');
+$routes->post('pallet/update', 'Pallet::update');
+$routes->post('pallet/delete', 'Pallet::delete/$1');
+
 // Packing List
 $routes->get('packinglist', 'PackingList::index');
 $routes->post('packinglist/store', 'PackingList::store');

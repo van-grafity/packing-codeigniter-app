@@ -9,6 +9,7 @@
         "codeigniter4/framework": "^4.3.5",
         "codeigniterext/maintenancemode": "^0.0.2",
         "dompdf/dompdf": "^2.0",
+        "hermawan/codeigniter4-datatables": "^0.6.1",
         "phpoffice/phpspreadsheet": "^1.28",
         "seunmatt/codeigniter-log-viewer": "^2.0"
     },

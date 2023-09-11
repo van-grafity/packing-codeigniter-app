@@ -69,10 +69,10 @@
                         <dl class="row">
                             <dt class="col-sm-3">Buyer PO</dt>
                             <dd class="col-sm-9" id="inspection_detail_po_no"> : - </dd>
-                            <dt class="col-sm-3">GL Number</dt>
-                            <dd class="col-sm-9" id="inspection_detail_gl_no"> : - </dd>
                             <dt class="col-sm-3">Buyer</dt>
                             <dd class="col-sm-9" id="inspection_detail_buyer"> : - </dd>
+                            <dt class="col-sm-3">GL Number</dt>
+                            <dd class="col-sm-9" id="inspection_detail_gl_no"> : - </dd>
                             <br>
                             <br>
                             

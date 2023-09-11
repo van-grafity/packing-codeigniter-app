@@ -146,7 +146,7 @@
 
                                     <li class="nav-item">
                                         <a href="<?= base_url('purchaseorder'); ?>" class="nav-link">
-                                            <i class="nav-icon far fa-file text-warning"></i>
+                                            <i class="nav-icon far fa-file-alt"></i>
                                             <p>Buyer PO</p>
                                         </a>
                                     </li>
@@ -154,7 +154,7 @@
 
                                     <li class="nav-item" <?php if ($title == 'Factory Packing List') echo 'active' ?>>
                                         <a class="nav-link" href="<?= base_url('packinglist') ?>">
-                                            <i class="nav-icon far fa-file text-info"></i>
+                                            <i class="nav-icon far fa-list-alt"></i>
                                             <p>Packing List</p>
                                         </a>
                                     </li>
@@ -166,7 +166,7 @@
                         <?php if (in_array(session()->get('role'), ['superadmin', 'admin', 'packing','shipping'])) : ?>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-box-open"></i>
+                                    <i class="nav-icon fas fa-boxes"></i>
                                     <p>
                                         Carton & Ratio
                                         <i class="right fas fa-angle-left"></i>
@@ -231,7 +231,7 @@
                         <?php if (in_array(session()->get('role'), ['superadmin','admin'])) : ?>
                             <li class="nav-item has-treeview">
                                 <a href="" class="nav-link">
-                                    <i class="nav-icon fas fa-dolly-flatbed"></i>
+                                    <i class="nav-icon fas fa-box-open"></i>
                                     <p>Carton Inspection <i class="fas fa-angle-left right"></i></p>
                                 </a>
                                 <ul class="nav nav-treeview pl-3">
@@ -245,6 +245,28 @@
                                         <a href="<?= base_url('cartoninspection') ?>" class="nav-link">
                                             <i class="fas fa-list-ul nav-icon"></i>
                                             <p>Inspection List</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        <?php endif ?>
+                        <?php if (in_array(session()->get('role'), ['superadmin','admin'])) : ?>
+                            <li class="nav-item has-treeview">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-dolly-flatbed"></i>
+                                    <p>Packing Transfer <i class="fas fa-angle-left right"></i></p>
+                                </a>
+                                <ul class="nav nav-treeview pl-3">
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('cartoninspection/create') ?>" class="nav-link">
+                                            <i class="far fa-plus-square nav-icon"></i>
+                                            <p>New Pallet Transfer</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('cartoninspection') ?>" class="nav-link">
+                                            <i class="fas fa-list-ul nav-icon"></i>
+                                            <p>Pallet Transfer List</p>
                                         </a>
                                     </li>
                                 </ul>
