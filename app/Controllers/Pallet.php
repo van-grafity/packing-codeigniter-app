@@ -40,6 +40,14 @@ class Pallet extends BaseController
                     <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="delete_pallet('. $row->id .')">Delete</a>
                 ';
                 return $action_button;
+            })->add('status', function($row){
+                $pill_element = '';
+                if($row->flag_empty == 'Y') {
+                    $pill_element = '<span class="badge badge-success">Empty</span>';
+                } else {
+                    $pill_element = '<span class="badge badge-warning">Not Empty</span>';
+                }
+                return $pill_element;
             })->toJson(true);
     }
 

@@ -12,14 +12,14 @@
             </div>
             <div class="card-body">
                 <a href="javascript:void(0)" type="button" class="btn btn-success mb-2" id="btn-add-pallet" onclick="add_new_pallet()">New Pallet</a>
-                <table id="carton_inspection_table" class="table table-bordered table-hover">
+                <table id="carton_inspection_table" class="table table-bordered table-hover text-center">
                     <thead>
-                        <tr class="table-primary text-center">
-                            <th width="5%">No</th>
-                            <th width="10%">Serial Number</th>
-                            <th width="15%">Description</th>
-                            <th width="25%">Status</th>
-                            <th width="15%">Action</th>
+                        <tr class="table-primary">
+                            <th width="">No</th>
+                            <th width="">Serial Number</th>
+                            <th width="">Description</th>
+                            <th width="">Status</th>
+                            <th width="">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -136,7 +136,7 @@ $('#carton_inspection_table').DataTable({
         { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
         { data: 'serial_number', name: 'serial_number'},
         { data: 'description', name: 'description'},
-        { data: 'flag_empty', name: 'flag_empty'},
+        { data: 'status', name: 'status'},
         { data: 'action', name: 'action', orderable: false, searchable: false},
     ],
     columnDefs: [
