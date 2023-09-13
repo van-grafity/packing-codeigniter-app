@@ -12,7 +12,7 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <button type="button" class="btn btn-secondary mb-2" id="btn-add-detail">Add New</button>
-                <button type="button" class="btn btn-success ml-2 mb-2" id="btn-import-product" onclick="show_import_modal()">Add Product via Import</button>
+                <button type="button" class="btn btn-success ml-2 mb-2 d-none" id="btn-import-product" onclick="show_import_modal()">Add Product via Import</button>
                 <table id="table1" class="table table-bordered table-striped table-hover">
                     <thead>
                         <tr class=" table-primary">
