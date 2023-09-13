@@ -130,6 +130,16 @@
                                             <p>GL</p>
                                         </a>
                                     </li>
+
+                                    <?php if (in_array(session()->get('role'), ['superadmin','admin'])) : ?>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('pallet'); ?>" class="nav-link">
+                                            <i class="nav-icon fas fa-pallet"></i>
+                                            <p>Pallet</p>
+                                        </a>
+                                    </li>
+                                    <?php endif ?>
+
                                 </ul>
                             </li>
                         <?php endif ?>

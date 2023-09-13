@@ -142,7 +142,7 @@
                                 data-product-name="<?= $product->product_name; ?>" 
                                 data-product-price="<?= $product->product_price; ?>" 
                                 data-product-size="<?= $product->product_size; ?>"
-                                ><?= $product->product_code; ?>
+                                ><?= $product->product_code; ?> - ( <?= $product->product_name; ?> )
                                 </option>
                             <?php endforeach; ?>
                         </select>

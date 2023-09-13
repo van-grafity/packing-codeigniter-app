@@ -30,8 +30,7 @@ class ProductModel extends Model
         if ($code) {
             $builder->where(['code' => $code]);
         }
-        $builder->orderBy('created_at','DESC');
-        $builder->orderBy('tblproduct.id','ASC');
+        $builder->orderBy('tblproduct.product_code','ASC');
         return $builder->get();
     }
 
@@ -51,7 +50,6 @@ class ProductModel extends Model
     {
         $builder = $this->db->table('tblproduct as product');
         $builder->select('product.*, colour.colour_name as colour, style.style_description as style, size.size, category.category_name as category');
-        // $builder->select('product.*');
         $builder->join('tblpurchaseorderdetail as po_detail', 'po_detail.product_id = product.id');
         $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
         $builder->join('tblstyle as style', 'style.id = product.product_style_id');
