@@ -149,6 +149,19 @@ $routes->get('cartoninspection/transfernote/(:num)', 'CartonInspection::transfer
 $routes->post('cartoninspection/delete', 'CartonInspection::delete');
 
 
+
+$routes->group('pallet-transfer', static function ($routes) {
+    $routes->get('', 'PalletTransfer::index');
+    $routes->get('list', 'PalletTransfer::index_dt',['as' => 'pallet_transfer_list']);
+
+    // $routes->get('(:segment)', 'PalletTransferController::show/$1', ['as' => 'gl_show']);
+    // $routes->post('', 'PalletTransferController::store', ['as' => 'gl_store']);
+    // $routes->get('edit/(:segment)', 'PalletTransferController::edit/$1', ['as' => 'gl_edit']);
+    // $routes->put('(:segment)', 'PalletTransferController::update/$1', ['as' => 'gl_update']);
+    // $routes->delete('(:segment)', 'PalletTransferController::destroy/$1', ['as' => 'gl_destroy']);
+});
+
+
 // Log Viewer
 $routes->get('logs', "LogViewerController::index");
 

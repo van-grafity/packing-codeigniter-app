@@ -28,7 +28,7 @@ class PalletTransfer extends Migration
                 'type' => 'bigint',
                 'unsigned' => true,
             ],  
-            'flag_transfered'  => [
+            'flag_transferred'  => [
                 'type' => 'char',
                 'constraint' => 2,
             ],

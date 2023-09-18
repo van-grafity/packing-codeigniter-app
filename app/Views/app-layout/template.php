@@ -274,7 +274,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?= base_url('cartoninspection') ?>" class="nav-link">
+                                        <a href="<?= base_url('pallet-transfer') ?>" class="nav-link">
                                             <i class="fas fa-list-ul nav-icon"></i>
                                             <p>Pallet Transfer List</p>
                                         </a>

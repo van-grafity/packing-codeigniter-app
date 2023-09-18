@@ -11,15 +11,18 @@
                 <h3 class="card-title"><?= $title ?></h3>
             </div>
             <div class="card-body">
-                <a href="javascript:void(0)" type="button" class="btn btn-success mb-2" id="btn-add-pallet" onclick="add_new_pallet()">New Pallet</a>
-                <table id="pallet_table" class="table table-bordered table-hover text-center">
+                <a href="javascript:void(0)" type="button" class="btn btn-success mb-2" id="btn-add-pallet" onclick="add_pallet_transfer()">New Pallet Transfer</a>
+                <table id="pallet_transfer_table" class="table table-bordered table-hover text-center">
                     <thead>
                         <tr class="table-primary">
-                            <th width="">No</th>
-                            <th width="">Serial Number</th>
-                            <th width="">Description</th>
-                            <th width="">Status</th>
-                            <th width="">Action</th>
+                            <th width="30">No</th>
+                            <th width="100">Pallet SN</th>
+                            <th width="">Transfer Note</th>
+                            <th width="70">Total Ctn</th>
+                            <th width="">From</th>
+                            <th width="">To</th>
+                            <th width="100">Status</th>
+                            <th width="120">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,7 +36,7 @@
 
 
 <!-- Modal Add and Edit Product Detail -->
-<div class="modal fade" id="modal_pallet" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="modal_pallet" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="" method="post" id="pallet_form">
@@ -62,24 +65,24 @@
             </form>
         </div>
     </div>
-</div>
+</div> -->
 <!-- End Modal Add and Edit Product Detail -->
 
 
 
-<!-- Modal Delete Pallet -->
-<div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+<!-- Modal Delete Carton Inspection -->
+<!-- <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="<?= base_url('pallet/delete')?>" method="post">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">Delete Pallet</h5>
+                    <h5 class="modal-title" id="ModalLabel">Delete Carton Inspection</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h4 id="delete_message">Are you sure want to delete this Pallet ?</h4>
+                    <h4 id="delete_message">Are you sure want to delete this Carton Inspection ?</h4>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="pallet_id" id="pallet_id">
@@ -90,52 +93,53 @@
         </div>
     </div>
 </div>
-</form>
-<!-- End Modal Delete Pallet -->
+</form> -->
+<!-- End Modal Delete Carton Inspection -->
 
 <?= $this->endSection(); ?>
 
 
 <?= $this->Section('page_script'); ?>
 <script type="text/javascript">
-    const index_dt_url = '<?= base_url('pallet/list')?>';
-    const save_url = '<?= base_url('pallet/save')?>';
-    const detail_url = '<?= base_url('pallet/detail')?>';
-    const update_url = '<?= base_url('pallet/update')?>';
+    const index_dt_url = '<?= url_to('pallet_transfer_list')?>';
+    console.log(index_dt_url);
 
 
-    const add_new_pallet = () => {
+    const add_pallet_transfer = () => {
         $('#pallet_form').attr('action',save_url);
         $('#modal_pallet').modal('show');
     }
     
-    const edit_pallet = async (pallet_id) => {
-        params_data = { id : pallet_id };
-        result = await using_fetch(detail_url, params_data, "GET");
+    // const edit_pallet = async (pallet_id) => {
+    //     params_data = { id : pallet_id };
+    //     result = await using_fetch(detail_url, params_data, "GET");
 
-        console.log(result);
+    //     console.log(result);
 
-        pallet_data = result.data
-        $('#serial_number').val(pallet_data.serial_number);
-        $('#description').val(pallet_data.description);
-        $('#edit_pallet_id').val(pallet_data.id);
+    //     pallet_data = result.data
+    //     $('#serial_number').val(pallet_data.serial_number);
+    //     $('#description').val(pallet_data.description);
+    //     $('#edit_pallet_id').val(pallet_data.id);
         
-        $('#pallet_form').attr('action',update_url);
-        $('#modal_pallet').modal('show');
-    }
+    //     $('#pallet_form').attr('action',update_url);
+    //     $('#modal_pallet').modal('show');
+    // }
 
 </script>
 <script type="text/javascript">
-$('#pallet_table').DataTable({
+$('#pallet_transfer_table').DataTable({
     processing: true,
     serverSide: true,
     ajax: index_dt_url,
     order: [],
     columns: [
-        { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-        { data: 'serial_number', name: 'serial_number'},
-        { data: 'description', name: 'description'},
-        { data: 'status', name: 'status'},
+        { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+        { data: 'pallet_serial_number', name: 'pallet.serial_number'},
+        { data: 'transfer_note', name: 'transfer_note.serial_number'},
+        { data: 'total_carton', name: 'total_carton', orderable: false, searchable: false },
+        { data: 'location_from', name: 'location_from.location_name' },
+        { data: 'location_to', name: 'location_to.location_name' },
+        { data: 'status', name: 'status', orderable: false, searchable: false},
         { data: 'action', name: 'action', orderable: false, searchable: false},
     ],
     columnDefs: [

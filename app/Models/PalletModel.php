@@ -15,9 +15,9 @@ class PalletModel extends Model
     public function getPallet($pallet_id = null)
     {
         if ($pallet_id) {
-            $this->where(['id' => $pallet_id])->first();
+            return $this->where(['id' => $pallet_id])->first();
         }
-        return $this->db->table('tblpallet')->get();
+        return $this->db->table('tblpallet')->get()->getResult();
     }
 
     public function getDatatable()
