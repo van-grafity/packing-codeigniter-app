@@ -48,6 +48,11 @@ class Pallet extends BaseController
                     $pill_element = '<span class="badge badge-warning">Not Empty</span>';
                 }
                 return $pill_element;
+            })->filter(function ($builder, $request) {
+                
+                if ($request->pallet_status)
+                    $builder->where('flag_empty', $request->pallet_status);
+
             })->toJson(true);
     }
 

@@ -22,7 +22,7 @@ class PalletModel extends Model
 
     public function getDatatable()
     {
-        $builder = $this->db->table('tblpallet');
+        $builder = $this->db->table('tblpallet as pallet');
         $builder->select('id, serial_number, description, flag_empty');
         return $builder;
     }
