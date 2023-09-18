@@ -24,5 +24,11 @@ class DataSeeder extends Seeder
         $this->call('PackingListSeeder');
         $this->call('PackinglistCartonSeeder');
         $this->call('CartonDetailSeeder');
+        $this->call('CartonBarcodeSeeder');
+        $this->call('LocationSeeder');
+        $this->call('PalletSeeder');
+        $this->call('PalletTransferSeeder');
+        $this->call('TransferNoteSeeder');
+        $this->call('TransferNoteDetailSeeder');
     }
 }

@@ -4,9 +4,9 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreatePalletTable extends Migration
+class Location extends Migration
 {
-    private $table = 'tblpallet';
+    private $table = 'tbllocation';
 
     public function up()
     {
@@ -16,17 +16,13 @@ class CreatePalletTable extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'serial_number' => [
+            'location_name' => [
                 'type' => 'varchar',
                 'constraint' => 255,
             ],
             'description' => [
                 'type' => 'varchar',
                 'constraint' => 255,
-            ],
-            'flag_empty'  => [
-                'type' => 'char',
-                'constraint' => 2,
             ],
             'created_at'  => [
                 'type' => 'datetime', 
