@@ -78,7 +78,7 @@
                                         <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
-                                <ul class="nav nav-treeview">
+                                <ul class="nav nav-treeview pl-3">
                                     <?php if (in_array(session()->get('role'), ['superadmin'])) : ?>
                                         <li class="nav-item">
                                             <a href="<?= base_url('user') ?>" class="nav-link">
@@ -152,7 +152,7 @@
                                         <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
-                                <ul class="nav nav-treeview">
+                                <ul class="nav nav-treeview pl-3">
 
                                     <li class="nav-item">
                                         <a href="<?= base_url('purchaseorder'); ?>" class="nav-link">
@@ -182,7 +182,7 @@
                                         <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
-                                <ul class="nav nav-treeview">
+                                <ul class="nav nav-treeview pl-3">
                                     <li class="nav-item">
                                         <a class="nav-link" href="<?= base_url('cartonbarcode') ?>">
                                             <i class="nav-icon far fa-circle"></i>
@@ -210,7 +210,7 @@
                                         <i class="fas fa-angle-left right"></i>
                                     </p>
                                 </a>
-                                <ul class="nav nav-treeview">
+                                <ul class="nav nav-treeview pl-3">
                                     <li class="nav-item">
                                         <a href="<?= base_url('rptpackinglist') ?>" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
