@@ -11,7 +11,7 @@
                 <h3 class="card-title"><?= $title ?></h3>
             </div>
             <div class="card-body">
-                <a href="javascript:void(0)" type="button" class="btn btn-success mb-2" id="btn-add-pallet" onclick="add_pallet_transfer()">New Pallet Transfer</a>
+                <a href="<?= url_to('pallet_transfer_create')?>" type="button" class="btn btn-success mb-2" id="btn-add-pallet">New Pallet Transfer</a>
                 <table id="pallet_transfer_table" class="table table-bordered table-hover text-center">
                     <thead>
                         <tr class="table-primary">
@@ -34,161 +34,15 @@
     </section>
 </div>
 
-
-<!-- Modal Add and Edit Product Detail -->
-<!-- <div class="modal fade" id="modal_pallet" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form action="" method="post" id="pallet_form">
-                <input type="hidden" name="edit_pallet_id" value="" id="edit_pallet_id">
-
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">Add New Pallet</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="serial_number" class="col-form-label">Serial Number</label>
-                        <input type="text" class="form-control" id="serial_number" name="serial_number" placeholder="PLT-A0001" autofocus>
-                    </div>
-                    <div class="form-group">
-                        <label for="description" class="col-form-label">Description</label>
-                        <textarea class="form-control" name="description" id="description" cols="30" rows="3"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="btn_submit">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> -->
-<!-- End Modal Add and Edit Product Detail -->
-
-
-
-<!-- Modal Delete Carton Inspection -->
-<!-- <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form action="<?= base_url('pallet/delete')?>" method="post">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">Delete Carton Inspection</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h4 id="delete_message">Are you sure want to delete this Carton Inspection ?</h4>
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="pallet_id" id="pallet_id">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-primary">Yes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-</form> -->
-<!-- End Modal Delete Carton Inspection -->
-
 <?= $this->endSection(); ?>
 
 
+
 <?= $this->Section('page_script'); ?>
-<script type="text/javascript">
-    const index_dt_url = '<?= url_to('pallet_transfer_list')?>';
-    console.log(index_dt_url);
-
-
-    const add_pallet_transfer = () => {
-        $('#pallet_form').attr('action',save_url);
-        $('#modal_pallet').modal('show');
-    }
-    
-    // const edit_pallet = async (pallet_id) => {
-    //     params_data = { id : pallet_id };
-    //     result = await using_fetch(detail_url, params_data, "GET");
-
-    //     console.log(result);
-
-    //     pallet_data = result.data
-    //     $('#serial_number').val(pallet_data.serial_number);
-    //     $('#description').val(pallet_data.description);
-    //     $('#edit_pallet_id').val(pallet_data.id);
-        
-    //     $('#pallet_form').attr('action',update_url);
-    //     $('#modal_pallet').modal('show');
-    // }
-
-</script>
-<script type="text/javascript">
-$('#pallet_transfer_table').DataTable({
-    processing: true,
-    serverSide: true,
-    ajax: index_dt_url,
-    order: [],
-    columns: [
-        { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-        { data: 'pallet_serial_number', name: 'pallet.serial_number'},
-        { data: 'transfer_note', name: 'transfer_note.serial_number'},
-        { data: 'total_carton', name: 'total_carton', orderable: false, searchable: false },
-        { data: 'location_from', name: 'location_from.location_name' },
-        { data: 'location_to', name: 'location_to.location_name' },
-        { data: 'status', name: 'status', orderable: false, searchable: false},
-        { data: 'action', name: 'action', orderable: false, searchable: false},
-    ],
-    columnDefs: [
-        { targets: [0,-1], orderable: false, searchable: false },
-    ],
-    paging: true,
-    responsive: true,
-    lengthChange: true,
-    searching: true,
-    autoWidth: false,
-    orderCellsTop: true,
-    initComplete: function( settings, json ) 
-    {
-        var indexColumn = 0;
-        this.api().columns().every(function () 
-        {
-            var column      = this;
-            var input       = document.createElement("input");
-            if(indexColumn > 0 && indexColumn < 7) {
-                $(input).attr( 'placeholder', 'Search' )
-                        .addClass('form-control form-control-sm')
-                        .appendTo( $('.filterhead:eq('+indexColumn+')').empty() )
-                        .on('input', function () {
-                            column.search($(this).val(), false, false, true).draw();
-                        });
-            }
-            indexColumn++;
-        });
-    },
-});
-</script>
-<script>
-$(document).ready(function() {
-
-    // ## Show Flash Message
-    let session = <?= json_encode(session()->getFlashdata()) ?>;
-    show_flash_message(session);
-
-    // $('#table').DataTable({
-    //     processing: true,
-    //     serverSide: true,
-    //     ajax: '/ajax-datatable/basic'
-    // });
-
-})
-</script>
 
 <script type="text/javascript">
 
+const index_dt_url = '<?= url_to('pallet_transfer_list')?>';
 
 
 async function detail_inspection(inspection_id) {
@@ -245,6 +99,57 @@ const delete_pallet = (pallet_id) => {
     $('#delete_modal').modal('show');
 }
 
+</script>
+
+<script type="text/javascript">
+
+// ## Show Flash Message
+let session = <?= json_encode(session()->getFlashdata()) ?>;
+show_flash_message(session);
+
+$('#pallet_transfer_table').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax: index_dt_url,
+    order: [],
+    columns: [
+        { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+        { data: 'pallet_serial_number', name: 'pallet.serial_number'},
+        { data: 'transfer_note', name: 'transfer_note.serial_number'},
+        { data: 'total_carton', name: 'total_carton', orderable: false, searchable: false },
+        { data: 'location_from', name: 'location_from.location_name' },
+        { data: 'location_to', name: 'location_to.location_name' },
+        { data: 'status', name: 'status', orderable: false, searchable: false},
+        { data: 'action', name: 'action', orderable: false, searchable: false},
+    ],
+    columnDefs: [
+        { targets: [0,-1], orderable: false, searchable: false },
+    ],
+    paging: true,
+    responsive: true,
+    lengthChange: true,
+    searching: true,
+    autoWidth: false,
+    orderCellsTop: true,
+    initComplete: function( settings, json ) 
+    {
+        var indexColumn = 0;
+        this.api().columns().every(function () 
+        {
+            var column      = this;
+            var input       = document.createElement("input");
+            if(indexColumn > 0 && indexColumn < 7) {
+                $(input).attr( 'placeholder', 'Search' )
+                        .addClass('form-control form-control-sm')
+                        .appendTo( $('.filterhead:eq('+indexColumn+')').empty() )
+                        .on('input', function () {
+                            column.search($(this).val(), false, false, true).draw();
+                        });
+            }
+            indexColumn++;
+        });
+    },
+});
 </script>
 
 <?= $this->endSection('page_script'); ?>

@@ -160,7 +160,7 @@ $(document).ready(function() {
         // ## If no Entry Barcode Skip;
         if (!carton_barcode) return false;
 
-        show_detail_carton(carton_barcode)
+        show_carton_detail(carton_barcode)
         $('#carton_barcode').val('');
     });
 
@@ -182,7 +182,7 @@ $(document).ready(function() {
 const detail_carton_url = '<?= base_url('scanpack/detailcarton')?>';
 const pack_carton_url =  '<?= base_url('scanpack/packcarton') ?>';
 
-async function show_detail_carton(carton_barcode) {
+async function show_carton_detail(carton_barcode) {
     params_data = {
         carton_barcode
     };

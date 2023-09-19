@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\PalletTransferModel;
 use App\Models\TransferNoteModel;
+use App\Models\PalletModel;
 
 use \Hermawan\DataTables\DataTable;
 
@@ -12,20 +13,20 @@ class PalletTransfer extends BaseController
 {
     protected $PalletTransferModel;
     protected $TransferNoteModel;
+    protected $PalletModel;
 
     public function __construct()
     {
         $this->db = db_connect();
         $this->PalletTransferModel = new PalletTransferModel();
         $this->TransferNoteModel = new TransferNoteModel();
+        $this->PalletModel = new PalletModel();
     }
 
     public function index()
     {
         $data = [
             'title' => 'Pallet Transfer List',
-            'action_field_class' => '',
-            'pallet_transfer' => $this->PalletTransferModel->getPalletTransfer()
         ];
         return view('pallettransfer/index', $data);
     }
@@ -60,5 +61,63 @@ class PalletTransfer extends BaseController
                 }
                 return $pill_element;
             })->toJson(true);
+    }
+
+    public function create()
+    {
+        $data = [
+            'title' => 'New Pallet Transfer',
+        ];
+        return view('pallettransfer/create', $data);
+        
+    }
+
+    public function pallet_detail()
+    {
+        $pallet_serial_number = $this->request->getGet('pallet_serial_number');
+        
+        $pallet = $this->PalletModel->where('serial_number', $pallet_serial_number)->first();
+        if(!$pallet){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'Pallet Not Found',
+            ];
+            return $this->response->setJSON($data_return);
+        }
+        
+        $get_pallet_transfer = $this->PalletTransferModel->getDetailPalletBySerialNumber($pallet_serial_number);
+        
+        $pallet_data = [
+            'pallet_number' => $get_pallet_transfer->pallet_number,
+            'location_from' => $get_pallet_transfer->location_from ? $get_pallet_transfer->location_from : '-',
+            'location_to' => $get_pallet_transfer->location_to ? $get_pallet_transfer->location_to : '-',
+        ];
+        
+        if($get_pallet_transfer->flag_empty == 'Y'){
+            $pallet_data['status'] = 'Empty';
+        } else {
+            if($get_pallet_transfer->flag_transferred == 'N' && $get_pallet_transfer->flag_loaded == 'N'){
+                $pallet_data['status'] = 'Not Transferred Yet';
+            } elseif($get_pallet_transfer->flag_transferred == 'Y' && $get_pallet_transfer->flag_loaded == 'N'){
+                $pallet_data['status'] = 'at Warehouse';
+            } elseif($get_pallet_transfer->flag_transferred == 'Y' && $get_pallet_transfer->flag_loaded == 'Y'){
+                $pallet_data['status'] = 'Loaded';
+            } else {
+                $pallet_data['status'] = 'Unknown Status';
+            }
+
+            $transfer_notes = $this->PalletTransferModel->getTransferNotesInPallet($get_pallet_transfer->pallet_id);
+        }
+
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Pallet Found',
+            'data' => [
+                'pallet_info' => $pallet_data,
+                'transfer_notes' => $transfer_notes,
+            ],
+        ];
+        return $this->response->setJSON($data_return);
+
     }
 }
