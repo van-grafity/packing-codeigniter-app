@@ -51,8 +51,10 @@ class PalletTransferModel extends Model
         $builder = $this->db->table('tblpallet as pallet');
         $builder->join('tblpallettransfer as pallet_transfer','pallet_transfer.pallet_id = pallet.id');
         $builder->join('tbltransfernote as transfer_note','transfer_note.pallet_transfer_id = pallet_transfer.id');
+        $builder->join('tbltransfernotedetail as transfer_note_detail','transfer_note_detail.transfer_note_id = transfer_note.id');
         $builder->where(['pallet.id' => $pallet_id]);
-        $builder->select('transfer_note.id, transfer_note.serial_number, transfer_note.issued_by, transfer_note.authorized_by, transfer_note.received_by, transfer_note.received_at');
+        $builder->groupBy('transfer_note.id');
+        $builder->select('transfer_note.id, transfer_note.serial_number, transfer_note.issued_by, transfer_note.authorized_by, sum(transfer_note_detail.id) as total_carton, transfer_note.received_by, transfer_note.received_at');
         $result = $builder->get()->getResult();
         return $result;
     }

@@ -58,14 +58,25 @@
                                     <th width="">Transfer Note Number</th>
                                     <th width="">Issued By</th>
                                     <th width="">Authorized By</th>
+                                    <th width="">Total Carton</th>
                                     <th width="">Received By</th>
                                     <th width="">Received At</th>
                                     <th width="">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr>
+                                    <td colspan="7">No Transfer Note Yet</td>
+                                </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="text-right">
+                            <a href="<?= url_to('pallet_transfer') ?>" type="button" class="btn btn-secondary">Back</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -139,6 +150,14 @@ function set_pallet_info(pallet_info) {
 }
 
 function set_transfer_notes(transfer_notes) {
+    if(transfer_notes.length <= 0) {
+        let empty_row = `
+            <tr class="text-center">
+                <td colspan="7">No Transfer Note Yet</td>
+            </tr>`
+        $('#transfer_note_table tbody').html(empty_row);
+        return;
+    }
     $('#transfer_note_table tbody').html('');
 
     let total = 0;
@@ -149,6 +168,7 @@ function set_transfer_notes(transfer_notes) {
                 <td class="product_code">${data.serial_number}</td>
                 <td>${data.issued_by}</td>
                 <td>${data.authorized_by}</td>
+                <td>${data.total_carton}</td>
                 <td>${data.received_by}</td>
                 <td>${data.received_at}</td>
                 <td>${data.received_at}</td>

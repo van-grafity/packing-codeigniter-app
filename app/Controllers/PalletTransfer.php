@@ -53,13 +53,10 @@ class PalletTransfer extends BaseController
                 
                 return $transfer_note_result;
             })->add('status', function($row){
-                $pill_element = '';
-                if($row->flag_transferred == 'N') {
-                    $pill_element = '<span class="badge badge-secondary">Not Transfered Yet</span>';
-                } else {
-                    $pill_element = '<span class="badge badge-success">Transfered</span>';
-                }
-                return $pill_element;
+                
+                $status = $this->getPalletStatus($row, true);
+                return $status;
+
             })->toJson(true);
     }
 
@@ -92,20 +89,12 @@ class PalletTransfer extends BaseController
             'location_from' => $get_pallet_transfer->location_from ? $get_pallet_transfer->location_from : '-',
             'location_to' => $get_pallet_transfer->location_to ? $get_pallet_transfer->location_to : '-',
         ];
+        $transfer_notes = [];
         
         if($get_pallet_transfer->flag_empty == 'Y'){
             $pallet_data['status'] = 'Empty';
         } else {
-            if($get_pallet_transfer->flag_transferred == 'N' && $get_pallet_transfer->flag_loaded == 'N'){
-                $pallet_data['status'] = 'Not Transferred Yet';
-            } elseif($get_pallet_transfer->flag_transferred == 'Y' && $get_pallet_transfer->flag_loaded == 'N'){
-                $pallet_data['status'] = 'at Warehouse';
-            } elseif($get_pallet_transfer->flag_transferred == 'Y' && $get_pallet_transfer->flag_loaded == 'Y'){
-                $pallet_data['status'] = 'Loaded';
-            } else {
-                $pallet_data['status'] = 'Unknown Status';
-            }
-
+            $pallet_data['status'] = $this->getPalletStatus($get_pallet_transfer);
             $transfer_notes = $this->PalletTransferModel->getTransferNotesInPallet($get_pallet_transfer->pallet_id);
         }
 
@@ -119,5 +108,32 @@ class PalletTransfer extends BaseController
         ];
         return $this->response->setJSON($data_return);
 
+    }
+
+    private function getPalletStatus($pallet_data, $pill_mode = false)
+    {
+        if($pill_mode){
+            if($pallet_data->flag_transferred == 'N' && $pallet_data->flag_loaded == 'N'){
+                $status = '<span class="badge badge-secondary">Not Transfered Yet</span>';
+            } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'N'){
+                $status = '<span class="badge badge-info">at Warehouse</span>';
+            } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'Y'){
+                $status = '<span class="badge badge-success">Loaded</span>';
+            } else {
+                $status = '<span class="badge badge-danger">Unknown Status</span>';
+            }
+        } else {
+            if($pallet_data->flag_transferred == 'N' && $pallet_data->flag_loaded == 'N'){
+                $status = 'Not Transferred Yet';
+            } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'N'){
+                $status = 'at Warehouse';
+            } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'Y'){
+                $status = 'Loaded';
+            } else {
+                $status = 'Unknown Status';
+            }
+        }
+
+        return $status;
     }
 }
