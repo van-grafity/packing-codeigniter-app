@@ -123,8 +123,40 @@ class CartonBarcodeModel extends Model
 
         $builder->where('carton_barcode.barcode', $carton_barcode);
         $result = $builder->get()->getRow();
+        if(!$result) { return null; }
 
         $carton_with_gl_info = $GlModel->set_gl_info_on_carton($result, $result->carton_id);
         return $carton_with_gl_info;
+    }
+
+    public function getCartonContent($carton_barcode_id, $serialize_options = false)
+    {
+        $builder = $this->db->table('tblcartonbarcode as carton_barcode');
+        $builder->join('tblpackinglistcarton as pl_carton','pl_carton.id = carton_barcode.packinglist_carton_id');
+        $builder->join('tblcartondetail as carton_detail','carton_detail.packinglist_carton_id = pl_carton.id');
+        $builder->join('tblproduct as product','product.id = carton_detail.product_id');
+        $builder->join('tblsize as size','size.id = product.product_size_id');
+        $builder->where('carton_barcode.id', $carton_barcode_id);
+        $builder->select('product.product_name, size.size, carton_detail.product_qty as qty');
+        $result = $builder->get()->getResult();
+        
+        if(!$serialize_options){
+            return $result;
+        }
+
+        return $this->serialize_size_list($result);
+
+    }
+
+    public function serialize_size_list($size_list)
+    {
+        $array_size_qty = [];
+        foreach ($size_list as $key => $size) {
+            $combine_size_qty = $size->size.' = '.$size->qty;
+            $array_size_qty[] = $combine_size_qty;
+        }
+
+        $result = implode(' | ', $array_size_qty);
+        return $result;
     }
 }

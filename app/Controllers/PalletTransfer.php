@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\PalletTransferModel;
 use App\Models\TransferNoteModel;
 use App\Models\PalletModel;
+use App\Models\CartonBarcodeModel;
 
 use \Hermawan\DataTables\DataTable;
 
@@ -14,6 +15,7 @@ class PalletTransfer extends BaseController
     protected $PalletTransferModel;
     protected $TransferNoteModel;
     protected $PalletModel;
+    protected $CartonBarcodeModel;
 
     public function __construct()
     {
@@ -21,6 +23,7 @@ class PalletTransfer extends BaseController
         $this->PalletTransferModel = new PalletTransferModel();
         $this->TransferNoteModel = new TransferNoteModel();
         $this->PalletModel = new PalletModel();
+        $this->CartonBarcodeModel = new CartonBarcodeModel();
     }
 
     public function index()
@@ -89,13 +92,13 @@ class PalletTransfer extends BaseController
             'location_from' => $get_pallet_transfer->location_from ? $get_pallet_transfer->location_from : '-',
             'location_to' => $get_pallet_transfer->location_to ? $get_pallet_transfer->location_to : '-',
         ];
-        $transfer_notes = [];
+        $transfer_note_list = [];
         
         if($get_pallet_transfer->flag_empty == 'Y'){
             $pallet_data['status'] = 'Empty';
         } else {
             $pallet_data['status'] = $this->getPalletStatus($get_pallet_transfer);
-            $transfer_notes = $this->PalletTransferModel->getTransferNotesInPallet($get_pallet_transfer->pallet_id);
+            $transfer_note_list = $this->PalletTransferModel->getTransferNotesInPallet($get_pallet_transfer->pallet_id);
         }
 
         $data_return = [
@@ -103,11 +106,58 @@ class PalletTransfer extends BaseController
             'message' => 'Pallet Found',
             'data' => [
                 'pallet_info' => $pallet_data,
-                'transfer_notes' => $transfer_notes,
+                'transfer_note_list' => $transfer_note_list,
             ],
         ];
         return $this->response->setJSON($data_return);
 
+    }
+
+    public function transfer_note_detail()
+    {
+        $transfer_note_id = $this->request->getGet('transfer_note_id');
+        
+        $transfer_note = $this->TransferNoteModel->find($transfer_note_id);
+        
+        if(!$transfer_note){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'Carton Not Found',
+            ];
+            return $this->response->setJSON($data_return);
+        }
+        
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Carton Found',
+            'data' => $transfer_note,
+        ];
+        return $this->response->setJSON($data_return);
+    }
+
+    public function carton_detail()
+    {
+        $carton_barcode = $this->request->getGet('carton_barcode');
+        
+        $carton_info = $this->CartonBarcodeModel->getCartonInfoByBarcode_v2($carton_barcode);
+        if(!$carton_info){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'Carton Not Found',
+            ];
+            return $this->response->setJSON($data_return);
+        }
+
+        $size_list_in_carton = $this->CartonBarcodeModel->getCartonContent($carton_info->carton_id);
+        $carton_info->content = $this->CartonBarcodeModel->serialize_size_list($size_list_in_carton);
+        $carton_info->total_pcs = array_sum(array_column($size_list_in_carton,'qty'));
+        
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Carton Found',
+            'data' => $carton_info,
+        ];
+        return $this->response->setJSON($data_return);
     }
 
     private function getPalletStatus($pallet_data, $pill_mode = false)
