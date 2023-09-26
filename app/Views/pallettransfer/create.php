@@ -42,6 +42,9 @@
 
                             <dt class="col-md-5 col-sm-12">Status</dt>
                             <dd class="col-md-7 col-sm-12" id="pallet_status">: - </dd>
+
+                            <dt class="col-md-5 col-sm-12">Total Carton</dt>
+                            <dd class="col-md-7 col-sm-12" id="pallet_total_carton">: - </dd>
                         </dl>
                     </div>
                     <div class="col-sm-6">
@@ -58,7 +61,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h4 class="title">Transfer Notes</h4>
-                        <button type="button" class="btn btn-success mb-2" id="btn_modal_create_transfer_note" onclick="create_transfer_note()">New Transfer Note</button>
+                        <button type="button" class="btn btn-success mb-2 disabled" id="btn_modal_create_transfer_note" onclick="create_transfer_note()">New Transfer Note</button>
                         <table class="table table-bordered table-hover text-center" id="transfer_note_table">
                             <thead>
                                 <tr class="table-primary text-center">
@@ -154,6 +157,7 @@
                             <tr>
                                 <th>No</th>
                                 <th class="d-none">Carton ID</th>
+                                <th class="d-none">Carton Barcode</th>
                                 <th>Buyer</th>
                                 <th>PO</th>
                                 <th>GL</th>
@@ -200,11 +204,15 @@
                         </div>
 
                     </div>
+                    <div class="row text-right">
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="btn_submit_transfer_note">Save Transfer Note</button>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btn_submit">Save</button>
             </div>
         </div>
     </div>
@@ -221,8 +229,10 @@ const pallet_detail_url = '<?= url_to('pallet_transfer_pallet_detail')?>';
 const carton_detail_url = '<?= url_to('pallet_transfer_carton_detail')?>';
 const transfer_note_detail_url = '<?= url_to('pallet_transfer_transfer_note_detail')?>';
 
+let is_pallet_selected = false;
 let pallet_transfer_from = '-';
 let pallet_transfer_to = '-';
+let pallet_transfer_id = null;
 
 
 async function get_pallet_detail(pallet_serial_number) {
@@ -274,6 +284,7 @@ async function get_transfer_note(transfer_note_id){
 function clear_pallet_info() {
     $('#pallet_number').text(': -');
     $('#pallet_status').text(': -');
+    $('#pallet_total_carton').text(': -');
     $('#location_from').text(': -');
     $('#location_to').text(': -');
 
@@ -308,6 +319,11 @@ function clear_transfer_note_detail(){
     $('#transfer_note_detail_total_pcs').text('0')
 }
 
+function check_selected_pallet(){
+    let pallet_number = $('#pallet_number').text();
+    console.log(pallet_number);
+}
+
 function set_pallet_info(pallet_info) {
     $('#pallet_number').text(': ' + pallet_info.pallet_number);
     $('#pallet_status').text(': ' + pallet_info.status);
@@ -316,6 +332,11 @@ function set_pallet_info(pallet_info) {
 
     pallet_transfer_from = pallet_info.location_from;
     pallet_transfer_to = pallet_info.location_to;
+    // pallet_transfer_id = pallet_info.id;
+    console.log(pallet_info);
+
+    is_pallet_selected = true;
+    $('#btn_modal_create_transfer_note').removeClass('disabled');
 }
 
 function set_transfer_note_info(transfer_note_info) {
@@ -325,6 +346,9 @@ function set_transfer_note_info(transfer_note_info) {
 }
 
 function set_transfer_note_list(transfer_note_list) {
+    let total = 0;
+    $('#pallet_total_carton').text(': ' + total);
+
     if(transfer_note_list.length <= 0) {
         let empty_row = `
             <tr class="text-center">
@@ -335,7 +359,7 @@ function set_transfer_note_list(transfer_note_list) {
     }
     $('#transfer_note_table tbody').html('');
 
-    let total = 0;
+
     transfer_note_list.forEach((data, key) => {
         
         let row = `
@@ -351,14 +375,21 @@ function set_transfer_note_list(transfer_note_list) {
         `;
         $('#transfer_note_table tbody').append(row);
 
-        // total += parseInt(data.product_qty);
+        total += parseInt(data.total_carton);
     });
+    $('#pallet_total_carton').text(': ' + total);
 }
 
 function create_transfer_note(){
+    if(!is_pallet_selected){
+        alert('Please scan pallet first');
+        return false;
+    }
     clear_transfer_note_form();
     $('#transfer_note_from').text(': ' + pallet_transfer_from);
     $('#transfer_note_to').text(': ' + pallet_transfer_to);
+    $('#transfer_note_date').text(': ' + moment().format('YYYY-MM-DD'));
+    
 
     $('#modal_transfer_note').modal('show');
 }
@@ -384,6 +415,7 @@ function insert_carton_to_table(carton_data){
         <tr class="text-center">
             <td>1</td>
             <td class="d-none"><input type="text" id="carton_barcode_id" name="carton_barcode_id" value="${carton_data.carton_id}"></td>
+            <td class="d-none">${carton_data.carton_barcode}</td>
             <td>${carton_data.buyer_name}</td>
             <td>${carton_data.po_number}</td>
             <td>${carton_data.gl_number}</td>
@@ -415,10 +447,12 @@ $('#pallet_search_form').on('submit', async function(e){
     
     let pallet_detail = await get_pallet_detail(pallet_serial_number);
 
+    $('#pallet_serial_number').val('');
+    if(!pallet_detail) return false; 
+
     set_pallet_info(pallet_detail.pallet_info);
     set_transfer_note_list(pallet_detail.transfer_note_list)
 
-    $('#pallet_serial_number').val('');
 })
 
 // ## Searching Carton by Carton Barcode and Insert into Transfer Note
@@ -433,5 +467,22 @@ $('#carton_barcode_search_form').on('submit', async function(e){
 
     // $('#carton_barcode').val('');
 })
+
+// ## Submit Data Transfer Note
+$('#transfer_note_form').on('submit', async function(e){
+    e.preventDefault();
+
+    let transfer_note_issued_by = $('#transfer_note_issued_by').val();
+    let transfer_note_authorized_by = $('#transfer_note_authorized_by').val();
+    // let carton_detail = await get_carton_detail(carton_barcode);
+
+    // if(carton_detail){
+    //     insert_carton_to_table(carton_detail);
+    // }
+
+    // $('#carton_barcode').val('');
+})
+
+
 </script>
 <?= $this->endSection('page_script'); ?>

@@ -2,6 +2,13 @@
 
 <?= $this->Section('content'); ?>
 <style>
+    .input-feedback.success {
+        color: #28a745;
+    }
+
+    .input-feedback.error {
+        color: #dc3545;
+    }
 </style>
 
 <div class="content-wrapper">
@@ -11,7 +18,7 @@
                 <h3 class="card-title"><?= $title ?></h3>
             </div>
             <div class="card-body">
-                <a href="<?= url_to('pallet_transfer_create')?>" type="button" class="btn btn-success mb-2" id="btn-add-pallet">New Pallet Transfer</a>
+                <a href="javascript:void(0)" type="button" class="btn btn-success mb-2" id="btn_new_pallet_transfer">New Pallet Transfer</a>
                 <table id="pallet_transfer_table" class="table table-bordered table-hover text-center">
                     <thead>
                         <tr class="table-primary">
@@ -34,6 +41,60 @@
     </section>
 </div>
 
+
+<!-- Modal Add and Edit Pallet Transfer -->
+<div class="modal fade" id="modal_pallet_transfer" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="" method="post" id="pallet_transfer_form">
+                <input type="hidden" name="edit_pallet_transfer_id" value="" id="edit_pallet_transfer_id">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">New Pallet Transfer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="pallet_serial_number" class="col-form-label">Pallet Number</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="pallet_serial_number" name="pallet_serial_number" placeholder="Pallet Barcode Here" onkeydown="search_pallet_input(this)">
+                            <div class="ml-2">
+                                <button type="button" class="btn btn-primary" id="btn_search_pallet" onclick="search_pallet();">Search Pallet</button>
+                            </div>
+                        </div>
+                        <span id="pallet_serial_number_message" class="input-feedback d-none"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="location_from" class="col-form-label">From :</label>
+                        <select id="location_from" name="location_from" class="form-control" required disabled>
+                            <option value="">Select Location From </option>
+                            <?php foreach ($location as $location_from) : ?>
+                                <option value="<?= $location_from->id; ?>"><?= $location_from->location_name; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location_to" class="col-form-label">From :</label>
+                        <select id="location_to" name="location_to" class="form-control" required disabled>
+                            <option value="">Select Location From </option>
+                            <?php foreach ($location as $location_to) : ?>
+                                <option value="<?= $location_to->id; ?>"><?= $location_to->location_name; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary disabled" disabled id="btn_submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Add and Edit Pallet Transfer -->
+
 <?= $this->endSection(); ?>
 
 
@@ -43,61 +104,81 @@
 <script type="text/javascript">
 
 const index_dt_url = '<?= url_to('pallet_transfer_list')?>';
+const store_url = '<?= url_to('pallet_transfer_store')?>';
+const pallet_availablity_url = '<?= url_to('pallet_transfer_check_pallet_availablity')?>';
 
+let is_pallet_available = false;
 
-async function detail_inspection(inspection_id) {
-    clear_inspection_detail_modal();
+//## using utils.js
+avoid_submit_on_enter();
 
-    params_data = { id : inspection_id };
-    result = await using_fetch(detail_inspection_url, params_data, "GET");
-    console.log(result);
+async function get_pallet_detail(pallet_serial_number) {
+    params_data = {
+        pallet_serial_number
+    };
+    result = await using_fetch(pallet_availablity_url, params_data, "GET");
 
-    let inspection_data = result.data.carton_inspection;
-    $('#inspection_detail_gl_no').text(` : ${inspection_data.gl_number}`);
-    $('#inspection_detail_buyer').text(` : ${inspection_data.buyer_name}`);
-    $('#inspection_detail_po_no').text(` : ${inspection_data.po_number}`);
-    $('#inspection_detail_issued_by').text(` : ${inspection_data.issued_by}`);
-    $('#inspection_detail_received_by').text(` : ${inspection_data.received_by}`);
-    $('#inspection_detail_issued_date').text(` : ${inspection_data.issued_date}`);
-
-    let inspection_detail_data = result.data.carton_inspection_detail;
-
-    inspection_detail_data.forEach((data, key) => {
-        let row = `
-            <tr>
-                <td>${key+1}</td>
-                <td>${data.carton_number}</td>
-                <td>${data.carton_barcode}</td>
-                <td>${data.total_pcs}</td>
-            </tr>
-        `;
-        $('#detail_inspection_table tbody').append(row);
-
-    });
-
-    $('#inspection_detail_total_carton').text(` : ${inspection_detail_data.length} carton`);
-    $('#btn_print_transfer_note').attr('href',`<?= base_url('cartoninspection/transfernote/')?>${inspection_data.id}`)
-
-    $('#detail_inspection_modal').modal('show');
+    if (result.status == 'error') {
+        is_pallet_available = false;
+        show_flash_message({ error: result.message} )
+        return false;
+    }
+    return result.data;
 }
 
-const clear_inspection_detail_modal = () => {
-    $('#inspection_detail_gl_no').text(` : `);
-    $('#inspection_detail_buyer').text(` : `);
-    $('#inspection_detail_po_no').text(` : `);
-    $('#inspection_detail_issued_by').text(` : `);
-    $('#inspection_detail_received_by').text(` : `);
-    $('#inspection_detail_issued_date').text(` : `);
-    $('#inspection_detail_total_carton').text(` : `);
+async function search_pallet(){
+    let pallet_serial_number = $('#pallet_serial_number').val();
+    let pallet_detail = await get_pallet_detail(pallet_serial_number);
+    console.log(pallet_detail);
 
-    $('#detail_inspection_table tbody').html('');
+    $('#pallet_serial_number_message').removeClass('d-none');
+    
+    if(pallet_detail.pallet_status == true){
+        is_pallet_available = true;
+
+        $('#pallet_serial_number').addClass('is-valid');
+        $('#pallet_serial_number').removeClass('is-invalid');
+        
+        $('#pallet_serial_number_message').addClass('success');
+        $('#pallet_serial_number_message').removeClass('error');
+        $('#pallet_serial_number_message').text(pallet_detail.feedback_title);
+
+        enable_form();
+    }
+    if(pallet_detail.pallet_status == false){
+        is_pallet_available = true;
+
+        $('#pallet_serial_number').removeClass('is-valid');
+        $('#pallet_serial_number').addClass('is-invalid');
+        
+        $('#pallet_serial_number_message').removeClass('success');
+        $('#pallet_serial_number_message').addClass('error');
+        $('#pallet_serial_number_message').text(pallet_detail.feedback_title + '. ' + pallet_detail.feedback_message)
+        disable_form();
+    }
 }
 
-const delete_pallet = (pallet_id) => {
-    $('#delete_message').text(`Are you sure want to delete this Pallet?`);
-    $('#pallet_id').val(pallet_id);
-    $('#delete_modal').modal('show');
+function search_pallet_input(e) {
+    if(event.key === 'Enter') {
+        search_pallet();
+        return false;   
+    }
 }
+
+function enable_form() {
+    $('#location_from').attr('disabled', false);
+    $('#location_to').attr('disabled', false);
+    $('#btn_submit').attr('disabled', false);
+    $('#btn_submit').removeClass('disabled');
+}
+
+function disable_form() {
+    $('#location_from').attr('disabled', true);
+    $('#location_to').attr('disabled', true);
+    $('#btn_submit').attr('disabled', true);
+    $('#btn_submit').addClass('disabled');
+}
+
 
 </script>
 
@@ -150,6 +231,35 @@ $('#pallet_transfer_table').DataTable({
         });
     },
 });
+
+$('#btn_new_pallet_transfer').on('click', function (){
+    clear_form({
+        modal_id: 'modal_pallet_transfer',
+        modal_title: "New Pallet Transfer",
+        modal_btn_submit: "Save",
+        form_action_url: store_url,
+    });
+    $('#modal_pallet_transfer').modal('show');
+})
+
+$('#modal_pallet_transfer').on('hidden.bs.modal', function () {
+
+    $('#pallet_serial_number').removeClass('is-invalid is-valid');
+
+    $('#pallet_serial_number_message').removeClass('success');
+    $('#pallet_serial_number_message').removeClass('error');
+    $('#pallet_serial_number_message').addClass('d-none');
+    $('#pallet_serial_number_message').text('');
+
+});
+
+$('body').on('shown.bs.modal', '#modal_pallet_transfer', function () {
+    $('input:visible:enabled:first', this).focus();
+})
+
+$('#pallet_transfer_form').on('submit', function () {
+    if(!is_pallet_available) { return false; }
+})
 </script>
 
 <?= $this->endSection('page_script'); ?>

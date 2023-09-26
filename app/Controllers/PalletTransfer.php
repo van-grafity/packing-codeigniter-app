@@ -7,6 +7,7 @@ use App\Models\PalletTransferModel;
 use App\Models\TransferNoteModel;
 use App\Models\PalletModel;
 use App\Models\CartonBarcodeModel;
+use App\Models\LocationModel;
 
 use \Hermawan\DataTables\DataTable;
 
@@ -16,6 +17,7 @@ class PalletTransfer extends BaseController
     protected $TransferNoteModel;
     protected $PalletModel;
     protected $CartonBarcodeModel;
+    protected $LocationModel;
 
     public function __construct()
     {
@@ -24,12 +26,16 @@ class PalletTransfer extends BaseController
         $this->TransferNoteModel = new TransferNoteModel();
         $this->PalletModel = new PalletModel();
         $this->CartonBarcodeModel = new CartonBarcodeModel();
+        $this->LocationModel = new LocationModel();
     }
 
     public function index()
     {
+
+        $location = $this->LocationModel->findAll();
         $data = [
-            'title' => 'Pallet Transfer List',
+            'title' => 'Pallet to Transfer List',
+            'location' => $location
         ];
         return view('pallettransfer/index', $data);
     }
@@ -60,6 +66,8 @@ class PalletTransfer extends BaseController
                 $status = $this->getPalletStatus($row, true);
                 return $status;
 
+            })->postQuery(function ($pallet_list) {
+                $pallet_list->orderBy('tblpallettransfer.created_at');
             })->toJson(true);
     }
 
@@ -70,6 +78,24 @@ class PalletTransfer extends BaseController
         ];
         return view('pallettransfer/create', $data);
         
+    }
+
+    public function store()
+    {
+        $data_input = $this->request->getPost();
+        $pallet = $this->PalletModel->where('serial_number', $data_input['pallet_serial_number'])->first();
+        
+        
+        $data = array(
+            'location_from_id' => $data_input['location_from'],
+            'location_to_id' => $data_input['location_to'],
+            'pallet_id' => $pallet->id,
+            'flag_transferred' => 'N',
+            'flag_loaded' => 'N',
+        );
+        
+        $this->PalletTransferModel->save($data);
+        return redirect()->to('pallet-transfer')->with('success', "Successfully added Pallet to Transfer");
     }
 
     public function pallet_detail()
@@ -158,6 +184,71 @@ class PalletTransfer extends BaseController
             'data' => $carton_info,
         ];
         return $this->response->setJSON($data_return);
+    }
+
+    public function check_pallet_availablity()
+    {
+        $pallet_serial_number = $this->request->getGet('pallet_serial_number');
+        $pallet = $this->PalletModel->where('serial_number', $pallet_serial_number)->first();
+
+        if(!$pallet){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'Pallet Not Found',
+            ];
+            return $this->response->setJSON($data_return);
+        }
+
+        if($pallet->flag_empty == 'N') {
+            $data_return = [
+                'status' => 'success',
+                'message' => 'Pallet Found',
+                'data' => [
+                    'pallet_status' => false,
+                    'feedback_title' => 'Pallet is not Available',
+                    'feedback_message' => 'This Pallet has not empty',
+                ]
+            ];
+            return $this->response->setJSON($data_return);
+        }
+
+        $get_last_pallet_transfer = $this->PalletTransferModel->getLastPalletTransferByPalletID($pallet->id);
+
+        if($pallet->flag_empty == 'Y' && $get_last_pallet_transfer == null){
+            $data_return = [
+                'status' => 'success',
+                'message' => 'Pallet Found',
+                'data' => [
+                    'pallet_status' => true,
+                    'feedback_title' => 'Pallet is Available',
+                ]
+            ];
+            return $this->response->setJSON($data_return);
+        }
+
+        if($get_last_pallet_transfer->flag_transferred == 'Y' && $get_last_pallet_transfer->flag_loaded == 'Y'){
+            $data_return = [
+                'status' => 'success',
+                'message' => 'Pallet Found',
+                'data' => [
+                    'pallet_status' => true,
+                    'feedback_title' => 'Pallet is Available',
+                ]
+            ];
+            return $this->response->setJSON($data_return);
+        }
+        
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Pallet Found',
+            'data' => [
+                'pallet_status' => false,
+                'feedback_title' => 'Pallet is not Available!',
+                'feedback_message' => 'This Pallet has been used. Please Check at Pallet to Transfer List',
+            ]
+        ];
+        return $this->response->setJSON($data_return);
+
     }
 
     private function getPalletStatus($pallet_data, $pill_mode = false)

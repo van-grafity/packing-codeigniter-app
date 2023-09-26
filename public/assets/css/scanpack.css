@@ -21,3 +21,12 @@ a.btn.disabled {
 .nav.nav-treeview.pl-3 a {
     max-width: 100%;
 }
+
+.input-feedback.success {
+    color: #28a745;
+}
+
+.input-feedback.error {
+    color: #dc3545;
+}
+

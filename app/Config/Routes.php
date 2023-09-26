@@ -157,6 +157,8 @@ $routes->group('pallet-transfer', static function ($routes) {
     $routes->get('pallet-detail', 'PalletTransfer::pallet_detail',['as' => 'pallet_transfer_pallet_detail']);
     $routes->get('carton-detail', 'PalletTransfer::carton_detail',['as' => 'pallet_transfer_carton_detail']);
     $routes->get('transfer-note-detail', 'PalletTransfer::transfer_note_detail',['as' => 'pallet_transfer_transfer_note_detail']);
+    $routes->get('check-pallet-availablity', 'PalletTransfer::check_pallet_availablity',['as' => 'pallet_transfer_check_pallet_availablity']);
+    $routes->post('', 'PalletTransfer::store', ['as' => 'pallet_transfer_store']);
 
     // $routes->get('(:segment)', 'PalletTransferController::show/$1', ['as' => 'gl_show']);
     // $routes->post('', 'PalletTransferController::store', ['as' => 'gl_store']);

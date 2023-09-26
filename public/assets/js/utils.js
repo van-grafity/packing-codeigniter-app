@@ -108,3 +108,12 @@ const swal_warning = (data) => {
         showConfirmButton: true,
     });
 }
+
+const avoid_submit_on_enter = () => {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+}
