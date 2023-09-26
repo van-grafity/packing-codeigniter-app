@@ -88,6 +88,32 @@
 </div>
 <!-- End Modal Add and Edit Pallet Transfer -->
 
+
+<!-- Modal Delete Pallet Transfer-->
+<div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="<?= url_to('pallet_transfer_delete')?>" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Delete Pallet Transfer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 id="delete_message">Are you sure want to delete this Data ?</h4>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="pallet_transfer_id" id="pallet_transfer_id">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</form>
+<!-- End Modal Delete Pallet Transfer-->
 <?= $this->endSection(); ?>
 
 
@@ -146,6 +172,7 @@ async function search_pallet(e){
 
         enable_pallet_transfer_form();
     }
+
     if(pallet_detail.pallet_status == false){
         is_pallet_available = true;
 
@@ -178,11 +205,11 @@ const edit_pallet_transfer = async (pallet_transfer_id) => {
     enable_pallet_transfer_form();
 }
 
-// const delete_pallet_transfer = (pallet_transfer_id) => {
-//     $('#delete_message').text(`Are you sure want to delete this Pallet?`);
-//     $('#pallet_id').val(pallet_id);
-//     $('#delete_modal').modal('show');
-// }
+const delete_pallet_transfer = (pallet_transfer_id) => {
+    $('#delete_message').text(`Are you sure want to delete this Pallet?`);
+    $('#pallet_transfer_id').val(pallet_transfer_id);
+    $('#delete_modal').modal('show');
+}
 
 // ## For Searching Pallet when Entered
 function search_pallet_input(e) {

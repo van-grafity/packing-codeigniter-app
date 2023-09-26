@@ -95,7 +95,7 @@ class PalletTransfer extends BaseController
         );
         
         $this->PalletTransferModel->save($data);
-        return redirect()->to('pallet-transfer')->with('success', "Successfully added Pallet to Transfer");
+        return redirect()->to('pallet-transfer')->with('success', "Successfully added Data");
     }
 
     public function detail()
@@ -120,7 +120,21 @@ class PalletTransfer extends BaseController
             'location_to_id' => $data_input['location_to'],
         );
         $this->PalletTransferModel->update($data_input['edit_pallet_transfer_id'],$data);
-        return redirect()->to('pallet-transfer')->with('success', "Successfully updated Pallet to Transfer");
+        return redirect()->to('pallet-transfer')->with('success', "Successfully updated Data");
+    }
+
+    public function delete()
+    {
+        $pallet_transfer_id = $this->request->getPost('pallet_transfer_id');
+        try {
+            $this->PalletTransferModel->transException(true)->transStart();
+            $delete_data = $this->PalletTransferModel->deletePalletTransfer($pallet_transfer_id);
+            $this->PalletTransferModel->transComplete();
+            
+            return redirect()->to('pallet-transfer')->with('success', "Successfully deleted Data");
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function pallet_detail()

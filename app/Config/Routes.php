@@ -161,6 +161,7 @@ $routes->group('pallet-transfer', static function ($routes) {
     $routes->get('check-pallet-availablity', 'PalletTransfer::check_pallet_availablity',['as' => 'pallet_transfer_check_pallet_availablity']);
     $routes->post('', 'PalletTransfer::store', ['as' => 'pallet_transfer_store']);
     $routes->post('update', 'PalletTransfer::update',['as' => 'pallet_transfer_update']);
+    $routes->post('delete', 'PalletTransfer::delete',['as' => 'pallet_transfer_delete']);
 
     // $routes->get('(:segment)', 'PalletTransferController::show/$1', ['as' => 'gl_show']);
     // $routes->post('', 'PalletTransferController::store', ['as' => 'gl_store']);
