@@ -141,8 +141,6 @@
         params_data = { id : pallet_id };
         result = await using_fetch(detail_url, params_data, "GET");
 
-        console.log(result);
-
         pallet_data = result.data
         $('#serial_number').val(pallet_data.serial_number);
         $('#description').val(pallet_data.description);

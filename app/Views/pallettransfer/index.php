@@ -2,13 +2,6 @@
 
 <?= $this->Section('content'); ?>
 <style>
-    .input-feedback.success {
-        color: #28a745;
-    }
-
-    .input-feedback.error {
-        color: #dc3545;
-    }
 </style>
 
 <div class="content-wrapper">
@@ -61,7 +54,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="pallet_serial_number" name="pallet_serial_number" placeholder="Pallet Barcode Here" onkeydown="search_pallet_input(this)">
                             <div class="ml-2">
-                                <button type="button" class="btn btn-primary" id="btn_search_pallet" onclick="search_pallet();">Search Pallet</button>
+                                <button type="button" class="btn btn-primary" id="btn_search_pallet" onclick="search_pallet(this);">Search Pallet</button>
                             </div>
                         </div>
                         <span id="pallet_serial_number_message" class="input-feedback d-none"></span>
@@ -105,11 +98,13 @@
 
 const index_dt_url = '<?= url_to('pallet_transfer_list')?>';
 const store_url = '<?= url_to('pallet_transfer_store')?>';
+const update_url = '<?= url_to('pallet_transfer_update')?>';
 const pallet_availablity_url = '<?= url_to('pallet_transfer_check_pallet_availablity')?>';
+const detail_url = '<?= url_to('pallet_transfer_detail')?>';
 
 let is_pallet_available = false;
 
-//## using utils.js
+//## function from js/utils.js
 avoid_submit_on_enter();
 
 async function get_pallet_detail(pallet_serial_number) {
@@ -126,10 +121,16 @@ async function get_pallet_detail(pallet_serial_number) {
     return result.data;
 }
 
-async function search_pallet(){
+async function search_pallet(e){
+    if($(e).hasClass('disabled')){ return false;} // ## avoid action when search button is disabled
+    
     let pallet_serial_number = $('#pallet_serial_number').val();
+    if(pallet_serial_number.length <= 0) {
+        show_flash_message({ error: 'Please provide the Pallet Number'} )
+        return false;
+    }
+    
     let pallet_detail = await get_pallet_detail(pallet_serial_number);
-    console.log(pallet_detail);
 
     $('#pallet_serial_number_message').removeClass('d-none');
     
@@ -143,7 +144,7 @@ async function search_pallet(){
         $('#pallet_serial_number_message').removeClass('error');
         $('#pallet_serial_number_message').text(pallet_detail.feedback_title);
 
-        enable_form();
+        enable_pallet_transfer_form();
     }
     if(pallet_detail.pallet_status == false){
         is_pallet_available = true;
@@ -154,10 +155,36 @@ async function search_pallet(){
         $('#pallet_serial_number_message').removeClass('success');
         $('#pallet_serial_number_message').addClass('error');
         $('#pallet_serial_number_message').text(pallet_detail.feedback_title + '. ' + pallet_detail.feedback_message)
-        disable_form();
+        disable_pallet_transfer_form();
     }
 }
 
+
+const edit_pallet_transfer = async (pallet_transfer_id) => {
+    params_data = { id : pallet_transfer_id };
+    result = await using_fetch(detail_url, params_data, "GET");
+
+    pallet_transfer_data = result.data
+    $('#edit_pallet_transfer_id').val(pallet_transfer_data.id);
+    $('#pallet_serial_number').val(pallet_transfer_data.pallet_serial_number);
+    $('#location_from').val(pallet_transfer_data.location_from_id);
+    $('#location_to').val(pallet_transfer_data.location_to_id);
+    
+    $('#pallet_transfer_form').attr('action',update_url);
+    $('#modal_pallet_transfer').modal('show');
+    
+    is_pallet_available = true;
+    disable_search_pallet();
+    enable_pallet_transfer_form();
+}
+
+// const delete_pallet_transfer = (pallet_transfer_id) => {
+//     $('#delete_message').text(`Are you sure want to delete this Pallet?`);
+//     $('#pallet_id').val(pallet_id);
+//     $('#delete_modal').modal('show');
+// }
+
+// ## For Searching Pallet when Entered
 function search_pallet_input(e) {
     if(event.key === 'Enter') {
         search_pallet();
@@ -165,18 +192,41 @@ function search_pallet_input(e) {
     }
 }
 
-function enable_form() {
+//## Toggling Form
+function enable_pallet_transfer_form() {
     $('#location_from').attr('disabled', false);
     $('#location_to').attr('disabled', false);
     $('#btn_submit').attr('disabled', false);
     $('#btn_submit').removeClass('disabled');
 }
 
-function disable_form() {
+function disable_pallet_transfer_form() {
     $('#location_from').attr('disabled', true);
     $('#location_to').attr('disabled', true);
     $('#btn_submit').attr('disabled', true);
     $('#btn_submit').addClass('disabled');
+}
+
+function enable_search_pallet() {
+    $('#pallet_serial_number').attr('disabled', false);
+    $('#btn_submit').attr('disabled', false);
+    $('#btn_search_pallet').removeClass('disabled');
+}
+
+function disable_search_pallet() {
+    $('#pallet_serial_number').attr('disabled', true);
+    $('#btn_submit').attr('disabled', true);
+    $('#btn_search_pallet').addClass('disabled');
+}
+
+function is_location_valid() {
+    let location_from = $('#location_from').val();
+    let location_to = $('#location_to').val();
+
+    if(location_from == location_to) {
+        return false;
+    }
+    return true;
 }
 
 
@@ -240,6 +290,10 @@ $('#btn_new_pallet_transfer').on('click', function (){
         form_action_url: store_url,
     });
     $('#modal_pallet_transfer').modal('show');
+    
+    is_pallet_available = false;
+    enable_search_pallet();
+    disable_pallet_transfer_form();
 })
 
 $('#modal_pallet_transfer').on('hidden.bs.modal', function () {
@@ -259,6 +313,10 @@ $('body').on('shown.bs.modal', '#modal_pallet_transfer', function () {
 
 $('#pallet_transfer_form').on('submit', function () {
     if(!is_pallet_available) { return false; }
+    if(!is_location_valid()){
+        show_flash_message({ error: 'The origin location and destination location cannot be the same'} )
+        return false;
+    }
 })
 </script>
 

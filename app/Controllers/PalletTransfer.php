@@ -47,8 +47,8 @@ class PalletTransfer extends BaseController
             ->addNumbering('DT_RowIndex')
             ->add('action', function($row){
                 $action_button = '
-                    <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="edit_pallet('. $row->id .')">Edit</a>
-                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="delete_pallet('. $row->id .')">Delete</a>
+                    <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="edit_pallet_transfer('. $row->id .')">Edit</a>
+                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="delete_pallet_transfer('. $row->id .')">Delete</a>
                 ';
                 return $action_button;
             })->add('transfer_note', function($row){
@@ -96,6 +96,31 @@ class PalletTransfer extends BaseController
         
         $this->PalletTransferModel->save($data);
         return redirect()->to('pallet-transfer')->with('success', "Successfully added Pallet to Transfer");
+    }
+
+    public function detail()
+    {
+        $id = $this->request->getGet('id');
+
+        $pallet_transfer = $this->PalletTransferModel->join('tblpallet as pallet','pallet.id = tblpallettransfer.pallet_id')->where('tblpallettransfer.id', $id)->select('tblpallettransfer.*, pallet.serial_number as pallet_serial_number')->first();
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Pallet Transfer Found',
+            'data' => $pallet_transfer,
+        ];
+        return $this->response->setJSON($data_return);
+    }
+
+    public function update()
+    {
+        $data_input = $this->request->getPost();
+        
+        $data = array(
+            'location_from_id' => $data_input['location_from'],
+            'location_to_id' => $data_input['location_to'],
+        );
+        $this->PalletTransferModel->update($data_input['edit_pallet_transfer_id'],$data);
+        return redirect()->to('pallet-transfer')->with('success', "Successfully updated Pallet to Transfer");
     }
 
     public function pallet_detail()
