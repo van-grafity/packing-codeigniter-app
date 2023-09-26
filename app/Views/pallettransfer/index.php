@@ -22,7 +22,7 @@
                             <th width="">From</th>
                             <th width="">To</th>
                             <th width="100">Status</th>
-                            <th width="120">Action</th>
+                            <th width="170">Action</th>
                         </tr>
                     </thead>
                     <tbody>

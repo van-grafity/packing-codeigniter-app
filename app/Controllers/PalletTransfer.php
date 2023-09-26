@@ -47,8 +47,9 @@ class PalletTransfer extends BaseController
             ->addNumbering('DT_RowIndex')
             ->add('action', function($row){
                 $action_button = '
-                    <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="edit_pallet_transfer('. $row->id .')">Edit</a>
-                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="delete_pallet_transfer('. $row->id .')">Delete</a>
+                    <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1" onclick="edit_pallet_transfer('. $row->id .')">Edit</a>
+                    <a href="javascript:void(0);" class="btn btn-danger btn-sm mb-1" onclick="delete_pallet_transfer('. $row->id .')">Delete</a>
+                    <a href="'. url_to('pallet_transfer_transfer_note',$row->id) .'" class="btn btn-info btn-sm mb-1">Detail</a>
                 ';
                 return $action_button;
             })->add('transfer_note', function($row){
@@ -137,6 +138,28 @@ class PalletTransfer extends BaseController
         }
     }
 
+    public function transfer_note($pallet_transfer_id)
+    {
+        $pallet_transfer = $this->PalletTransferModel->getData($pallet_transfer_id);
+        $pallet_transfer->status = $this->getPalletStatus($pallet_transfer);
+        
+        $btn_transfer_note_class = '';
+
+        if($pallet_transfer->status == 'at Warehouse'){
+            $btn_transfer_note_class = 'disabled';
+        }
+        if($pallet_transfer->status == 'Loaded'){
+            $btn_transfer_note_class = 'disabled';
+        }
+
+        $data = [
+            'title' => 'Packing Transfer Note',
+            'pallet_transfer' => $pallet_transfer,
+            'btn_transfer_note_class' => $btn_transfer_note_class,
+        ];
+        return view('pallettransfer/detail', $data);
+    }
+
     public function pallet_detail()
     {
         $pallet_serial_number = $this->request->getGet('pallet_serial_number');
@@ -176,6 +199,13 @@ class PalletTransfer extends BaseController
         ];
         return $this->response->setJSON($data_return);
 
+    }
+
+    public function transfer_note_store()
+    {
+        $carton_barcode_id_list = $this->request->getPost('carton_barcode_id');
+        dd($carton_barcode_id_list);
+        
     }
 
     public function transfer_note_detail()

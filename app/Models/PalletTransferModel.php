@@ -33,6 +33,19 @@ class PalletTransferModel extends Model
         return $builder;
     }
 
+    public function getData($pallet_transfer_id = null)
+    {
+
+        $builder = $this->getDatatable();
+        if($pallet_transfer_id){
+            $builder->where('tblpallettransfer.id',$pallet_transfer_id);
+            $result = $builder->get()->getRow();
+            return $result;
+        }
+        $result = $builder->get()->getResult();
+        return $result;
+    }
+
     public function getDetailPalletBySerialNumber($pallet_serial_number)
     {
         $builder = $this->db->table('tblpallet as pallet');
