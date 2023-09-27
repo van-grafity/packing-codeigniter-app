@@ -310,11 +310,30 @@ class PalletTransfer extends BaseController
     {
         $carton_barcode = $this->request->getGet('carton_barcode');
         
+        $is_carton_available = $this->TransferNoteModel->isCartonAvailable($carton_barcode);
+        
+        if(!$is_carton_available){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'This Carton Has Already in Other Transfer Note',
+            ];
+            return $this->response->setJSON($data_return);
+        }
+
         $carton_info = $this->CartonBarcodeModel->getCartonInfoByBarcode_v2($carton_barcode);
+        
         if(!$carton_info){
             $data_return = [
                 'status' => 'error',
-                'message' => 'Carton Not Found',
+                'message' => 'Carton Not Found!',
+            ];
+            return $this->response->setJSON($data_return);
+        }
+
+        if($carton_info->flag_packed == "N"){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'This Carton Has not Packing Yet',
             ];
             return $this->response->setJSON($data_return);
         }

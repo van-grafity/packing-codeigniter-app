@@ -78,4 +78,19 @@ class TransferNoteModel extends Model
         $delete_transfer_note = $this->where('id', $transfer_note_id)->delete();
     }
 
+    public function isCartonAvailable($carton_barcode)
+    {
+        $builder = $this->db->table('tblcartonbarcode as carton_barcode');
+        $builder->join('tbltransfernotedetail as transfer_note_detail', 'transfer_note_detail.carton_barcode_id = carton_barcode.id');
+        $builder->where('carton_barcode.barcode', $carton_barcode);
+        $result = $builder->get()->getResult();
+        
+        if($result){
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
 }
