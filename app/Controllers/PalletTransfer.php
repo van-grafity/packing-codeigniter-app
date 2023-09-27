@@ -8,6 +8,7 @@ use App\Models\TransferNoteModel;
 use App\Models\PalletModel;
 use App\Models\CartonBarcodeModel;
 use App\Models\LocationModel;
+use App\Models\TransferNoteDetailModel;
 
 use \Hermawan\DataTables\DataTable;
 
@@ -18,12 +19,14 @@ class PalletTransfer extends BaseController
     protected $PalletModel;
     protected $CartonBarcodeModel;
     protected $LocationModel;
+    protected $TransferNoteDetailModel;
 
     public function __construct()
     {
         $this->db = db_connect();
         $this->PalletTransferModel = new PalletTransferModel();
         $this->TransferNoteModel = new TransferNoteModel();
+        $this->TransferNoteDetailModel = new TransferNoteDetailModel();
         $this->PalletModel = new PalletModel();
         $this->CartonBarcodeModel = new CartonBarcodeModel();
         $this->LocationModel = new LocationModel();
@@ -31,7 +34,6 @@ class PalletTransfer extends BaseController
 
     public function index()
     {
-
         $location = $this->LocationModel->findAll();
         $data = [
             'title' => 'Pallet to Transfer List',
@@ -152,10 +154,12 @@ class PalletTransfer extends BaseController
             $btn_transfer_note_class = 'disabled';
         }
 
+        $transfer_note_list = $this->PalletTransferModel->getTransferNotesInPallet($pallet_transfer->pallet_id);
         $data = [
             'title' => 'Packing Transfer Note',
             'pallet_transfer' => $pallet_transfer,
             'btn_transfer_note_class' => $btn_transfer_note_class,
+            'transfer_note_list' => $transfer_note_list,
         ];
         return view('pallettransfer/detail', $data);
     }
@@ -203,15 +207,83 @@ class PalletTransfer extends BaseController
 
     public function transfer_note_store()
     {
-        $carton_barcode_id_list = $this->request->getPost('carton_barcode_id');
-        dd($carton_barcode_id_list);
+        $data_input = $this->request->getPost();
         
+        $transfer_note_this_month = $this->TransferNoteModel->countTransferNoteThisMonth();
+        $next_number = $transfer_note_this_month + 1;
+        
+        $transfer_note_data = [
+            'pallet_transfer_id' => $data_input['pallet_transfer_id'],
+            'serial_number' => $this->generate_serial_number($next_number),
+            'issued_by' => $data_input['transfer_note_issued_by'],
+            'authorized_by' => $data_input['transfer_note_authorized_by'],
+        ];
+        $this->PalletTransferModel->transException(true)->transStart();
+        $transfer_note_id = $this->TransferNoteModel->insert($transfer_note_data);
+        
+        if(array_key_exists("carton_barcode_id",$data_input)){
+            $this->TransferNoteDetailModel->transException(true)->transStart();
+            foreach($data_input['carton_barcode_id'] as $key => $carton_barcode_id){
+                $this->TransferNoteDetailModel->insert(['transfer_note_id' => $transfer_note_id, 'carton_barcode_id' => $carton_barcode_id ]);
+            }
+            $this->TransferNoteDetailModel->transComplete();
+        }
+
+        $this->PalletTransferModel->transComplete();
+        
+        return redirect()->to("pallet-transfer/" . $data_input['pallet_transfer_id'] . "/transfer-note")->with('success', "Successfully added Transfer Note");
+    }
+
+    public function transfer_note_update()
+    {
+        $data_input = $this->request->getPost();
+        $transfer_note_id = $data_input['edit_transfer_note_id'];
+        $transfer_note_data = [
+            'issued_by' => $data_input['transfer_note_issued_by'],
+            'authorized_by' => $data_input['transfer_note_authorized_by'],
+        ];
+
+        try {
+            $this->PalletTransferModel->transException(true)->transStart();
+            $this->TransferNoteModel->update($transfer_note_id, $transfer_note_data);
+            
+            $delete_transfer_note_detail = $this->TransferNoteDetailModel->where('transfer_note_id', $transfer_note_id)->delete();
+            if(array_key_exists("carton_barcode_id",$data_input)){
+                $this->TransferNoteDetailModel->transException(true)->transStart();
+                foreach($data_input['carton_barcode_id'] as $key => $carton_barcode_id){
+                    $this->TransferNoteDetailModel->insert(['transfer_note_id' => $transfer_note_id, 'carton_barcode_id' => $carton_barcode_id ]);
+                }
+                $this->TransferNoteDetailModel->transComplete();
+            }
+    
+            $this->PalletTransferModel->transComplete();
+            
+            return redirect()->to("pallet-transfer/" . $data_input['pallet_transfer_id'] . "/transfer-note")->with('success', "Successfully updated Transfer Note");
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function transfer_note_delete()
+    {
+        $data_input = $this->request->getPost();
+        $transfer_note_id = $data_input['delete_transfer_note_id'];
+        $pallet_transfer_id = $data_input['transfer_note_pallet_transfer_id'];
+        
+        try {
+            $this->TransferNoteModel->transException(true)->transStart();
+            $delete_data = $this->TransferNoteModel->deleteTransferNote($transfer_note_id);
+            $this->TransferNoteModel->transComplete();
+            
+            return redirect()->to("pallet-transfer/" . $pallet_transfer_id . "/transfer-note")->with('success', "Successfully deleted Transfer Note");
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function transfer_note_detail()
     {
         $transfer_note_id = $this->request->getGet('transfer_note_id');
-        
         $transfer_note = $this->TransferNoteModel->find($transfer_note_id);
         
         if(!$transfer_note){
@@ -221,11 +293,15 @@ class PalletTransfer extends BaseController
             ];
             return $this->response->setJSON($data_return);
         }
-        
+
+        $transfer_note_detail = $this->TransferNoteModel->getCartonInTransferNote($transfer_note->id);
         $data_return = [
             'status' => 'success',
             'message' => 'Carton Found',
-            'data' => $transfer_note,
+            'data' => [
+                'transfer_note' => $transfer_note,
+                'transfer_note_detail' => $transfer_note_detail,
+            ],
         ];
         return $this->response->setJSON($data_return);
     }
@@ -317,7 +393,6 @@ class PalletTransfer extends BaseController
             ]
         ];
         return $this->response->setJSON($data_return);
-
     }
 
     private function getPalletStatus($pallet_data, $pill_mode = false)
@@ -343,7 +418,12 @@ class PalletTransfer extends BaseController
                 $status = 'Unknown Status';
             }
         }
-
         return $status;
+    }
+
+    private function generate_serial_number($number)
+    {
+        $serial_number = 'PTN-' . date('ym') . '-' . str_pad($number, 3, '0', STR_PAD_LEFT);
+        return $serial_number;
     }
 }

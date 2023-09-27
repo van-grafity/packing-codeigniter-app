@@ -31,10 +31,12 @@ class TransferNote extends Migration
             'authorized_by' => [
                 'type' => 'varchar',
                 'constraint' => 255,
+                'null' => true
             ],
             'received_by' => [
                 'type' => 'varchar',
                 'constraint' => 255,
+                'null' => true
             ],
             'received_at' => [
                 'type' => 'datetime', 

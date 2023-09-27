@@ -112,10 +112,9 @@
         </div>
     </div>
 </div>
-</form>
 <!-- End Modal Delete Pallet Transfer-->
-<?= $this->endSection(); ?>
 
+<?= $this->endSection(); ?>
 
 
 <?= $this->Section('page_script'); ?>

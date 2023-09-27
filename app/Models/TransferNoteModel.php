@@ -20,4 +20,62 @@ class TransferNoteModel extends Model
         return $this->db->table($this->table)->get()->getResult();
     }
 
+    public function countTransferNoteThisMonth($year_filter = null, $month_filter = null)
+    {
+        $month_filter = $month_filter ? $month_filter : date('m');
+        $year_filter = $year_filter ? $year_filter : date('Y');
+
+        $builder = $this->db->table($this->table);
+        $builder->select('count(id) as total_transfer_note');
+        $builder->where("MONTH(created_at)", $month_filter);
+        $builder->where("YEAR(created_at)", $year_filter);
+        $result = $builder->get()->getRow();
+        return $result->total_transfer_note;
+    }
+
+    public function getCartonInTransferNote($transfer_note_id)
+    {
+        if (!$transfer_note_id) return null;
+        
+        
+        $GlModel = model('GlModel');
+        $CartonBarcodeModel = model('CartonBarcodeModel');
+        
+        $builder = $this->db->table('tbltransfernote as transfer_note');
+        $builder->join('tbltransfernotedetail as transfer_note_detail', 'transfer_note_detail.transfer_note_id = transfer_note.id');
+        $builder->join('tblcartonbarcode as carton_barcode', 'carton_barcode.id = transfer_note_detail.carton_barcode_id');
+        $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id');
+        $builder->join('tblpackinglist as packinglist', 'packinglist.id = pl_carton.packinglist_id');
+        $builder->join('tblpurchaseorder as po', 'po.id = packinglist.packinglist_po_id');
+        
+        $builder->where('transfer_note.id', $transfer_note_id);
+        $builder->select('carton_barcode.id as carton_id, carton_barcode.flag_packed, carton_barcode.barcode as carton_barcode, po.po_no as po_number, packinglist.id as packinglist_id, packinglist.packinglist_serial_number as pl_number, carton_barcode.carton_number_by_system as carton_number');
+        $carton_list = $builder->get()->getResult();
+        
+        if(!$carton_list) { return null; }
+
+        foreach ($carton_list as $key => $carton) {
+            
+            $carton_with_gl_info = $GlModel->set_gl_info_on_carton($carton, $carton->carton_id);
+
+            $size_list_in_carton = $CartonBarcodeModel->getCartonContent($carton->carton_id);
+            $carton_with_gl_info->content = $CartonBarcodeModel->serialize_size_list($size_list_in_carton);
+            $carton_with_gl_info->total_pcs = array_sum(array_column($size_list_in_carton,'qty'));
+
+            $carton_list[$key] = $carton_with_gl_info;
+        }
+        
+        return $carton_list;
+    }
+
+    public function deleteTransferNote($transfer_note_id)
+    {
+        //## delete transfer note detail
+        $TransferNoteDetailModel = model('TransferNoteDetailModel');
+        $TransferNoteDetailModel->where('transfer_note_id',$transfer_note_id)->delete();
+        
+        //## delete transfer note
+        $delete_transfer_note = $this->where('id', $transfer_note_id)->delete();
+    }
+
 }

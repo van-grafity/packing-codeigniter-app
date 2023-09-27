@@ -59,9 +59,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td colspan="7">There's no Transfer Note</td>
-                                </tr>
+                                <?php if(!$transfer_note_list) :?>
+                                    <tr>
+                                        <td colspan="7">There's no Transfer Note</td>
+                                    </tr>
+                                <?php endif?>
+                                <?php foreach ($transfer_note_list as $key => $transfer_note) : ?>
+                                    <tr class="text-center">
+                                        <td class="product_code"><?= $transfer_note->serial_number ?></td>
+                                        <td><?= $transfer_note->issued_by ?></td>
+                                        <td><?= $transfer_note->authorized_by ?></td>
+                                        <td><?= $transfer_note->total_carton ?></td>
+                                        <td><?= $transfer_note->received_by ?></td>
+                                        <td><?= $transfer_note->received_at ?></td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-primary" onclick="edit_transfer_note(<?= $transfer_note->id ?>)">Edit</button>
+                                            <button type="button" class="btn btn-sm btn-danger" onclick="delete_transfer_note(<?= $transfer_note->id ?>)">Delete</button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach ?>
                             </tbody>
                         </table>
                     </div>
@@ -133,6 +149,7 @@
 
                 <form action="" method="post" id="transfer_note_form">
                     <input type="hidden" name="edit_transfer_note_id" value="" id="edit_transfer_note_id">
+                    <input type="hidden" name="pallet_transfer_id" value="<?= $pallet_transfer->id ?>" id="pallet_transfer_id">
 
                     <h4>Carton List : </h4>
                     
@@ -152,16 +169,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- <tr>
-                                <td>1</td>
-                                <td>Aero</td>
-                                <td>123213</td>
-                                <td>63000-01</td>
-                                <td>1</td>
-                                <td>S=1 | M=2 | L=2</td>
-                                <td>5</td>
-                                <td><button type="button" class="btn btn-sm btn-danger">Delete</button></td>
-                            </tr> -->
                         </tbody>
                         <tfoot class="bg-dark">
                             <tr>
@@ -203,15 +210,43 @@
 </div>
 <!-- End Modal Add and Edit Transfer Note -->
 
+
+<!-- Modal Delete Transfer Note-->
+<div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="<?= url_to('pallet_transfer_transfer_note_delete')?>" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Delete Transfer Note</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 id="delete_message">Are you sure want to delete this Transfer Note ?</h4>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="delete_transfer_note_id" id="delete_transfer_note_id">
+                    <input type="hidden" name="transfer_note_pallet_transfer_id" value="<?= $pallet_transfer->id ?>" id="transfer_note_pallet_transfer_id">
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Delete Transfer Note-->
+
 <?= $this->endSection(); ?>
-
-
 
 <?= $this->Section('page_script'); ?>
 <script type="text/javascript">
 
 const carton_detail_url = '<?= url_to('pallet_transfer_carton_detail')?>';
 const transfer_note_store_url = '<?= url_to('pallet_transfer_transfer_note_store')?>';
+const transfer_note_update_url = '<?= url_to('pallet_transfer_transfer_note_update')?>';
+const transfer_note_detail_url = '<?= url_to('pallet_transfer_transfer_note_detail')?>';
 
 
 async function get_carton_detail(carton_barcode){
@@ -230,7 +265,12 @@ async function get_carton_detail(carton_barcode){
 
 function create_transfer_note(){
     clear_transfer_note_form();
-    $('#transfer_note_form').attr('action',transfer_note_store_url);
+    clear_form({
+        modal_id: 'modal_transfer_note',
+        modal_title: "New Transfer Note",
+        modal_btn_submit: "Create Transfer Note",
+        form_action_url: transfer_note_store_url,
+    });
     $('#modal_transfer_note').modal('show');
 }
 
@@ -280,6 +320,8 @@ function insert_carton_to_table(carton_data){
         </tr>
     `;
     $('#transfer_note_detail tbody').append(row);
+
+    update_total_in_transfernote_detail();
 }
 
 function is_already_inputed(carton_barcode){
@@ -318,31 +360,93 @@ function is_table_empty() {
     return false;
 }
 
+
+async function edit_transfer_note(transfer_note_id){
+    clear_transfer_note_form();
+
+    clear_form({
+        modal_id: 'modal_transfer_note',
+        modal_title: "Edit Transfer Note",
+        modal_btn_submit: "Update Transfer Note",
+        form_action_url: transfer_note_update_url,
+    });
+
+    //## get transfer note data
+    let transfer_note = await get_transfer_note(transfer_note_id);
+    
+    set_transfer_note_info(transfer_note.transfer_note);
+    if(transfer_note.transfer_note_detail) {
+        set_transfer_note_carton_list(transfer_note.transfer_note_detail);
+    }
+
+    $('#modal_transfer_note').modal('show');
+}
+
+function delete_transfer_note(transfer_note_id){
+    $('#delete_transfer_note_id').val(transfer_note_id);
+    $('#delete_modal').modal('show');
+}
+
+async function get_transfer_note(transfer_note_id){
+    params_data = {
+        transfer_note_id
+    };
+    result = await using_fetch(transfer_note_detail_url, params_data, "GET");
+
+    if (result.status == 'error') {
+        show_flash_message({ error: result.message} )
+        return false;
+    }
+    
+    return result.data;
+}
+
+function set_transfer_note_info(transfer_note_info) {
+    $('#edit_transfer_note_id').val(transfer_note_info.id);
+    $('#transfer_note_serial_number').text(': ' + transfer_note_info.serial_number);
+    $('#transfer_note_issued_by').val(transfer_note_info.issued_by);
+    $('#transfer_note_authorized_by').val(transfer_note_info.authorized_by);
+}
+
+function set_transfer_note_carton_list(transfer_note_detail){
+    if(transfer_note_detail.length <= 0) return false;
+
+    transfer_note_detail.forEach(carton_data => {
+        insert_carton_to_table(carton_data);
+    });
+}
+
 </script>
 
 <script type="text/javascript">
+$(document).ready(function() {
+    // ## Show Flash Message
+    let session = <?= json_encode(session()->getFlashdata()) ?>;
+    show_flash_message(session);
 
-// ## Show Flash Message
-let session = <?= json_encode(session()->getFlashdata()) ?>;
-show_flash_message(session);
+    // ## Searching Carton by Carton Barcode and Insert into Transfer Note
+    $('#carton_barcode_search_form').on('submit', async function(e){
+        e.preventDefault();
+        let carton_barcode = $('#carton_barcode').val();
 
-// ## Searching Carton by Carton Barcode and Insert into Transfer Note
-$('#carton_barcode_search_form').on('submit', async function(e){
-    e.preventDefault();
-    let carton_barcode = $('#carton_barcode').val();
+        if (!carton_barcode) {
+            show_flash_message({ error: "Please input Carton Barcode!" });
+            return false;
+        };
+        if (is_already_inputed(carton_barcode)) {
+            show_flash_message({ error: "This Carton has been inputed!" });
+            return false;
+        };
 
-    if (is_already_inputed(carton_barcode)) {
-        show_flash_message({ error: "This Carton has been inputed!" });
-        return false;
-    };
+        let carton_detail = await get_carton_detail(carton_barcode);
+        if(carton_detail){
+            insert_carton_to_table(carton_detail);
+        }
 
-    let carton_detail = await get_carton_detail(carton_barcode);
-    if(carton_detail){
-        insert_carton_to_table(carton_detail);
-        update_total_in_transfernote_detail();
-    }
+        $('#carton_barcode').val('');
+    })
 
-    $('#carton_barcode').val('');
 })
+
 </script>
 <?= $this->endSection('page_script'); ?>

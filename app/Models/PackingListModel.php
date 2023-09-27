@@ -66,13 +66,15 @@ class PackingListModel extends Model
         return $result;
     }
 
-    public function getLastPackinglistByMonth($month_filter = null)
+    public function getLastPackinglistByMonth($year_filter = null, $month_filter = null)
     {
         $month_filter = $month_filter ? $month_filter : date('m');
+        $year_filter = $year_filter ? $year_filter : date('m');
 
         $builder = $this->db->table('tblpackinglist as pl');
         $builder->select('pl.*');
         $builder->where("MONTH(pl.created_at)", $month_filter);
+        $builder->where("YEAR(pl.created_at)", $year_filter);
         $builder->orderBy('pl.packinglist_number', 'DESC');
         $result = $builder->get()->getRow();
         return $result;
