@@ -175,6 +175,12 @@ $routes->group('pallet-transfer', static function ($routes) {
     // $routes->delete('(:segment)', 'PalletTransferController::destroy/$1', ['as' => 'gl_destroy']);
 });
 
+$routes->group('pallet-receive', static function ($routes) {
+    $routes->get('', 'PalletReceive::index', ['as' => 'pallet_receive']);
+    $routes->get('list', 'PalletReceive::index_dt',['as' => 'pallet_receive_list']);
+});
+
+
 
 // Log Viewer
 $routes->get('logs', "LogViewerController::index");
