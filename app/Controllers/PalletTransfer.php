@@ -417,12 +417,20 @@ class PalletTransfer extends BaseController
 
     public function transfer_note_print($transfer_note_id)
     {
+        $total_all_carton = 0;
+        $total_all_pcs = 0;
+
         $transfer_note = $this->TransferNoteModel->getPackingTransferNote($transfer_note_id);
         $transfer_note_detail = $this->TransferNoteModel->getTransferNoteDetail($transfer_note_id);
         foreach ($transfer_note_detail as $key => $detail) {
             $transfer_note_detail[$key]->total_detail = count($detail->carton_content);
+            $total_all_carton += $detail->total_carton;
+            $total_all_pcs += $detail->total_pcs;
         }
 
+        $transfer_note->total_all_carton = $total_all_carton;
+        $transfer_note->total_all_pcs = $total_all_pcs;
+        
         $date_printed = new Time('now');
         $date_printed = $date_printed->toLocalizedString('eeee, dd-MMMM-yyyy HH:mm');
 
@@ -440,7 +448,8 @@ class PalletTransfer extends BaseController
 
         $dompdf = new \Dompdf\Dompdf(); 
         $dompdf->loadHtml(view('pallettransfer/packing_transfer_note_pdf', $data));
-        $dompdf->setPaper('A5', 'landscape');
+        $dompdf->setPaper('A4', 'portrait');
+        // $dompdf->setPaper('A5', 'landscape');
         $dompdf->render();
         $dompdf->stream($filename, ['Attachment' => false]);
     }

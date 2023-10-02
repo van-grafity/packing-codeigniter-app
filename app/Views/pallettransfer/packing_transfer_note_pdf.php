@@ -107,14 +107,21 @@
 
     #transfer_note_detail thead,
     #transfer_note_detail tfoot {
+        font-weight: bold;
         background-color: #ddd;
     }
 
     .assignment-section {
         font-family: sans-serif;
-        margin-top: 30px;
-        margin-bottom: 3rem;
+        /* margin-top: 30px;
+        margin-bottom: 3rem; */
         font-weight: bold;
+    }
+    
+    .assignment-table {
+        position: absolute;
+        bottom: 80px;
+        
     }
 
     .assignment-section td {
@@ -123,6 +130,10 @@
 
     .page-break {
         page-break-before: always !important;
+    }
+
+    .table-spacer {
+        height: 20px;
     }
     </style>
 </head>
@@ -144,7 +155,7 @@
                             <div class="company-name">PT. GHIM LI INDONESIA</div>
                             <div class="company-address">Tunas Industrial Estate Block 3A - 3D</div>
                             <div class="company-address">Batam Center - Indonesia</div>
-                            <div class="form-name">Carton Inspection Transfer Note</div>
+                            <div class="form-name">Packing Transfer Note</div>
                         </td>
                     </tr>
                 </thead>
@@ -195,11 +206,13 @@
                             <td rowspan="<?= $detail->total_detail?>" ><?= $detail->po_number ?></td>
                             <td rowspan="<?= $detail->total_detail?>" ><?= $detail->buyer_name ?></td>
                             <td rowspan="<?= $detail->total_detail?>" ><?= $detail->gl_number ?></td>
-                            <?php if ($key_transfer_note <= 0) { ?>
-                                <td><?= $detail->carton_content[$key_transfer_note]->colour ?></td>
-                                <td><?= $detail->carton_content[$key_transfer_note]->size ?></td>
-                                <td><?= $detail->carton_content[$key_transfer_note]->qty ?></td>
-                            <?php }?>
+                            <?php foreach ($detail->carton_content as $key_detail => $product) { ?>
+                                <?php if ($key_detail <= 0) { ?>
+                                    <td><?= $detail->carton_content[$key_detail]->colour ?></td>
+                                    <td><?= $detail->carton_content[$key_detail]->size ?></td>
+                                    <td><?= $detail->carton_content[$key_detail]->qty ?></td>
+                                <?php }?>
+                            <?php } ?>
                             <td rowspan="<?= $detail->total_detail?>" ><?= $detail->qty_each_carton ?></td>
                             <td rowspan="<?= $detail->total_detail?>" ><?= $detail->total_carton ?></td>
                             <td rowspan="<?= $detail->total_detail?>" ><?= $detail->total_pcs ?></td>
@@ -215,18 +228,33 @@
                         <?php } ?>
                     <?php } ?>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="7">Total</td>
+                        <td colspan=""><?=$transfer_note->total_all_carton ?></td>
+                        <td colspan=""><?=$transfer_note->total_all_pcs ?></td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
 
     </div>
 
     <div class="assignment-section">
-        <table class="">
+        <table class="assignment-table">
             <tbody>
                 <tr>
                     <td>Issued By </td>
                     <td>Authorised By</td>
                     <td>Received By</td>
+                </tr>
+                <tr class="">
+                    <td class="table-spacer"></td>
+                </tr>
+                <tr>
+                    <!-- <td><?=$transfer_note->issued_by ?></td>
+                    <td><?=$transfer_note->authorized_by ?></td>
+                    <td></td> -->
                 </tr>
             </tbody>
         </table>
