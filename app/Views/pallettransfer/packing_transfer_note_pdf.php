@@ -45,13 +45,11 @@
 
     .table-wrapper {
         border-radius: 5px;
-        /* margin-bottom: 10px; */
         font-family: sans-serif;
 
         position: relative;
         min-height: 100vh;
 
-        /* margin-bottom: 20px; */
     }
 
     .iso-number {
@@ -72,7 +70,6 @@
     }
 
     .company-section {
-        /* border: 2px solid #ced4da; */
     }
 
     .company-section td {
@@ -98,8 +95,8 @@
         margin-bottom: 20px;
     }
 
-    #inspection_information th,
-    #inspection_information td {
+    #transfer_note_information th,
+    #transfer_note_information td {
         text-align:left;
         border: none !important;
     }
@@ -108,12 +105,10 @@
         width:100px;
     }
 
-    #inspection_detail thead,
-    #inspection_detail tfoot {
+    #transfer_note_detail thead,
+    #transfer_note_detail tfoot {
         background-color: #ddd;
     }
-
-
 
     .assignment-section {
         font-family: sans-serif;
@@ -155,50 +150,69 @@
                 </thead>
             </table>
 
-            <table id="inspection_information" class="table-section">
+            <table id="transfer_note_information" class="table-section">
                 <thead>
                     <tr>
-                        <th class="text-bold information-title">Buyer PO</th>
-                        <th> : <?= $carton_inspection->po_number ?></th>
-                        <th class="text-bold information-title">Issued By</th>
-                        <th> : <?= $carton_inspection->issued_by ?></th>
+                        <th class="text-bold information-title">SN</th>
+                        <th> : <?= $transfer_note->transfer_note_number ?></th>
                     </tr>
                     <tr>
-                        <th class="text-bold information-title">Buyer</th>
-                        <th> : <?= $carton_inspection->buyer_name ?></th>
-                        <th class="text-bold information-title">Received By</th>
-                        <th> : <?= $carton_inspection->received_by ?></th>
+                        <th class="text-bold information-title">Pallet No.</th>
+                        <th> : <?= $transfer_note->pallet_number ?></th>
+                        <th class="text-bold information-title">From</th>
+                        <th> : <?= $transfer_note->location_from ?></th>
                     </tr>
                     <tr>
-                        <th class="text-bold information-title">GL Number</th>
-                        <th> : <?= $carton_inspection->gl_number ?></th>
                         <th class="text-bold information-title">Issued Date</th>
-                        <th> : <?= $carton_inspection->issued_date ?></th>
-
+                        <th> : <?= $transfer_note->issued_date ?></th>
+                        <th class="text-bold information-title">To</th>
+                        <th> : <?= $transfer_note->location_to ?></th>
                     </tr>
                 </thead>
             </table>
 
-            <h3 class="">Carton List :</h3>
-            <table id="inspection_detail" class="table-section">
+            <table id="transfer_note_detail" class="table-section">
                 <thead>
                     <tr>
-                        <th>No. </th>
-                        <th>Carton No.</th>
-                        <th>Carton Barcode</th>
-                        <th>Size</th>
-                        <th>Pcs / Ctn</th>
+                        <th rowspan="2" colspan="1">PO</th>
+                        <th rowspan="2" colspan="1">Buyer</th>
+                        <th rowspan="2" colspan="1">GL</th>
+                        <th rowspan="1" colspan="3">Carton Content</th>
+                        <th rowspan="2" colspan="1">Qty/Carton</th>
+                        <th rowspan="2" colspan="1">Total Carton</th>
+                        <th rowspan="2" colspan="1">Total Pieces</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="1" >Color</th>
+                        <th rowspan="1" >Size</th>
+                        <th rowspan="1" >Qty</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($carton_inspection_detail as $key => $carton) { ?>
+
+                    <?php foreach ($transfer_note_detail as $key_transfer_note => $detail) { ?>
                         <tr>
-                            <td><?= $key + 1 ?></td>
-                            <td><?= $carton->carton_number ?></td>
-                            <td><?= $carton->carton_barcode ?></td>
-                            <td><?= $carton->size_list ?></td>
-                            <td><?= $carton->total_pcs ?></td>
+                            <td rowspan="<?= $detail->total_detail?>" ><?= $detail->po_number ?></td>
+                            <td rowspan="<?= $detail->total_detail?>" ><?= $detail->buyer_name ?></td>
+                            <td rowspan="<?= $detail->total_detail?>" ><?= $detail->gl_number ?></td>
+                            <?php if ($key_transfer_note <= 0) { ?>
+                                <td><?= $detail->carton_content[$key_transfer_note]->colour ?></td>
+                                <td><?= $detail->carton_content[$key_transfer_note]->size ?></td>
+                                <td><?= $detail->carton_content[$key_transfer_note]->qty ?></td>
+                            <?php }?>
+                            <td rowspan="<?= $detail->total_detail?>" ><?= $detail->qty_each_carton ?></td>
+                            <td rowspan="<?= $detail->total_detail?>" ><?= $detail->total_carton ?></td>
+                            <td rowspan="<?= $detail->total_detail?>" ><?= $detail->total_pcs ?></td>
                         </tr>
+                        <?php foreach ($detail->carton_content as $key_detail => $product) { ?>
+                            <?php if ($key_detail > 0) { ?>
+                                <tr>
+                                    <td><?= $detail->carton_content[$key_detail]->colour ?></td>
+                                    <td><?= $detail->carton_content[$key_detail]->size ?></td>
+                                    <td><?= $detail->carton_content[$key_detail]->qty ?></td>
+                                </tr>
+                            <?php }?>
+                        <?php } ?>
                     <?php } ?>
                 </tbody>
             </table>

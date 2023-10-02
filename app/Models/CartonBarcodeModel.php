@@ -159,4 +159,23 @@ class CartonBarcodeModel extends Model
         $result = implode(' | ', $array_size_qty);
         return $result;
     }
+
+    public function getCartonContentByPackinglistCarton($packinglist_carton_id, $serialize_options = false)
+    {
+        $builder = $this->db->table('tblpackinglistcarton as pl_carton');
+        $builder->join('tblcartondetail as carton_detail','carton_detail.packinglist_carton_id = pl_carton.id');
+        $builder->join('tblproduct as product','product.id = carton_detail.product_id');
+        $builder->join('tblsize as size','size.id = product.product_size_id');
+        $builder->join('tblcolour as colour','colour.id = product.product_colour_id');
+        $builder->where('pl_carton.id', $packinglist_carton_id);
+        $builder->select('product.product_name, size.size, colour.colour_name as colour, carton_detail.product_qty as qty');
+        $result = $builder->get()->getResult();
+        
+        if(!$serialize_options){
+            return $result;
+        }
+
+        return $this->serialize_size_list($result);
+
+    }
 }

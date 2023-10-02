@@ -90,6 +90,48 @@ class TransferNoteModel extends Model
         } else {
             return true;
         }
+    }
+
+    public function getPackingTransferNote($transfer_note_id)
+    {
+        $builder = $this->db->table('tbltransfernote as transfer_note');
+        $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.id = transfer_note.pallet_transfer_id');
+        $builder->join('tbllocation as location_from', 'location_from.id = pallet_transfer.location_from_id');
+        $builder->join('tbllocation as location_to', 'location_to.id = pallet_transfer.location_to_id');
+        $builder->join('tblpallet as pallet', 'pallet.id = pallet_transfer.pallet_id');
+        $builder->where('transfer_note.id', $transfer_note_id);
+        $builder->select('transfer_note.id as transfer_note_id, transfer_note.serial_number as transfer_note_number, DATE(transfer_note.created_at) as issued_date, transfer_note.issued_by, transfer_note.authorized_by, location_from.location_name as location_from, location_to.location_name as location_to, pallet.serial_number as pallet_number');
+        $result = $builder->get()->getRow();
+        return $result;
+    }
+
+    public function getTransferNoteDetail($transfer_note_id)
+    {
+
+        $GlModel = model('GlModel');
+        $CartonBarcodeModel = model('CartonBarcodeModel');
+
+        $builder = $this->db->table('tbltransfernotedetail as transfer_note_detail');
+        $builder->join('tblcartonbarcode as carton_barcode','carton_barcode.id = transfer_note_detail.carton_barcode_id');
+        $builder->join('tblpackinglistcarton as packinglist_carton','packinglist_carton.id = carton_barcode.packinglist_carton_id');
+        // $builder->join('tblcartondetail as carton_detail','carton_detail.packinglist_carton_id = packinglist_carton.id');
+        $builder->join('tblpackinglist as packinglist','packinglist.id = packinglist_carton.packinglist_id');
+        $builder->join('tblpurchaseorder as po','po.id = packinglist.packinglist_po_id');
+        $builder->where('transfer_note_detail.transfer_note_id', $transfer_note_id);
+        $builder->select('po.id as po_id, po.po_no as po_number, carton_barcode.packinglist_carton_id, count(carton_barcode.id) as total_carton');
+        $builder->groupBy('packinglist_carton.id');
+        $transfer_note_detail = $builder->get()->getResult();
+
+        foreach ($transfer_note_detail as $key => $packinglist_carton) {
+            $transfer_note_detail[$key] = $GlModel->set_gl_info_on_po($packinglist_carton,$packinglist_carton->po_id);
+            
+            $carton_content = $CartonBarcodeModel->getCartonContentByPackinglistCarton($packinglist_carton->packinglist_carton_id);
+            $transfer_note_detail[$key]->carton_content = $carton_content;
+            $transfer_note_detail[$key]->qty_each_carton = array_sum(array_column($carton_content,'qty'));
+            $transfer_note_detail[$key]->total_pcs = $packinglist_carton->total_carton  * $packinglist_carton->qty_each_carton;
+        }
+        
+        return $transfer_note_detail;
 
     }
 

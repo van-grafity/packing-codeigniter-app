@@ -166,6 +166,7 @@ $routes->group('pallet-transfer', static function ($routes) {
     $routes->post('transfer-note-store', 'PalletTransfer::transfer_note_store',['as' => 'pallet_transfer_transfer_note_store']);
     $routes->post('transfer-note-update', 'PalletTransfer::transfer_note_update',['as' => 'pallet_transfer_transfer_note_update']);
     $routes->post('transfer-note-delete', 'PalletTransfer::transfer_note_delete',['as' => 'pallet_transfer_transfer_note_delete']);
+    $routes->get('(:num)/transfer-note-print', 'PalletTransfer::transfer_note_print/$1',['as' => 'pallet_transfer_transfer_note_print']);
 
     // $routes->get('(:segment)', 'PalletTransferController::show/$1', ['as' => 'gl_show']);
     // $routes->post('', 'PalletTransferController::store', ['as' => 'gl_store']);

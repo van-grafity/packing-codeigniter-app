@@ -75,6 +75,7 @@
                                         <td>
                                             <button type="button" class="btn btn-sm btn-primary" onclick="edit_transfer_note(<?= $transfer_note->id ?>)">Edit</button>
                                             <button type="button" class="btn btn-sm btn-danger" onclick="delete_transfer_note(<?= $transfer_note->id ?>)">Delete</button>
+                                            <a type="button" href="<?= url_to('pallet_transfer_transfer_note_print',$transfer_note->id)?>" class="btn btn-sm btn-info" target="_blank">Print</a>
                                         </td>
                                     </tr>
                                 <?php endforeach ?>

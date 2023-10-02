@@ -11,6 +11,7 @@ use App\Models\LocationModel;
 use App\Models\TransferNoteDetailModel;
 
 use \Hermawan\DataTables\DataTable;
+use CodeIgniter\I18n\Time;
 
 class PalletTransfer extends BaseController
 {
@@ -79,7 +80,7 @@ class PalletTransfer extends BaseController
         $data = [
             'title' => 'New Pallet Transfer',
         ];
-        return view('pallettransfer/create', $data);
+        // return view('pallettransfer/create', $data);
         
     }
 
@@ -412,6 +413,36 @@ class PalletTransfer extends BaseController
             ]
         ];
         return $this->response->setJSON($data_return);
+    }
+
+    public function transfer_note_print($transfer_note_id)
+    {
+        $transfer_note = $this->TransferNoteModel->getPackingTransferNote($transfer_note_id);
+        $transfer_note_detail = $this->TransferNoteModel->getTransferNoteDetail($transfer_note_id);
+        foreach ($transfer_note_detail as $key => $detail) {
+            $transfer_note_detail[$key]->total_detail = count($detail->carton_content);
+        }
+
+        $date_printed = new Time('now');
+        $date_printed = $date_printed->toLocalizedString('eeee, dd-MMMM-yyyy HH:mm');
+
+        $filename = 'Packing Transfer Note - ' . $transfer_note->transfer_note_number;
+
+        $data = [
+            'title'         => $filename,
+            'date_printed'  => $date_printed,
+            'transfer_note' => $transfer_note,
+            'transfer_note_detail' => $transfer_note_detail,
+        ];
+        // dd($data);
+        
+        // return view('pallettransfer/packing_transfer_note_pdf', $data);
+
+        $dompdf = new \Dompdf\Dompdf(); 
+        $dompdf->loadHtml(view('pallettransfer/packing_transfer_note_pdf', $data));
+        $dompdf->setPaper('A5', 'landscape');
+        $dompdf->render();
+        $dompdf->stream($filename, ['Attachment' => false]);
     }
 
     private function getPalletStatus($pallet_data, $pill_mode = false)
