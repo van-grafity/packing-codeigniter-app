@@ -138,6 +138,12 @@
                                             <p>Pallet</p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('rack'); ?>" class="nav-link">
+                                            <i class="nav-icon fas fa-memory"></i>
+                                            <p>Rack</p>
+                                        </a>
+                                    </li>
                                     <?php endif ?>
 
                                 </ul>

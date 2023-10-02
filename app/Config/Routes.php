@@ -104,6 +104,16 @@ $routes->post('pallet/save', 'Pallet::save');
 $routes->post('pallet/update', 'Pallet::update');
 $routes->post('pallet/delete', 'Pallet::delete/$1');
 
+// Rack
+$routes->group('rack', static function ($routes) {
+    $routes->get('', 'Rack::index', ['as' => 'rack']);
+    $routes->get('list', 'Rack::index_dt', ['as' => 'rack_list']);
+    $routes->get('detail', 'Rack::detail', ['as' => 'rack_detail']);
+    $routes->post('save', 'Rack::save', ['as' => 'rack_save']);
+    $routes->post('update', 'Rack::update', ['as' => 'rack_update']);
+    $routes->post('delete', 'Rack::delete/$1', ['as' => 'rack_delete']);
+});
+
 // Packing List
 $routes->get('packinglist', 'PackingList::index');
 $routes->post('packinglist/store', 'PackingList::store');
