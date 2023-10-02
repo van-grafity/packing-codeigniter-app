@@ -268,12 +268,6 @@
                                 </a>
                                 <ul class="nav nav-treeview pl-3">
                                     <li class="nav-item">
-                                        <a href="<?= base_url('cartoninspection/create') ?>" class="nav-link">
-                                            <i class="far fa-plus-square nav-icon"></i>
-                                            <p>New Pallet Transfer</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a href="<?= base_url('pallet-transfer') ?>" class="nav-link">
                                             <i class="fas fa-list-ul nav-icon"></i>
                                             <p>Pallet Transfer List</p>

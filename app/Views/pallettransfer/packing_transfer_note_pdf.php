@@ -58,7 +58,6 @@
         right: 2;
         position: absolute;
         font-size: 7pt;
-        display: none;
     }
 
     .date-printed {
@@ -69,7 +68,8 @@
         font-size: 7pt;
     }
 
-    .company-section {
+    .company-section tr td {
+        /* border: none; */
     }
 
     .company-section td {
@@ -92,7 +92,7 @@
 
 
     .table-section {
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
 
     #transfer_note_information th,
@@ -103,6 +103,10 @@
 
     .information-title {
         width:100px;
+    }
+
+    .title-lg {
+        font-size:14px;
     }
 
     #transfer_note_detail thead,
@@ -141,8 +145,8 @@
 <body>
     <div class="table-wrapper">
         <div class="iso-number">
-            <div>FM-GLA-PAC-002</div>
-            <i>Rev 0</i>
+            <div>FM-GLA-PAC-003</div>
+            <i>Rev 1</i>
         </div>
         <div class="date-printed">
             Date Printed: <?= $date_printed ?>
@@ -164,8 +168,8 @@
             <table id="transfer_note_information" class="table-section">
                 <thead>
                     <tr>
-                        <th class="text-bold information-title">SN</th>
-                        <th> : <?= $transfer_note->transfer_note_number ?></th>
+                        <th class="text-bold information-title title-lg">SN</th>
+                        <th class="title-lg"> : <?= $transfer_note->transfer_note_number ?></th>
                     </tr>
                     <tr>
                         <th class="text-bold information-title">Pallet No.</th>

@@ -427,7 +427,7 @@ class PalletTransfer extends BaseController
             $total_all_carton += $detail->total_carton;
             $total_all_pcs += $detail->total_pcs;
         }
-
+        
         $transfer_note->total_all_carton = $total_all_carton;
         $transfer_note->total_all_pcs = $total_all_pcs;
         
@@ -448,8 +448,8 @@ class PalletTransfer extends BaseController
 
         $dompdf = new \Dompdf\Dompdf(); 
         $dompdf->loadHtml(view('pallettransfer/packing_transfer_note_pdf', $data));
-        $dompdf->setPaper('A4', 'portrait');
-        // $dompdf->setPaper('A5', 'landscape');
+        // $dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper('A5', 'landscape');
         $dompdf->render();
         $dompdf->stream($filename, ['Attachment' => false]);
     }
