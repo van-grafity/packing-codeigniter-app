@@ -58,7 +58,7 @@ class Rack extends BaseController
         $data = array(
             'serial_number' => $this->request->getVar('serial_number'),
             'description'   => $this->request->getVar('description'),
-            'flag_empty'    => 'Y',
+            'location'   => $this->request->getVar('location'),
         );
         $this->RackModel->save($data);
         return redirect()->to('rack')->with('success', "Successfully added Rack");
@@ -70,7 +70,7 @@ class Rack extends BaseController
         $data = array(
             'serial_number' => $this->request->getVar('serial_number'),
             'description'   => $this->request->getVar('description'),
-            'flag_empty'    => 'Y'
+            'location'   => $this->request->getVar('location'),
         );
 
         $this->RackModel->updateRack($data, $id);

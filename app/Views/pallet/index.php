@@ -3,12 +3,6 @@
 <?= $this->Section('content'); ?>
 <style>
 
-    .dt-custom-filter .label {
-        font-weight:bold;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end
-    }
 </style>
 
 <div class="content-wrapper">

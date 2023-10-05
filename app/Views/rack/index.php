@@ -2,13 +2,7 @@
 
 <?= $this->Section('content'); ?>
 <style>
-
-    .dt-custom-filter .label {
-        font-weight:bold;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end
-    }
+    
 </style>
 
 <div class="content-wrapper">
@@ -22,22 +16,6 @@
                     <div class="col-sm-6">
                         <a href="javascript:void(0)" type="button" class="btn btn-success mb-2" id="btn-add-rack" onclick="add_new_rack()">New Rack</a>
                     </div>
-                    <div class="col-sm-6 dt-custom-filter">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-sm-8 label">
-                                    <div>Status</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <select name="rack_status" id="rack_status" class="form-control" required >
-                                        <option value="">All Status</option>
-                                        <option value="Y"> Empty </option>
-                                        <option value="N"> Not Empty </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <table id="rack_table" class="table table-bordered table-hover text-center">
                     <thead>
@@ -45,7 +23,7 @@
                             <th width="">No</th>
                             <th width="">Serial Number</th>
                             <th width="">Description</th>
-                            <th width="">Status</th>
+                            <th width="">Location</th>
                             <th width="">Action</th>
                         </tr>
                     </thead>
@@ -59,7 +37,7 @@
 </div>
 
 
-<!-- Modal Add and Edit Product Detail -->
+<!-- Modal Add and Edit Rack -->
 <div class="modal fade" id="modal_rack" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -75,7 +53,11 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="serial_number" class="col-form-label">Serial Number</label>
-                        <input type="text" class="form-control" id="serial_number" name="serial_number" placeholder="PLT-A0001" autofocus>
+                        <input type="text" class="form-control" id="serial_number" name="serial_number" placeholder="RCK-A001" autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label for="location" class="col-form-label">Location</label>
+                        <input type="text" class="form-control" id="location" name="location">
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-form-label">Description</label>
@@ -90,7 +72,7 @@
         </div>
     </div>
 </div>
-<!-- End Modal Add and Edit Product Detail -->
+<!-- End Modal Add and Edit Rack -->
 
 
 
@@ -144,6 +126,7 @@
         rack_data = result.data
         $('#serial_number').val(rack_data.serial_number);
         $('#description').val(rack_data.description);
+        $('#location').val(rack_data.location);
         $('#edit_rack_id').val(rack_data.id);
         
         $('#rack_form').attr('action',update_url);
@@ -157,22 +140,25 @@
     }
 
 </script>
-<script type="text/javascript">
+<script>
+$(document).ready(function() {
+
+    // ## Show Flash Message
+    let session = <?= json_encode(session()->getFlashdata()) ?>;
+    show_flash_message(session);
+    
     let rack_table = $('#rack_table').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
             url: index_dt_url,
-            data: function (d) {
-                d.rack_status = $('#rack_status').val();
-            }
         },
         order: [],
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'serial_number', name: 'rack.serial_number'},
             { data: 'description', name: 'rack.description'},
-            { data: 'status', name: 'status', orderable: false, searchable: false },
+            { data: 'location', name: 'location' },
             { data: 'action', name: 'action', orderable: false, searchable: false },
         ],
         columnDefs: [
@@ -185,17 +171,6 @@
         autoWidth: false,
         orderCellsTop: true,
     });
-
-    $('#rack_status').change(function(event) {
-        rack_table.ajax.reload();
-    });
-</script>
-<script>
-$(document).ready(function() {
-
-    // ## Show Flash Message
-    let session = <?= json_encode(session()->getFlashdata()) ?>;
-    show_flash_message(session);
 
 })
 </script>

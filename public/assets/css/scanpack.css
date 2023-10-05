@@ -30,3 +30,10 @@ a.btn.disabled {
     color: #dc3545;
 }
 
+.dt-custom-filter .label {
+    font-weight:bold;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end
+}
+
