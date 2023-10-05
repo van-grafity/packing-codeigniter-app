@@ -24,18 +24,18 @@ class RackPallet extends Migration
                 'type' => 'bigint',
                 'unsigned' => true,
             ],
-            'flag_done'  => [
-                'type' => 'char',
-                'constraint' => 2,
-                'default' => 'N',
+            'entry_date'  => [
+                'type' => 'datetime', 
+            ],
+            'out_date'  => [
+                'type' => 'datetime', 
+                'null' => true
             ],
             'created_at'  => [
                 'type' => 'datetime', 
-                'null' => true
             ],
             'updated_at'  => [
                 'type' => 'datetime', 
-                'null' => true
             ],
         ]);
         $this->forge->addForeignKey('rack_id', 'tblrack', 'id');

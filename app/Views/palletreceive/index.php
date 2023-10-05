@@ -20,6 +20,7 @@
                             <th width="70">Total Ctn</th>
                             <th width="">From</th>
                             <th width="100">Status</th>
+                            <th width="100">Rack</th>
                             <th width="170">Action</th>
                         </tr>
                     </thead>
@@ -28,9 +29,42 @@
                 </table>
             </div>
         </div>
-
     </section>
 </div>
+
+<!-- Modal Receive Pallet -->
+<div class="modal fade" id="modal_rack_pallet" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="" method="post" id="rack_pallet_form">
+                <input type="hidden" name="pallet_transfer_id" value="" id="pallet_transfer_id">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Receive Pallet</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="rack" class="col-form-label">Rack :</label>
+                        <select id="rack" name="rack" class="form-control" required>
+                            <option value=""> Select Rack </option>
+                            <?php foreach ($racks as $rack) : ?>
+                                <option value="<?= $rack->id; ?>"><?= $rack->serial_number; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btn_submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Receive Pallet -->
 
 
 <?= $this->endSection(); ?>
@@ -38,11 +72,19 @@
 
 <?= $this->Section('page_script'); ?>
 
+
+
 <script type="text/javascript">
+    const index_dt_url = '<?= url_to('pallet_receive_list')?>';
+    const store_url = '<?= url_to('pallet_receive_store')?>';
 
-const index_dt_url = '<?= url_to('pallet_receive_list')?>';
-
+    function receive_pallet(pallet_transfer_id){
+        $('#pallet_transfer_id').val(pallet_transfer_id);
+        $('#rack_pallet_form').attr('action', store_url);
+        $('#modal_rack_pallet').modal('show');
+    }
 </script>
+
 
 <script type="text/javascript">
 
@@ -62,6 +104,7 @@ $('#pallet_receive_table').DataTable({
         { data: 'total_carton', name: 'total_carton', orderable: false, searchable: false },
         { data: 'location_from', name: 'location_from.location_name' },
         { data: 'status', name: 'status', orderable: false, searchable: false},
+        { data: 'rack', name: 'rack.serial_number' },
         { data: 'action', name: 'action', orderable: false, searchable: false},
     ],
     columnDefs: [

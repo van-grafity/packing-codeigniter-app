@@ -5,6 +5,9 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\PalletReceiveModel;
 use App\Models\TransferNoteModel;
+use App\Models\RackModel;
+use App\Models\RackPalletModel;
+use App\Models\PalletTransferModel;
 
 use \Hermawan\DataTables\DataTable;
 use CodeIgniter\I18n\Time;
@@ -13,18 +16,27 @@ class PalletReceive extends BaseController
 {
     protected $PalletReceiveModel;
     protected $TransferNoteModel;
+    protected $RackModel;
+    protected $RackPalletModel;
+    protected $PalletTransferModel;
 
     public function __construct()
     {
         $this->db = db_connect();
         $this->PalletReceiveModel = new PalletReceiveModel();
         $this->TransferNoteModel = new TransferNoteModel();
+        $this->RackModel = new RackModel();
+        $this->RackPalletModel = new RackPalletModel();
+        $this->PalletTransferModel = new PalletTransferModel();
     }
 
     public function index()
     {
+        $racks = $this->RackModel->findAll();
+
         $data = [
             'title' => 'Pallet to Receive List',
+            'racks' => $racks,
         ];
         return view('palletreceive/index', $data);
     }
@@ -36,7 +48,7 @@ class PalletReceive extends BaseController
             ->addNumbering('DT_RowIndex')
             ->add('action', function($row){
                 $action_button = '
-                    <a href="javascript:void(0);" class="btn btn-info btn-sm mb-1" onclick="receive_pallet('. $row->id .')">Receive</a>
+                    <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1" onclick="receive_pallet('. $row->id .')">Receive</a>
                 ';
                 return $action_button;
             })->add('transfer_note', function($row){
@@ -44,7 +56,7 @@ class PalletReceive extends BaseController
                 $transfer_note_list = $this->TransferNoteModel->where('pallet_transfer_id', $row->id)->findAll();
                 
                 foreach ($transfer_note_list as $key => $transfer_note) {
-                    $transfer_note_pill ='<a class="btn btn-sm bg-info">'. $transfer_note->serial_number .'</a>'; 
+                    $transfer_note_pill ='<a class="btn btn-sm bg-info mb-2">'. $transfer_note->serial_number .'</a>'; 
                     $transfer_note_result = $transfer_note_result . ' ' . $transfer_note_pill;
                 }
                 
@@ -54,9 +66,29 @@ class PalletReceive extends BaseController
                 $status = $this->getPalletStatus($row, true);
                 return $status;
 
+            })->add('rack', function($row){
+                
+                $rack = $this->PalletReceiveModel->getPalletLocation($row->id);
+                $rack = $rack ? $rack->serial_number : '-';
+                return $rack;
+
             })->postQuery(function ($pallet_list) {
                 $pallet_list->orderBy('tblpallettransfer.created_at');
             })->toJson(true);
+    }
+
+    public function store()
+    {
+        $data_input = $this->request->getPost();
+        $data = array(
+            'rack_id' => $data_input['rack'],
+            'pallet_transfer_id' => $data_input['pallet_transfer_id'],
+            'entry_date' => date('Y-m-d H:i:s'),
+        );
+        $this->RackPalletModel->save($data);
+        $this->PalletTransferModel->update($data_input['pallet_transfer_id'],['flag_transferred' => 'Y']);
+        
+        return redirect()->to('pallet-receive')->with('success', "Successfully added Pallet to Rack");
     }
 
     private function getPalletStatus($pallet_data, $pill_mode = false)
