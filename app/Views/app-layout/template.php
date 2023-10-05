@@ -285,6 +285,12 @@
                                             <p>Pallet Receive List</p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('pallet-receive/create') ?>" class="nav-link">
+                                            <i class="fas fa-list-ul nav-icon"></i>
+                                            <p>Pallet Receive</p>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         <?php endif ?>

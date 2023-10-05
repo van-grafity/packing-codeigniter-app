@@ -77,6 +77,39 @@ class PalletReceive extends BaseController
             })->toJson(true);
     }
 
+    public function create(){
+        $data = [
+            'title' => 'Receive Pallet',
+        ];
+        return view('palletreceive/create', $data);
+    }
+
+    public function pallet_transfer_detail()
+    {
+        $data_input = $this->request->getGet();
+        $pallet_transfer = $this->PalletReceiveModel->getPalletTransferByPalletNumber($data_input['pallet_barcode']);
+        if(!$pallet_transfer){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'Pallet Not Found',
+            ];
+            return $this->response->setJSON($data_return);
+        }
+        
+        $pallet_transfer->status = $this->getPalletStatus($pallet_transfer);
+        $pallet_transfer_detail = $this->PalletReceiveModel->getPalletTransferDetail($pallet_transfer->pallet_transfer_id);
+ 
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Successfully get pallet information',
+            'data' => [
+                'pallet_transfer' => $pallet_transfer,
+                'pallet_transfer_detail' => $pallet_transfer_detail,
+            ],
+        ];
+        return $this->response->setJSON($data_return);
+    }
+
     public function store()
     {
         $data_input = $this->request->getPost();

@@ -188,6 +188,8 @@ $routes->group('pallet-transfer', static function ($routes) {
 $routes->group('pallet-receive', static function ($routes) {
     $routes->get('', 'PalletReceive::index', ['as' => 'pallet_receive']);
     $routes->get('list', 'PalletReceive::index_dt',['as' => 'pallet_receive_list']);
+    $routes->get('create', 'PalletReceive::create',['as' => 'pallet_receive_create']);
+    $routes->get('pallet-transfer-detail', 'PalletReceive::pallet_transfer_detail',['as' => 'pallet_receive_pallet_transfer_detail']);
     $routes->post('', 'PalletReceive::store',['as' => 'pallet_receive_store']);
 });
 
