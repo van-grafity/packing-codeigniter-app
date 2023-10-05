@@ -73,14 +73,14 @@ class Rack extends BaseController
             'location'   => $this->request->getVar('location'),
         );
 
-        $this->RackModel->updateRack($data, $id);
+        $this->RackModel->update($id, $data);
         return redirect()->to('rack')->with('success', "Successfully updated Rack");
     }
 
     public function delete()
     {
         $id = $this->request->getVar('rack_id');
-        $this->RackModel->deleteRack($id);
+        $this->RackModel->delete($id);
         return redirect()->to('rack')->with('success', "Successfully deleted Rack");
     }
 }

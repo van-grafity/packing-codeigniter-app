@@ -89,14 +89,14 @@ class Pallet extends BaseController
             'flag_empty'    => 'Y'
         );
 
-        $this->PalletModel->updatePallet($data, $id);
+        $this->PalletModel->update($id, $data);
         return redirect()->to('pallet')->with('success', "Successfully updated Pallet");
     }
 
     public function delete()
     {
         $id = $this->request->getVar('pallet_id');
-        $this->PalletModel->deletePallet($id);
+        $this->PalletModel->delete($id);
         return redirect()->to('pallet')->with('success', "Successfully deleted Pallet");
     }
 }
