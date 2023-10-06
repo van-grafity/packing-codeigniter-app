@@ -32,7 +32,7 @@ class PalletReceive extends BaseController
 
     public function index()
     {
-        $racks = $this->RackModel->findAll();
+        $racks = $this->RackModel->where('flag_empty','Y')->findAll();
 
         $data = [
             'title' => 'Pallet to Receive List',
@@ -47,10 +47,18 @@ class PalletReceive extends BaseController
         return DataTable::of($pallet_list)
             ->addNumbering('DT_RowIndex')
             ->add('action', function($row){
-                $action_button = '
-                    <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1" onclick="receive_pallet('. $row->id .')">Receive</a>
-                ';
+
+                if($row->flag_transferred == 'Y') {
+                    $action_button = '
+                        <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1 disabled" onclick="receive_pallet('. $row->id .')">Receive</a>
+                    ';
+                } else {
+                    $action_button = '
+                        <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1" onclick="receive_pallet('. $row->id .')">Receive</a>
+                    ';
+                }
                 return $action_button;
+
             })->add('transfer_note', function($row){
                 $transfer_note_result = '';
                 $transfer_note_list = $this->TransferNoteModel->where('pallet_transfer_id', $row->id)->findAll();
@@ -120,6 +128,7 @@ class PalletReceive extends BaseController
         );
         $this->RackPalletModel->save($data);
         $this->PalletTransferModel->update($data_input['pallet_transfer_id'],['flag_transferred' => 'Y']);
+        $this->RackModel->update($data_input['rack'],['flag_empty' => 'N']);
         
         return redirect()->to('pallet-receive')->with('success', "Successfully added Pallet to Rack");
     }
