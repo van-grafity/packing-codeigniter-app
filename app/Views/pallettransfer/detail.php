@@ -45,7 +45,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h4 class="title">Transfer Notes</h4>
-                        <button type="button" class="btn btn-success mb-2 <?= $btn_transfer_note_class ?>" id="btn_modal_create_transfer_note" onclick="create_transfer_note()">New Transfer Note</button>
+                        <button type="button" class="btn btn-success mb-2 <?= $btn_transfer_note_class ?>" id="btn_modal_create_transfer_note" onclick="create_transfer_note(this)">New Transfer Note</button>
                         <table class="table table-bordered table-hover text-center" id="transfer_note_table">
                             <thead>
                                 <tr class="table-primary text-center">
@@ -73,8 +73,16 @@
                                         <td><?= $transfer_note->received_by ?></td>
                                         <td><?= $transfer_note->received_at ?></td>
                                         <td>
-                                            <button type="button" class="btn btn-sm btn-primary" onclick="edit_transfer_note(<?= $transfer_note->id ?>)">Edit</button>
-                                            <button type="button" class="btn btn-sm btn-danger" onclick="delete_transfer_note(<?= $transfer_note->id ?>)">Delete</button>
+                                            <button type="button" 
+                                                class="btn btn-sm btn-primary <?= $btn_transfer_note_class ? 'd-none' : '' ?>" 
+                                                onclick="edit_transfer_note(<?= $transfer_note->id ?>)">
+                                                Edit
+                                            </button>
+                                            <button type="button" 
+                                                class="btn btn-sm btn-danger <?= $btn_transfer_note_class ? 'd-none' : '' ?>" 
+                                                onclick="delete_transfer_note(<?= $transfer_note->id ?>)">
+                                                Delete
+                                            </button>
                                             <a type="button" href="<?= url_to('pallet_transfer_transfer_note_print',$transfer_note->id)?>" class="btn btn-sm btn-info" target="_blank">Print</a>
                                         </td>
                                     </tr>
@@ -264,7 +272,9 @@ async function get_carton_detail(carton_barcode){
     return result.data;
 }
 
-function create_transfer_note(){
+function create_transfer_note(element){
+    if($(element).hasClass('disabled')){ return false };
+
     clear_transfer_note_form();
     clear_form({
         modal_id: 'modal_transfer_note',
