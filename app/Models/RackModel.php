@@ -10,7 +10,7 @@ class RackModel extends Model
     protected $table         = 'tblrack';
     protected $returnType    = 'object';
     protected $useTimestamps = true;
-    protected $allowedFields = ['serial_number','description','location'];
+    protected $allowedFields = ['serial_number','description','flag_empty'];
 
     public function getRack($rack_id = null)
     {
@@ -23,7 +23,7 @@ class RackModel extends Model
     public function getDatatable()
     {
         $builder = $this->db->table('tblrack as rack');
-        $builder->select('id, serial_number, description, location');
+        $builder->select('id, serial_number, description, flag_empty');
         return $builder;
     }
 }

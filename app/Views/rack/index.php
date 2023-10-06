@@ -16,6 +16,22 @@
                     <div class="col-sm-6">
                         <a href="javascript:void(0)" type="button" class="btn btn-success mb-2" id="btn-add-rack" onclick="add_new_rack()">New Rack</a>
                     </div>
+                    <div class="col-sm-6 dt-custom-filter">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-8 label">
+                                    <div>Status</div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <select name="rack_status" id="rack_status" class="form-control" required >
+                                        <option value="">All Status</option>
+                                        <option value="Y"> Empty </option>
+                                        <option value="N"> Not Empty </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <table id="rack_table" class="table table-bordered table-hover text-center">
                     <thead>
@@ -23,7 +39,7 @@
                             <th width="">No</th>
                             <th width="">Serial Number</th>
                             <th width="">Description</th>
-                            <th width="">Location</th>
+                            <th width="">Status</th>
                             <th width="">Action</th>
                         </tr>
                     </thead>
@@ -54,10 +70,6 @@
                     <div class="form-group">
                         <label for="serial_number" class="col-form-label">Serial Number</label>
                         <input type="text" class="form-control" id="serial_number" name="serial_number" placeholder="RCK-A001" autofocus>
-                    </div>
-                    <div class="form-group">
-                        <label for="location" class="col-form-label">Location</label>
-                        <input type="text" class="form-control" id="location" name="location">
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-form-label">Description</label>
@@ -152,13 +164,16 @@ $(document).ready(function() {
         serverSide: true,
         ajax: {
             url: index_dt_url,
+            data: function (d) {
+                d.rack_status = $('#rack_status').val();
+            }
         },
         order: [],
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'serial_number', name: 'rack.serial_number'},
             { data: 'description', name: 'rack.description'},
-            { data: 'location', name: 'location' },
+            { data: 'status', name: 'rack.flag_empty', orderable: false, searchable: false },
             { data: 'action', name: 'action', orderable: false, searchable: false },
         ],
         columnDefs: [
@@ -170,6 +185,10 @@ $(document).ready(function() {
         searching: true,
         autoWidth: false,
         orderCellsTop: true,
+    });
+
+    $('#rack_status').change(function(event) {
+        rack_table.ajax.reload();
     });
 
 })

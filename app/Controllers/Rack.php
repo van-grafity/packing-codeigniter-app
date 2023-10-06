@@ -37,6 +37,19 @@ class Rack extends BaseController
                     <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="delete_rack('. $row->id .')">Delete</a>
                 ';
                 return $action_button;
+            })->add('status', function($row){
+                $pill_element = '';
+                if($row->flag_empty == 'Y') {
+                    $pill_element = '<span class="badge badge-success">Empty</span>';
+                } else {
+                    $pill_element = '<span class="badge badge-warning">Not Empty</span>';
+                }
+                return $pill_element;
+            })->filter(function ($builder, $request) {
+                
+                if ($request->rack_status)
+                    $builder->where('flag_empty', $request->rack_status);
+
             })->toJson(true);
     }
 
@@ -58,7 +71,6 @@ class Rack extends BaseController
         $data = array(
             'serial_number' => $this->request->getVar('serial_number'),
             'description'   => $this->request->getVar('description'),
-            'location'   => $this->request->getVar('location'),
         );
         $this->RackModel->save($data);
         return redirect()->to('rack')->with('success', "Successfully added Rack");
@@ -70,7 +82,6 @@ class Rack extends BaseController
         $data = array(
             'serial_number' => $this->request->getVar('serial_number'),
             'description'   => $this->request->getVar('description'),
-            'location'   => $this->request->getVar('location'),
         );
 
         $this->RackModel->update($id, $data);

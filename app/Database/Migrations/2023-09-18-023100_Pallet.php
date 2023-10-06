@@ -27,6 +27,7 @@ class Pallet extends Migration
             'flag_empty'  => [
                 'type' => 'char',
                 'constraint' => 2,
+                'default' => 'Y'
             ],
             'created_at'  => [
                 'type' => 'datetime', 

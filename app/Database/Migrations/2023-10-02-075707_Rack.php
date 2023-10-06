@@ -24,9 +24,10 @@ class Rack extends Migration
                 'type' => 'varchar',
                 'constraint' => 255,
             ],
-            'location' => [
-                'type' => 'varchar',
-                'constraint' => 255,
+            'flag_empty'  => [
+                'type' => 'char',
+                'constraint' => 2,
+                'default' => 'Y'
             ],
             'created_at'  => [
                 'type' => 'datetime', 
