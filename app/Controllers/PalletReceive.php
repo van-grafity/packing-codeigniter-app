@@ -86,8 +86,10 @@ class PalletReceive extends BaseController
     }
 
     public function create(){
+        $racks = $this->RackModel->where('flag_empty','Y')->findAll();
         $data = [
             'title' => 'Receive Pallet',
+            'racks' => $racks,
         ];
         return view('palletreceive/create', $data);
     }

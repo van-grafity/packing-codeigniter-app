@@ -63,33 +63,61 @@
                     </div>
                 </div>
 
-                <h4>Carton List : </h4>
-                    
-                <table id="pallet_transfer_detail" class="table table-sm table-bordered text-center">
-                    <thead>
-                        <tr>
-                            <th>Buyer</th>
-                            <th>PO</th>
-                            <th width="150">GL</th>
-                            <th width="100">Carton No.</th>
-                            <th width="300">Content</th>
-                            <th>Pcs</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="8"> There's No Carton in this Pallet</td>
-                        </tr>
-                    </tbody>
-                    <tfoot class="bg-dark">
-                        <tr>
-                            <td colspan="3">Total Carton</td>
-                            <td colspan="1" id="pallet_transfer_detail_total_carton"> - </td>
-                            <td colspan="1">Total Pcs</td>
-                            <td colspan="1" id="pallet_transfer_detail_total_pcs"> - </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Carton List</h3>
+                    </div>
+
+                    <div class="card-body table-responsive p-0" style="max-height: 500px;">
+                        <table id="pallet_transfer_detail" class="table table-sm table-bordered text-center table-head-fixed table-foot-fixed text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Buyer</th>
+                                    <th>PO</th>
+                                    <th width="150">GL</th>
+                                    <th width="100">Carton No.</th>
+                                    <th width="300">Content</th>
+                                    <th>Pcs</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="8"> There's No Carton in this Pallet</td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="bg-dark">
+                                <tr>
+                                    <td colspan="3">Total Carton</td>
+                                    <td colspan="1" id="pallet_transfer_detail_total_carton"> - </td>
+                                    <td colspan="1">Total Pcs</td>
+                                    <td colspan="1" id="pallet_transfer_detail_total_pcs"> - </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+
+                <form action="<?= url_to('pallet_receive_store') ?>" method="post" id="pallet_receive_form">
+                    <?= csrf_field(); ?>
+                    <input type="hidden" id="pallet_transfer_id" name="pallet_transfer_id">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-8 col-sm-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label for="rack" class="col-form-label mr-2">Rack :</label>
+                                    <select id="rack" name="rack" class="form-control" required>
+                                        <option value=""> Select Rack </option>
+                                        <?php foreach ($racks as $rack) : ?>
+                                            <option value="<?= $rack->id; ?>"><?= $rack->serial_number; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary ml-2" id="btn_pallet_to_rack" disabled="disabled">Send Pallet to Rack</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
 
             </div>
         </div>
@@ -117,6 +145,12 @@ $(document).ready(function() {
         clear_carton_list();
 
         if(!data) return false;
+
+        if(data.pallet_transfer.flag_transferred == 'Y') {
+            show_flash_message({ error: "Pallet already at warehouse!"} )
+        } else {
+            $('#btn_pallet_to_rack').attr('disabled', false);
+        }
 
         set_pallet_transfer_info(data.pallet_transfer);
         if(data.pallet_transfer_detail) {
@@ -150,6 +184,8 @@ function set_pallet_transfer_info(pallet_transfer_info) {
     $('#pallet_total_carton').text(': ' + pallet_transfer_info.total_carton);
     $('#location_from').text(': ' + pallet_transfer_info.location_from);
     $('#location_to').text(': ' + pallet_transfer_info.location_to);
+
+    $('#pallet_transfer_id').val(pallet_transfer_info.pallet_transfer_id);
 }
 
 function set_transfer_note_carton_list(pallet_transfer_detail){
@@ -203,6 +239,9 @@ function clear_pallet_transfer_info() {
     $('#pallet_total_carton').text(': - ');
     $('#location_from').text(': - ');
     $('#location_to').text(': - ');
+
+    $('#pallet_transfer_id').val('');
+    $('#btn_pallet_to_rack').attr('disabled', true);
 }
 
 function clear_carton_list(){

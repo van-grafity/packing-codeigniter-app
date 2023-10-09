@@ -48,6 +48,7 @@ class TransferNoteModel extends Model
         $builder->join('tblpackinglist as packinglist', 'packinglist.id = pl_carton.packinglist_id');
         $builder->join('tblpurchaseorder as po', 'po.id = packinglist.packinglist_po_id');
         
+        $builder->orderBy('carton_barcode.carton_number_by_system', 'ASC');
         $builder->where('transfer_note.id', $transfer_note_id);
         $builder->select('carton_barcode.id as carton_id, carton_barcode.flag_packed, carton_barcode.barcode as carton_barcode, po.po_no as po_number, packinglist.id as packinglist_id, packinglist.packinglist_serial_number as pl_number, carton_barcode.carton_number_by_system as carton_number');
         $carton_list = $builder->get()->getResult();
