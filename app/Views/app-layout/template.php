@@ -291,6 +291,12 @@
                                             <p>Pallet Receive</p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('rack-information') ?>" class="nav-link">
+                                            <i class="fas fa-list-ul nav-icon"></i>
+                                            <p>Rack Information</p>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         <?php endif ?>

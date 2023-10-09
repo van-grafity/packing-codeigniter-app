@@ -26,4 +26,38 @@ class RackModel extends Model
         $builder->select('id, serial_number, description, flag_empty');
         return $builder;
     }
+
+    // public function getRackInformation($rack_id = null)
+    // {
+    //     // if (!$rack_id) { return false; }
+
+    //     $TransferNoteModel = model('TransferNoteModel');
+        
+
+    //     $builder = $this->db->table('tblrack as rack');
+    //     $builder->join('tblrackpallet as rack_pallet', 'rack_pallet.rack_id = rack.id');
+    //     $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.id = rack_pallet.pallet_transfer_id');
+    //     $builder->join('tbltransfernote as transfer_note', 'transfer_note.pallet_transfer_id = pallet_transfer.id');
+    //     $builder->where('rack.id', $rack_id);
+    //     // $builder->select('rack.id, rack.serial_number, rack.description, rack.flag_empty');
+    //     $builder->select('*');
+    //     // $result = $builder->get()->getResult();
+    //     // dd($result);
+        
+    //     return $builder;
+    // }
+
+    public function getRackInformation($rack_id = null)
+    {
+        $builder = $this->db->table('tblrack as rack');
+        $builder->join('tblrackpallet as rack_pallet', 'rack_pallet.rack_id = rack.id','left');
+        $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.id = rack_pallet.pallet_transfer_id','left');
+        $builder->select('rack.id, rack.serial_number, rack.description, rack.flag_empty, pallet_transfer.id as pallet_transfer_id');
+        // $builder->select("IF (rack.flag_empty = 'N','-', 'ADA') AS ");
+        // $result = $builder->get()->getResult();
+        // $result = $builder->getCompiledSelect();
+        // dd($result);
+        
+        return $builder;
+    }
 }

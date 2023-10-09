@@ -99,7 +99,7 @@ class PalletTransferModel extends Model
         $delete_pallet_transfer = $PalletTransferModel->where('id', $pallet_transfer_id)->delete();
     }
 
-    private function getTransferNotes($pallet_transfer_id)
+    public function getTransferNotes($pallet_transfer_id)
     {
         $builder = $this->db->table('tbltransfernote');
         $builder->where('pallet_transfer_id', $pallet_transfer_id);

@@ -177,12 +177,6 @@ $routes->group('pallet-transfer', static function ($routes) {
     $routes->post('transfer-note-update', 'PalletTransfer::transfer_note_update',['as' => 'pallet_transfer_transfer_note_update']);
     $routes->post('transfer-note-delete', 'PalletTransfer::transfer_note_delete',['as' => 'pallet_transfer_transfer_note_delete']);
     $routes->get('(:num)/transfer-note-print', 'PalletTransfer::transfer_note_print/$1',['as' => 'pallet_transfer_transfer_note_print']);
-
-    // $routes->get('(:segment)', 'PalletTransferController::show/$1', ['as' => 'gl_show']);
-    // $routes->post('', 'PalletTransferController::store', ['as' => 'gl_store']);
-    // $routes->get('edit/(:segment)', 'PalletTransferController::edit/$1', ['as' => 'gl_edit']);
-    // $routes->put('(:segment)', 'PalletTransferController::update/$1', ['as' => 'gl_update']);
-    // $routes->delete('(:segment)', 'PalletTransferController::destroy/$1', ['as' => 'gl_destroy']);
 });
 
 $routes->group('pallet-receive', static function ($routes) {
@@ -191,6 +185,11 @@ $routes->group('pallet-receive', static function ($routes) {
     $routes->get('create', 'PalletReceive::create',['as' => 'pallet_receive_create']);
     $routes->get('pallet-transfer-detail', 'PalletReceive::pallet_transfer_detail',['as' => 'pallet_receive_pallet_transfer_detail']);
     $routes->post('', 'PalletReceive::store',['as' => 'pallet_receive_store']);
+});
+
+$routes->group('rack-information', static function ($routes) {
+    $routes->get('', 'RackInformation::index', ['as' => 'rack_information']);
+    $routes->get('list', 'RackInformation::index_dt', ['as' => 'rack_information_list']);
 });
 
 
@@ -202,9 +201,6 @@ $routes->get('logs', "LogViewerController::index");
 $routes->get('rptpackinglist', "RptPackingList::index");
 $routes->get('report/packinglist/(:num)', "PackingList::report/$1");
 
-// $routes->get('/packinglist/get_by_po/(:any)', 'PackingList::getByPoId/$1');
-// $routes->get('/packinglist/get_style_by_po/(:any)', 'PackingList::getStyleByPoId/$1');
-// $routes->get('/packinglist/store', 'PackingList::store');
 
 /*
  * --------------------------------------------------------------------
