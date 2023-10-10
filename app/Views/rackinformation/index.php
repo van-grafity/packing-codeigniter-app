@@ -42,7 +42,6 @@
                             <th width="">QTY CTN</th>
                             <th width="">QTY PCS</th>
                             <th width="">Level Rack</th>
-                            <th width="">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,7 +71,7 @@ $(document).ready(function() {
     
     let rack_table = $('#rack_table').DataTable({
         processing: true,
-        serverSide: true,
+        // serverSide: true,
         ajax: {
             url: index_dt_url,
             data: function (d) {
@@ -84,16 +83,15 @@ $(document).ready(function() {
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'serial_number', name: 'rack.serial_number'},
             { data: 'gl_number'},
-            { data: 'po_number'},
+            { data: 'po_no'},
             { data: 'colour'},
-            { data: 'buyer'},
+            { data: 'buyer_name'},
             { data: 'total_carton'},
             { data: 'total_pcs'},
             { data: 'description', name: 'rack.description'},
-            { data: 'action', name: 'action', orderable: false, searchable: false },
         ],
         columnDefs: [
-            { targets: [0,-1], orderable: false, searchable: false },
+            { targets: [0], orderable: false, searchable: false },
         ],
         paging: true,
         responsive: true,

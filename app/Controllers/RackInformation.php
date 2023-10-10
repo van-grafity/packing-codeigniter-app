@@ -37,54 +37,43 @@ class RackInformation extends BaseController
     {
         $PalletTransferModel = $this->PalletTransferModel;
         $TransferNoteModel = $this->TransferNoteModel;
-        $rack_list = $this->RackModel->getRackInformation();
-        return DataTable::of($rack_list)
-            ->addNumbering('DT_RowIndex')
-            ->add('action', function($row){
-                $action_button = '
-                    <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="edit_rack('. $row->id .')">Edit</a>
-                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="delete_rack('. $row->id .')">Delete</a>
-                ';
-                return $action_button;
-            })->add('gl_number', function($row) use ($PalletTransferModel, $TransferNoteModel) {
-                
-                return '62309-00';
+        
 
-            })->add('po_number', function($row) use ($PalletTransferModel, $TransferNoteModel) {
-                
-                return '8XW8FHBM';
+        $request_params = $this->request->getVar();
+        
+        // dd($request_params);
+        
+        $start = array_key_exists('start', $request_params) ? $request_params['start'] : 0;
+        $length = array_key_exists('length', $request_params) ? $request_params['length'] : 100;
+        $page =  $start + 1;
+        $draw = array_key_exists('draw', $request_params) ? $request_params['draw'] : 1;
 
-            })->add('colour', function($row) use ($PalletTransferModel, $TransferNoteModel) {
-                
-                return 'Med Heather Grey';
+        $params = [
+            'length' => $length,
+            'start' => $start,
+            'page' => $page,
+        ];
 
-            })->add('buyer', function($row) use ($PalletTransferModel, $TransferNoteModel) {
-                
-                return 'AERO';
+        $rack_list = $this->RackModel->getRackInformation_array($params);
 
-            })->add('total_carton', function($row) use ($PalletTransferModel, $TransferNoteModel) {
-                
-                return 10;
+        $json_format = $this->reformat_data_structure($rack_list, $draw);
+        return $this->response->setJSON($json_format);
+    }
 
-            })->add('total_pcs', function($row) use ($PalletTransferModel, $TransferNoteModel) {
-                
-                return 100;
 
-            })->add('status', function($row){
-                $pill_element = '';
-                if($row->flag_empty == 'Y') {
-                    $pill_element = '<span class="badge badge-success">Empty</span>';
-                } else {
-                    $pill_element = '<span class="badge badge-warning">Not Empty</span>';
-                }
-                return $pill_element;
-            })->filter(function ($builder, $request) {
-                
-                if ($request->rack_status){
-                    $builder->where('flag_empty', $request->rack_status);
-                }
-                
-            })->toJson(true);
+    public function reformat_data_structure($rack_list, $draw)
+    {
+        $rack_list_array = $rack_list['rack_list'];
+        foreach ($rack_list_array as $key => $rack) {
+            $rack->DT_RowIndex = $key + 1;
+        }
+        
+        $result['draw'] = $draw;
+        $result['recordsTotal'] = $rack_list['pager']->getTotal();
+        $result['recordsFiltered'] = $rack_list['pager']->getTotal();
+        $result['data'] = $rack_list_array;
+        
+        return $result;
     }
 
     public function detail()
