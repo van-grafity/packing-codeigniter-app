@@ -29,45 +29,21 @@ class RackModel extends Model
 
     // public function getRackInformation($rack_id = null)
     // {
-    //     // if (!$rack_id) { return false; }
-
-    //     $TransferNoteModel = model('TransferNoteModel');
-        
-
     //     $builder = $this->db->table('tblrack as rack');
-    //     $builder->join('tblrackpallet as rack_pallet', 'rack_pallet.rack_id = rack.id');
-    //     $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.id = rack_pallet.pallet_transfer_id');
-    //     $builder->join('tbltransfernote as transfer_note', 'transfer_note.pallet_transfer_id = pallet_transfer.id');
-    //     $builder->where('rack.id', $rack_id);
-    //     // $builder->select('rack.id, rack.serial_number, rack.description, rack.flag_empty');
-    //     $builder->select('*');
-    //     // $result = $builder->get()->getResult();
-    //     // dd($result);
-        
+    //     $builder->join('tblrackpallet as rack_pallet', 'rack_pallet.rack_id = rack.id','left');
+    //     $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.id = rack_pallet.pallet_transfer_id','left');
+    //     $builder->join('tbltransfernote as transfer_note', 'transfer_note.pallet_transfer_id = pallet_transfer.id','left');
+    //     $builder->join('tbltransfernotedetail as transfer_note_detail', 'transfer_note_detail.transfer_note_id = transfer_note.id','left');
+    //     $builder->join('tblcartonbarcode as carton_barcode', 'carton_barcode.id = transfer_note_detail.carton_barcode_id','left');
+    //     $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id','left');
+    //     $builder->join('tblpackinglist as pl', 'pl.id = pl_carton.packinglist_id','left');
+    //     $builder->join('tblpurchaseorder as po', 'po.id = pl.packinglist_po_id','left');
+    //     $builder->groupBy('rack.id, rack.serial_number, rack.description, rack.flag_empty, pallet_transfer.id');
+    //     $builder->select('rack.id, rack.serial_number, rack.description, rack.flag_empty, pallet_transfer.id as pallet_transfer_id');
+
+    //     $result = $builder->get()->getResult();
     //     return $builder;
     // }
-
-    public function getRackInformation($rack_id = null)
-    {
-        $builder = $this->db->table('tblrack as rack');
-        $builder->join('tblrackpallet as rack_pallet', 'rack_pallet.rack_id = rack.id','left');
-        $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.id = rack_pallet.pallet_transfer_id','left');
-        $builder->join('tbltransfernote as transfer_note', 'transfer_note.pallet_transfer_id = pallet_transfer.id','left');
-        $builder->join('tbltransfernotedetail as transfer_note_detail', 'transfer_note_detail.transfer_note_id = transfer_note.id','left');
-        $builder->join('tblcartonbarcode as carton_barcode', 'carton_barcode.id = transfer_note_detail.carton_barcode_id','left');
-        $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id','left');
-        $builder->join('tblpackinglist as pl', 'pl.id = pl_carton.packinglist_id','left');
-        $builder->join('tblpurchaseorder as po', 'po.id = pl.packinglist_po_id','left');
-        $builder->groupBy('rack.id, rack.serial_number, rack.description, rack.flag_empty, pallet_transfer.id');
-        $builder->select('rack.id, rack.serial_number, rack.description, rack.flag_empty, pallet_transfer.id as pallet_transfer_id');
-
-        // $builder->select("IF (rack.flag_empty = 'N','-', 'ADA') AS ");
-        $result = $builder->get()->getResult();
-        // $result = $builder->getCompiledSelect();
-        dd($result);
-        
-        return $builder;
-    }
 
     public function getRackInformation_array($params)
     {

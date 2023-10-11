@@ -4,24 +4,18 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\RackModel;
-use App\Models\PalletTransferModel;
-use App\Models\TransferNoteModel;
 
 use \Hermawan\DataTables\DataTable;
 
 class RackInformation extends BaseController
 {
     protected $RackModel;
-    protected $PalletTransferModel;
-    protected $TransferNoteModel;
     protected $session;
 
     public function __construct()
     {
         $this->db = db_connect();
         $this->RackModel = new RackModel();
-        $this->PalletTransferModel = new PalletTransferModel();
-        $this->TransferNoteModel = new TransferNoteModel();
     }
     public function index()
     {
@@ -35,14 +29,7 @@ class RackInformation extends BaseController
 
     public function index_dt() 
     {
-        $PalletTransferModel = $this->PalletTransferModel;
-        $TransferNoteModel = $this->TransferNoteModel;
-        
-
         $request_params = $this->request->getVar();
-        
-        // dd($request_params);
-        
         $start = array_key_exists('start', $request_params) ? $request_params['start'] : 0;
         $length = array_key_exists('length', $request_params) ? $request_params['length'] : 100;
         $page =  $start + 1;
@@ -55,13 +42,12 @@ class RackInformation extends BaseController
         ];
 
         $rack_list = $this->RackModel->getRackInformation_array($params);
-
-        $json_format = $this->reformat_data_structure($rack_list, $draw);
-        return $this->response->setJSON($json_format);
+        $dt_format = $this->reformat_to_dt_structure($rack_list, $draw);
+        return $this->response->setJSON($dt_format);
     }
 
 
-    public function reformat_data_structure($rack_list, $draw)
+    public function reformat_to_dt_structure($rack_list, $draw)
     {
         $rack_list_array = $rack_list['rack_list'];
         foreach ($rack_list_array as $key => $rack) {

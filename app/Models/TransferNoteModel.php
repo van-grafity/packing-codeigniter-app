@@ -37,7 +37,6 @@ class TransferNoteModel extends Model
     {
         if (!$transfer_note_id) return null;
         
-        
         $GlModel = model('GlModel');
         $CartonBarcodeModel = model('CartonBarcodeModel');
         
@@ -108,7 +107,6 @@ class TransferNoteModel extends Model
 
     public function getTransferNoteDetail($transfer_note_id)
     {
-
         $GlModel = model('GlModel');
         $CartonBarcodeModel = model('CartonBarcodeModel');
 
@@ -133,7 +131,6 @@ class TransferNoteModel extends Model
         }
         
         return $transfer_note_detail;
-
     }
 
 }

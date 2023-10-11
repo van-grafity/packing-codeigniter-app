@@ -94,7 +94,6 @@ class PalletTransferModel extends Model
         $TransferNoteModel = model('TransferNoteModel');
         $delete_transfer_note = $TransferNoteModel->where('pallet_transfer_id', $pallet_transfer_id)->delete();
         
-        
         $PalletTransferModel = model('PalletTransferModel');
         $delete_pallet_transfer = $PalletTransferModel->where('id', $pallet_transfer_id)->delete();
     }

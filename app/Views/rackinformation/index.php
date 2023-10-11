@@ -12,24 +12,6 @@
                 <h3 class="card-title"><?= $title ?></h3>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-12 dt-custom-filter">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-sm-8 label">
-                                    <div>Status</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <select name="rack_status" id="rack_status" class="form-control" required >
-                                        <option value="">All Status</option>
-                                        <option value="Y"> Empty </option>
-                                        <option value="N"> Not Empty </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <table id="rack_table" class="table table-bordered table-hover text-center">
                     <thead>
                         <tr class="table-primary">
@@ -59,9 +41,8 @@
 <?= $this->Section('page_script'); ?>
 <script type="text/javascript">
     const index_dt_url = '<?= url_to('rack_information_list')?>';
-
-
 </script>
+
 <script>
 $(document).ready(function() {
 
