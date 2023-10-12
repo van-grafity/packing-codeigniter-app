@@ -138,9 +138,9 @@ class PackingList extends BaseController
         $packinglist->total_carton = $this->PackingListModel->getTotalCarton($id);
         $packinglist->percentage_ship = $this->PackingListModel->getShipmentPercentage($id);
 
-        $style_by_gl = $this->StyleModel->getStyleByPO($packinglist->packinglist_po_id);
-        $packinglist->style_no = implode(' | ', (array_column($style_by_gl, 'style_no')));
-        $packinglist->style_description = implode(' | ', (array_column($style_by_gl, 'style_description')));
+        $style_by_po = $this->StyleModel->getStyleByPO($packinglist->packinglist_po_id);
+        $packinglist->style_no = implode(' | ', (array_column($style_by_po, 'style_no')));
+        $packinglist->style_description = implode(' | ', (array_column($style_by_po, 'style_description')));
 
         $data = [
             'title'         => 'Packing List Detail',
@@ -330,9 +330,9 @@ class PackingList extends BaseController
         $packinglist->percentage_ship = $this->PackingListModel->getShipmentPercentage($id);
         $packinglist->contract_qty = $this->PackingListModel->getContractQty($id);
 
-        $style_by_gl = $this->StyleModel->getStyleByPO($packinglist->packinglist_po_id);
-        $packinglist->style_no = implode(' | ', (array_column($style_by_gl, 'style_no')));
-        $packinglist->style_description = implode(' | ', (array_column($style_by_gl, 'style_description')));
+        $style_by_po = $this->StyleModel->getStyleByPO($packinglist->packinglist_po_id);
+        $packinglist->style_no = implode(' | ', (array_column($style_by_po, 'style_no')));
+        $packinglist->style_description = implode(' | ', (array_column($style_by_po, 'style_description')));
 
 
         //## Get Shipment Percentage per UPC
