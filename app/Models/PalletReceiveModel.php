@@ -30,7 +30,7 @@ class PalletReceiveModel extends Model
         $builder->join('tblrack as rack', 'rack.id = rack_pallet.rack_id','left');
         $builder->join('tbllocation as location_from','location_from.id = tblpallettransfer.location_from_id');
         $builder->join('tbllocation as location_to','location_to.id = tblpallettransfer.location_to_id');
-        $builder->groupBy('tblpallettransfer.id');
+        $builder->groupBy('tblpallettransfer.id, rack.serial_number');
         $builder->select('tblpallettransfer.id, pallet.serial_number as pallet_serial_number, location_from.location_name as location_from, location_to.location_name as location_to, count(transfer_note_detail.id) as total_carton, tblpallettransfer.flag_transferred, tblpallettransfer.flag_loaded, rack.serial_number as rack_serial_number');
         return $builder;
     }
