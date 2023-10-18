@@ -137,4 +137,13 @@ class PurchaseOrderModel extends Model
         }
         return $po_id;
     }
+
+    public function is_used_on_packinglist($po_id)
+    {
+        $builder = $this->db->table('tblpurchaseorder as po');
+        $builder->join('tblpackinglist as pl', 'pl.packinglist_po_id = po.id');
+        $builder->where('po.id', $po_id);
+        $result = $builder->get()->getRow();
+        return $result ? true : false;
+    }
 }

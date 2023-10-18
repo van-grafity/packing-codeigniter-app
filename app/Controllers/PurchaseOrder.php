@@ -130,9 +130,28 @@ class PurchaseOrder extends BaseController
 
     public function delete()
     {
-        $id = $this->request->getVar('po_id');
-        $delete = $this->PurchaseOrderModel->delete($id);
-        return redirect()->to('purchaseorder');
+        try {
+            $id = $this->request->getVar('po_id');
+
+            $is_used_on_packinglist = $this->PurchaseOrderModel->is_used_on_packinglist($id);
+
+            if($is_used_on_packinglist){
+                return redirect()->to('purchaseorder')->with('error', 'This PO has been used on packinglist. Please delete the packinglist First');
+            }
+            
+            $this->PurchaseOrderModel->transException(true)->transStart();
+            
+            $this->PurchaseOrderDetailModel->transException(true)->transStart();
+            $this->PurchaseOrderDetailModel->where('order_id',$id)->delete();
+            $this->PurchaseOrderDetailModel->transComplete();
+            
+            $delete = $this->PurchaseOrderModel->delete($id);
+            $this->PurchaseOrderModel->transComplete();
+            
+            return redirect()->to('purchaseorder');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function adddetail()
@@ -210,15 +229,6 @@ class PurchaseOrder extends BaseController
             if(!$gl_available) { 
                 return redirect()->to('purchaseorder')->with('error', 'There is a GL Number has not registered in the system! Please create GL Master Data first' );
             }
-            // $is_duplicate_on_excel = $this->isDuplicateProductCodeOnExcel($cleaned_data);
-            // if($is_duplicate_on_excel) { 
-            //     return redirect()->to('purchaseorder')->with('error', 'There is a duplicate UPC in your excel! Please double check the data you provide' );
-            // }
-
-            // $is_duplicate_on_system = $this->isDuplicateProductCodeOnSystem($cleaned_data);
-            // if($is_duplicate_on_system) { 
-            //     return redirect()->to('purchaseorder')->with('error', 'There is a UPC already registered in the system! Please double check the data you provide' );
-            // }
             
             $adjusted_array_product = $this->adjustArrayProductToInsert($cleaned_data);
             
@@ -232,8 +242,6 @@ class PurchaseOrder extends BaseController
                 */
                 $product_ids[] = $this->ProductModel->getOrCreateProduct($product);
             }
-            
-            // $insertedProduct = $this->ProductModel->insertBatch($adjusted_array_product);
             
             $add_products_to_purchase_order = $this->addProductToPurchaseOrder($cleaned_data);
             
