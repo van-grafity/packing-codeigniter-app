@@ -336,7 +336,7 @@ class PurchaseOrder extends BaseController
         foreach ($data_array_from_excel as $key => $product) {
             $is_valid_data = true;
             foreach ($required_column as $column) {
-                if(!$product[$column]){
+                if(!$product[$column]  && $product[$column] !== "0"){
                     $is_valid_data = false;
                     break;
                 }
