@@ -12,8 +12,8 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <button type="button" class="btn btn-secondary mb-2" id="btn-add-detail">Add GL</button>
-                <table id="table1" class="table table-bordered table-striped">
+                <button type="button" class="btn btn-secondary mb-2" id="btn-add-gl">Add GL</button>
+                <table id="gl_table" class="table table-bordered table-striped">
                     <thead>
                         <tr class="table-primary">
                             <th class="text-center align-middle" width="5%">SN</th>
@@ -127,6 +127,27 @@
 
 
 <?= $this->Section('page_script'); ?>
+<script type="text/javascript">
+    $("#gl_table").DataTable({
+        "buttons": ["excel", "pdf", "print"],
+        "lengthMenu": [
+            [10, 20, 50, 100, -1],
+            [10, 20, 50, 100, 'All'],
+        ],
+        dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>" +
+            "<'row'<'col-md-12'tr>>" +
+            "<'row'<'col-md-5'i><'col-md-7'p>>",
+        "responsive": true,
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": true
+    }).buttons().container().appendTo('#gl_table_wrapper .col-md-6:eq(0)');
+
+</script>
+
 <script>
     $(document).ready(function() {
         // ## prevent submit form when keyboard press enter
@@ -138,7 +159,7 @@
             }
         });
 
-        $('#btn-add-detail').on('click', function(event) {
+        $('#btn-add-gl').on('click', function(event) {
             $('#ModalLabel').text("Add GL")
             $('#btn_submit').text("Add GL")
             $('#gl_form').attr('action', store_url);
@@ -150,7 +171,7 @@
         })
 
         // get Delete GL
-        $('.btn-delete').on('click', function() {
+        $('#gl_table').on('click', '.btn-delete', function() {
             // get data from button delete
             let id = $(this).data('id');
             let gl_number = $(this).data('gl-number');
@@ -165,7 +186,7 @@
             $('#deleteModal').modal('show');
         })
 
-        $('.btn-edit').on('click', function(event) {
+        $('#gl_table').on('click', '.btn-edit', function(event) {
             // get data from button delete
             let id = $(this).data('id');
             let gl_number = $(this).data('gl-number');
@@ -195,7 +216,7 @@
             $('#modal_gl_detail').modal('show');
         })
 
-        $('.btn-detail').on('click', function(event) {
+        $('#gl_table').on('click', '.btn-detail', function(event) {
             // get data from button delete
             let id = $(this).data('id');
             let gl_number = $(this).data('gl-number');
