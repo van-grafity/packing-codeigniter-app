@@ -54,7 +54,6 @@ class PurchaseOrder extends BaseController
         $data = [
             'title'     => 'Purchase Order',
             'GL'        => $this->GlModel->getGL()->getResult(),
-            // 'BuyerPO'   => $this->PurchaseOrderModel->getPurchaseOrder(),
             'Product'   => $this->ProductModel->getProduct()->getResult(),
             'action_field_class' => $action_field_class,
             'purchase_order_list' => $this->PurchaseOrderModel->getPurchaseOrder(),
