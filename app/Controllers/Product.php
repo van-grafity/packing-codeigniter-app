@@ -11,6 +11,8 @@ use App\Models\StyleModel;
 use Faker\Extension\Helper;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use \Hermawan\DataTables\DataTable;
+
 
 class Product extends BaseController
 {
@@ -19,17 +21,15 @@ class Product extends BaseController
     protected $ProductModel;
     protected $SizeModel;
     protected $StyleModel;
-    protected $session;
 
     public function __construct()
     {
         $this->db = db_connect();
+        $this->ProductModel = new ProductModel();
         $this->CategoryModel = new CategoryModel();
         $this->ColourModel = new ColourModel();
-        $this->ProductModel = new ProductModel();
         $this->SizeModel = new SizeModel();
         $this->StyleModel = new StyleModel();
-        $this->session = Services::session();
     }
 
     public function index()
@@ -38,59 +38,90 @@ class Product extends BaseController
             'title'     => 'Product List',
             'category'  => $this->CategoryModel->getCategory()->getResult(),
             'colour'    => $this->ColourModel->getColour()->getResult(),
-            'product'   => $this->ProductModel->getProduct()->getResult(),
             'size'      => $this->SizeModel->getSize()->getResult(),
             'style'     => $this->StyleModel->getStyle()->getResult(),
         ];
-        if (!$this->session->isLoggedIn) {
-            return redirect()->to('login');
-        }
         return view('product/index', $data);
     }
 
-    public function save()
+    public function index_dt() 
     {
-        $this->ProductModel->save(
-            [
-                'product_code'        => $this->request->getVar('product_code'),
-                'product_asin_id'     => $this->request->getVar('product_asin_id'),
-                'product_category_id' => $this->request->getVar('product_category'),
-                'product_style_id'    => $this->request->getVar('product_style_id'),
-                'product_colour_id'   => $this->request->getVar('product_colour_id'),
-                'product_size_id'     => $this->request->getVar('product_size_id'),
-                'product_name'        => $this->request->getVar('product_name'),
-                'product_price'       => $this->request->getVar('product_price')
-            ]
+        $product_list = $this->ProductModel->getDatatable();
+        return DataTable::of($product_list)
+            ->addNumbering('DT_RowIndex')
+            ->add('action', function($row){
+                $action_button = '
+                    <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="edit_product('. $row->id .')">Edit</a>
+                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="delete_product('. $row->id .')">Delete</a>
+                ';
+                return $action_button;
+            })->toJson(true);
+    }
+
+    public function store()
+    {
+        $data = array(
+            'product_code'        => $this->request->getPost('product_code'),
+            'product_asin_id'     => $this->request->getPost('product_asin_id'),
+            'product_category_id' => $this->request->getPost('product_category'),
+            'product_style_id'    => $this->request->getPost('product_style_id'),
+            'product_colour_id'   => $this->request->getPost('product_colour_id'),
+            'product_size_id'     => $this->request->getPost('product_size_id'),
+            'product_name'        => $this->request->getPost('product_name'),
+            'product_price'       => $this->request->getPost('product_price'),
         );
-        session()->setFlashdata('pesan', ' Data Added');
-        return redirect()->to('/product');
+        $this->ProductModel->save($data);
+        return redirect()->to('product')->with('success', 'Successfully added Product');
+    }
+
+    public function detail()
+    {
+        $product_id = $this->request->getGet('id');
+        $product = $this->ProductModel->find($product_id);
+
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Succesfully retrieved product',
+            'data' => $product,
+        ];
+        return $this->response->setJSON($data_return);
     }
 
     public function update()
     {
-        $id = $this->request->getVar('edit_product_id');
+        $id = $this->request->getPost('edit_product_id');
         $data = array(
-            'product_code'        => $this->request->getVar('product_code'),
-            'product_asin_id'     => $this->request->getVar('product_asin_id'),
-            'product_category_id' => $this->request->getVar('product_category'),
-            'product_style_id'    => $this->request->getVar('product_style_id'),
-            'product_colour_id'   => $this->request->getVar('product_colour_id'),
-            'product_size_id'     => $this->request->getVar('product_size_id'),
-            'product_name'        => $this->request->getVar('product_name'),
-            'product_price'       => $this->request->getVar('product_price'),
+            'product_code'        => $this->request->getPost('product_code'),
+            'product_asin_id'     => $this->request->getPost('product_asin_id'),
+            'product_category_id' => $this->request->getPost('product_category'),
+            'product_style_id'    => $this->request->getPost('product_style_id'),
+            'product_colour_id'   => $this->request->getPost('product_colour_id'),
+            'product_size_id'     => $this->request->getPost('product_size_id'),
+            'product_name'        => $this->request->getPost('product_name'),
+            'product_price'       => $this->request->getPost('product_price'),
         );
-        $this->ProductModel->updateProduct($data, $id);
-        session()->setFlashdata('pesan', 'Data Updated');
-        return redirect()->to('product');
+        $this->ProductModel->update($id, $data);
+        return redirect()->to('product')->with('success', 'Successfully updated Product');
     }
 
     public function delete()
     {
-        $id = $this->request->getVar('product_id');
-        $this->ProductModel->deleteProduct($id);
-        return redirect()->to('/product');
+        $id = $this->request->getPost('product_id');
+        $this->ProductModel->delete($id);
+        return redirect()->to('product')->with('success', 'Successfully deleted Product');
+
     }
 
+
+
+
+
+
+
+
+
+
+    
     public function importexcel()
     {
         try {

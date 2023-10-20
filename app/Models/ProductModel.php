@@ -34,16 +34,15 @@ class ProductModel extends Model
         return $builder->get();
     }
 
-    public function updateProduct($data, $id)
+    public function getDatatable()
     {
-        $query = $this->db->table('tblproduct')->update($data, array('id' => $id));
-        return $query;
-    }
-
-    public function deleteProduct($id)
-    {
-        $query = $this->db->table('tblproduct')->delete(array('id' => $id));
-        return $query;
+        $builder = $this->db->table('tblproduct');
+        $builder->join('tblcategory', 'tblcategory.id = tblproduct.product_category_id', 'left');
+        $builder->join('tblstyle', 'tblstyle.id = tblproduct.product_style_id', 'left');
+        $builder->join('tblcolour', 'tblcolour.id = tblproduct.product_colour_id', 'left');
+        $builder->join('tblsize', 'tblsize.id = tblproduct.product_size_id', 'left');
+        $builder->select('tblproduct.id, tblproduct.product_code, tblproduct.product_asin_id, tblproduct.product_price, tblstyle.style_no, tblstyle.style_description, tblcategory.category_name, tblsize.size as product_size');
+        return $builder;
     }
 
     public function getByPurchaseOrderID($po_id)

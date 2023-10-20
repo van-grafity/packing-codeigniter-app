@@ -72,11 +72,16 @@ $routes->post('category/update', 'Category::update/$1');
 $routes->post('category/delete', 'Category::delete/$1');
 
 // Product
-$routes->get('product', 'Product::index');
-$routes->post('product/save', 'Product::save');
-$routes->post('product/update', 'Product::update/$1');
-$routes->post('product/delete', 'Product::delete/$1');
-$routes->post('product/importexcel', 'Product::importexcel');
+$routes->group('product', static function ($routes) {
+    $routes->get('', 'Product::index', ['as' => 'product']);
+    $routes->get('list', 'Product::index_dt', ['as' => 'product_list']);
+    $routes->get('detail', 'Product::detail', ['as' => 'product_detail']);
+    $routes->post('store', 'Product::store', ['as' => 'product_store']);
+    $routes->post('update', 'Product::update', ['as' => 'product_update']);
+    $routes->post('delete', 'Product::delete/$1', ['as' => 'product_delete']);
+    $routes->post('importexcel', 'Product::importexcel', ['as' => 'product_importexcel']);
+});
+
 
 // Factory
 $routes->get('factory', 'Factory::index');
