@@ -5,7 +5,7 @@
 <div class="content-wrapper">
     <!-- Main content -->
     <section class="content">
-        <div class="card card-primary">
+        <div class="card card-primary mt-2">
             <div class="card-header">
                 <h3 class="card-title"><?= $title ?></h3>
             </div>

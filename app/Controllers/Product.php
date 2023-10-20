@@ -106,9 +106,17 @@ class Product extends BaseController
 
     public function delete()
     {
-        $id = $this->request->getPost('product_id');
-        $this->ProductModel->delete($id);
-        return redirect()->to('product')->with('success', 'Successfully deleted Product');
+        try {
+            $id = $this->request->getPost('product_id');
+            $this->ProductModel->delete($id);
+            return redirect()->to('product')->with('success', 'Successfully deleted Product');
+        } catch (\Throwable $th) {
+            $error_code = $th->getCode();
+            if($error_code == "1451"){
+                return redirect()->to('product')->with('error', 'This product is linked to other data, cannot be deleted');
+            }
+            throw $th;
+        }
 
     }
 
