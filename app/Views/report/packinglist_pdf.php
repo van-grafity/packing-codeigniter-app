@@ -280,7 +280,7 @@
 
                     <?php $is_first_page = true;?>
                     <?php $max_tr_first_page = 16;?>
-                    <?php $max_tr_first_page = ($size_colspan <= 5) ? 16 : 14;?>
+                    <?php $max_tr_first_page = ($size_colspan <= 5) ? 16 : 13;?>
                     <?php $max_tr_next_page = 28;?>
                     <?php $max_tr_page = $max_tr_first_page;?>
                     <?php foreach ($packinglist_carton as $key => $carton) { ?>
