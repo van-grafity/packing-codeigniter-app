@@ -411,15 +411,15 @@ class PackingList extends BaseController
         $dompdf->stream();
     }
 
-    private function searchInArrayByProductID(String $product_id, Array $array_po) : Array
-    {
-        foreach ($array_po as $key => $product) {
-            if(isset($product->product_id) && $product->product_id == $product_id){
-                return (array)$product;
-            }
-        }
-        return [];
-    }
+    // private function searchInArrayByProductID(String $product_id, Array $array_po) : Array
+    // {
+    //     foreach ($array_po as $key => $product) {
+    //         if(isset($product->product_id) && $product->product_id == $product_id){
+    //             return (array)$product;
+    //         }
+    //     }
+    //     return [];
+    // }
 
     private function getPoQtyInArrayByProductID(String $product_id, Array $array_po) : int
     {
