@@ -135,7 +135,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="product">Product</label>
-                        <select id="product" name="product" class="form-control" required>
+                        <select id="product" name="product" class="form-control select2" required>
                             <option value="">-Select Product Code-</option>
                             <?php foreach ($products as $product) : ?>
                                 <option value="<?= $product->id; ?>" 
@@ -203,6 +203,18 @@
     </div>
 </div>
 <!-- End Modal Delete Purchase Order Detail -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#product.select2').select2({
+            dropdownParent: $('#modal_po_detail')
+        });
+        $('#product.select2').on('select2:open', function (e) {
+            document.querySelector('.select2-search__field').focus();
+        });
+    });
+</script>
+
 
 <script type="text/javascript">
     $(document).ready(function() {
