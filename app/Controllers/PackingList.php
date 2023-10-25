@@ -341,7 +341,7 @@ class PackingList extends BaseController
 
         foreach ($shipment_percentage_each_upc as $key => $product) {
             $product_id = $product->product_id;
-            $po_qty = $this->searchInArrayByProductID($product_id, $contract_qty_each_product)['po_qty'];
+            $po_qty = $this->getPoQtyInArrayByProductID($product_id, $contract_qty_each_product);
             $shipment_percentage_each_upc[$key]->po_qty = $po_qty;
             $shipment_percentage_each_upc[$key]->percentage = round($product->shipment_qty / $po_qty * 100) . '%';
         }
@@ -411,14 +411,25 @@ class PackingList extends BaseController
         $dompdf->stream();
     }
 
-    private function searchInArrayByProductID(String $product_id, Array $array_po) : Array
+    // private function searchInArrayByProductID(String $product_id, Array $array_po) : Array
+    // {
+    //     foreach ($array_po as $key => $product) {
+    //         if(isset($product->product_id) && $product->product_id == $product_id){
+    //             return (array)$product;
+    //         }
+    //     }
+    //     return [];
+    // }
+
+    private function getPoQtyInArrayByProductID(String $product_id, Array $array_po) : int
     {
+        $po_qty = 0;
         foreach ($array_po as $key => $product) {
             if(isset($product->product_id) && $product->product_id == $product_id){
-                return (array)$product;
+                $po_qty += $product->po_qty;
             }
         }
-        return [];
+        return $po_qty;
     }
 
 }
