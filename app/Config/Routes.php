@@ -213,6 +213,10 @@ $routes->group('update-database', static function ($routes) {
     $routes->get('aero-international-upc', 'UpdateDatabase::aero_international_upc', ['as' => 'update_aero_international_upc']);
 });
 
+$routes->group('sync-po', static function ($routes) {
+    $routes->get('', 'SyncPurchaseOrder::index', ['as' => 'sync_po']);
+});
+
 
 
 /*
