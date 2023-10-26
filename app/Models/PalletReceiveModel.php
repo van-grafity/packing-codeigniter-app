@@ -55,7 +55,7 @@ class PalletReceiveModel extends Model
         $builder->join('tblpallettransfer as pallet_transfer','pallet_transfer.pallet_id = pallet.id');
         $builder->join('tbllocation as location_from','location_from.id = pallet_transfer.location_from_id');
         $builder->join('tbllocation as location_to','location_to.id = pallet_transfer.location_to_id');
-        $builder->join('tbltransfernote as transfer_note','transfer_note.id = pallet_transfer.pallet_id');
+        $builder->join('tbltransfernote as transfer_note','transfer_note.pallet_transfer_id = pallet_transfer.id');
         $builder->join('tbltransfernotedetail as transfer_note_detail','transfer_note_detail.transfer_note_id = transfer_note.id');
 
         $builder->where(['pallet.serial_number' => $pallet_serial_number]);
