@@ -33,7 +33,7 @@
                                 <td><?= $pl->gl_number; ?></td>
                                 <td><?= $pl->season; ?></td>
                                 <td class="text-center align-middle">
-                                    <a class="btn btn-warning btn-sm btn-edit"
+                                    <a class="btn btn-warning btn-sm btn-edit mt-1"
                                         data-pl-serial-number = "<?= esc($pl->packinglist_serial_number)?>"
                                         data-id = "<?= esc($pl->id)?>"
                                         data-po-id = "<?= esc($pl->po_id)?>"
@@ -45,11 +45,11 @@
                                         data-destination = "<?= esc($pl->destination)?>"
                                         data-department = "<?= esc($pl->department)?>"
                                     >Edit</a>
-                                    <a class="btn btn-danger btn-sm btn-delete" 
+                                    <a class="btn btn-danger btn-sm btn-delete mt-1" 
                                         data-id = "<?= esc($pl->id)?>"
                                         data-pl-serial-number = "<?= esc($pl->packinglist_serial_number)?>"
                                     >Delete</a>
-                                    <a href="<?= base_url('report/packinglist/'.$pl->id)?>" target="_blank" class="btn btn-info btn-sm" >Print Report</a>
+                                    <a href="<?= base_url('report/packinglist/'.$pl->id)?>" target="_blank" class="btn btn-info btn-sm mt-1" >Print Report</a>
                                 </td>
                             </tr>
                         <?php endforeach;  ?>
