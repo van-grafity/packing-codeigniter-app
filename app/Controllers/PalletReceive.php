@@ -50,7 +50,7 @@ class PalletReceive extends BaseController
 
                 if($row->flag_transferred == 'Y') {
                     $action_button = '
-                        <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1 disabled" onclick="receive_pallet('. $row->id .')">Receive</a>
+                        <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1 disabled">Receive</a>
                     ';
                 } else {
                     $action_button = '
