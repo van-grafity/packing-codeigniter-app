@@ -14,6 +14,8 @@ use App\Models\ColourModel;
 use App\Models\CategoryModel;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use \Hermawan\DataTables\DataTable;
+
 
 class PurchaseOrder extends BaseController
 {
@@ -59,7 +61,24 @@ class PurchaseOrder extends BaseController
             'purchase_order_list' => $this->PurchaseOrderModel->getPurchaseOrder(),
         ];
 
-        return view('purchaseorder/index', $data);
+        // return view('purchaseorder/index', $data);
+        return view('purchaseorder/index_dt', $data);
+    }
+
+    public function index_dt()
+    {
+        $po_list = $this->PurchaseOrderModel->getDatatable();
+        return DataTable::of($po_list)
+            ->addNumbering('DT_RowIndex')
+            ->add('action', function($row){
+                $action_button = '
+                    <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="edit_rack('. $row->id .')">Edit</a>
+                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="delete_rack('. $row->id .')">Delete</a>
+                ';
+                return $action_button;
+            })->postQuery(function ($po_list) {
+                $po_list->orderBy('po.created_at','desc');
+            })->toJson(true);
     }
 
     public function savePO()

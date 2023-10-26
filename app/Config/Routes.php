@@ -141,6 +141,11 @@ $routes->post('purchaseorder/updatedetail', 'PurchaseOrder::updatedetail');
 $routes->post('purchaseorder/deletedetail', 'PurchaseOrder::deletedetail');
 $routes->post('purchaseorder/importexcel', 'PurchaseOrder::importexcel');
 
+$routes->group('purchaseorder', static function ($routes) {
+    $routes->get('list', 'PurchaseOrder::index_dt',['as' => 'purchase_order_list']);
+});
+
+
 
 // Carton Barcode
 $routes->get('cartonbarcode', 'CartonBarcode::index');

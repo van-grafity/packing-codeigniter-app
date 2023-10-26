@@ -33,20 +33,6 @@ class PurchaseOrderModel extends Model
         return $result;
     }
 
-    public function getPurchaseOrder_bc($id = null)
-    {
-        $builder = $this->db->table('tblpurchaseorder as po');
-        $builder->select('po.*');
-        $builder->orderBy('po.created_at','DESC');
-        if ($id) {
-            $builder->where(['po.id' => $id]);
-            $result = $builder->get()->getRow();
-            return $result;
-        }
-        $result = $builder->get()->getResult();
-        return $result;
-    }
-
     public function getPurchaseOrder($id = null)
     {
         $GlModel = model('GlModel');
@@ -67,6 +53,14 @@ class PurchaseOrderModel extends Model
         }
         
         return $purchase_order_list;
+    }
+
+    public function getDatatable()
+    {
+        $builder = $this->db->table('tblpurchaseorder as po');
+        $builder->join('tblsyncpurchaseorder as sync_po', 'sync_po.purchase_order_id = po.id');
+        $builder->select('po.id, po.po_no, sync_po.buyer_name, sync_po.gl_number, po.shipdate, po.po_qty');
+        return $builder;
     }
 
     public function getPODetails($po_id = null)
