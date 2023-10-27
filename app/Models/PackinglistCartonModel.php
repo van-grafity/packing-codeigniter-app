@@ -8,6 +8,7 @@ class PackinglistCartonModel extends Model
 {
     protected $table            = 'tblpackinglistcarton';
     protected $useTimestamps    = true;
+    protected $useSoftDeletes   = true;
     protected $returnType       = 'object';
     protected $allowedFields    = [
         'packinglist_id',
@@ -27,13 +28,16 @@ class PackinglistCartonModel extends Model
         $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
         $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
         $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
+        $builder->where('pl_carton.deleted_at', null);
+        $builder->where('carton_detail.deleted_at', null);
+
         if ($packinglist_id) {
             $builder->where(['pl_carton.packinglist_id' => $packinglist_id]);
         }
         $builder->groupBy('pl_carton_id');
         $builder->orderBy('pl_carton.id');
         $result = $builder->get()->getResult();
-
+        
         return $result;
     }
 

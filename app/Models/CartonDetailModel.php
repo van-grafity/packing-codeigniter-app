@@ -8,6 +8,7 @@ class CartonDetailModel extends Model
 {
     protected $table            = 'tblcartondetail';
     protected $useTimestamps    = true;
+    protected $useSoftDeletes   = true;
     protected $returnType = 'object';
     protected $allowedFields    = [
         'packinglist_carton_id',

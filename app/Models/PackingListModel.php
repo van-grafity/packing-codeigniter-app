@@ -6,8 +6,9 @@ use CodeIgniter\Model;
 
 class PackingListModel extends Model
 {
-    protected $useTimestamps = true;
     protected $table = 'tblpackinglist';
+    protected $useTimestamps = true;
+    protected $useSoftDeletes   = true;
     protected $allowedFields = [
         'packinglist_number',
         'packinglist_serial_number',
@@ -49,8 +50,7 @@ class PackingListModel extends Model
         $builder = $this->db->table('tblpackinglist as pl');
         $builder->join('tblpurchaseorder as po', 'po.id = pl.packinglist_po_id');
         $builder->join('tblsyncpurchaseorder as sync_po', 'sync_po.purchase_order_id = po.id');
-        $builder->where('po.deleted_at', null);
-        $builder->where('sync_po.deleted_at', null);
+        $builder->where('pl.deleted_at', null);
         $builder->select('pl.id as packinglist_id, po.id as po_id, po.po_no, sync_po.buyer_name, sync_po.gl_number, sync_po.season, po.shipdate, po.po_qty, pl.packinglist_serial_number');
         return $builder;
     }
@@ -79,6 +79,7 @@ class PackingListModel extends Model
         $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
         $builder->join('tblsize as size', 'size.id = product.product_size_id');
         $builder->where('packinglist.id', $packinglist_id);
+        $builder->where('carton_detail.deleted_at', null);
         $builder->groupBy('size.id');
         $builder->orderBy('size.size_order');
         $result = $builder->get()->getResult();
@@ -113,6 +114,7 @@ class PackingListModel extends Model
         $builder = $this->db->table('tblpackinglistcarton');
         $builder->selectSum('carton_qty');
         $builder->where('packinglist_id', $packinglist_id);
+        $builder->where('tblpackinglistcarton.deleted_at', null);
         $result = $builder->get()->getRow();
         return $result->carton_qty ? $result->carton_qty : 0;
     }
@@ -123,6 +125,8 @@ class PackingListModel extends Model
         $builder->select('sum(carton_detail.product_qty * pl_carton.carton_qty) as ship_qty');
         $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_detail.packinglist_carton_id');
         $builder->where('pl_carton.packinglist_id', $packinglist_id);
+        $builder->where('carton_detail.deleted_at', null);
+        $builder->where('pl_carton.deleted_at', null);
         $result = $builder->get()->getRow();
         return $result->ship_qty;
     }
@@ -144,6 +148,8 @@ class PackingListModel extends Model
         $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_detail.packinglist_carton_id');
         $builder->join('tblproduct as product', 'product.id = carton_detail.product_id');
         $builder->where('pl_carton.packinglist_id', $packinglist_id);
+        $builder->where('carton_detail.deleted_at', null);
+        $builder->where('pl_carton.deleted_at', null);
         $result = $builder->get()->getRow();
         return $result->packinglist_amount;
     }
@@ -181,6 +187,7 @@ class PackingListModel extends Model
         $builder->join('tblcolour as colour','colour.id = product.product_colour_id');
         $builder->join('tblsize as size','size.id = product.product_size_id');
         $builder->where('packinglist.id', $packinglist_id);
+        $builder->where('carton_detail.deleted_at', null);
         $builder->groupBy('product.id');
         $result = $builder->get()->getResult();
         

@@ -71,7 +71,7 @@
                                 <td><b>Ship Qty.</b></td>
                                 <td><?= esc($packinglist->packinglist_ship_qty); ?></td>
                                 <td><b>Customer</b></td>
-                                <td> xxxxx </td>
+                                <td> - </td>
                             </tr>
                             <tr>
                                 <td><b>Total Carton</b></td>
@@ -102,7 +102,14 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <button type="button" class="btn btn-secondary mb-2" id="btn_modal_create">Add New</button>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-secondary mb-2" id="btn_modal_create">Add New</button>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <a href="<?= base_url('report/packinglist/'.$packinglist->id) ?>" target="_blank" class="btn btn-info mb-2" >Print Report</a>
+                    </div>
+                </div>
                 <table class="table table-bordered" id="packinglist_carton_table">
                     <thead>
                         <tr class="table-primary text-center">
