@@ -6,8 +6,9 @@ use CodeIgniter\Model;
 
 class PurchaseOrderModel extends Model
 {
-    protected $useTimestamps = true;
     protected $table = 'tblpurchaseorder';
+    protected $useTimestamps = true;
+    protected $useSoftDeletes   = true;
     protected $allowedFields = [
         'id',
         'po_no',
@@ -59,6 +60,8 @@ class PurchaseOrderModel extends Model
     {
         $builder = $this->db->table('tblpurchaseorder as po');
         $builder->join('tblsyncpurchaseorder as sync_po', 'sync_po.purchase_order_id = po.id');
+        $builder->where('po.deleted_at', null);
+        $builder->where('sync_po.deleted_at', null);
         $builder->select('po.id, po.po_no, sync_po.buyer_name, sync_po.gl_number, po.shipdate, po.po_qty');
         return $builder;
     }

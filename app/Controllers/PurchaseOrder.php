@@ -7,6 +7,7 @@ use App\Models\BuyerModel;
 use App\Models\GlModel;
 use App\Models\PurchaseOrderModel;
 use App\Models\PurchaseOrderDetailModel;
+use App\Models\SyncPurchaseOrderModel;
 use App\Models\ProductModel;
 use App\Models\SizeModel;
 use App\Models\StyleModel;
@@ -23,6 +24,7 @@ class PurchaseOrder extends BaseController
     protected $GlModel;
     protected $PurchaseOrderModel;
     protected $PurchaseOrderDetailModel;
+    protected $SyncPurchaseOrderModel;
     protected $ProductModel;
     protected $SizeModel;
     protected $StyleModel;
@@ -37,6 +39,7 @@ class PurchaseOrder extends BaseController
         $this->GlModel = new GlModel();
         $this->PurchaseOrderModel = new PurchaseOrderModel();
         $this->PurchaseOrderDetailModel = new PurchaseOrderDetailModel();
+        $this->SyncPurchaseOrderModel = new SyncPurchaseOrderModel();
         $this->ProductModel = new ProductModel();
         $this->SizeModel = new SizeModel();
         $this->StyleModel = new StyleModel();
@@ -72,10 +75,12 @@ class PurchaseOrder extends BaseController
             ->addNumbering('DT_RowIndex')
             ->add('action', function($row){
                 $action_button = '
-                    <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="edit_rack('. $row->id .')">Edit</a>
-                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="delete_rack('. $row->id .')">Delete</a>
+                    <a class="btn btn-danger btn-sm btn-delete" onclick="delete_po(this)" data-id="'.$row->id.'" data-po-number="'.$row->po_no.'">Delete</a>
                 ';
                 return $action_button;
+            })->add('po_no', function($row){
+                $po_number_link = '<a href="'. base_url('purchaseorder/').$row->id.'">'.$row->po_no .'</a>';
+                return $po_number_link;
             })->postQuery(function ($po_list) {
                 $po_list->orderBy('po.created_at','desc');
             })->toJson(true);
@@ -162,6 +167,10 @@ class PurchaseOrder extends BaseController
             $this->PurchaseOrderDetailModel->transException(true)->transStart();
             $this->PurchaseOrderDetailModel->where('order_id',$id)->delete();
             $this->PurchaseOrderDetailModel->transComplete();
+
+            $this->SyncPurchaseOrderModel->transException(true)->transStart();
+            $this->SyncPurchaseOrderModel->where('purchase_order_id',$id)->delete();
+            $this->SyncPurchaseOrderModel->transComplete();
             
             $delete = $this->PurchaseOrderModel->delete($id);
             $this->PurchaseOrderModel->transComplete();

@@ -130,6 +130,19 @@
 <script>
     const index_dt_url = '<?= url_to('purchase_order_list')?>';
 
+
+    const delete_po = (element) => {
+        let id = $(element).data('id');
+        let po_number = $(element).data('po-number');
+
+        $('#po_id').val(id);
+        if (po_number) {
+            $('#delete_message').text(`Are you sure want to delete this Purchase Order (${po_number}) ?`);
+        }
+
+        $('#deleteModal').modal('show');
+    }
+
     function count_po_details() {
         return $('#po_detail_table tbody tr').length;
     }
@@ -243,18 +256,19 @@
             }
         })
 
-        // Show Delete Modal
-        $('.btn-delete').on('click', function() {
-            let id = $(this).data('id');
-            let po_number = $(this).data('po-number');
+        // Show Delete Modal 
+        // ## this cannot user because table using datatable server side
+        // $('.btn-delete').on('click', function() {
+        //     let id = $(this).data('id');
+        //     let po_number = $(this).data('po-number');
 
-            $('#po_id').val(id);
-            if (po_number) {
-                $('#delete_message').text(`Are you sure want to delete this Purchase Order (${po_number}) ?`);
-            }
+        //     $('#po_id').val(id);
+        //     if (po_number) {
+        //         $('#delete_message').text(`Are you sure want to delete this Purchase Order (${po_number}) ?`);
+        //     }
 
-            $('#deleteModal').modal('show');
-        });
+        //     $('#deleteModal').modal('show');
+        // });
     });
 </script>
 
