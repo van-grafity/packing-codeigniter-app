@@ -22,25 +22,6 @@ class PackingListModel extends Model
         'flag_generate_carton',
     ];
 
-    public function getPackingList_bc($id = false)
-    {
-        $builder = $this->db->table('tblpackinglist as pl');
-        $builder->select('pl.*, po.id as po_id, po.po_no, po.po_qty, po.shipdate , tblbuyer.buyer_name, gl.gl_number, gl.season, gl.size_order, gl.id as gl_id');
-        $builder->join('tblpurchaseorder as po', 'po.id = pl.packinglist_po_id');
-        $builder->join('tblgl_po as gl_po', 'gl_po.po_id = po.id');
-        $builder->join('tblgl as gl', 'gl.id = gl_po.gl_id');
-        $builder->join('tblbuyer', 'tblbuyer.id = gl.buyer_id');
-        $builder->orderBy('pl.id', 'ASC');
-
-        if ($id) {
-            $builder->where(['pl.id' => $id]);
-            $result = $builder->get()->getRow();
-        } else {
-            $result = $builder->get()->getResult();
-        }
-        return $result;
-    }
-
     public function getPackingList($id = false)
     {
         $GlModel = model('GlModel');
@@ -48,9 +29,6 @@ class PackingListModel extends Model
         $builder = $this->db->table('tblpackinglist as pl');
         $builder->select('pl.*, po.id as po_id, po.po_no, po.po_qty, po.shipdate');
         $builder->join('tblpurchaseorder as po', 'po.id = pl.packinglist_po_id');
-        // $builder->join('tblgl_po as gl_po', 'gl_po.po_id = po.id');
-        // $builder->join('tblgl as gl', 'gl.id = gl_po.gl_id');
-        // $builder->join('tblbuyer', 'tblbuyer.id = gl.buyer_id');
         $builder->orderBy('pl.id', 'ASC');
 
         if ($id) {
@@ -64,6 +42,17 @@ class PackingListModel extends Model
             }
         }
         return $result;
+    }
+
+    public function getDatatable()
+    {
+        $builder = $this->db->table('tblpackinglist as pl');
+        $builder->join('tblpurchaseorder as po', 'po.id = pl.packinglist_po_id');
+        $builder->join('tblsyncpurchaseorder as sync_po', 'sync_po.purchase_order_id = po.id');
+        $builder->where('po.deleted_at', null);
+        $builder->where('sync_po.deleted_at', null);
+        $builder->select('pl.id as packinglist_id, po.id as po_id, po.po_no, sync_po.buyer_name, sync_po.gl_number, sync_po.season, po.shipdate, po.po_qty, pl.packinglist_serial_number');
+        return $builder;
     }
 
     public function getLastPackinglistByMonth($year_filter = null, $month_filter = null)

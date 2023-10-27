@@ -13,6 +13,7 @@ use App\Models\CartonDetailModel;
 use App\Models\StyleModel;
 
 use CodeIgniter\I18n\Time;
+use \Hermawan\DataTables\DataTable;
 
 class PackingList extends BaseController
 {
@@ -43,10 +44,36 @@ class PackingList extends BaseController
     {
         $data = [
             'title'         => 'Factory Packing List',
-            'packinglist'   => $this->PackingListModel->getPackingList(),
+            // 'packinglist'   => $this->PackingListModel->getPackingList(), //!! => Delete This
             'po_list'       => $this->PurchaseOrderModel->getPurchaseOrder(),
         ];
-        return view('packinglist/index', $data);
+        // return view('packinglist/index', $data);
+        return view('packinglist/index_dt', $data);
+    }
+    
+    public function index_dt()
+    {
+        $po_list = $this->PackingListModel->getDatatable();
+        return DataTable::of($po_list)
+            ->addNumbering('DT_RowIndex')
+            ->add('action', function($row){
+                $action_button = '
+                    <a class="btn btn-warning btn-sm mt-1" onclick="edit_packinglist('.$row->packinglist_id.')">Edit</a>
+                    <a class="btn btn-danger btn-sm btn-delete mt-1" data-id = "'.$row->packinglist_id.'" data-pl-serial-number = "'.$row->packinglist_serial_number.'" onclick="delete_pl(this)">Delete</a>
+                    <a href="'.base_url('report/packinglist/'.$row->packinglist_id).'" target="_blank" class="btn btn-info btn-sm mt-1" >Print Report</a>
+                ';
+                return $action_button;
+            })->edit('packinglist_serial_number', function($row){
+                $pl_number_link = '<a href="'. base_url('packinglist/').$row->packinglist_id.'">'.$row->packinglist_serial_number .'</a>';
+                return $pl_number_link;
+
+            })->edit('po_no', function($row){
+                $po_number_link = '<a href="'. base_url('purchaseorder/').$row->po_id.'">'.$row->po_no .'</a>';
+                return $po_number_link;
+
+            })->postQuery(function ($pl_list) {
+                $pl_list->orderBy('pl.created_at','desc');
+            })->toJson(true);
     }
 
     public function store()
@@ -71,6 +98,21 @@ class PackingList extends BaseController
 
         $packing_id = $this->PackingListModel->insert($packinglist_data);
         return redirect()->to('packinglist');
+    }
+
+    public function edit()
+    {
+        $id = $this->request->getGet('id');
+        $packinglist = $this->PackingListModel->getPackingList($id);
+
+        $data_return = [
+            'status' => 'success',
+            'message' => 'successfully get Packing List Data',
+            'data' => [
+                'packinglist' => $packinglist,
+            ],
+        ];
+        return $this->response->setJSON($data_return);
     }
 
     public function update()
@@ -411,6 +453,7 @@ class PackingList extends BaseController
         $dompdf->stream();
     }
 
+    // !! =>> Delete This
     // private function searchInArrayByProductID(String $product_id, Array $array_po) : Array
     // {
     //     foreach ($array_po as $key => $product) {

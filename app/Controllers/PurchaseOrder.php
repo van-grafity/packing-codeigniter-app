@@ -61,7 +61,7 @@ class PurchaseOrder extends BaseController
             'GL'        => $this->GlModel->getGL()->getResult(),
             'Product'   => $this->ProductModel->getProduct()->getResult(),
             'action_field_class' => $action_field_class,
-            'purchase_order_list' => $this->PurchaseOrderModel->getPurchaseOrder(),
+            // 'purchase_order_list' => $this->PurchaseOrderModel->getPurchaseOrder(),
         ];
 
         // return view('purchaseorder/index', $data);

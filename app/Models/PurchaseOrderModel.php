@@ -41,6 +41,8 @@ class PurchaseOrderModel extends Model
         $builder = $this->db->table('tblpurchaseorder as po');
         $builder->select('po.*');
         $builder->orderBy('po.created_at','DESC');
+        $builder->where('po.deleted_at', null);
+        
         if ($id) {
             $builder->where(['po.id' => $id]);
             $purchase_order = $builder->get()->getRow();

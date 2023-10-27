@@ -31,6 +31,7 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 // $routes->get('/', 'Welcome::index');
+
 $routes->get('/', function(){
     return view('landing-page');
 });
@@ -124,11 +125,17 @@ $routes->get('packinglist', 'PackingList::index');
 $routes->post('packinglist/store', 'PackingList::store');
 $routes->post('packinglist/delete', 'PackingList::delete');
 $routes->post('packinglist/update', 'PackingList::update/$1');
-$routes->get('packinglist/(:any)', 'PackingList::detail/$1');
+$routes->get('packinglist/(:num)', 'PackingList::detail/$1'); //!! =>> Coba Check ini nanti
 $routes->post('packinglistcarton/store', 'PackingList::cartonstore');
 $routes->get('packinglistcarton/edit', 'PackingList::cartonedit');
 $routes->post('packinglistcarton/update', 'PackingList::cartonupdate');
 $routes->post('packinglistcarton/delete', 'PackingList::cartondelete');
+
+$routes->group('packinglist', static function ($routes) {
+    $routes->get('list', 'PackingList::index_dt',['as' => 'packinglist_list']);
+    $routes->get('edit', 'PackingList::edit',['as' => 'packinglist_edit']);
+});
+
 
 // Purchase Order
 $routes->get('purchaseorder', 'PurchaseOrder::index');

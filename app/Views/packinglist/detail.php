@@ -180,7 +180,7 @@
 
 <!-- Modal Add and Edit Carton -->
 <div class="modal fade" id="packinglist_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <form action="" method="post" id="packinglist_form">
                 <?= csrf_field(); ?>
@@ -220,22 +220,22 @@
                                 <table class="table no-border">
                                     <tbody>
                                         <tr>
-                                            <td width="20%">Product Name</td>
-                                            <td width="30%" id="product_name">: </td>
-                                            <td width="20%">Colour</td>
-                                            <td width="30%" id="product_colour">: </td>
+                                            <td width="15%">Product Name</td>
+                                            <td width="35%" id="product_name">: </td>
+                                            <td width="15%">Colour</td>
+                                            <td width="35%" id="product_colour">: </td>
                                         </tr>
                                         <tr>
-                                            <td width="20%">Style</td>
-                                            <td width="30%" id="product_style">: </td>
-                                            <td width="20%">Size</td>
-                                            <td width="30%" id="product_size">: </td>
+                                            <td width="15%">Style</td>
+                                            <td width="35%" id="product_style">: </td>
+                                            <td width="15%">Size</td>
+                                            <td width="35%" id="product_size">: </td>
                                         </tr>
                                         <tr>
-                                            <td width="20%">Category</td>
-                                            <td width="30%" id="product_category">: </td>
-                                            <td width="20%">Price</td>
-                                            <td width="30%" id="product_price">: </td>
+                                            <td width="15%">Category</td>
+                                            <td width="35%" id="product_category">: </td>
+                                            <td width="15%">Price</td>
+                                            <td width="35%" id="product_price">: </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -424,19 +424,19 @@
             let product_price = selected_option.data('price');
 
             if ($(this).val()) {
-                $('#product_name').text(product_name);
-                $('#product_colour').text(product_colour);
-                $('#product_style').text(product_style);
-                $('#product_size').text(product_size);
-                $('#product_category').text(product_category);
-                $('#product_price').text(product_price);
+                $('#product_name').text(': ' + product_name);
+                $('#product_colour').text(': ' + product_colour);
+                $('#product_style').text(': ' + product_style);
+                $('#product_size').text(': ' + product_size);
+                $('#product_category').text(': ' + product_category);
+                $('#product_price').text(': ' + product_price);
             } else {
-                $('#product_name').text('');
-                $('#product_colour').text('');
-                $('#product_style').text('');
-                $('#product_size').text('');
-                $('#product_category').text('');
-                $('#product_price').text('');
+                $('#product_name').text(': ');
+                $('#product_colour').text(': ');
+                $('#product_style').text(': ');
+                $('#product_size').text(': ');
+                $('#product_category').text(': ');
+                $('#product_price').text(': ');
             }
         });
 
