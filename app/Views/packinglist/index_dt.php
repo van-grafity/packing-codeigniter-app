@@ -268,7 +268,10 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function() {
-
+        // ## Show Flash Message
+        let session = <?= json_encode(session()->getFlashdata()) ?>;
+        show_flash_message(session);
+        
         $('#po_no').on('change', function(event) {
             let buyer_name = $(this).find($('option:selected')).data('buyer-name');
             let order_no = $(this).find($('option:selected')).data('gl-number');

@@ -97,7 +97,7 @@ class PackingList extends BaseController
         ];
 
         $packing_id = $this->PackingListModel->insert($packinglist_data);
-        return redirect()->to('packinglist');
+        return redirect()->to('packinglist')->with('success', 'Successfully created Packing List');
     }
 
     public function edit()
@@ -125,14 +125,56 @@ class PackingList extends BaseController
         ];
         $id = $this->request->getPost('edit_packinglist_id');
         $this->PackingListModel->update($id, $packinglist_data);
+        return redirect()->to('packinglist')->with('success', 'Successfully updated Packing List');
+    }
+
+    public function delete_bc()
+    {
+        $id = $this->request->getPost('packinglist_id');
+        $delete = $this->PackingListModel->delete($id);
         return redirect()->to('packinglist');
     }
 
     public function delete()
     {
-        $id = $this->request->getPost('packinglist_id');
-        $delete = $this->PackingListModel->delete($id);
-        return redirect()->to('packinglist');
+        try {
+            $id = $this->request->getPost('packinglist_id');
+            $is_related_carton_barcode = $this->PackingListModel->isRelatedToCartonBarcode($id);
+            if($is_related_carton_barcode) {
+                return redirect()->to('packinglist')->with('error', 'This Packinglist has been used on Carton Barcode!');
+            }
+            // ## Delete Packinglist
+            $this->PackingListModel->transException(true)->transStart();
+            //================================================================
+
+                // ## Delete Packinglist Carton
+                $this->PackinglistCartonModel->transException(true)->transStart();
+                
+                
+                    // ## Delete Carton Detail
+                    //======================================================
+                    $packinglist_carton_list = $this->PackinglistCartonModel->where('packinglist_id', $id)->findAll();
+                    $this->CartonDetailModel->transException(true)->transStart();
+                    foreach ($packinglist_carton_list as $key => $packinglist_carton) {
+                        $this->CartonDetailModel->where('packinglist_carton_id',$packinglist_carton->id)->delete();
+                    }
+                    $this->CartonDetailModel->transComplete();
+                    //======================================================
+                
+                
+                $this->PackinglistCartonModel->where('packinglist_id', $id)->delete();
+                $this->PackinglistCartonModel->transComplete();
+            
+            
+            //================================================================
+            $this->PackingListModel->delete($id);
+            
+            $this->PackingListModel->transComplete();
+            
+            return redirect()->to('packinglist')->with('success', 'Successfully deleted Packing List');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function detail($id)

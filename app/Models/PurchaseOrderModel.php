@@ -142,7 +142,9 @@ class PurchaseOrderModel extends Model
         $builder = $this->db->table('tblpurchaseorder as po');
         $builder->join('tblpackinglist as pl', 'pl.packinglist_po_id = po.id');
         $builder->where('po.id', $po_id);
+        $builder->where('pl.deleted_at', null);
         $result = $builder->get()->getRow();
+        
         return $result ? true : false;
     }
 }

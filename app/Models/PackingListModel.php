@@ -222,4 +222,19 @@ class PackingListModel extends Model
         $result = $builder->get()->getRow();
         return $result;
     }
+
+    public function isRelatedToCartonBarcode($packinglist_id) : bool
+    {
+        $builder = $this->db->table('tblpackinglist as packinglist');
+        $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.packinglist_id = packinglist.id');
+        $builder->join('tblcartonbarcode as carton_barcode', 'carton_barcode.packinglist_carton_id = pl_carton.id');
+        $builder->where('packinglist.id',$packinglist_id);
+        $result = $builder->get()->getResult();
+
+        if(count($result) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
