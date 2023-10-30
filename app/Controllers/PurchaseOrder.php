@@ -532,6 +532,8 @@ class PurchaseOrder extends BaseController
          */
         $result = array();
         $inserted_products = array();
+        $po_id_list = array();
+
         try {
             $this->db->transException(true)->transStart();
 
@@ -542,6 +544,7 @@ class PurchaseOrder extends BaseController
                     'shipdate' => $product['shipdate'],
                 ];
                 $po_id = $this->PurchaseOrderModel->getOrCreateDataByName($data_po);
+                $po_id_list[] = $po_id;
                 
                 $data_po_detail = [
                     'order_id' => $po_id,
@@ -551,9 +554,18 @@ class PurchaseOrder extends BaseController
 
                 $insert_po_detail = $this->PurchaseOrderDetailModel->insert($data_po_detail);
                 $inserted_products[] = $insert_po_detail;
+            }
+            
+            // ## Tamabahan untuk sync GL dan PO menjadi 1 baris di table tblsyncpurchaseorder
+            // ## dibuat di sini agar mengurangi jumlah sync nya. kalau di taruh di looping atas akan berulang sebanyak product. kalau di taruh di bawha ini akan berulang sesuai jumlah PO yang unique
 
+            $po_id_list = array_unique($po_id_list);
+            foreach ($po_id_list as $key => $po_id) {
+                $sync_po_gl = $this->SyncPurchaseOrderController->sync_po_gl($po_id);
                 $sync_po = $this->PurchaseOrderModel->syncPurchaseOrderDetails($po_id);
             }
+
+
             $this->db->transComplete();
             $result = [
                 'status' => $this->db->transStatus(),
