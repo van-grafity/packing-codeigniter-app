@@ -31,6 +31,7 @@ class PackingListModel extends Model
         $builder->select('pl.*, po.id as po_id, po.po_no, po.po_qty, po.shipdate');
         $builder->join('tblpurchaseorder as po', 'po.id = pl.packinglist_po_id');
         $builder->orderBy('pl.id', 'ASC');
+        $builder->where(['pl.deleted_at' => null]);
 
         if ($id) {
             $builder->where(['pl.id' => $id]);

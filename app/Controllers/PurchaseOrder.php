@@ -14,6 +14,8 @@ use App\Models\StyleModel;
 use App\Models\ColourModel;
 use App\Models\CategoryModel;
 
+use App\Controllers\SyncPurchaseOrder;
+
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use \Hermawan\DataTables\DataTable;
 
@@ -31,6 +33,8 @@ class PurchaseOrder extends BaseController
     protected $ColourModel;
     protected $CategoryModel;
     protected $session;
+    protected $SyncPurchaseOrderController;
+    
 
     public function __construct()
     {
@@ -46,6 +50,8 @@ class PurchaseOrder extends BaseController
         $this->ColourModel = new ColourModel();
         $this->CategoryModel = new CategoryModel();
         $this->session = Services::session();
+
+        $this->SyncPurchaseOrderController = new SyncPurchaseOrder();
     }
 
     public function index()
@@ -132,8 +138,11 @@ class PurchaseOrder extends BaseController
             $sync_po = $this->PurchaseOrderModel->syncPurchaseOrderDetails($po_id);
 
             $this->PurchaseOrderModel->transComplete();
-        } catch (DatabaseException $e) {
 
+            $result = $this->SyncPurchaseOrderController->sync_po_gl($po_id);
+            
+        } catch (DatabaseException $e) {
+            throw $e;
             // Automatically rolled back already.
         }
 
