@@ -69,7 +69,7 @@
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <!--<li class="nav-item menu-open"> -->
 
-                        <?php if (in_array(session()->get('role'), ['superadmin', 'admin'])) : ?>
+                        <?php if (in_array(session()->get('role'), ['superadmin'])) : ?>
                             <li class="nav-item">
                                 <a href="" class="nav-link">
                                     <i class="nav-icon fas fa-database"></i>
