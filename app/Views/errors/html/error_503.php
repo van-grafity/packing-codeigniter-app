@@ -67,7 +67,7 @@
                 </svg>
             </div>
             <h1>
-                <span class="small">Scan & Pack App <span class="yellow">.</span></span>
+                <span class="small">Packing App App <span class="yellow">.</span></span>
                 <span class="big">Under Maintenance</span>
             </h1>
 			<?php if (! empty($message) && $message !== '(null)') : ?>

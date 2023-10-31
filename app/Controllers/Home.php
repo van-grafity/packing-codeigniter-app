@@ -23,7 +23,7 @@ class Home extends BaseController
     public function index()
     {
         $data = [
-            'title' => 'SCAN & PACK SYSTEM',
+            'title' => 'Packing App',
             'msg1'  => 'An Application for Shipping Department',
             'msg2'  => '',
             'msg3'  => 'PT. Ghim Li Indonesia',

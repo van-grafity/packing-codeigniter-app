@@ -455,5 +455,5 @@ class App extends BaseConfig
      * 
      * @var string
      */
-    public string $applicationName = "Scan & Pack";
+    public string $applicationName = "Packing App";
 }

@@ -203,7 +203,7 @@
                             <li class="nav-item">
                                 <a href="<?= base_url('scanpack') ?>" class="nav-link">
                                     <i class="nav-icon fas fa-barcode"></i>
-                                    <p>Scan & Pack</p>
+                                    <p>Packing App</p>
                                 </a>
                             </li>
                         <?php endif ?>
