@@ -11,7 +11,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <button type="button" class="btn btn-secondary mb-2" data-toggle="modal" data-target="#addModal">Add New</button>
+                <button type="button" class="btn btn-secondary mb-2" data-toggle="modal" data-target="#add_modal">Add New</button>
                 <button type="button" class="btn btn-success ml-2 mb-2" onclick="show_import_modal()">Add PO via Import</button>
 
                 <table id="purchase_order_table" class="table table-bordered table-striped text-center">
@@ -34,7 +34,9 @@
     </section>
 </div>
 
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+
+<!-- Modal Add Purchase Order -->
+<div class="modal fade" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <form action="<?= base_url('purchaseorder/savePO')?>" method="post" id="purchase_order_form">
@@ -99,9 +101,52 @@
         </div>
     </div>
 </div>
+<!-- End Modal Add Purchase Order -->
+
+
+<!-- Modal Edit Purchase Order -->
+<div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="<?= base_url('purchaseorder/update')?>" method="post" id="purchase_order_edit_form">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Edit Purchase Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="po_no">PO No.</label>
+                        <input type="text" class="form-control" id="po_no_edit" name="po_no_edit" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="gl_number">GL Number</label>
+                        <input type="text" class="form-control" id="gl_number_edit" name="gl_number_edit" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="shipdate_edit">Ship Date</label>
+                        <input type="date" class="form-control" id="shipdate_edit" name="shipdate_edit" placeholder="Ship Date" required onclick="this.showPicker()">
+                    </div>
+                    <div class="form-group">
+                        <label for="total_order_qty_edit">Total Qty</label>
+                        <input type="text" readonly class="form-control" id="total_order_qty_edit" name="total_order_qty_edit" placeholder="Total Order Qty">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="po_id_edit" id="po_id_edit">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Edit Purchase Order -->
+
 
 <!-- Modal Delete Purchase Order -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="<?= base_url('purchaseorder/delete')?>" method="post">
@@ -129,7 +174,24 @@
 
 <script>
     const index_dt_url = '<?= url_to('purchase_order_list')?>';
+    const edit_url = '<?= url_to('purchase_order_edit')?>';
+    const update_url = '<?= url_to('purchase_order_update')?>';
 
+    const edit_po = async (po_id) => {
+        params_data = { id : po_id };
+        result = await using_fetch(edit_url, params_data, "GET");
+
+        let po_data = result.data;
+        console.log(result);
+
+        $('#po_id_edit').val(po_data.id);
+        $('#po_no_edit').val(po_data.po_no);
+        $('#gl_number_edit').val(po_data.gl_number);
+        $('#shipdate_edit').val(po_data.shipdate);
+        $('#total_order_qty_edit').val(po_data.po_qty);
+        $('#edit_modal').modal('show');
+        
+    }
 
     const delete_po = (element) => {
         let id = $(element).data('id');
@@ -140,7 +202,7 @@
             $('#delete_message').text(`Are you sure want to delete this Purchase Order (${po_number}) ?`);
         }
 
-        $('#deleteModal').modal('show');
+        $('#delete_modal').modal('show');
     }
 
     function count_po_details() {
@@ -257,7 +319,7 @@
         })
 
         // Show Delete Modal 
-        // ## this cannot user because table using datatable server side
+        // !! => this cannot use, because the table using datatable server side. so the function not work
         // $('.btn-delete').on('click', function() {
         //     let id = $(this).data('id');
         //     let po_number = $(this).data('po-number');
@@ -267,7 +329,7 @@
         //         $('#delete_message').text(`Are you sure want to delete this Purchase Order (${po_number}) ?`);
         //     }
 
-        //     $('#deleteModal').modal('show');
+        //     $('#delete_modal').modal('show');
         // });
     });
 </script>
@@ -276,7 +338,7 @@
     $(document).ready(function() {
         $('#gl_no.select2').select2({
             theme: 'bootstrap4',
-            dropdownParent: $('#addModal')
+            dropdownParent: $('#add_modal')
         });
 
         $('#purchase_order_table').DataTable({

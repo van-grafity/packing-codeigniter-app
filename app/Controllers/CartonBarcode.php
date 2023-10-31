@@ -166,7 +166,7 @@ class CartonBarcode extends BaseController
 
         $data_return = [
             'status' => 'success',
-            'message' => 'Succesfully retrieved carton',
+            'message' => 'Succesfully retrieved carton data',
             'data' => $detail_carton,
         ];
         return $this->response->setJSON($data_return);

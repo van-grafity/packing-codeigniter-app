@@ -53,7 +53,7 @@ class Scanpack extends BaseController
 
         $data_return = [
             'status' => 'success',
-            'message' => 'Succesfully retrieved carton',
+            'message' => 'Succesfully retrieved carton detail data',
             'data' => $data,
         ];
         return $this->response->setJSON($data_return);

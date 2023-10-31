@@ -150,6 +150,8 @@ $routes->post('purchaseorder/importexcel', 'PurchaseOrder::importexcel');
 
 $routes->group('purchaseorder', static function ($routes) {
     $routes->get('list', 'PurchaseOrder::index_dt',['as' => 'purchase_order_list']);
+    $routes->get('edit', 'PurchaseOrder::edit',['as' => 'purchase_order_edit']);
+    $routes->post('update', 'PurchaseOrder::update',['as' => 'purchase_order_update']);
 });
 
 

@@ -81,7 +81,7 @@ class Product extends BaseController
 
         $data_return = [
             'status' => 'success',
-            'message' => 'Succesfully retrieved product',
+            'message' => 'Succesfully retrieved product data',
             'data' => $product,
         ];
         return $this->response->setJSON($data_return);

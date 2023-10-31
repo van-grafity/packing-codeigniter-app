@@ -81,6 +81,7 @@ class PurchaseOrder extends BaseController
             ->addNumbering('DT_RowIndex')
             ->add('action', function($row){
                 $action_button = '
+                    <a class="btn btn-warning btn-sm" onclick="edit_po('.$row->id.')">Edit</a>
                     <a class="btn btn-danger btn-sm btn-delete" onclick="delete_po(this)" data-id="'.$row->id.'" data-po-number="'.$row->po_no.'">Delete</a>
                 ';
                 return $action_button;
@@ -158,6 +159,30 @@ class PurchaseOrder extends BaseController
             'products'   => $this->ProductModel->getProduct()->getResult(),
         ];
         return view('purchaseorder/detail', $data);
+    }
+
+    public function edit ()
+    {
+        $po_id = $this->request->getGet('id');
+        $purchase_order = $this->PurchaseOrderModel->getPurchaseOrder($po_id);
+
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Succesfully retrieved Purchase Order Data',
+            'data' => $purchase_order,
+        ];
+        return $this->response->setJSON($data_return);
+    }
+
+    public function update()
+    {
+        $id = $this->request->getPost('po_id_edit');
+        $data_po = array(
+            'shipdate'     => $this->request->getPost('shipdate_edit'),
+        );
+
+        $this->PurchaseOrderModel->update($id, $data_po);
+        return redirect()->to('purchaseorder')->with('success', 'Successfully updated Purchase Order');
     }
 
     public function delete()
