@@ -69,12 +69,12 @@
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <!--<li class="nav-item menu-open"> -->
 
-                        <?php if (in_array(session()->get('role'), ['superadmin', 'admin', 'merchandiser'])) : ?>
+                        <?php if (in_array(session()->get('role'), ['superadmin', 'admin'])) : ?>
                             <li class="nav-item">
                                 <a href="" class="nav-link">
                                     <i class="nav-icon fas fa-database"></i>
                                     <p>
-                                        Master Data
+                                        Administrator
                                         <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
@@ -93,6 +93,21 @@
                                             </a>
                                         </li>
                                     <?php endif ?>
+
+                                </ul>
+                            </li>
+                        <?php endif ?>
+                        
+                        <?php if (in_array(session()->get('role'), ['superadmin', 'admin', 'merchandiser'])) : ?>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-database"></i>
+                                    <p>
+                                        Master Data
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview pl-3">
 
                                     <li class="nav-item">
                                         <a href="<?= base_url('buyer'); ?>" class="nav-link">
@@ -208,42 +223,6 @@
                             </li>
                         <?php endif ?>
 
-                        <?php if (in_array(session()->get('role'), ['superadmin','admin'])) : ?>
-                            <li class="nav-item">
-                                <a href="" class="nav-link">
-                                    <i class="nav-icon fas fa-file-invoice"></i>
-                                    <p>Reports
-                                        <i class="fas fa-angle-left right"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview pl-3">
-                                    <li class="nav-item">
-                                        <a href="<?= base_url('rptpackinglist') ?>" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Packing List</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>List of Total PO</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="" class="nav-link">
-                                            <i class="nav-icon far fa-circle"></i>
-                                            <p>Shipment Report</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="" class="nav-link">
-                                            <i class="nav-icon far fa-circle"></i>
-                                            <p>Total Carton Shipped</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        <?php endif ?>
                         <?php if (in_array(session()->get('role'), ['superadmin','admin'])) : ?>
                             <li class="nav-item has-treeview">
                                 <a href="" class="nav-link">

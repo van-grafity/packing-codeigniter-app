@@ -305,7 +305,26 @@
             dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>" +
                 "<'row'<'col-md-12'tr>>" +
                 "<'row'<'col-md-5'i><'col-md-7'p>>",
-            buttons: ["excel", "pdf", "print"],
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4, 5 ]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4, 5 ]
+                    }
+                },
+                {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4, 5 ]
+                    }
+                },
+            ]
         });
     });
 </script>
