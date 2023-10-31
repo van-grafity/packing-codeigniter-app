@@ -19,10 +19,10 @@
                     <thead>
                         <tr class="table-primary text-center">
                             <th width="5%">No</th>
-                            <th width="15%">PL No.</th>
+                            <th width="15%">Packing List SN</th>
                             <th width="25%">Buyer</th>
-                            <th width="15%">PO No.</th>
-                            <th width="15%">GL No.</th>
+                            <th width="15%">PO Number</th>
+                            <th width="15%">GL Number</th>
                             <th width="25%">Action</th>
                         </tr>
                     </thead>
