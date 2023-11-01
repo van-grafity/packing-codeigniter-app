@@ -18,9 +18,9 @@
                     <thead>
                         <tr class="table-primary">
                             <th class="" width="50px">SN</th>
-                            <th class="">PO No.</th>
+                            <th class="">PO Number</th>
                             <th class="">Buyer</th>
-                            <th class="">GL No.</th>
+                            <th class="">GL Number</th>
                             <th class="">Ship Date</th>
                             <th class="">Total Qty</th>
                             <th class=" <?= $action_field_class; ?>">Action</th>

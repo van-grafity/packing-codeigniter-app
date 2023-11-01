@@ -16,9 +16,9 @@
                     <thead>
                         <tr class="table-primary">
                             <th width="">No</th>
-                            <th width="">Serial Number</th>
-                            <th width="">GL No.</th>
-                            <th width="">PO No.</th>
+                            <th width="">Rack Serial Number</th>
+                            <th width="">GL Number</th>
+                            <th width="">PO Number</th>
                             <th width="">Colour</th>
                             <th width="">Buyer</th>
                             <th width="">QTY CTN</th>
