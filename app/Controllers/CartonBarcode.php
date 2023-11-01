@@ -9,6 +9,8 @@ use App\Models\PackinglistCartonModel;
 use App\Models\StyleModel;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use \Hermawan\DataTables\DataTable;
+
 
 class CartonBarcode extends BaseController
 {
@@ -59,7 +61,36 @@ class CartonBarcode extends BaseController
         if (!$this->session->isLoggedIn) {
             return redirect()->to('login');
         }
-        return view('cartonbarcode/index', $data);
+        // return view('cartonbarcode/index', $data);
+        return view('cartonbarcode/index_dt', $data);
+    }
+
+    public function index_dt()
+    {
+        $po_list = $this->PackingListModel->getDatatable();
+        return DataTable::of($po_list)
+            ->addNumbering('DT_RowIndex')
+            ->add('action', function($row){
+                $action_button = '
+                    <a class="btn btn-primary btn-sm mb-1 mr-2"
+                        data-id="' . $row->packinglist_id .'"
+                        data-packinglist-number="'. $row->packinglist_serial_number .'"
+                        onclick="generate_carton(this)"
+                    >Generate Carton</a>
+                    <a href="'.base_url('cartonbarcode/'.$row->packinglist_id).'" class="btn btn-info btn-sm mb-1 mr-2">Detail</a>
+                ';
+                return $action_button;
+            })->edit('packinglist_serial_number', function($row){
+                $pl_number_link = '<a href="'. base_url('packinglist/').$row->packinglist_id.'">'.$row->packinglist_serial_number .'</a>';
+                return $pl_number_link;
+
+            })->edit('po_no', function($row){
+                $po_number_link = '<a href="'. base_url('purchaseorder/').$row->po_id.'">'.$row->po_no .'</a>';
+                return $po_number_link;
+
+            })->postQuery(function ($pl_list) {
+                $pl_list->orderBy('pl.created_at','desc');
+            })->toJson(true);
     }
 
     public function detail($id)

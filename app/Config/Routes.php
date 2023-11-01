@@ -163,6 +163,10 @@ $routes->get('cartonbarcode/detailcarton', 'CartonBarcode::detailcarton');
 $routes->get('cartonbarcode/(:num)', 'CartonBarcode::detail/$1');
 $routes->post('cartonbarcode/generatecarton', 'CartonBarcode::generatecarton');
 
+$routes->group('cartonbarcode', static function ($routes) {
+    $routes->get('list', 'CartonBarcode::index_dt',['as' => 'cartonbarcode_list']);
+});
+
 // Scan and Pack
 $routes->get('scanpack', 'Scanpack::index');
 $routes->get('scanpack/detailcarton', 'Scanpack::detailcarton');
