@@ -69,7 +69,7 @@
                                 <td><b>Ship Qty.</b></td>
                                 <td><?= esc($packinglist->packinglist_ship_qty); ?></td>
                                 <td><b>Customer</b></td>
-                                <td> xxxxx </td>
+                                <td> - </td>
                             </tr>
                             <tr>
                                 <td><b>Total Carton</b></td>
@@ -94,10 +94,10 @@
             </div>
             <div class="card-body">
                 <div class="row mb-5">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12 col-md-6">
                         <form action="<?= base_url('cartonbarcode/importexcel')?>" method="post" id="packinglist_form" enctype="multipart/form-data">
                             <?= csrf_field(); ?>
-                            <input type="hidden" name="packinglist_id" value="<?= $packinglist->id?>">
+                            <input type="hidden" name="packinglist_id" id="packinglist_id" value="<?= $packinglist->id?>">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -110,11 +110,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                </div>
+                            </div>
                             <div class="text-right">
                                 <button type="submit" class="btn btn-success btn-sm" id="btn_submit_form">Upload Bercode</button>
                             </div>
                         </form>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="text-right">
+                            <button class="btn bg-fuchsia btn-sm <?= $superadmin_only_class?> " onclick="delete_carton()">Delete All Carton</button>
+                            <button class="btn bg-fuchsia btn-sm <?= $superadmin_only_class?> " onclick="clear_barcode()">Clear All Barcode</button>
+                            <button class="btn bg-fuchsia btn-sm <?= $superadmin_only_class?> " onclick="unpack_carton()">Unpack All Carton</button>
+                        </div>
                     </div>
                 </div>
 
@@ -201,42 +208,54 @@
 
 
 <?= $this->Section('page_script'); ?>
-<script>
 
-$(document).ready(function(){
-    bsCustomFileInput.init();
-
-    // ## Show Flash Message
-    let session = <?= json_encode(session()->getFlashdata()) ?>;
-    show_flash_message(session);
-
-})
-</script>
 <script type="text/javascript">
+
     const detail_carton_url = '<?= base_url('cartonbarcode/detailcarton')?>';
+    const cartonbarcode_delete_carton_url = '<?= url_to('cartonbarcode_delete_carton')?>';
+    const cartonbarcode_clear_barcode_url = '<?= url_to('cartonbarcode_clear_barcode')?>';
+    const cartonbarcode_unpack_carton_url = '<?= url_to('cartonbarcode_unpack_carton')?>';
 
+    const delete_carton = async (carton_barcode_id = false) => {
+        // ## jika ada carton_barcode_id hanya delete carton tersebut. kalau ga ada, delete all carton di dalam packinglist ini
+        params_data = { packinglist_id : $('#packinglist_id').val() };
+        if ( carton_barcode_id ) { params_data.carton_barcode_id = carton_barcode_id; };
+        result = await using_fetch(cartonbarcode_delete_carton_url, params_data, "GET");
 
+        swal_data = {
+            'title' : result.message,
+            'reload_option' : true,
+        }
+        swal_info(swal_data);
+    }
 
-    $('#carton_table').DataTable({
-        processing: true,
-        // serverSide: true,
-        // ajax: dtable_url,
-        columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-            {data: 'carton_number', name: 'carton_number'},
-            {data: 'total_pcs', name: 'total_pcs'},
-            {data: 'barcode', name: 'barcode'},
-            {data: 'packed_status', name: 'packed_status'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-        ],
-        paging: true,
-        responsive: true,
-        lengthChange: true,
-        searching: true,
-        autoWidth: false,
-    });
+    const clear_barcode = async (carton_barcode_id = false) => {
+        // ## jika ada carton_barcode_id hanya clear barcode carton tersebut. kalau ga ada, clear barcode all di dalam packinglist ini
+        params_data = { packinglist_id : $('#packinglist_id').val() };
+        if ( carton_barcode_id ) { params_data.carton_barcode_id = carton_barcode_id; };
+        result = await using_fetch(cartonbarcode_clear_barcode_url, params_data, "GET");
 
-    async function detail_carton(carton_id) {
+        swal_data = {
+            'title' : result.message,
+            'reload_option' : true,
+        }
+        swal_info(swal_data);
+    }
+
+    const unpack_carton = async (carton_barcode_id = false) => {
+        // ## jika ada carton_barcode_id hanya unpack carton tersebut. kalau ga ada, unpack all di dalam packinglist ini
+        params_data = { packinglist_id : $('#packinglist_id').val() };
+        if ( carton_barcode_id ) { params_data.carton_barcode_id = carton_barcode_id; };
+        result = await using_fetch(cartonbarcode_unpack_carton_url, params_data, "GET");
+
+        swal_data = {
+            'title' : result.message,
+            'reload_option' : true,
+        }
+        swal_info(swal_data);
+    }
+
+    const detail_carton = async (carton_id) => {
         $('#detail_carton_table tbody').html('');
         let total = 0;
         
@@ -266,6 +285,36 @@ $(document).ready(function(){
         $('#detail_carton_table tfoot').html(row_footer);
 
         $('#detail_carton_modal').modal('show');
-    }
+    }       
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        bsCustomFileInput.init();
+
+        // ## Show Flash Message
+        let session = <?= json_encode(session()->getFlashdata()) ?>;
+        show_flash_message(session);
+
+        $('#carton_table').DataTable({
+            processing: true,
+            // serverSide: true,
+            // ajax: dtable_url,
+            columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                {data: 'carton_number', name: 'carton_number'},
+                {data: 'total_pcs', name: 'total_pcs'},
+                {data: 'barcode', name: 'barcode'},
+                {data: 'packed_status', name: 'packed_status'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ],
+            paging: true,
+            responsive: true,
+            lengthChange: true,
+            searching: true,
+            autoWidth: false,
+        });
+    })
 </script>
 <?= $this->endSection('page_script'); ?>

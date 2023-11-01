@@ -165,6 +165,9 @@ $routes->post('cartonbarcode/generatecarton', 'CartonBarcode::generatecarton');
 
 $routes->group('cartonbarcode', static function ($routes) {
     $routes->get('list', 'CartonBarcode::index_dt',['as' => 'cartonbarcode_list']);
+    $routes->get('unpack-carton', 'CartonBarcode::unpack_carton',['as' => 'cartonbarcode_unpack_carton']);
+    $routes->get('clear-barcode', 'CartonBarcode::clear_barcode',['as' => 'cartonbarcode_clear_barcode']);
+    $routes->get('delete-carton', 'CartonBarcode::delete_carton',['as' => 'cartonbarcode_delete_carton']);
 });
 
 // Scan and Pack

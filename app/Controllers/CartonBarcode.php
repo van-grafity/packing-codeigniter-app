@@ -95,6 +95,13 @@ class CartonBarcode extends BaseController
 
     public function detail($id)
     {
+
+        if (in_array(session()->get('role'), ['superadmin'])) {
+            $superadmin_only_class = '';
+        } else {
+            $superadmin_only_class = 'd-none';
+        }
+
         $packinglist = $this->PackingListModel->getPackingList($id);
         $packinglist->total_carton = $this->PackingListModel->getTotalCarton($id);
         $packinglist->percentage_ship = $this->PackingListModel->getShipmentPercentage($id);
@@ -116,6 +123,7 @@ class CartonBarcode extends BaseController
             'title' => 'Carton Barcode Setup Detail',
             'packinglist' => $packinglist,
             'carton_list' => $carton_list,
+            'superadmin_only_class' => $superadmin_only_class,
         ];
 
         return view('cartonbarcode/detail', $data);
@@ -199,6 +207,56 @@ class CartonBarcode extends BaseController
             'status' => 'success',
             'message' => 'Succesfully retrieved carton data',
             'data' => $detail_carton,
+        ];
+        return $this->response->setJSON($data_return);
+    }
+
+    public function unpack_carton()
+    {
+        $packinglist_id = $this->request->getGet('packinglist_id');
+        $carton_barcode_id = $this->request->getGet('carton_barcode_id');
+        
+        $unpacked_carton = $this->CartonBarcodeModel->unpackCarton($packinglist_id, $carton_barcode_id);
+        
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Succesfully unpack '. count($unpacked_carton).' carton',
+            'data' => $unpacked_carton,
+        ];
+        return $this->response->setJSON($data_return);
+    }
+
+    public function clear_barcode()
+    {
+        $packinglist_id = $this->request->getGet('packinglist_id');
+        $carton_barcode_id = $this->request->getGet('carton_barcode_id');
+
+        // ## ketika barcode di hapus, maka status harus unpack juga
+        $unpacked_carton = $this->CartonBarcodeModel->unpackCarton($packinglist_id, $carton_barcode_id);
+        $cleared_carton = $this->CartonBarcodeModel->clearBarcode($packinglist_id, $carton_barcode_id);
+        
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Succesfully clear '. count($cleared_carton).' carton barcode',
+            'data' => $cleared_carton,
+        ];
+        return $this->response->setJSON($data_return);
+    }
+
+    public function delete_carton()
+    {
+        $packinglist_id = $this->request->getGet('packinglist_id');
+        $carton_barcode_id = $this->request->getGet('carton_barcode_id');
+
+        $deleted_carton = $this->CartonBarcodeModel->deleteCarton($packinglist_id, $carton_barcode_id);
+        //## ketika delete carton, packinglist cartonnya juga di balikin ke flag_generate_carton = N sehingga terdeteksi sebagai belum generate. karena kalau sudah generate packinglist carton, maka tidak bisa generate ulang. untuk menghindari double generate
+        
+        $this->PackinglistCartonModel->where('packinglist_id', $packinglist_id)->set('flag_generate_carton', 'N')->update();
+        
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Succesfully delete '. count($deleted_carton).' carton',
+            'data' => $deleted_carton,
         ];
         return $this->response->setJSON($data_return);
     }

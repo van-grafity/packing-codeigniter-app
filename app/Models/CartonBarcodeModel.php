@@ -9,6 +9,7 @@ class CartonBarcodeModel extends Model
 {
     protected $table            = 'tblcartonbarcode';
     protected $useTimestamps    = true;
+    protected $useSoftDeletes   = true;
     protected $allowedFields    = [
         'packinglist_id',
         'packinglist_carton_id',
@@ -37,6 +38,8 @@ class CartonBarcodeModel extends Model
         $builder->groupBy('carton_barcode.id');
         $builder->orderBy('carton_number');
         $builder->where('pl_carton.packinglist_id', $packinglist_id);
+        $builder->where('carton_barcode.deleted_at', null);
+        $builder->where('pl_carton.deleted_at', null);
         $result = $builder->get()->getResult();
         return $result;
     }
@@ -177,5 +180,96 @@ class CartonBarcodeModel extends Model
 
         return $this->serialize_size_list($result);
 
+    }
+
+    public function unpackCarton($packinglist_id = null, $carton_barcode_id = null)
+    {
+        $updated_carton = [];
+        $carton_barcode_list = [];
+
+        $builder = $this->builder();
+        $builder->join('tblpackinglistcarton as pl_carton','pl_carton.id = tblcartonbarcode.packinglist_carton_id');
+        $builder->join('tblpackinglist as pl','pl.id = pl_carton.packinglist_id');
+        $builder->where('pl.id',$packinglist_id);
+        $builder->where('tblcartonbarcode.flag_packed','Y');
+        if($carton_barcode_id){
+            $builder->where('tblcartonbarcode.id',$carton_barcode_id);
+        }
+        $builder->select('tblcartonbarcode.*');
+        $carton_barcode_list = $builder->get()->getResultArray();
+        
+        $carton_barcode_id_list = array_column($carton_barcode_list, 'id');
+        if($carton_barcode_id_list){
+            $updated_carton = $this->whereIn('id', $carton_barcode_id_list)
+                ->set(['flag_packed' => 'N'])
+                ->update();
+        }
+
+        if($updated_carton){
+            return $carton_barcode_list;
+        } else {
+            return $carton_barcode_list;
+        }
+    }
+
+    public function clearBarcode($packinglist_id = null, $carton_barcode_id = null)
+    {
+        $updated_carton = [];
+        $carton_barcode_list = [];
+
+        $builder = $this->builder();
+        $builder->join('tblpackinglistcarton as pl_carton','pl_carton.id = tblcartonbarcode.packinglist_carton_id');
+        $builder->join('tblpackinglist as pl','pl.id = pl_carton.packinglist_id');
+        $builder->where('pl.id',$packinglist_id);
+        $builder->where('tblcartonbarcode.barcode !=', '');
+        if($carton_barcode_id){
+            $builder->where('tblcartonbarcode.id',$carton_barcode_id);
+        }
+        $builder->select('tblcartonbarcode.*');
+        $carton_barcode_list = $builder->get()->getResultArray();
+        
+        $carton_barcode_id_list = array_column($carton_barcode_list, 'id');
+        if($carton_barcode_id_list){
+            $updated_carton = $this->whereIn('id', $carton_barcode_id_list)
+                ->set(['barcode' => null])
+                ->update();
+        }
+
+        if($updated_carton){
+            return $carton_barcode_list;
+        } else {
+            return $carton_barcode_list;
+        }
+    }
+
+
+    public function deleteCarton($packinglist_id = null, $carton_barcode_id = null)
+    {
+        $updated_carton = [];
+        $carton_barcode_list = [];
+
+        $builder = $this->builder();
+        $builder->join('tblpackinglistcarton as pl_carton','pl_carton.id = tblcartonbarcode.packinglist_carton_id');
+        $builder->join('tblpackinglist as pl','pl.id = pl_carton.packinglist_id');
+        $builder->where('pl.id',$packinglist_id);
+        $builder->where('tblcartonbarcode.flag_packed','N');
+        $builder->where('tblcartonbarcode.barcode', '');
+        if($carton_barcode_id){
+            $builder->where('tblcartonbarcode.id',$carton_barcode_id);
+        }
+        $builder->select('tblcartonbarcode.*');
+        $carton_barcode_list = $builder->get()->getResultArray();
+        
+        $carton_barcode_id_list = array_column($carton_barcode_list, 'id');
+        if($carton_barcode_id_list){
+            $updated_carton = $this->whereIn('id', $carton_barcode_id_list)
+                ->delete();
+        }
+
+        if($updated_carton){
+            return $carton_barcode_list;
+        } else {
+            return $carton_barcode_list;
+        }
     }
 }

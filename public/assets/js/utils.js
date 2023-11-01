@@ -91,6 +91,23 @@ const show_flash_message = (session = {}) => {
     }
 }
 
+const swal_info = (data = { title: "Success", reload_option: false }) => {
+    const afterClose = () => {
+        if (data.reload_option == true) {
+            location.reload();
+        } else {
+            return false;
+        }
+    }
+    Swal.fire({
+        icon: "success",
+        title: data.title,
+        showConfirmButton: false,
+        timer: 2000,
+        didClose: afterClose,
+    });
+};
+
 const swal_failed = (data) => {
     Swal.fire({
         icon: "error",
