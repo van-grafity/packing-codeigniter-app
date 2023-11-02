@@ -106,7 +106,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <label for="rack" class="col-form-label mr-2">Rack :</label>
-                                    <select id="rack" name="rack" class="form-control" required>
+                                    <select id="rack" name="rack" class="form-control select2" required>
                                         <option value=""> Select Rack </option>
                                         <?php foreach ($racks as $rack) : ?>
                                             <option value="<?= $rack->id; ?>"><?= $rack->serial_number; ?></option>
@@ -131,6 +131,13 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
+    $('#rack.select2').select2({});
+
+    $('#rack.select2').on('select2:open', function (e) {
+        document.querySelector('.select2-search__field').focus();
+    });
+
+    
     $('#pallet_barcode_form').on('submit', async function(e) {
         e.preventDefault();
         let pallet_barcode = $('#pallet_barcode').val();

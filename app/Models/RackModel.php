@@ -103,11 +103,13 @@ class RackModel extends Model
 
         $gl_number_list = array_map(function ($gl) { return $gl->gl_number; }, $gl_list);
         $gl_number = implode(', ', $gl_number_list);
-
+        
         $buyer_name_list = array_map(function ($gl) { return $gl->buyer_name; }, $gl_list);
+        $buyer_name_list = array_unique($buyer_name_list);
         $buyer_name = implode(', ', $buyer_name_list);
 
         $po_list = array_map(function ($gl) { return $gl->po_no; }, $gl_list);
+        $po_list = array_unique($po_list);
         $po_no = implode(', ', $po_list);
 
         $result = (object)[

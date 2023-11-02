@@ -10,43 +10,41 @@ class RackSeeder extends Seeder
 
     public function run()
     {
-        $total_rack_a = 20;
-        $total_rack_b = 20;
         $count_id = 1;
-
         $data_racks = [];
-        for ($i=0; $i < $total_rack_a; $i++) {
-            $serial_code = 'RCK-A';
-            $rack_id = str_pad($i+1, 3, '0', STR_PAD_LEFT);
-            $rack_id = $serial_code . $rack_id;
-            
-            $rack = [
-                'id' => $count_id,
-                'serial_number' => $rack_id,
-                'description' => 'Level 1',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ];
-            $data_racks[] = $rack;
-            $count_id++;
-        }
 
-        for ($i=0; $i < $total_rack_b; $i++) {
-            $serial_code = 'RCK-B';
-            $rack_id = str_pad($i+1, 3, '0', STR_PAD_LEFT);
-            $rack_id = $serial_code . $rack_id;
-            
-            $rack = [
-                'id' => $count_id,
-                'serial_number' => $rack_id,
-                'description' => 'Level 2',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ];
-            $data_racks[] = $rack;
-            $count_id++;
-        }
+        $code_rack_per_type[0] = ['A','B'];
+        $code_rack_per_type[1] = ['C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S'];
+        $code_rack_per_type[2] = ['T'];
+        $code_rack_per_type[3] = ['U'];
+        
+        $total_rack_per_type[0] = 60; // ## Rack A dan B
+        $total_rack_per_type[1] = 66; // ## Rack C sampai S
+        $total_rack_per_type[2] = 78; // ## Rack T
+        $total_rack_per_type[3] = 48; // ## Rack U
 
+
+        foreach ($code_rack_per_type as $key_type => $code_rack_list) {
+            foreach ($code_rack_list as $key_rack => $code_rack) {
+
+                $total_rack = $total_rack_per_type[$key_type];
+                for ($i=0; $i < $total_rack; $i++) {
+                    $serial_code = 'RCK-'.$code_rack;
+                    $rack_id = str_pad($i+1, 3, '0', STR_PAD_LEFT);
+                    $rack_id = $serial_code . $rack_id;
+                    
+                    $rack = [
+                        'id' => $count_id,
+                        'serial_number' => $rack_id,
+                        'description' => 'Level 1',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ];
+                    $data_racks[] = $rack;
+                    $count_id++;
+                }
+            }
+        }
         $this->db->table($this->table)->insertBatch($data_racks);
     }
 }
