@@ -27,7 +27,7 @@ class LocationSeeder extends Seeder
             ],
             [
                 'id' => 3,
-                'location_name' => 'C-TPAT',
+                'location_name' => 'FG Warehouse',
                 'description' => 'Finish Good Warehouse. Building C',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),

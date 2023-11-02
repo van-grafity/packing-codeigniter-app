@@ -31,7 +31,7 @@ class RackInformation extends BaseController
     {
         $request_params = $this->request->getVar();
         $start = array_key_exists('start', $request_params) ? $request_params['start'] : 0;
-        $length = array_key_exists('length', $request_params) ? $request_params['length'] : 100;
+        $length = array_key_exists('length', $request_params) ? $request_params['length'] : 2000;
         $page =  $start + 1;
         $draw = array_key_exists('draw', $request_params) ? $request_params['draw'] : 1;
 
