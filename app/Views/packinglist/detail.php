@@ -374,130 +374,13 @@
 
 <?= $this->Section('page_script'); ?>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        // ## prevent submit form when keyboard press enter
-        $('#packinglist_form input').on('keyup keypress', function(e) {
-            var keyCode = e.keyCode || e.which;
-            if (keyCode === 13) {
-                e.preventDefault();
-                return false;
-            }
-        });
-
-        $('#btn_modal_create').on('click', function(e) {
-            clear_form({
-                modal_id: 'packinglist_modal',
-                modal_title: "Add New Carton",
-                modal_btn_submit: "Add Carton to Packing List",
-                form_action_url: store_url,
-            });
-
-            // ## Add empty tr when no product selected
-            // if(is_table_empty()) {
-            //     clear_carton_contents();
-            // }
-
-            let date_today = new Date().toJSON().slice(0, 10);
-            $('#packinglist_date').val(date_today);
-            $('#carton_qty').val(0);
-            $('#ship_qty').val(0);
-            $('#gross_weight').val(0);
-            $('#net_weight').val(0);
-            clear_carton_contents();
-            update_total_pcs();
-
-            $('#packinglist_modal').modal('show');
-        });
-
-        $('.btn-delete').on('click', function() {
-            let id = $(this).data('id');
-            $('#packinglist_carton_id').val(id);
-            if (id) {
-                $('#delete_message').text(`Are you sure want to delete this Carton?`);
-            }
-            $('#deleteModal').modal('show');
-        });
-
-        // ## Set Product Detail Info on Product Code change
-        $('#product').on('change', function(event) {
-            let selected_option = $(this).find($('option:selected'));
-
-            let product_name = selected_option.data('product-name');
-            let product_colour = selected_option.data('colour');
-            let product_style = selected_option.data('style');
-            let product_size = selected_option.data('size');
-            let product_category = selected_option.data('category');
-            let product_price = selected_option.data('price');
-
-            if ($(this).val()) {
-                $('#product_name').text(': ' + product_name);
-                $('#product_colour').text(': ' + product_colour);
-                $('#product_style').text(': ' + product_style);
-                $('#product_size').text(': ' + product_size);
-                $('#product_category').text(': ' + product_category);
-                $('#product_price').text(': ' + product_price);
-            } else {
-                $('#product_name').text(': ');
-                $('#product_colour').text(': ');
-                $('#product_style').text(': ');
-                $('#product_size').text(': ');
-                $('#product_category').text(': ');
-                $('#product_price').text(': ');
-            }
-        });
-
-        $('#btn_add_product').on('click', function() {
-            if (!$('#product').val()) {
-                alert('Please select a product');
-                return false;
-            }
-
-            if (!$('#product_qty').val()) {
-                alert('Please provide a quantity for the product');
-                return false;
-            }
-
-            if (is_product_already_added()) {
-                alert('Product already added!');
-                return false;
-            }
-
-            // ## if table empty replace default row to new data at the first row
-            if (is_table_empty()) {
-                clear_carton_contents('empty');
-            }
-
-            let data_element = {
-                product_id: $('#product').val(),
-                product_code: $('#product option:selected').text(),
-                product_name: $('#product_name').text(),
-                product_colour: $('#product_colour').text(),
-                product_style: $('#product_style').text(),
-                product_size: $('#product_size').text(),
-                product_category: $('#product_category').text(),
-                product_price: $('#product_price').text(),
-                product_qty: parseInt($('#product_qty').val()),
-            }
-            let element_tr = create_element_tr(data_element);
-            $('#table_carton_contents tbody').append(element_tr);
-
-            $('#product').val('').trigger('change');
-            $('#product_qty').val('0');
-            update_total_pcs()
-        });
-
-        $('#carton_qty').on('input', function() {
-            update_ship_qty();
-        });
-
-    })
-</script>
 
 <script type="text/javascript">
     const store_url = '<?= base_url('packinglistcarton/store') ?>';
     const edit_url = '<?= base_url('packinglistcarton/edit') ?>';
     const update_url = '<?= base_url('packinglistcarton/update') ?>';
+
+    let product_detail_preview = {};
 
     function create_element_tr(data) {
         let element = `
@@ -615,25 +498,142 @@
         $('#measurement_ctn').val(packinglist_carton.measurement_ctn);
         $('#edit_packinglist_carton_id').val(packinglist_carton.id);
 
-
-        // result = await get_using_fetch(url_edit);
-        // form = $('#buyer_form')
-        // form.append('<input type="hidden" name="_method" value="PUT">');
-        // $('#modal_formLabel').text("Edit Buyer");
-        // $('#btn_submit').text("Save");
-        // $('#modal_form').modal('show')
-
-        // let url_update = update_url.replace(':id',buyer_id);
-        // form.attr('action', url_update);
-        // form.find('input[name="name"]').val(result.name);
-        // form.find('input[name="address"]').val(result.address);
-        // form.find('input[name="shipment_address"]').val(result.shipment_address);
-        // form.find('input[name="code"]').val(result.code);
-
         $('#packinglist_modal').modal('show');
 
         update_total_pcs()
         update_ship_qty();
     }
 </script>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        // ## prevent submit form when keyboard press enter
+        $('#packinglist_form input').on('keyup keypress', function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        $('#btn_modal_create').on('click', function(e) {
+            clear_form({
+                modal_id: 'packinglist_modal',
+                modal_title: "Add New Carton",
+                modal_btn_submit: "Add Carton to Packing List",
+                form_action_url: store_url,
+            });
+
+            let date_today = new Date().toJSON().slice(0, 10);
+            $('#packinglist_date').val(date_today);
+            $('#carton_qty').val(0);
+            $('#ship_qty').val(0);
+            $('#gross_weight').val(0);
+            $('#net_weight').val(0);
+            clear_carton_contents();
+            update_total_pcs();
+
+            $('#packinglist_modal').modal('show');
+        });
+
+        $('.btn-delete').on('click', function() {
+            let id = $(this).data('id');
+            $('#packinglist_carton_id').val(id);
+            if (id) {
+                $('#delete_message').text(`Are you sure want to delete this Carton?`);
+            }
+            $('#deleteModal').modal('show');
+        });
+
+        // ## Set Product Detail Info on Product Code change
+        $('#product').on('change', function(event) {
+            let selected_option = $(this).find($('option:selected'));
+
+            let product_name = selected_option.data('product-name');
+            let product_colour = selected_option.data('colour');
+            let product_style = selected_option.data('style');
+            let product_size = selected_option.data('size');
+            let product_category = selected_option.data('category');
+            let product_price = selected_option.data('price');
+
+            if ($(this).val()) {
+                $('#product_name').text(': ' + product_name);
+                $('#product_colour').text(': ' + product_colour);
+                $('#product_style').text(': ' + product_style);
+                $('#product_size').text(': ' + product_size);
+                $('#product_category').text(': ' + product_category);
+                $('#product_price').text(': ' + product_price);
+
+                product_detail_preview = {
+                    product_name,
+                    product_colour,
+                    product_style,
+                    product_size,
+                    product_category,
+                    product_price,
+                }
+
+            } else {
+                $('#product_name').text(': ');
+                $('#product_colour').text(': ');
+                $('#product_style').text(': ');
+                $('#product_size').text(': ');
+                $('#product_category').text(': ');
+                $('#product_price').text(': ');
+
+                product_detail_preview = {};                
+            }
+
+            console.log(product_detail_preview);
+        });
+
+        $('#btn_add_product').on('click', function() {
+            if (!$('#product').val()) {
+                alert('Please select a product');
+                return false;
+            }
+
+            if (!$('#product_qty').val()) {
+                alert('Please provide a quantity for the product');
+                return false;
+            }
+
+            if (is_product_already_added()) {
+                alert('Product already added!');
+                return false;
+            }
+
+            // ## if table empty replace default row to new data at the first row
+            if (is_table_empty()) {
+                clear_carton_contents('empty');
+            }
+
+            let data_element = {
+                product_id: $('#product').val(),
+                product_code: $('#product option:selected').text(),
+                product_name: $('#product_name').text(),
+                product_colour: product_detail_preview.product_colour,
+                product_style: $('#product_style').text(),
+                product_size: product_detail_preview.product_size,
+                product_category: $('#product_category').text(),
+                product_price: $('#product_price').text(),
+                product_qty: parseInt($('#product_qty').val()),
+            }
+            let element_tr = create_element_tr(data_element);
+            $('#table_carton_contents tbody').append(element_tr);
+
+            $('#product').val('').trigger('change');
+            $('#product_qty').val('0');
+            update_total_pcs()
+        });
+
+        $('#carton_qty').on('input', function() {
+            update_ship_qty();
+        });
+
+    })
+</script>
+
+
 <?= $this->endSection('page_script'); ?>

@@ -69,9 +69,9 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="location_to" class="col-form-label">From :</label>
+                        <label for="location_to" class="col-form-label">To :</label>
                         <select id="location_to" name="location_to" class="form-control" required disabled>
-                            <option value="">Select Location From </option>
+                            <option value="">Select Location To </option>
                             <?php foreach ($location as $location_to) : ?>
                                 <option value="<?= $location_to->id; ?>"><?= $location_to->location_name; ?></option>
                             <?php endforeach; ?>
