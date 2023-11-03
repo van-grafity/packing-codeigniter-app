@@ -97,7 +97,7 @@ class RackModel extends Model
         $builder->join('tblgl as gl', 'gl.id = gl_po.gl_id');
         $builder->join('tblbuyer as buyer', 'buyer.id = gl.buyer_id');
         $builder->where('pallet_transfer.id', $pallet_transfer_id);
-        $builder->groupBy('gl.id');
+        $builder->groupBy('gl.id, po.po_no');
         $builder->select('gl.gl_number, buyer.buyer_name, po.po_no');
         $gl_list = $builder->get()->getResult();
 
