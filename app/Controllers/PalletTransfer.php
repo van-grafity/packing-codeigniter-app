@@ -225,7 +225,7 @@ class PalletTransfer extends BaseController
             'issued_by' => $data_input['transfer_note_issued_by'],
             'authorized_by' => $data_input['transfer_note_authorized_by'],
         ];
-        $this->PalletTransferModel->transException(true)->transStart();
+        $this->TransferNoteModel->transException(true)->transStart();
         $transfer_note_id = $this->TransferNoteModel->insert($transfer_note_data);
         
         if(array_key_exists("carton_barcode_id",$data_input)){
@@ -236,7 +236,12 @@ class PalletTransfer extends BaseController
             $this->TransferNoteDetailModel->transComplete();
         }
 
-        $this->PalletTransferModel->transComplete();
+        $this->TransferNoteModel->transComplete();
+
+        // ## update status pallet
+        $pallet_transfer = $this->PalletTransferModel->find($data_input['pallet_transfer_id']);
+        $this->PalletModel->update($pallet_transfer->pallet_id, ['flag_empty' => 'N']);
+
         
         return redirect()->to("pallet-transfer/" . $data_input['pallet_transfer_id'] . "/transfer-note")->with('success', "Successfully added Transfer Note");
     }
@@ -274,13 +279,21 @@ class PalletTransfer extends BaseController
     public function transfer_note_delete()
     {
         $data_input = $this->request->getPost();
+        
         $transfer_note_id = $data_input['delete_transfer_note_id'];
         $pallet_transfer_id = $data_input['transfer_note_pallet_transfer_id'];
+        $pallet_transfer = $this->PalletTransferModel->find($pallet_transfer_id);
         
         try {
             $this->TransferNoteModel->transException(true)->transStart();
             $delete_data = $this->TransferNoteModel->deleteTransferNote($transfer_note_id);
             $this->TransferNoteModel->transComplete();
+
+            // ## check transfer note in pallet transfer
+            $transfer_note_list = $this->PalletTransferModel->getTransferNotes($pallet_transfer_id);
+            if(empty($transfer_note_list)) {
+                $this->PalletModel->update($pallet_transfer->pallet_id, ['flag_empty' => 'Y']);
+            }
             
             return redirect()->to("pallet-transfer/" . $pallet_transfer_id . "/transfer-note")->with('success', "Successfully deleted Transfer Note");
         } catch (\Throwable $th) {

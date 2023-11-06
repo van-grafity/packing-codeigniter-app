@@ -138,6 +138,7 @@ class PalletTransferModel extends Model
     {
         $builder = $this->db->table('tbltransfernote');
         $builder->where('pallet_transfer_id', $pallet_transfer_id);
+        $builder->where('tbltransfernote.deleted_at', null);
         $result = $builder->get()->getResult();
         return $result;
     }

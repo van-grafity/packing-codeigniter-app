@@ -582,7 +582,7 @@ class PurchaseOrder extends BaseController
             }
             
             // ## Tamabahan untuk sync GL dan PO menjadi 1 baris di table tblsyncpurchaseorder
-            // ## dibuat di sini agar mengurangi jumlah sync nya. kalau di taruh di looping atas akan berulang sebanyak product. kalau di taruh di bawha ini akan berulang sesuai jumlah PO yang unique
+            // ## dibuat di sini agar mengurangi jumlah sync nya. kalau di taruh di looping atas akan berulang sebanyak product. kalau di taruh di bawah ini akan berulang sesuai jumlah PO yang unique
 
             $po_id_list = array_unique($po_id_list);
             foreach ($po_id_list as $key => $po_id) {
