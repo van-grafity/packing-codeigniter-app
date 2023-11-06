@@ -272,7 +272,7 @@ $('#pallet_transfer_table').DataTable({
     columns: [
         { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
         { data: 'pallet_serial_number', name: 'pallet.serial_number'},
-        { data: 'transfer_note', name: 'transfer_note.serial_number'},
+        { data: 'transfer_note', name: 'transfer_note.serial_number', orderable: false, searchable: false},
         { data: 'total_carton', name: 'total_carton', orderable: false, searchable: false },
         { data: 'location_from', name: 'location_from.location_name' },
         { data: 'location_to', name: 'location_to.location_name' },

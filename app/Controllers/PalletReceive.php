@@ -50,12 +50,22 @@ class PalletReceive extends BaseController
 
                 if($row->flag_transferred == 'Y') {
                     $action_button = '
-                        <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1 disabled">Receive</a>
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Already Received">
+                            <a class="btn btn-primary btn-sm mb-1 disabled" style="pointer-events: none;" type="button" disabled>Receive</a>
+                        </span>
                     ';
                 } else {
-                    $action_button = '
-                        <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1" onclick="receive_pallet('. $row->id .')">Receive</a>
-                    ';
+                    if($row->total_carton <= 0) {
+                        $action_button = '
+                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="The Pallet Still Empty">
+                                <a class="btn btn-primary btn-sm mb-1 disabled" style="pointer-events: none;" type="button" disabled>Receive</a>
+                            </span>
+                        ';
+                    } else {
+                        $action_button = '
+                            <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1" onclick="receive_pallet('. $row->id .')">Receive</a>
+                        ';
+                    }
                 }
                 return $action_button;
 
@@ -64,7 +74,7 @@ class PalletReceive extends BaseController
                 $transfer_note_list = $this->TransferNoteModel->where('pallet_transfer_id', $row->id)->findAll();
                 
                 foreach ($transfer_note_list as $key => $transfer_note) {
-                    $transfer_note_pill ='<a class="btn btn-sm bg-info mb-2">'. $transfer_note->serial_number .'</a>'; 
+                    $transfer_note_pill ='<a href="'. url_to('pallet_transfer_transfer_note_print',$transfer_note->id) .'" class="btn btn-sm bg-info" target="_blank" data-toggle="tooltip" data-placement="top" title="Click to Print">'. $transfer_note->serial_number .'</a>'; 
                     $transfer_note_result = $transfer_note_result . ' ' . $transfer_note_pill;
                 }
                 
@@ -81,7 +91,7 @@ class PalletReceive extends BaseController
                 return $rack;
 
             })->postQuery(function ($pallet_list) {
-                $pallet_list->orderBy('tblpallettransfer.created_at');
+                $pallet_list->orderBy('tblpallettransfer.created_at', 'DESC');
             })->toJson(true);
     }
 

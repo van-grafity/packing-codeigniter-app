@@ -23,6 +23,8 @@ class PalletReceiveModel extends Model
     public function getDatatable()
     {
         $builder = $this->db->table($this->table);
+        
+        // ## Join tabel dengan alias
         $builder->join('tblpallet as pallet', 'pallet.id = tblpallettransfer.pallet_id');
         $builder->join('tbltransfernote as transfer_note', 'transfer_note.pallet_transfer_id = tblpallettransfer.id','left');
         $builder->join('tbltransfernotedetail as transfer_note_detail', 'transfer_note_detail.transfer_note_id = transfer_note.id','left');
@@ -30,8 +32,23 @@ class PalletReceiveModel extends Model
         $builder->join('tblrack as rack', 'rack.id = rack_pallet.rack_id','left');
         $builder->join('tbllocation as location_from','location_from.id = tblpallettransfer.location_from_id');
         $builder->join('tbllocation as location_to','location_to.id = tblpallettransfer.location_to_id');
+        $builder->where('tblpallettransfer.deleted_at',null);
+
+        // ## Memilih kolom dengan alias
+        $builder->select([
+            'tblpallettransfer.id', 
+            'pallet.serial_number as pallet_serial_number', 
+            'location_from.location_name as location_from', 
+            'location_to.location_name as location_to', 
+            'SUM(CASE WHEN transfer_note_detail.deleted_at IS NULL THEN 1 ELSE 0 END) as total_carton', 
+            'tblpallettransfer.flag_transferred', 
+            'tblpallettransfer.flag_loaded',
+            'rack.serial_number as rack_serial_number'
+        ]);
+        
+        // ## Mengelompokkan berdasarkan pallet transfer id dan rack. harus dua dua nya biar karena type sql nya full group
         $builder->groupBy('tblpallettransfer.id, rack.serial_number');
-        $builder->select('tblpallettransfer.id, pallet.serial_number as pallet_serial_number, location_from.location_name as location_from, location_to.location_name as location_to, count(transfer_note_detail.id) as total_carton, tblpallettransfer.flag_transferred, tblpallettransfer.flag_loaded, rack.serial_number as rack_serial_number');
+        
         return $builder;
     }
 

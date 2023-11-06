@@ -60,7 +60,7 @@ class PalletTransfer extends BaseController
                 $transfer_note_list = $this->TransferNoteModel->where('pallet_transfer_id', $row->id)->findAll();
                 
                 foreach ($transfer_note_list as $key => $transfer_note) {
-                    $transfer_note_pill ='<a class="btn btn-sm bg-info">'. $transfer_note->serial_number .'</a>'; 
+                    $transfer_note_pill ='<a href="'. url_to('pallet_transfer_transfer_note_print',$transfer_note->id) .'" class="btn btn-sm bg-info" target="_blank" data-toggle="tooltip" data-placement="top" title="Click to Print">'. $transfer_note->serial_number .'</a>'; 
                     $transfer_note_result = $transfer_note_result . ' ' . $transfer_note_pill;
                 }
                 
@@ -71,7 +71,7 @@ class PalletTransfer extends BaseController
                 return $status;
 
             })->postQuery(function ($pallet_list) {
-                $pallet_list->orderBy('tblpallettransfer.created_at');
+                $pallet_list->orderBy('tblpallettransfer.created_at', 'DESC');
             })->toJson(true);
     }
 
