@@ -130,6 +130,12 @@ class PalletTransfer extends BaseController
     public function delete()
     {
         $pallet_transfer_id = $this->request->getPost('pallet_transfer_id');
+        $is_transfered = $this->PalletTransferModel->isTransferred($pallet_transfer_id);
+        
+        if($is_transfered) {
+            return redirect()->to('pallet-transfer')->with('error', "Can't delete. This Pallet has been transferred to FG Warehouse");
+        }
+        
         try {
             $this->PalletTransferModel->transException(true)->transStart();
             $delete_data = $this->PalletTransferModel->deletePalletTransfer($pallet_transfer_id);
@@ -409,7 +415,7 @@ class PalletTransfer extends BaseController
             'data' => [
                 'pallet_status' => false,
                 'feedback_title' => 'Pallet is not Available!',
-                'feedback_message' => 'This Pallet has been used. Please Check at Pallet to Transfer List',
+                'feedback_message' => 'This Pallet has been used. Please Check on Pallet to Transfer List',
             ]
         ];
         return $this->response->setJSON($data_return);

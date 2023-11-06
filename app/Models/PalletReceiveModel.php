@@ -81,6 +81,7 @@ class PalletReceiveModel extends Model
         $carton_list = [];
         foreach ($transfer_notes as $key => $transfer_note) {
             $carton_in_transfer_note = $TransferNoteModel->getCartonInTransferNote($transfer_note->transfer_note_id);
+            if(!$carton_in_transfer_note) { continue; }
             foreach ($carton_in_transfer_note as $key => $carton) {
                 $carton_list[] = $carton;
             }

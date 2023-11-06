@@ -10,6 +10,7 @@ class TransferNoteModel extends Model
     protected $table         = 'tbltransfernote';
     protected $returnType    = 'object';
     protected $useTimestamps = true;
+    protected $useSoftDeletes   = true;
     protected $allowedFields = ['pallet_transfer_id','serial_number','issued_by','authorized_by','received_by','received_at'];
 
     public function getTransferNote($transfer_note_id = null)
@@ -49,6 +50,7 @@ class TransferNoteModel extends Model
         
         $builder->orderBy('carton_barcode.carton_number_by_system', 'ASC');
         $builder->where('transfer_note.id', $transfer_note_id);
+        $builder->where('transfer_note_detail.deleted_at', null);
         $builder->select('carton_barcode.id as carton_id, carton_barcode.flag_packed, carton_barcode.barcode as carton_barcode, po.po_no as po_number, packinglist.id as packinglist_id, packinglist.packinglist_serial_number as pl_number, carton_barcode.carton_number_by_system as carton_number');
         $carton_list = $builder->get()->getResult();
         
@@ -82,6 +84,7 @@ class TransferNoteModel extends Model
     {
         $builder = $this->db->table('tblcartonbarcode as carton_barcode');
         $builder->join('tbltransfernotedetail as transfer_note_detail', 'transfer_note_detail.carton_barcode_id = carton_barcode.id');
+        $builder->where('transfer_note_detail.deleted_at', null);
         $builder->where('carton_barcode.barcode', $carton_barcode);
         $result = $builder->get()->getResult();
         
@@ -117,7 +120,8 @@ class TransferNoteModel extends Model
         $builder->join('tblpackinglist as packinglist','packinglist.id = packinglist_carton.packinglist_id');
         $builder->join('tblpurchaseorder as po','po.id = packinglist.packinglist_po_id');
         $builder->where('transfer_note_detail.transfer_note_id', $transfer_note_id);
-        $builder->select('po.id as po_id, po.po_no as po_number, carton_barcode.packinglist_carton_id, count(carton_barcode.id) as total_carton');
+        $builder->where('transfer_note_detail.deleted_at', null);
+        $builder->select('po.id as po_id, po.po_no as po_number, carton_barcode.packinglist_carton_id, SUM(CASE WHEN transfer_note_detail.deleted_at IS NULL THEN 1 ELSE 0 END) as total_carton');
         $builder->groupBy('packinglist_carton.id');
         $transfer_note_detail = $builder->get()->getResult();
 
