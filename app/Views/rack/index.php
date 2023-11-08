@@ -38,6 +38,8 @@
                         <tr class="table-primary">
                             <th width="">No</th>
                             <th width="">Serial Number</th>
+                            <th width="">Area</th>
+                            <th width="">Level</th>
                             <th width="">Description</th>
                             <th width="">Status</th>
                             <th width="">Action</th>
@@ -70,6 +72,24 @@
                     <div class="form-group">
                         <label for="serial_number" class="col-form-label">Serial Number</label>
                         <input type="text" class="form-control" id="serial_number" name="serial_number" placeholder="RCK-A001" autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label for="area" class="col-form-label">Area :</label>
+                        <select id="area" name="area" class="form-control select2" required>
+                            <option value=""> Select Area </option>
+                            <?php foreach ($area_options as $area) : ?>
+                                <option value="<?= $area; ?>">Area <?= $area; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="level" class="col-form-label">Level :</label>
+                        <select id="level" name="level" class="form-control select2" required>
+                            <option value=""> Select Level </option>
+                            <?php foreach ($level_options as $level) : ?>
+                                <option value="<?= $level; ?>">Level <?= $level; ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-form-label">Description</label>
@@ -137,6 +157,8 @@
 
         rack_data = result.data
         $('#serial_number').val(rack_data.serial_number);
+        $('#area').val(rack_data.area).trigger('change');
+        $('#level').val(rack_data.level).trigger('change');
         $('#description').val(rack_data.description);
         $('#location').val(rack_data.location);
         $('#edit_rack_id').val(rack_data.id);
@@ -172,6 +194,8 @@ $(document).ready(function() {
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'serial_number', name: 'rack.serial_number'},
+            { data: 'area', name: 'rack.area'},
+            { data: 'level', name: 'rack.level'},
             { data: 'description', name: 'rack.description'},
             { data: 'status', name: 'rack.flag_empty', orderable: false, searchable: false },
             { data: 'action', name: 'action', orderable: false, searchable: false },
@@ -185,10 +209,40 @@ $(document).ready(function() {
         searching: true,
         autoWidth: false,
         orderCellsTop: true,
+        dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>" +
+            "<'row'<'col-md-12'tr>>" +
+            "<'row'<'col-md-5'i><'col-md-7'p>>",
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                }
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                }
+            },
+        ]
     });
 
     $('#rack_status').change(function(event) {
         rack_table.ajax.reload();
+    });
+
+    $('select.select2').select2({
+        dropdownParent: $('#modal_rack')
+    });
+    $('select.select2').on('select2:open', function (e) {
+        document.querySelector('.select2-search__field').focus();
     });
 
 })

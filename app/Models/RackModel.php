@@ -23,7 +23,7 @@ class RackModel extends Model
     public function getDatatable()
     {
         $builder = $this->db->table('tblrack as rack');
-        $builder->select('id, serial_number, description, flag_empty');
+        $builder->select('id, serial_number, description, area, level, flag_empty');
         return $builder;
     }
 

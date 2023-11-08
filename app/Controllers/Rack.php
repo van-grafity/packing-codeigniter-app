@@ -18,9 +18,14 @@ class Rack extends BaseController
     }
     public function index()
     {
+        $level_options = [1,2,3];
+        $area_options = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O','P', 'Q', 'R', 'S', 'T', 'U'];
+
         $data = [
             'title' => 'Rack List',
             'action_field_class' => '',
+            'level_options' => $level_options,
+            'area_options' => $area_options,
         ];
         
         return view('rack/index', $data);
@@ -37,6 +42,10 @@ class Rack extends BaseController
                     <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="delete_rack('. $row->id .')">Delete</a>
                 ';
                 return $action_button;
+            })->edit('area', function($row){
+                return 'Area '.$row->area;
+            })->edit('level', function($row){
+                return 'Level '.$row->level;
             })->add('status', function($row){
                 $pill_element = '';
                 if($row->flag_empty == 'Y') {
