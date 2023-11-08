@@ -199,7 +199,7 @@
                                 <a href="#" class="nav-link">
                                     <i class="nav-icon fas fa-boxes"></i>
                                     <p>
-                                        Carton & Ratio
+                                        Carton Barcode
                                         <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
@@ -207,7 +207,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="<?= base_url('cartonbarcode') ?>">
                                             <i class="nav-icon far fa-circle"></i>
-                                            <p>Carton Barcode & Rasio</p>
+                                            <p>Set Carton Barcode</p>
                                         </a>
                                     </li>
                                 </ul>
