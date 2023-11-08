@@ -10,7 +10,7 @@ class RackModel extends Model
     protected $table         = 'tblrack';
     protected $returnType    = 'object';
     protected $useTimestamps = true;
-    protected $allowedFields = ['serial_number','description','flag_empty'];
+    protected $allowedFields = ['serial_number','area','level','description','flag_empty'];
 
     public function getRack($rack_id = null)
     {

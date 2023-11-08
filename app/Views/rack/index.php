@@ -13,21 +13,59 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4 col-md-2">
                         <a href="javascript:void(0)" type="button" class="btn btn-success mb-2" id="btn-add-rack" onclick="add_new_rack()">New Rack</a>
                     </div>
-                    <div class="col-sm-6 dt-custom-filter">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-sm-8 label">
-                                    <div>Status</div>
+                    <div class="col-sm-8 col-md-10 dt-custom-filter">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-6 label">
+                                            <div>Area</div>
+                                        </div>
+                                        <div class="col-md-9 col-sm-6">
+                                            <select name="filter_area" id="filter_area" class="form-control" >
+                                                <option value=""> All Area </option>
+                                                <?php foreach ($area_options as $area) : ?>
+                                                    <option value="<?= $area; ?>">Area <?= $area; ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <select name="rack_status" id="rack_status" class="form-control" required >
-                                        <option value="">All Status</option>
-                                        <option value="Y"> Empty </option>
-                                        <option value="N"> Not Empty </option>
-                                    </select>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-6 label">
+                                            <div>Level</div>
+                                        </div>
+                                        <div class="col-md-9 col-sm-6">
+                                            <select name="filter_level" id="filter_level" class="form-control" >
+                                                <option value="">All Level</option>
+                                                <?php foreach ($level_options as $level) : ?>
+                                                    <option value="<?= $level; ?>">Level <?= $level; ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-6 label">
+                                            <div>Status</div>
+                                        </div>
+                                        <div class="col-md-9 col-sm-6">
+                                            <select name="filter_status" id="filter_status" class="form-control" >
+                                                <option value="">All Status</option>
+                                                <option value="Y"> Empty </option>
+                                                <option value="N"> Not Empty </option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -187,7 +225,9 @@ $(document).ready(function() {
         ajax: {
             url: index_dt_url,
             data: function (d) {
-                d.rack_status = $('#rack_status').val();
+                d.filter_area = $('#filter_area').val();
+                d.filter_level = $('#filter_level').val();
+                d.filter_status = $('#filter_status').val();
             }
         },
         order: [],
@@ -234,7 +274,7 @@ $(document).ready(function() {
         ]
     });
 
-    $('#rack_status').change(function(event) {
+    $('#filter_area, #filter_level, #filter_status').change(function(event) {
         rack_table.ajax.reload();
     });
 

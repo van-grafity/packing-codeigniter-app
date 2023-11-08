@@ -56,8 +56,12 @@ class Rack extends BaseController
                 return $pill_element;
             })->filter(function ($builder, $request) {
                 
-                if ($request->rack_status)
-                    $builder->where('flag_empty', $request->rack_status);
+                if ($request->filter_area)
+                    $builder->where('area', $request->filter_area);
+                if ($request->filter_level)
+                    $builder->where('level', $request->filter_level);
+                if ($request->filter_status)
+                    $builder->where('flag_empty', $request->filter_status);
 
             })->toJson(true);
     }
@@ -79,6 +83,8 @@ class Rack extends BaseController
     {
         $data = array(
             'serial_number' => $this->request->getVar('serial_number'),
+            'area' => $this->request->getVar('area'),
+            'level' => $this->request->getVar('level'),
             'description'   => $this->request->getVar('description'),
         );
         $this->RackModel->save($data);
@@ -90,6 +96,8 @@ class Rack extends BaseController
         $id = $this->request->getVar('edit_rack_id');
         $data = array(
             'serial_number' => $this->request->getVar('serial_number'),
+            'area' => $this->request->getVar('area'),
+            'level' => $this->request->getVar('level'),
             'description'   => $this->request->getVar('description'),
         );
 
