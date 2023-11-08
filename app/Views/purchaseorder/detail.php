@@ -42,7 +42,7 @@
                             <td width=20%><b>GL Number :</b></td>
                             <td><?= $purchase_order->gl_number ?></td>
                         </tr>
-                        <tr>
+                        <tr class="<?= $action_field_class; ?>">
                             <td><b>PO Amount :</b></td>
                             <td><?= number_to_currency($purchase_order->po_amount, 'USD', 'en_USD', 2); ?></td>
                         </tr>
@@ -68,16 +68,16 @@
                             <!-- <div class="tab-content" id="custom-tabs-three-tabContent"> -->
                             <div class="card-body">
                                 <button type="button" class="btn btn-secondary mb-2" id="btn-add-detail">Add Product</button>
-                                <table class="table table-bordered table-striped">
+                                <table class="table table-bordered table-striped text-center">
                                     <thead>
                                         <tr class="table-primary">
                                             <th class="text-center align-middle">Product No.</th>
                                             <th class="text-center align-middle">Product Type</th>
                                             <th class="text-center align-middle">Style</th>
                                             <th class="text-center align-middle">Size</th>
-                                            <th class="text-center align-middle">Unit Price</th>
+                                            <th class="text-center align-middle <?= $action_field_class; ?>">Unit Price</th>
                                             <th class="text-center align-middle">Qty Ordered</th>
-                                            <th class="text-center align-middle">Total Amount</th>
+                                            <th class="text-center align-middle <?= $action_field_class; ?>">Total Amount</th>
                                             <th class="text-center align-middle">Action</th>
                                         </tr>
                                     </thead>
@@ -88,9 +88,9 @@
                                                 <td><?= $detail->category_name ?></td>
                                                 <td><?= $detail->style_no ?></td>
                                                 <td><?= $detail->size ?></td>
-                                                <td><?= number_to_currency($detail->product_price, 'USD', 'en_US', 2); ?></td>
+                                                <td class="<?= $action_field_class; ?>" ><?= number_to_currency($detail->product_price, 'USD', 'en_US', 2); ?></td>
                                                 <td><?= $detail->qty ?></td>
-                                                <td><?= number_to_currency($detail->total_amount, 'USD', 'en_US', 2); ?></td>
+                                                <td class="<?= $action_field_class; ?>" ><?= number_to_currency($detail->total_amount, 'USD', 'en_US', 2); ?></td>
                                                 <td class="text-center">
                                                     <a class="btn btn-warning btn-sm btn-edit" data-id="<?= $detail->id ?>" data-product-id="<?= $detail->product_id ?>" data-product-code="<?= $detail->product_code ?>" data-product-name="<?= $detail->product_name ?>" data-order-qty="<?= $detail->qty ?>" data-total-amount="<?= $detail->total_amount ?>">Edit</a>
                                                     <a class="btn btn-danger btn-sm btn-delete" data-id="<?= $detail->id ?>" data-product-code="<?= $detail->product_code ?>">Delete</a>

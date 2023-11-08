@@ -152,11 +152,18 @@ class PurchaseOrder extends BaseController
 
     public function detail($id = null)
     {
+        if (in_array(session()->get('role'), ['superadmin', 'admin','merchandiser'])) {
+            $action_field_class = '';
+        } else {
+            $action_field_class = 'd-none';
+        }
+
         $data = [
             'title'     => 'Purchase Order Detail',
             'purchase_order'   => $this->PurchaseOrderModel->getPurchaseOrder($id),
             'purchase_order_details'   => $this->PurchaseOrderModel->getPODetails($id),
             'products'   => $this->ProductModel->getProduct()->getResult(),
+            'action_field_class' => $action_field_class,
         ];
         return view('purchaseorder/detail', $data);
     }
