@@ -23,7 +23,7 @@
                             <th class="">GL Number</th>
                             <th class="">Ship Date</th>
                             <th class="">Total Qty</th>
-                            <th class=" <?= $action_field_class; ?>">Action</th>
+                            <th class="">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -341,7 +341,7 @@
             dropdownParent: $('#add_modal')
         });
 
-        $('#purchase_order_table').DataTable({
+        let purchase_order_table = $('#purchase_order_table').DataTable({
             processing: true,
             serverSide: true,
             ajax: index_dt_url,
@@ -388,6 +388,12 @@
                 },
             ]
         });
+
+        // ## hide the action column when user login was not authorized role
+        let action_field_class = '<?= $action_field_class ?>'
+        if(action_field_class == 'd-none') {
+            purchase_order_table.column(6).visible(false);
+        }
     });
 </script>
 <?= $this->endSection(); ?>
