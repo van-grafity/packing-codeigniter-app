@@ -69,6 +69,7 @@ class CartonBarcodeModel extends Model
         $builder->join('tblsize as size', 'size.id = product.product_size_id');
         $builder->join('tblcolour as colour', 'colour.id = product.product_colour_id');
         $builder->where('carton_barcode.id', $carton_id);
+        $builder->where('carton_detail.deleted_at', null);
         $builder->orderBy('size.id', 'asc');
         $result = $builder->get()->getResult();
 
