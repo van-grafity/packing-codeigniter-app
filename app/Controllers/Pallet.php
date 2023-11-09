@@ -63,7 +63,7 @@ class Pallet extends BaseController
 
         $data_return = [
             'status' => 'success',
-            'message' => 'Succesfully retrieved pallet data',
+            'message' => 'Successfully retrieved pallet data',
             'data' => $pallet,
         ];
         return $this->response->setJSON($data_return);

@@ -175,7 +175,7 @@ class PurchaseOrder extends BaseController
 
         $data_return = [
             'status' => 'success',
-            'message' => 'Succesfully retrieved Purchase Order Data',
+            'message' => 'Successfully retrieved Purchase Order Data',
             'data' => $purchase_order,
         ];
         return $this->response->setJSON($data_return);

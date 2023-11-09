@@ -90,7 +90,7 @@ class CartonInspection extends BaseController
 
         $data_return = [
             'status' => 'success',
-            'message' => 'Succesfully retrieved carton data',
+            'message' => 'Successfully retrieved carton data',
             'data' => $data,
         ];
         return $this->response->setJSON($data_return);

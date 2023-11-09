@@ -20,9 +20,66 @@ const clear_form = (data) => {
 
 
 
-async function using_fetch(url = "", data = {}, method = "GET") {
+// async function using_fetch(url = "", data = {}, method = "GET") {
 
+//     let fetch_data = {
+//         mode: "cors",
+//         cache: "no-cache",
+//         credentials: "same-origin",
+//         redirect: "follow",
+//         referrerPolicy: "no-referrer",
+//     };
+
+//     if (method === "GET") {
+//         query_string = new URLSearchParams(data).toString();
+//         url = url + "?" + query_string
+
+//         fetch_data.method = method;
+//         fetch_data.headers = {
+//             "Content-Type": "application/json",
+//         };
+//     }
+
+//     if (method === "DELETE") {
+//         fetch_data.method = method;
+//         fetch_data.headers = {
+//             "Content-Type": "application/json",
+//             "X-CSRF-TOKEN": data.token,
+//         };
+//     }
+
+//     if (method === "PUT") {
+//         fetch_data.method = method;
+//         fetch_data.headers = {
+//             "Content-Type": "application/json",
+//             "X-CSRF-TOKEN": data.token,
+//         };
+
+//         fetch_data.body = JSON.stringify(data.body);
+//     }
+
+//     if (method === "POST") {
+//         fetch_data.method = method;
+//         fetch_data.headers = {
+//             "Content-Type": "application/json",
+//             "X-CSRF-TOKEN": data.token,
+//         };
+
+//         fetch_data.body = JSON.stringify(data.body);
+//         console.log(fetch_data);
+//     }
+
+//     const response = await fetch(url, fetch_data);
+//     return response.json();
+// }
+
+
+async function using_fetch(url = "", data = {}, method = "GET") {
     let fetch_data = {
+        method: method,
+        headers: {
+            "Content-Type": "application/json",
+        },
         mode: "cors",
         cache: "no-cache",
         credentials: "same-origin",
@@ -31,46 +88,22 @@ async function using_fetch(url = "", data = {}, method = "GET") {
     };
 
     if (method === "GET") {
-        query_string = new URLSearchParams(data).toString();
-        url = url + "?" + query_string
-
-        fetch_data.method = method;
-        fetch_data.headers = {
-            "Content-Type": "application/json",
-        };
+        const query_string = new URLSearchParams(data).toString();
+        url = url + "?" + query_string;
     }
 
-    if (method === "DELETE") {
-        fetch_data.method = method;
-        fetch_data.headers = {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": data.token,
-        };
+    if (method === "DELETE" || method === "PUT" || method === "POST") {
+        fetch_data.headers["X-CSRF-TOKEN"] = data.token;
     }
 
-    if (method === "PUT") {
-        fetch_data.method = method;
-        fetch_data.headers = {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": data.token,
-        };
-
-        fetch_data.body = JSON.stringify(data.body);
-    }
-
-    if (method === "POST") {
-        fetch_data.method = method;
-        fetch_data.headers = {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": data.token,
-        };
-
+    if (method === "PUT" || method === "POST") {
         fetch_data.body = JSON.stringify(data.body);
     }
 
     const response = await fetch(url, fetch_data);
     return response.json();
 }
+
 
 
 const show_flash_message = (session = {}) => {
@@ -132,5 +165,45 @@ const avoid_submit_on_enter = () => {
             event.preventDefault();
             return false;
         }
+    });
+}
+
+const swal_confirm = (data = {}) => {
+    const swalComponent = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-primary m-2",
+            cancelButton: "btn btn-secondary m-2",
+        },
+        buttonsStyling: false,
+    });
+
+    let title = data.title ? data.title : "Are you sure?";
+    let confirm_button = data.confirm_button ? data.confirm_button : "Save";
+    let success_message = data.success_message
+        ? data.success_message
+        : "Success!";
+    let failed_message = data.failed_message
+        ? data.failed_message
+        : "Cancel Action";
+
+    return new Promise((resolve, reject) => {
+        swalComponent
+            .fire({
+                title: title,
+                text: data.text,
+                confirmButtonText: confirm_button,
+                icon: "question",
+                showCancelButton: true,
+                reverseButtons: true,
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    resolve(true);
+                }
+                resolve(false);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 }

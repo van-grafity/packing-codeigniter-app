@@ -157,7 +157,7 @@ $routes->group('purchaseorder', static function ($routes) {
 
 
 // Carton Barcode
-$routes->get('cartonbarcode', 'CartonBarcode::index');
+$routes->get('cartonbarcode', 'CartonBarcode::index'); // !! rapihin route ini
 $routes->post('cartonbarcode/importexcel', 'CartonBarcode::importexcel');
 $routes->get('cartonbarcode/detailcarton', 'CartonBarcode::detailcarton');
 $routes->get('cartonbarcode/(:num)', 'CartonBarcode::detail/$1');
@@ -221,6 +221,7 @@ $routes->group('rack-information', static function ($routes) {
 $routes->group('carton-loading', static function ($routes) {
     $routes->get('', 'CartonLoading::index', ['as' => 'carton_loading']);
     $routes->get('list', 'CartonLoading::index_dt', ['as' => 'carton_loading_list']);
+    $routes->post('load-carton', 'CartonLoading::load_carton', ['as' => 'carton_loading_load_carton']);
 });
 
 

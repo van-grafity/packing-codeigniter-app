@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> <?= $title ?></title>
+    <?= csrf_meta() ?>
+
 
     <base href="<?= base_url('assets') ?>/">
     <!-- Google Font: Source Sans Pro -->

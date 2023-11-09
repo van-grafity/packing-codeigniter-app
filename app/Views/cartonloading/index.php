@@ -105,8 +105,10 @@
 
 <?= $this->Section('page_script'); ?>
 <script type="text/javascript">
-    const index_dt_url = '<?= base_url('carton-loading/list')?>';
+    const token = document.querySelector('meta[name="X-CSRF-TOKEN"]').getAttribute('content');
+    const index_dt_url = '<?= url_to('carton_loading_list')?>';
     const detail_carton_url = '<?= base_url('cartonbarcode/detailcarton')?>';
+    const load_carton_url = '<?= url_to('carton_loading_load_carton')?>';
 
     const detail_carton = async (carton_id) => {
         $('#detail_carton_table tbody').html('');
@@ -138,7 +140,34 @@
         $('#detail_carton_table tfoot').html(row_footer);
 
         $('#detail_carton_modal').modal('show');
-    }   
+    }
+
+    // !! ini belum selesai masih pending
+    const load_carton = async (carton_id) => {
+        let data = {
+            title: 'Load This Carton?',
+            confirm_button: 'Oke',
+        }
+        let confirm_action = await swal_confirm(data);
+        if(!confirm_action) { return false; };
+
+        let params_data = { 
+            token : token,
+            body: { id : carton_id }, 
+        };
+        // console.log(params_data);
+        result = await using_fetch(load_carton_url, params_data, "POST");
+
+        console.log(result);
+        // if(result.status == "success"){
+        //     swal_info({
+        //         title : result.message,
+        //         reload_option: true, 
+        //     });
+        // } else {
+        //     swal_failed({ title: result.message });
+        // }
+    }
 
 </script>
 <script>

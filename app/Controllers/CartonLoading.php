@@ -78,4 +78,17 @@ class CartonLoading extends BaseController
             })->toJson(true);
     }
 
+    public function load_carton()
+    {
+        $get_data = $this->request->getPost();
+        $loaded_carton = 1;
+
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Successfully load '. ($loaded_carton).' carton',
+            'data' => $get_data,
+        ];
+        return $this->response->setJSON($data_return);
+    }
+
 }

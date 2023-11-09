@@ -73,7 +73,7 @@ class Rack extends BaseController
 
         $data_return = [
             'status' => 'success',
-            'message' => 'Succesfully retrieved rack data',
+            'message' => 'Successfully retrieved rack data',
             'data' => $rack,
         ];
         return $this->response->setJSON($data_return);

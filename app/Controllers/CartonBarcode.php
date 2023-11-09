@@ -204,7 +204,7 @@ class CartonBarcode extends BaseController
 
         $data_return = [
             'status' => 'success',
-            'message' => 'Succesfully retrieved carton data',
+            'message' => 'Successfully retrieved carton data',
             'data' => $detail_carton,
         ];
         return $this->response->setJSON($data_return);
@@ -219,7 +219,7 @@ class CartonBarcode extends BaseController
         
         $data_return = [
             'status' => 'success',
-            'message' => 'Succesfully unpack '. count($unpacked_carton).' carton',
+            'message' => 'Successfully unpack '. count($unpacked_carton).' carton',
             'data' => $unpacked_carton,
         ];
         return $this->response->setJSON($data_return);
@@ -236,7 +236,7 @@ class CartonBarcode extends BaseController
         
         $data_return = [
             'status' => 'success',
-            'message' => 'Succesfully clear '. count($cleared_carton).' carton barcode',
+            'message' => 'Successfully clear '. count($cleared_carton).' carton barcode',
             'data' => $cleared_carton,
         ];
         return $this->response->setJSON($data_return);
@@ -254,7 +254,7 @@ class CartonBarcode extends BaseController
         
         $data_return = [
             'status' => 'success',
-            'message' => 'Succesfully delete '. count($deleted_carton).' carton',
+            'message' => 'Successfully delete '. count($deleted_carton).' carton',
             'data' => $deleted_carton,
         ];
         return $this->response->setJSON($data_return);
