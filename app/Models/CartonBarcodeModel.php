@@ -40,6 +40,7 @@ class CartonBarcodeModel extends Model
         $builder->where('pl_carton.packinglist_id', $packinglist_id);
         $builder->where('carton_barcode.deleted_at', null);
         $builder->where('pl_carton.deleted_at', null);
+        $builder->where('carton_detail.deleted_at', null);
         $result = $builder->get()->getResult();
         return $result;
     }
