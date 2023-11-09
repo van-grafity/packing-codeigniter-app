@@ -45,7 +45,7 @@
                             <th width="100px">GL Number</th>
                             <th width="">Content</th>
                             <th width="">Total PCS</th>
-                            <th width="">Action</th>
+                            <th width="200px">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,6 +58,47 @@
 </div>
 
 
+<!-- Modal Detail Carton -->
+<div class="modal fade" id="detail_carton_modal" tabindex="-1" role="dialog" aria-labelledby="modal_label" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_label">Detail Carton</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table" id="detail_carton_table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>UPC</th>
+                                        <th>Name</th>
+                                        <th>Colour</th>
+                                        <th>Size</th>
+                                        <th>Qty</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Detail Carton -->
+
 
 <?= $this->endSection(); ?>
 
@@ -65,6 +106,39 @@
 <?= $this->Section('page_script'); ?>
 <script type="text/javascript">
     const index_dt_url = '<?= base_url('carton-loading/list')?>';
+    const detail_carton_url = '<?= base_url('cartonbarcode/detailcarton')?>';
+
+    const detail_carton = async (carton_id) => {
+        $('#detail_carton_table tbody').html('');
+        let total = 0;
+        
+        params_data = { id : carton_id };
+        result = await using_fetch(detail_carton_url, params_data, "GET");
+        result.data.forEach((data, key) => {
+            let row = `
+                <tr>
+                    <td>${key+1}</td>
+                    <td>${data.product_code}</td>
+                    <td>${data.product_name}</td>
+                    <td>${data.product_colour}</td>
+                    <td>${data.product_size}</td>
+                    <td>${data.product_qty}</td>
+                </tr>
+            `;
+            $('#detail_carton_table tbody').append(row);
+            
+            total += parseInt(data.product_qty);
+        });
+        let row_footer = `
+            <tr>
+                <td colspan="5" class="text-right">Total PCS :</td>
+                <td colspan="1">${total}</td>
+            </tr>
+        `;
+        $('#detail_carton_table tfoot').html(row_footer);
+
+        $('#detail_carton_modal').modal('show');
+    }   
 
 </script>
 <script>

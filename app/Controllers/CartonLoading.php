@@ -52,6 +52,8 @@ class CartonLoading extends BaseController
                         <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1" onclick="load_carton('. $row->id .')">Load</a>
                     ';
                 }
+
+                $action_button.= ' <a class="btn btn-info btn-sm mb-1 mr-2" onclick="detail_carton('. $row->id .')">Detail</a>';
                 return $action_button;
 
             })->add('content', function($row){

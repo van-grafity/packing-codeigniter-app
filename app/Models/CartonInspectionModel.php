@@ -60,7 +60,7 @@ class CartonInspectionModel extends Model
             $builder_size->join('tblproduct as product','product.id = carton_detail.product_id');
             $builder_size->join('tblsize as size','size.id = product.product_size_id');
             $builder_size->where('pl_carton.id', $carton->pl_carton_id);
-            $builder_size->orderBy('size.id', 'ASC');
+            $builder_size->orderBy('size.size_order', 'ASC');
             $size_list = $builder_size->get()->getResult();
 
             $qty_per_size = array();
