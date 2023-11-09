@@ -64,6 +64,7 @@ class Scanpack extends BaseController
         $carton_id = $this->request->getVar('carton_id');
         $data = [
             'flag_packed' => 'Y',
+            'packed_at' => date('Y-m-d H:i:s'),
         ];
         $this->CartonBarcodeModel->update($carton_id, $data);
         return redirect()->to('scanpack');

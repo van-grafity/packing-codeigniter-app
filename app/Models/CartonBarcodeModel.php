@@ -17,6 +17,9 @@ class CartonBarcodeModel extends Model
         'carton_number_by_input',
         'barcode',
         'flag_packed',
+        'packed_at',
+        'flag_loaded',
+        'loaded_at',
     ];
 
 

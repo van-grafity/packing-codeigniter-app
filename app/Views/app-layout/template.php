@@ -285,6 +285,25 @@
                                 </ul>
                             </li>
                         <?php endif ?>
+                        <?php if (in_array(session()->get('role'), ['superadmin','admin'])) : ?>
+                            <li class="nav-item has-treeview">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-truck-loading"></i>
+                                    <p>Carton Loading <i class="fas fa-angle-left right"></i></p>
+                                </a>
+                                <ul class="nav nav-treeview pl-3">
+            
+                                    <?php if (in_array(session()->get('role'), ['superadmin','admin', 'packing'])) : ?>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('carton-loading') ?>" class="nav-link">
+                                            <i class="fas fa-list-ul nav-icon"></i>
+                                            <p>Carton List</p>
+                                        </a>
+                                    </li>
+                                    <?php endif ?>
+                                </ul>
+                            </li>
+                        <?php endif ?>
                         <li class="nav-item">
                             <a href="<?= base_url('logout') ?>" class="nav-link">
                                 <i class="fas fa-sign-out-alt nav-icon"></i>

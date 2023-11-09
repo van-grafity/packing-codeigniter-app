@@ -218,6 +218,11 @@ $routes->group('rack-information', static function ($routes) {
     $routes->get('list', 'RackInformation::index_dt', ['as' => 'rack_information_list']);
 });
 
+$routes->group('carton-loading', static function ($routes) {
+    $routes->get('', 'CartonLoading::index', ['as' => 'carton_loading']);
+    $routes->get('list', 'CartonLoading::index_dt', ['as' => 'carton_loading_list']);
+});
+
 
 
 // Log Viewer

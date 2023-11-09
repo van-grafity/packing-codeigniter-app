@@ -35,7 +35,7 @@ class PalletReceive extends BaseController
         $racks = $this->RackModel->where('flag_empty','Y')->findAll();
 
         $data = [
-            'title' => 'Pallet to Receive List',
+            'title' => 'Pallet List to Receive',
             'racks' => $racks,
         ];
         return view('palletreceive/index', $data);
