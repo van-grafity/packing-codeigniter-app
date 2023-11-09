@@ -95,7 +95,6 @@ class CartonBarcode extends BaseController
 
     public function detail($id)
     {
-
         if (in_array(session()->get('role'), ['superadmin'])) {
             $superadmin_only_class = '';
         } else {
