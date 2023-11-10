@@ -50,7 +50,7 @@ class RackModel extends Model
         $builder = $this;
         $builder->join('tblrackpallet as rack_pallet', 'rack_pallet.rack_id = tblrack.id','left');
         $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.id = rack_pallet.pallet_transfer_id','left');
-        $builder->select('tblrack.id, tblrack.serial_number, tblrack.description, tblrack.flag_empty, pallet_transfer.id as pallet_transfer_id');
+        $builder->select('tblrack.id, tblrack.serial_number, tblrack.level, tblrack.flag_empty, pallet_transfer.id as pallet_transfer_id');
         $rack_list = $builder->paginate($params['length'], 'default',$params['start']);
         $pager = $builder->pager;
 
@@ -165,6 +165,33 @@ class RackModel extends Model
             'total_pcs' => $total_pcs,
         ];
         
+        return $result;
+    }
+
+    public function getPalletByRackID($rack_id)
+    {
+        $builder = $this->db->table('tblrack as rack');
+        $builder->join('tblrackpallet as rack_pallet','rack_pallet.rack_id = rack.id');
+        $builder->join('tblpallettransfer as pallet_transfer','pallet_transfer.id = rack_pallet.pallet_transfer_id');
+        $builder->join('tblpallet as pallet','pallet.id = pallet_transfer.pallet_id');
+        $builder->where('rack.id', $rack_id);
+        $builder->orderBy('rack_pallet.created_at', 'DESC');
+        $builder->select('pallet.*');
+        $result = $builder->get()->getRow();
+        return $result;
+    }
+
+    public function updateLastRackPallet($rack_id, $data_update)
+    {
+        $builder = $this->db->table('tblrack as rack');
+        $builder->join('tblrackpallet as rack_pallet','rack_pallet.rack_id = rack.id');
+        $builder->where('rack.id', $rack_id);
+        $builder->orderBy('rack_pallet.created_at', 'DESC');
+        $builder->select('rack_pallet.*');
+        $rack_pallet = $builder->get()->getRow();
+
+        $RackPalletModel = model('RackPalletModel');
+        $result = $RackPalletModel->update($rack_pallet->id, $data_update);
         return $result;
     }
 

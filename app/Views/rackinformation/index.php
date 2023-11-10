@@ -15,15 +15,16 @@
                 <table id="rack_table" class="table table-bordered table-hover text-center">
                     <thead>
                         <tr class="table-primary">
-                            <th width="">No</th>
-                            <th width="">Rack Serial Number</th>
-                            <th width="">GL Number</th>
+                            <th width="20px">No</th>
+                            <th width="100px">Rack Number</th>
+                            <th width="100px">GL Number</th>
                             <th width="">PO Number</th>
                             <th width="">Colour</th>
                             <th width="">Buyer</th>
-                            <th width="">QTY CTN</th>
-                            <th width="">QTY PCS</th>
-                            <th width="">Level Rack</th>
+                            <th width="20px">QTY CTN</th>
+                            <th width="20px">QTY PCS</th>
+                            <th width="20px">Level</th>
+                            <th width="100px">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,6 +42,14 @@
 <?= $this->Section('page_script'); ?>
 <script type="text/javascript">
     const index_dt_url = '<?= url_to('rack_information_list')?>';
+    const remove_pallet_from_rack_url = '<?= url_to('remove_pallet_from_rack')?>';
+
+    const remove_pallet = async (rack_id) => {
+        params_data = { id : rack_id };
+        result = await using_fetch(remove_pallet_from_rack_url, params_data, "GET");
+        console.log(result);
+    }
+
 </script>
 
 <script>
@@ -69,7 +78,8 @@ $(document).ready(function() {
             { data: 'buyer_name'},
             { data: 'total_carton'},
             { data: 'total_pcs'},
-            { data: 'description', name: 'rack.description'},
+            { data: 'level', name: 'rack.level'},
+            { data: 'action', name: 'action'},
         ],
         columnDefs: [
             { targets: [0], orderable: false, searchable: false },

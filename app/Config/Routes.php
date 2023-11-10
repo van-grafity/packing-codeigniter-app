@@ -216,6 +216,7 @@ $routes->group('pallet-receive', static function ($routes) {
 $routes->group('rack-information', static function ($routes) {
     $routes->get('', 'RackInformation::index', ['as' => 'rack_information']);
     $routes->get('list', 'RackInformation::index_dt', ['as' => 'rack_information_list']);
+    $routes->get('remove-pallet', 'RackInformation::remove_pallet', ['as' => 'remove_pallet_from_rack']);
 });
 
 $routes->group('carton-loading', static function ($routes) {

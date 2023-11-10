@@ -137,4 +137,19 @@ class TransferNoteModel extends Model
         return $transfer_note_detail;
     }
 
+    public function getCartonLoadStatusByTransfernote($transfer_note_id, $load_status = null)
+    {
+        $builder = $this->db->table('tbltransfernote as transfer_note');
+        $builder->join('tbltransfernotedetail as transfer_note_detail','transfer_note_detail.transfer_note_id = transfer_note.id');
+        $builder->join('tblcartonbarcode as carton_barcode','carton_barcode.id = transfer_note_detail.carton_barcode_id');
+        $builder->where('transfer_note.id', $transfer_note_id);
+        $builder->where('carton_barcode.deleted_at', null);
+        if($load_status) {
+            $builder->where('carton_barcode.flag_loaded', $load_status);
+        }
+        $builder->select('carton_barcode.*');
+        $result = $builder->get()->getResult();
+        return $result;
+    }
+
 }
