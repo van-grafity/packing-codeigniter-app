@@ -20,6 +20,7 @@ class AddFlagLoadedToCartonBarcodeTable extends Migration
                 'type' => 'char',
                 'constraint' => 2,
                 'null' => true,
+                'default' => 'N',
                 'after' => 'packed_at',
             ],
             'loaded_at' => [

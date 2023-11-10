@@ -74,12 +74,45 @@ const clear_form = (data) => {
 // }
 
 
-async function using_fetch(url = "", data = {}, method = "GET") {
-    let fetch_data = {
-        method: method,
-        headers: {
-            "Content-Type": "application/json",
-        },
+// async function using_fetch(url = "", data = {}, method = "GET", token = null) {
+//     let fetch_data = {
+//         method: method,
+//         headers: {
+//             "Content-Type": "application/json",
+//         },
+//         mode: "cors",
+//         cache: "no-cache",
+//         credentials: "same-origin",
+//         redirect: "follow",
+//         referrerPolicy: "no-referrer",
+//     };
+
+//     if (method === "GET") {
+//         const query_string = new URLSearchParams(data).toString();
+//         url = url + "?" + query_string;
+//     }
+
+//     if (method === "DELETE" || method === "PUT" || method === "POST") {
+//         fetch_data.headers["X-CSRF-TOKEN"] = token;
+//     }
+
+//     if (method === "PUT" || method === "POST") {
+//         fetch_data.body = JSON.stringify(data);
+//     }
+
+//     const response = await fetch(url, fetch_data);
+//     return response.json();
+// }
+
+
+async function using_fetch(url = "", data = {}, method = "GET", token = null) {
+    const headers = {
+        "Content-Type": "application/json",
+    };
+
+    const fetch_data = {
+        method,
+        headers,
         mode: "cors",
         cache: "no-cache",
         credentials: "same-origin",
@@ -89,20 +122,31 @@ async function using_fetch(url = "", data = {}, method = "GET") {
 
     if (method === "GET") {
         const query_string = new URLSearchParams(data).toString();
-        url = url + "?" + query_string;
+        url = `${url}?${query_string}`;
     }
 
-    if (method === "DELETE" || method === "PUT" || method === "POST") {
-        fetch_data.headers["X-CSRF-TOKEN"] = data.token;
+    if (["DELETE", "PUT", "POST"].includes(method)) {
+        headers["X-CSRF-TOKEN"] = token;
     }
 
-    if (method === "PUT" || method === "POST") {
-        fetch_data.body = JSON.stringify(data.body);
+    if (["PUT", "POST"].includes(method)) {
+        fetch_data.body = JSON.stringify(data);
     }
 
-    const response = await fetch(url, fetch_data);
-    return response.json();
+    try {
+        const response = await fetch(url, fetch_data);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        return response.json();
+    } catch (error) {
+        console.error("Fetch error:", error);
+        throw error;
+    }
 }
+
 
 
 

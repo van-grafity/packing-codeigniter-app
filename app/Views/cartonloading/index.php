@@ -142,8 +142,7 @@
         $('#detail_carton_modal').modal('show');
     }
 
-    // !! ini belum selesai masih pending
-    const load_carton = async (carton_id) => {
+    const load_carton = async (carton_id, element) => {
         let data = {
             title: 'Load This Carton?',
             confirm_button: 'Oke',
@@ -152,21 +151,18 @@
         if(!confirm_action) { return false; };
 
         let params_data = { 
-            token : token,
-            body: { id : carton_id }, 
+            id : carton_id, 
         };
-        // console.log(params_data);
-        result = await using_fetch(load_carton_url, params_data, "POST");
+        result = await using_fetch(load_carton_url, params_data, "GET");
 
-        console.log(result);
-        // if(result.status == "success"){
-        //     swal_info({
-        //         title : result.message,
-        //         reload_option: true, 
-        //     });
-        // } else {
-        //     swal_failed({ title: result.message });
-        // }
+        if(result.status == "success"){
+            swal_info({
+                title : result.message,
+            });
+            $(element).addClass('disabled').text('loaded');
+        } else {
+            swal_failed({ title: result.message });
+        }
     }
 
 </script>

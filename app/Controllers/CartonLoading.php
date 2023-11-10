@@ -44,12 +44,12 @@ class CartonLoading extends BaseController
                 if($row->flag_loaded == 'Y') {
                     $action_button = '
                         <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Already Received">
-                            <a class="btn btn-primary btn-sm mb-1 disabled" style="pointer-events: none;" type="button" disabled>Load</a>
+                            <a class="btn btn-primary btn-sm mb-1 disabled" style="pointer-events: none;" type="button" disabled>Loaded</a>
                         </span>
                     ';
                 } else {
                     $action_button = '
-                        <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1" onclick="load_carton('. $row->id .')">Load</a>
+                        <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1" onclick="load_carton('. $row->id .', this)">Load</a>
                     ';
                 }
 
@@ -80,13 +80,18 @@ class CartonLoading extends BaseController
 
     public function load_carton()
     {
-        $get_data = $this->request->getPost();
-        $loaded_carton = 1;
+        $carton_id = $this->request->getGet('id');
+        $date_update = [
+            'flag_loaded' => 'Y',
+            'loaded_at' => date('Y-m-d H:i:s'),
+        ];
+        $this->CartonBarcodeModel->update($carton_id, $date_update);
+        $carton = $this->CartonBarcodeModel->find($carton_id);
 
         $data_return = [
             'status' => 'success',
-            'message' => 'Successfully load '. ($loaded_carton).' carton',
-            'data' => $get_data,
+            'message' => 'Successfully load carton',
+            'data' => $carton,
         ];
         return $this->response->setJSON($data_return);
     }

@@ -221,7 +221,7 @@ $routes->group('rack-information', static function ($routes) {
 $routes->group('carton-loading', static function ($routes) {
     $routes->get('', 'CartonLoading::index', ['as' => 'carton_loading']);
     $routes->get('list', 'CartonLoading::index_dt', ['as' => 'carton_loading_list']);
-    $routes->post('load-carton', 'CartonLoading::load_carton', ['as' => 'carton_loading_load_carton']);
+    $routes->get('load-carton', 'CartonLoading::load_carton', ['as' => 'carton_loading_load_carton']);
 });
 
 
