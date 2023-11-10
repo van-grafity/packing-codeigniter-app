@@ -375,6 +375,7 @@ class PalletTransfer extends BaseController
         $pallet_serial_number = $this->request->getGet('pallet_serial_number');
         $pallet = $this->PalletModel->where('serial_number', $pallet_serial_number)->first();
 
+        // ## Pallet Tidak ketemu => False
         if(!$pallet){
             $data_return = [
                 'status' => 'error',
@@ -383,6 +384,7 @@ class PalletTransfer extends BaseController
             return $this->response->setJSON($data_return);
         }
 
+        // ## Pallet sudah berisi => False
         if($pallet->flag_empty == 'N') {
             $data_return = [
                 'status' => 'success',
@@ -398,7 +400,10 @@ class PalletTransfer extends BaseController
 
         $get_last_pallet_transfer = $this->PalletTransferModel->getLastPalletTransferByPalletID($pallet->id);
 
-        if($pallet->flag_empty == 'Y' && $get_last_pallet_transfer == null){
+        // ## Pallet kosong dan belum pernah digunakan => True
+        if( $pallet->flag_empty == 'Y' && $get_last_pallet_transfer == null 
+            || $get_last_pallet_transfer->flag_transferred == 'Y' && $get_last_pallet_transfer->flag_loaded == 'Y'
+        ){
             $data_return = [
                 'status' => 'success',
                 'message' => 'Pallet Found',
@@ -410,13 +415,29 @@ class PalletTransfer extends BaseController
             return $this->response->setJSON($data_return);
         }
 
-        if($get_last_pallet_transfer->flag_transferred == 'Y' && $get_last_pallet_transfer->flag_loaded == 'Y'){
+        // !! Jangan lupa delete ini besok
+        // // ## Pallet sudah pernah digunakan dan sudah bisa digunakan kembali => True
+        // if($get_last_pallet_transfer->flag_transferred == 'Y' && $get_last_pallet_transfer->flag_loaded == 'Y'){
+        //     $data_return = [
+        //         'status' => 'success',
+        //         'message' => 'Pallet Found',
+        //         'data' => [
+        //             'pallet_status' => true,
+        //             'feedback_title' => 'Pallet is Available',
+        //         ]
+        //     ];
+        //     return $this->response->setJSON($data_return);
+        // }
+        
+        // ## Pallet sudah digunakan namun masih belum selesai sampai loading (belum bisa di gunakan kembali) => False
+        if($get_last_pallet_transfer->flag_transferred == 'N' && $get_last_pallet_transfer->flag_loaded == 'N'){
             $data_return = [
                 'status' => 'success',
                 'message' => 'Pallet Found',
                 'data' => [
-                    'pallet_status' => true,
-                    'feedback_title' => 'Pallet is Available',
+                    'pallet_status' => false,
+                    'feedback_title' => 'Pallet is not Available!',
+                    'feedback_message' => 'This Pallet has been used. Please Check on Pallet to Transfer List',
                 ]
             ];
             return $this->response->setJSON($data_return);
@@ -424,11 +445,11 @@ class PalletTransfer extends BaseController
         
         $data_return = [
             'status' => 'success',
-            'message' => 'Pallet Found',
+            'message' => 'Uncategorized!!',
             'data' => [
                 'pallet_status' => false,
-                'feedback_title' => 'Pallet is not Available!',
-                'feedback_message' => 'This Pallet has been used. Please Check on Pallet to Transfer List',
+                'feedback_title' => 'Something Wrong!',
+                'feedback_message' => 'Please contact the Developer',
             ]
         ];
         return $this->response->setJSON($data_return);

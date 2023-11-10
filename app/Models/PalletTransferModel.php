@@ -114,6 +114,7 @@ class PalletTransferModel extends Model
     {
         $builder = $this->db->table($this->table);
         $builder->where('pallet_id', $pallet_id);
+        $builder->where('tblpallettransfer.deleted_at',null);
         $builder->orderBy('created_at','desc');
         $result = $builder->get()->getRow();
         return $result;
@@ -132,6 +133,12 @@ class PalletTransferModel extends Model
         $TransferNoteModel = model('TransferNoteModel');
         $delete_transfer_note = $TransferNoteModel->where('pallet_transfer_id', $pallet_transfer_id)->delete();
         
+        // ## update status pallet to Empty
+        $pallet_id = $this->find($pallet_transfer_id)->pallet_id;
+        $PalletModel = model('PalletModel');
+        $PalletModel->update($pallet_id, ['flag_empty' => 'Y']);
+
+        // ## delete pallet transfer
         $PalletTransferModel = model('PalletTransferModel');
         $delete_pallet_transfer = $PalletTransferModel->where('id', $pallet_transfer_id)->delete();
     }
