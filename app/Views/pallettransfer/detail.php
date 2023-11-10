@@ -316,7 +316,7 @@ function insert_carton_to_table(carton_data){
 
     let row = `
         <tr class="text-center count-carton">
-            <td>1</td>
+            <td></td>
             <td class="d-none">
                 <input type="text" id="carton_barcode_id" name="carton_barcode_id[]" value="${carton_data.carton_id}">
             </td>
@@ -345,10 +345,10 @@ function is_already_inputed(carton_barcode){
 
 function delete_carton(element) {
     $(element).parents('tr').remove();
+    update_total_in_transfernote_detail();
     if (is_table_empty()) {
         clear_transfer_note_detail();
     }
-    update_total_in_transfernote_detail();
 }
 
 function update_total_in_transfernote_detail() {
@@ -361,6 +361,8 @@ function update_total_in_transfernote_detail() {
     
     let sum_total_pcs = array_total_pcs.reduce((tempSum, next_arr) => tempSum + parseInt(next_arr), 0);
     $('#transfer_note_detail_total_pcs').text(sum_total_pcs);
+
+    update_row_numbers({table_id : 'transfer_note_detail'});
 }
 
 function is_table_empty() {

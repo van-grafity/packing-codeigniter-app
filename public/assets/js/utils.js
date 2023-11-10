@@ -251,3 +251,17 @@ const swal_confirm = (data = {}) => {
             });
     });
 }
+
+const update_row_numbers = (options) => {
+    const { table_id, target_column_index = 0, footer_option = true } = options
+    let table = document.getElementById(table_id);
+    let rows = table.getElementsByTagName("tr");
+    let rows_length = footer_option ? rows.length - 1 : rows.length;
+
+    for (let i = 1; i < rows_length; i++) {
+        let cells = rows[i].getElementsByTagName("td");
+        if (cells.length > target_column_index) {
+            cells[target_column_index].innerText = i;
+        }
+    }
+}
