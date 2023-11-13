@@ -47,7 +47,18 @@
     const remove_pallet = async (rack_id) => {
         params_data = { id : rack_id };
         result = await using_fetch(remove_pallet_from_rack_url, params_data, "GET");
-        console.log(result);
+        if(result.status == 'success') {
+            swal_data = {
+                'title' : result.message,
+                'reload_option' : true,
+            }
+            swal_info(swal_data);
+        } else {
+            swal_data = {
+                'title' : result.message,
+            }
+            swal_warning(swal_data);
+        }
     }
 
 </script>

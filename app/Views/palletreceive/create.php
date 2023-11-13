@@ -146,7 +146,6 @@ $(document).ready(function() {
 
         let data = await get_pallet_transfer_detail(pallet_barcode)
         $('#pallet_barcode').val('');
-        $('#pallet_barcode').focus();
 
         clear_pallet_transfer_info();
         clear_carton_list();

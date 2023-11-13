@@ -75,6 +75,7 @@ class PalletReceiveModel extends Model
         $builder->join('tbltransfernote as transfer_note','transfer_note.pallet_transfer_id = pallet_transfer.id');
         $builder->join('tbltransfernotedetail as transfer_note_detail','transfer_note_detail.transfer_note_id = transfer_note.id');
 
+        $builder->where(['pallet_transfer.flag_loaded' => 'N']);
         $builder->where(['pallet.serial_number' => $pallet_serial_number]);
         // $builder->where(['pallet.flag_empty' => 'N']);
         $builder->orderBy('pallet_transfer.created_at','DESC');

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\RackModel;
+use App\Models\PalletModel;
 use App\Models\PalletTransferModel;
 use App\Models\TransferNoteModel;
 
@@ -12,6 +13,7 @@ use \Hermawan\DataTables\DataTable;
 class RackInformation extends BaseController
 {
     protected $RackModel;
+    protected $PalletModel;
     protected $PalletTransferModel;
     protected $TransferNoteModel;
     protected $session;
@@ -20,6 +22,7 @@ class RackInformation extends BaseController
     {
         $this->db = db_connect();
         $this->RackModel = new RackModel();
+        $this->PalletModel = new PalletModel();
         $this->PalletTransferModel = new PalletTransferModel();
         $this->TransferNoteModel = new TransferNoteModel();
     }
@@ -83,6 +86,7 @@ class RackInformation extends BaseController
         /*
          * NOTE: This function. The Step : 
          * =================================================================
+         * [] ambil informasi pallet transfer di dalam rack yang bersangkutan
          * [] harus check dulu apakah pallet sudah kosong, tidak boleh ada carton di atasnya (cartonbarcode.flag_loaded harus udah Y semua)
          * [] rack jadi kosong | tblrack.flag_empty => Y
          * [] rack pallet update tanggal keluar | tblrackpallet.outdate => date('Y-m-d H:i:s')
@@ -91,9 +95,13 @@ class RackInformation extends BaseController
          */
 
         $rack_id = $this->request->getGet('id');
-        $pallet = $this->RackModel->getPalletByRackID($rack_id);
+        $pallet_transfer = $this->PalletTransferModel->getLastPalletTransferByRackID($rack_id);
         
-        $not_loaded_carton = $this->check_not_loaded_carton($pallet);
+        // ? (perlu dipertimbangkan lagi) : kayaknya di baris ini perlu check apakah pallet transfer ini sudah di load apa belum terlebih dahulu, kalau flag_loaded = 'Y' berarti tidak perlu lagi melanjutkan baris berikutnya. langsung return response aja
+
+        $pallet = $this->PalletModel->find($pallet_transfer->pallet_id);
+        $not_loaded_carton = $this->check_not_loaded_carton($pallet_transfer);
+        
         if($not_loaded_carton) {
             $data_return = [
                 'status' => 'error',
@@ -105,15 +113,23 @@ class RackInformation extends BaseController
 
         $this->RackModel->update($rack_id, ['flag_empty' => 'Y']);
         $update_last_rack_pallet = $this->RackModel->updateLastRackPallet($rack_id, ['out_date' => date('Y-m-d H:i:s')]);
-        dd($update_last_rack_pallet);
+        $update_pallet_transfer = $this->PalletTransferModel->update($pallet_transfer->id, ['flag_loaded' => 'Y']);
+        $update_pallet = $this->PalletModel->update($pallet->id, ['flag_empty' => 'Y']);
 
-        
+        if($update_last_rack_pallet) {
+            $data_return = [
+                'status' => 'success',
+                'message' => 'Pallet ' . $pallet->serial_number .' successfully removed from rack',
+                'data' => $pallet,
+            ];
+            return $this->response->setJSON($data_return);
+        }
 
     }
 
-    private function check_not_loaded_carton($pallet)
+    private function check_not_loaded_carton($pallet_transfer)
     {
-        $transfer_note_list = $this->PalletTransferModel->getTransferNotesInPallet($pallet->id);
+        $transfer_note_list = $this->PalletTransferModel->getTransferNotes($pallet_transfer->id);
         foreach ($transfer_note_list as $key => $transfer_note) {
             $not_loaded_carton = $this->TransferNoteModel->getCartonLoadStatusByTransfernote($transfer_note->id,'N');
             if($not_loaded_carton){

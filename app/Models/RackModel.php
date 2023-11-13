@@ -48,23 +48,24 @@ class RackModel extends Model
     public function getRackInformation_array($params)
     {
         $builder = $this;
-        $builder->join('tblrackpallet as rack_pallet', 'rack_pallet.rack_id = tblrack.id','left');
-        $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.id = rack_pallet.pallet_transfer_id','left');
-        $builder->select('tblrack.id, tblrack.serial_number, tblrack.level, tblrack.flag_empty, pallet_transfer.id as pallet_transfer_id');
+        $builder->select('tblrack.id, tblrack.serial_number, tblrack.level, tblrack.flag_empty');
         $rack_list = $builder->paginate($params['length'], 'default',$params['start']);
+        
         $pager = $builder->pager;
 
         foreach ($rack_list as $key_rack => $rack) {
-            if($rack->pallet_transfer_id){
-                $gl_information = $this->getGlInformation($rack->pallet_transfer_id);
+            $pallet_transfer = $this->getPalletTransferInRack($rack->id);
+            
+            if($pallet_transfer){
+                $gl_information = $this->getGlInformation($pallet_transfer->id);
                 $rack->gl_number = $gl_information->gl_number; 
                 $rack->buyer_name = $gl_information->buyer_name; 
                 $rack->po_no = $gl_information->po_no; 
                 
-                $product_information = $this->getProductInformation($rack->pallet_transfer_id);
+                $product_information = $this->getProductInformation($pallet_transfer->id);
                 $rack->colour = $product_information->colour; 
                 
-                $carton_information = $this->getCartonInformation($rack->pallet_transfer_id);
+                $carton_information = $this->getCartonInformation($pallet_transfer->id);
                 $rack->total_carton = $carton_information->total_carton; 
                 $rack->total_pcs = $carton_information->total_pcs; 
                 
@@ -81,6 +82,20 @@ class RackModel extends Model
             'rack_list' => $rack_list,
             'pager' => $pager,
         ];
+        return $result;
+    }
+
+    public function getPalletTransferInRack($rack_id)
+    {
+        $builder = $this->db->table('tblrack as rack');
+        $builder->join('tblrackpallet as rack_pallet' , 'rack_pallet.rack_id = rack.id');
+        $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.id = rack_pallet.pallet_transfer_id');
+        $builder->where('pallet_transfer.flag_transferred','Y');
+        $builder->where('pallet_transfer.flag_loaded','N');
+        $builder->where('rack.id',$rack_id);
+        $builder->orderBy('pallet_transfer.created_at', 'DESC');
+        $builder->select('pallet_transfer.*');
+        $result = $builder->get()->getRow();
         return $result;
     }
 
@@ -168,18 +183,19 @@ class RackModel extends Model
         return $result;
     }
 
-    public function getPalletByRackID($rack_id)
-    {
-        $builder = $this->db->table('tblrack as rack');
-        $builder->join('tblrackpallet as rack_pallet','rack_pallet.rack_id = rack.id');
-        $builder->join('tblpallettransfer as pallet_transfer','pallet_transfer.id = rack_pallet.pallet_transfer_id');
-        $builder->join('tblpallet as pallet','pallet.id = pallet_transfer.pallet_id');
-        $builder->where('rack.id', $rack_id);
-        $builder->orderBy('rack_pallet.created_at', 'DESC');
-        $builder->select('pallet.*');
-        $result = $builder->get()->getRow();
-        return $result;
-    }
+    // !! fungsi ini tidak jadi di pakai. hapus nanti
+    // public function getPalletByRackID($rack_id)
+    // {
+    //     $builder = $this->db->table('tblrack as rack');
+    //     $builder->join('tblrackpallet as rack_pallet','rack_pallet.rack_id = rack.id');
+    //     $builder->join('tblpallettransfer as pallet_transfer','pallet_transfer.id = rack_pallet.pallet_transfer_id');
+    //     $builder->join('tblpallet as pallet','pallet.id = pallet_transfer.pallet_id');
+    //     $builder->where('rack.id', $rack_id);
+    //     $builder->orderBy('rack_pallet.created_at', 'DESC');
+    //     $builder->select('pallet.*');
+    //     $result = $builder->get()->getRow();
+    //     return $result;
+    // }
 
     public function updateLastRackPallet($rack_id, $data_update)
     {
