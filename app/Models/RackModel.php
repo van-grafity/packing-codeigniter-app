@@ -170,6 +170,7 @@ class RackModel extends Model
         $builder->join('tblcartondetail as carton_detail', 'carton_detail.packinglist_carton_id = pl_carton.id');
         $builder->where('pallet_transfer.id', $pallet_transfer_id);
         $builder->where('carton_barcode.flag_loaded !=', 'Y');
+        $builder->where('transfer_note_detail.deleted_at', null);
         $builder->groupBy('transfer_note_detail.id');
         $builder->select('transfer_note_detail.*, sum(carton_detail.product_qty) as pcs_per_carton');
         $carton_information = $builder->get()->getResult();

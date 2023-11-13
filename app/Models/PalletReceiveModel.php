@@ -77,11 +77,22 @@ class PalletReceiveModel extends Model
 
         $builder->where(['pallet_transfer.flag_loaded' => 'N']);
         $builder->where(['pallet.serial_number' => $pallet_serial_number]);
-        // $builder->where(['pallet.flag_empty' => 'N']);
         $builder->orderBy('pallet_transfer.created_at','DESC');
         $builder->groupBy('pallet_transfer.id');
-        $builder->select('pallet.id as pallet_id, pallet.serial_number as pallet_number, pallet.flag_empty, location_from.location_name as location_from, location_to.location_name as location_to, pallet_transfer.id as pallet_transfer_id, pallet_transfer.flag_transferred, pallet_transfer.flag_loaded, count(transfer_note_detail.id) as total_carton');
+
+        $builder->select('
+            pallet.id as pallet_id, 
+            pallet.serial_number as pallet_number, 
+            pallet.flag_empty, 
+            location_from.location_name as location_from, 
+            location_to.location_name as location_to, 
+            pallet_transfer.id as pallet_transfer_id, 
+            pallet_transfer.flag_transferred, 
+            pallet_transfer.flag_loaded, 
+            COUNT(CASE WHEN transfer_note_detail.deleted_at IS NULL THEN transfer_note_detail.id END) as total_carton
+        ');
         $result = $builder->get()->getRow();
+        
         return $result;
     }
 

@@ -82,7 +82,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td colspan="8"> There's No Carton in this Pallet</td>
+                                    <td colspan="8"> There's No Carton </td>
                                 </tr>
                             </tbody>
                             <tfoot class="bg-dark">
@@ -163,6 +163,8 @@ $(document).ready(function() {
             set_transfer_note_carton_list(data.pallet_transfer_detail);
         }
     });
+
+    clear_pallet_transfer_info();
 
 })
 </script>
@@ -253,9 +255,11 @@ function clear_pallet_transfer_info() {
 function clear_carton_list(){
     let empty_row = `
         <tr>
-            <td colspan="8"> There's No Carton</td>
+            <td colspan="8"> There's No Carton </td>
         </tr>`;
     $('#pallet_transfer_detail tbody').html(empty_row);
+    $('#pallet_transfer_detail_total_carton').text(' - ');
+    $('#pallet_transfer_detail_total_pcs').text(' - ');
 }
 
 </script>
