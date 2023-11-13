@@ -158,6 +158,10 @@ class PurchaseOrder extends BaseController
             $action_field_class = 'd-none';
         }
 
+        if($id){
+            $sync_po = $this->PurchaseOrderModel->syncPurchaseOrderDetails($id);
+        }
+
         $data = [
             'title'     => 'Purchase Order Detail',
             'purchase_order'   => $this->PurchaseOrderModel->getPurchaseOrder($id),
