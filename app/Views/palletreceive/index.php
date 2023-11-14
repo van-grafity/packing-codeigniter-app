@@ -48,7 +48,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="rack" class="col-form-label">Rack :</label>
-                        <select id="rack" name="rack" class="form-control" required>
+                        <select id="rack" name="rack" class="form-control select2" required>
                             <option value=""> Select Rack </option>
                             <?php foreach ($racks as $rack) : ?>
                                 <option value="<?= $rack->id; ?>"><?= $rack->serial_number; ?></option>
@@ -91,6 +91,14 @@
 // ## Show Flash Message
 let session = <?= json_encode(session()->getFlashdata()) ?>;
 show_flash_message(session);
+
+$('#rack.select2').select2({
+    dropdownParent: $('#modal_rack_pallet')
+});
+
+$('#rack.select2').on('select2:open', function (e) {
+    document.querySelector('.select2-search__field').focus();
+});
 
 $('#pallet_receive_table').DataTable({
     processing: true,

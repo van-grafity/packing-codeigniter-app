@@ -27,23 +27,38 @@ class RackModel extends Model
         return $builder;
     }
 
-    // public function getRackInformation($rack_id = null)
-    // {
-    //     $builder = $this->db->table('tblrack as rack');
-    //     $builder->join('tblrackpallet as rack_pallet', 'rack_pallet.rack_id = rack.id','left');
-    //     $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.id = rack_pallet.pallet_transfer_id','left');
-    //     $builder->join('tbltransfernote as transfer_note', 'transfer_note.pallet_transfer_id = pallet_transfer.id','left');
-    //     $builder->join('tbltransfernotedetail as transfer_note_detail', 'transfer_note_detail.transfer_note_id = transfer_note.id','left');
-    //     $builder->join('tblcartonbarcode as carton_barcode', 'carton_barcode.id = transfer_note_detail.carton_barcode_id','left');
-    //     $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id','left');
-    //     $builder->join('tblpackinglist as pl', 'pl.id = pl_carton.packinglist_id','left');
-    //     $builder->join('tblpurchaseorder as po', 'po.id = pl.packinglist_po_id','left');
-    //     $builder->groupBy('rack.id, rack.serial_number, rack.description, rack.flag_empty, pallet_transfer.id');
-    //     $builder->select('rack.id, rack.serial_number, rack.description, rack.flag_empty, pallet_transfer.id as pallet_transfer_id');
+    public function getRackInformation()
+    {
+        $builder = $this->db->table('tblrack as rack');
+        $builder->join('tblrackpallet as rack_pallet', 'rack_pallet.rack_id = rack.id','left');
+        $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.id = rack_pallet.pallet_transfer_id','left');
+        $builder->join('tblpallet as pallet', 'pallet.id = pallet_transfer.pallet_id','left');
+        $builder->join('tbltransfernote as transfer_note', 'transfer_note.pallet_transfer_id = pallet_transfer.id','left');
+        $builder->join('tbltransfernotedetail as transfer_note_detail', 'transfer_note_detail.transfer_note_id = transfer_note.id','left');
+        $builder->join('tblcartonbarcode as carton_barcode', 'carton_barcode.id = transfer_note_detail.carton_barcode_id','left');
+        $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id','left');
+        $builder->join('tblpackinglist as pl', 'pl.id = pl_carton.packinglist_id','left');
+        $builder->join('tblpurchaseorder as po', 'po.id = pl.packinglist_po_id','left');
+        $builder->join('tblsyncpurchaseorder as sync_po', 'sync_po.purchase_order_id = po.id','left');
+        $builder->groupBy('rack.id');
+        
+        $builder->select([
+            'rack.id', 
+            'rack.serial_number', 
+            'sync_po.gl_number',
+            'po.po_no',
+            'sync_po.buyer_name',
+            'rack.flag_empty', 
+            'pallet_transfer.id as pallet_transfer_id',
+            'pallet.serial_number as pallet_serial_number',
+            'rack.level',
+        ]);
 
-    //     $result = $builder->get()->getResult();
-    //     return $builder;
-    // }
+        // $result = $builder->get()->getResult();
+        // dd($result);
+        
+        return $builder;
+    }
 
     public function getRackInformation_array($params)
     {
@@ -69,6 +84,7 @@ class RackModel extends Model
                 $rack->total_carton = $carton_information->total_carton; 
                 $rack->total_pcs = $carton_information->total_pcs; 
                 
+                $rack->pallet_serial_number = $pallet_transfer->serial_number; 
             } else {
                 $rack->gl_number = '-'; 
                 $rack->buyer_name = '-'; 
@@ -76,6 +92,7 @@ class RackModel extends Model
                 $rack->colour = '-'; 
                 $rack->total_carton = '-'; 
                 $rack->total_pcs = '-'; 
+                $rack->pallet_serial_number = '-'; 
             }
         }
         $result = [
@@ -90,11 +107,12 @@ class RackModel extends Model
         $builder = $this->db->table('tblrack as rack');
         $builder->join('tblrackpallet as rack_pallet' , 'rack_pallet.rack_id = rack.id');
         $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.id = rack_pallet.pallet_transfer_id');
+        $builder->join('tblpallet as pallet', 'pallet.id = pallet_transfer.pallet_id');
         $builder->where('pallet_transfer.flag_transferred','Y');
         $builder->where('pallet_transfer.flag_loaded','N');
         $builder->where('rack.id',$rack_id);
         $builder->orderBy('pallet_transfer.created_at', 'DESC');
-        $builder->select('pallet_transfer.*');
+        $builder->select('pallet_transfer.*, pallet.serial_number');
         $result = $builder->get()->getRow();
         return $result;
     }
@@ -117,6 +135,7 @@ class RackModel extends Model
         $gl_list = $builder->get()->getResult();
 
         $gl_number_list = array_map(function ($gl) { return $gl->gl_number; }, $gl_list);
+        $gl_number_list = array_unique($gl_number_list);
         $gl_number = implode(', ', $gl_number_list);
         
         $buyer_name_list = array_map(function ($gl) { return $gl->buyer_name; }, $gl_list);

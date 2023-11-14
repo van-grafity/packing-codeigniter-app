@@ -106,7 +106,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <label for="rack" class="col-form-label mr-2">Rack :</label>
-                                    <select id="rack" name="rack" class="form-control select2" required>
+                                    <select id="rack" name="rack" class="form-control select2" required disabled="disabled">
                                         <option value=""> Select Rack </option>
                                         <?php foreach ($racks as $rack) : ?>
                                             <option value="<?= $rack->id; ?>"><?= $rack->serial_number; ?></option>
@@ -156,6 +156,7 @@ $(document).ready(function() {
             show_flash_message({ error: "Pallet already at warehouse!"} )
         } else {
             $('#btn_pallet_to_rack').attr('disabled', false);
+            $('#rack').prop('disabled', false);
         }
 
         set_pallet_transfer_info(data.pallet_transfer);
@@ -250,6 +251,7 @@ function clear_pallet_transfer_info() {
 
     $('#pallet_transfer_id').val('');
     $('#btn_pallet_to_rack').attr('disabled', true);
+    $('#rack').prop('disabled', true);
 }
 
 function clear_carton_list(){

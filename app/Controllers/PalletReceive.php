@@ -127,7 +127,7 @@ class PalletReceive extends BaseController
             return $this->response->setJSON($data_return);
         }
         
-        $pallet_transfer->status = $this->getPalletStatus($pallet_transfer);
+        $pallet_transfer->status = $this->PalletTransferController->getPalletStatus($pallet_transfer);
         $pallet_transfer_detail = $this->PalletReceiveModel->getPalletTransferDetail($pallet_transfer->pallet_transfer_id);
  
         $data_return = [
@@ -150,7 +150,7 @@ class PalletReceive extends BaseController
             'entry_date' => date('Y-m-d H:i:s'),
         );
         $this->RackPalletModel->save($data);
-        $this->PalletTransferModel->update($data_input['pallet_transfer_id'],['flag_transferred' => 'Y']);
+        $this->PalletTransferModel->update($data_input['pallet_transfer_id'],['flag_transferred' => 'Y','transferred_at' => date('Y-m-d H:i:s')]);
         $this->RackModel->update($data_input['rack'],['flag_empty' => 'N']);
         
         return redirect()->to('pallet-receive')->with('success', "Successfully added Pallet to Rack");

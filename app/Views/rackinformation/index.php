@@ -24,7 +24,8 @@
                             <th width="20px">QTY CTN</th>
                             <th width="20px">QTY PCS</th>
                             <th width="20px">Level</th>
-                            <th width="100px">Action</th>
+                            <th width="100px">Pallet</th>
+                            <th width="110px">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,12 +86,13 @@ $(document).ready(function() {
             { data: 'serial_number', name: 'rack.serial_number'},
             { data: 'gl_number'},
             { data: 'po_no'},
-            { data: 'colour'},
+            { data: 'colour', orderable: false, searchable: false},
             { data: 'buyer_name'},
-            { data: 'total_carton'},
-            { data: 'total_pcs'},
-            { data: 'level', name: 'rack.level'},
-            { data: 'action', name: 'action'},
+            { data: 'total_carton', orderable: false, searchable: false},
+            { data: 'total_pcs', orderable: false, searchable: false},
+            { data: 'level', name: 'rack.level', orderable: false, searchable: false},
+            { data: 'pallet_serial_number', name: 'pallet.serial_number'},
+            { data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         columnDefs: [
             { targets: [0], orderable: false, searchable: false },

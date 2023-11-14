@@ -76,6 +76,7 @@ class PalletReceiveModel extends Model
         $builder->join('tbltransfernote as transfer_note','transfer_note.pallet_transfer_id = pallet_transfer.id');
         $builder->join('tbltransfernotedetail as transfer_note_detail','transfer_note_detail.transfer_note_id = transfer_note.id');
 
+        $builder->where(['pallet_transfer.flag_ready_to_transfer' => 'Y']);
         $builder->where(['pallet_transfer.flag_loaded' => 'N']);
         $builder->where(['pallet.serial_number' => $pallet_serial_number]);
         $builder->orderBy('pallet_transfer.created_at','DESC');
@@ -88,6 +89,7 @@ class PalletReceiveModel extends Model
             location_from.location_name as location_from, 
             location_to.location_name as location_to, 
             pallet_transfer.id as pallet_transfer_id, 
+            pallet_transfer.flag_ready_to_transfer, 
             pallet_transfer.flag_transferred, 
             pallet_transfer.flag_loaded, 
             COUNT(CASE WHEN transfer_note_detail.deleted_at IS NULL THEN transfer_note_detail.id END) as total_carton

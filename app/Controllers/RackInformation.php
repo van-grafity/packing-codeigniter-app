@@ -55,6 +55,72 @@ class RackInformation extends BaseController
         return $this->response->setJSON($dt_format);
     }
 
+    public function index_dt_bc()
+    {
+        $rack_list = $this->RackModel->getRackInformation();
+        return DataTable::of($rack_list)
+            ->addNumbering('DT_RowIndex')
+            ->add('action', function($row){
+                if($row->flag_empty == 'N') {
+                    $action_button = '
+                        <a href="javascript:void(0);" class="btn btn-warning btn-sm" onclick="remove_pallet('. $row->id .')">Remove Pallet</a>
+                    ';
+                } else {
+                    $action_button = '-';
+                }
+                return $action_button;
+            })->edit('gl_number', function($row){
+                if($row->flag_empty == 'N') {
+                    $gl_number = $row->gl_number;
+                } else {
+                    $gl_number = '-';
+                }
+                return $gl_number;
+            })->edit('po_no', function($row){
+                if($row->flag_empty == 'N') {
+                    $po_no = $row->po_no;
+                } else {
+                    $po_no = '-';
+                }
+                return $po_no;
+            })->add('colour', function($row){
+                if($row->flag_empty == 'N') {
+                    $colour = ($this->RackModel->getProductInformation($row->pallet_transfer_id))->colour;
+                } else {
+                    $colour = '-';
+                }
+                return $colour;
+            })->edit('buyer_name', function($row){
+                if($row->flag_empty == 'N') {
+                    $buyer_name = $row->buyer_name;
+                } else {
+                    $buyer_name = '-';
+                }
+                return $buyer_name;
+            })->add('total_carton', function($row){
+                if($row->flag_empty == 'N') {
+                    $total_carton = ($this->RackModel->getCartonInformation($row->pallet_transfer_id))->total_carton;
+                } else {
+                    $total_carton = '-';
+                }
+                return $total_carton;
+            })->add('total_pcs', function($row){
+                if($row->flag_empty == 'N') {
+                    $total_pcs = ($this->RackModel->getCartonInformation($row->pallet_transfer_id))->total_pcs;
+                } else {
+                    $total_pcs = '-';
+                }
+                return $total_pcs;
+            })->add('pallet_serial_number', function($row){
+                if($row->flag_empty == 'N') {
+                    $pallet_serial_number = $row->pallet_serial_number;
+                } else {
+                    $pallet_serial_number = '-';
+                }
+                return $pallet_serial_number;
+            })->toJson(true);
+    }
+
 
     public function reformat_to_dt_structure($rack_list, $draw)
     {
@@ -63,10 +129,10 @@ class RackInformation extends BaseController
         foreach ($rack_list_array as $key => $rack) {
             if($rack->flag_empty == 'N') {
                 $action_button = '
-                <a href="javascript:void(0);" class="btn btn-warning btn-sm" onclick="remove_pallet('. $rack->id .')">Remove Pallet</a>
+                    <a href="javascript:void(0);" class="btn btn-warning btn-sm" onclick="remove_pallet('. $rack->id .')">Remove Pallet</a>
                 ';
             } else {
-                $action_button = '';
+                $action_button = '-';
             }
 
             $rack->DT_RowIndex = $key + 1;
