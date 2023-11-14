@@ -41,6 +41,7 @@ class PalletReceiveModel extends Model
             'location_from.location_name as location_from', 
             'location_to.location_name as location_to', 
             'SUM(CASE WHEN transfer_note_detail.deleted_at IS NULL THEN 1 ELSE 0 END) as total_carton', 
+            'tblpallettransfer.flag_ready_to_transfer', 
             'tblpallettransfer.flag_transferred', 
             'tblpallettransfer.flag_loaded',
             'rack.serial_number as rack_serial_number'

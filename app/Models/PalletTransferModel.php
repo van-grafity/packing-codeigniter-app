@@ -11,7 +11,17 @@ class PalletTransferModel extends Model
     protected $returnType    = 'object';
     protected $useTimestamps = true;
     protected $useSoftDeletes   = true;
-    protected $allowedFields = ['pallet_id','location_from_id','location_to_id','flag_transferred','flag_loaded'];
+    protected $allowedFields = [
+        'pallet_id',
+        'location_from_id',
+        'location_to_id',
+        'flag_ready_to_transfer',
+        'ready_to_transfer_at',
+        'flag_transferred',
+        'transferred_at',
+        'flag_loaded',
+        'loaded_at'
+    ];
 
     public function getPalletTransfer($pallet_transfer_id = null)
     {
@@ -58,6 +68,7 @@ class PalletTransferModel extends Model
             'location_from.location_name as location_from',
             'location_to.location_name as location_to',
             'SUM(CASE WHEN transfer_note_detail.id IS NOT NULL AND transfer_note_detail.deleted_at IS NULL THEN 1 ELSE 0 END) as total_carton',
+            'tblpallettransfer.flag_ready_to_transfer',
             'tblpallettransfer.flag_transferred',
             'tblpallettransfer.flag_loaded'
         ]);

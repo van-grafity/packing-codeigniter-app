@@ -49,9 +49,20 @@ class PalletTransfer extends BaseController
         return DataTable::of($pallet_list)
             ->addNumbering('DT_RowIndex')
             ->add('action', function($row){
-                $action_button = '
-                    <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1" onclick="edit_pallet_transfer('. $row->id .')">Edit</a>
-                    <a href="javascript:void(0);" class="btn btn-danger btn-sm mb-1" onclick="delete_pallet_transfer('. $row->id .')">Delete</a>
+
+                if($row->flag_ready_to_transfer == 'Y'){
+                    $action_button = '
+                        <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1 disabled">Edit</a>
+                        <a href="javascript:void(0);" class="btn btn-danger btn-sm mb-1 disabled">Delete</a>
+                    ';
+                } else {
+                    $action_button = '
+                        <a href="javascript:void(0);" class="btn btn-primary btn-sm mb-1" onclick="edit_pallet_transfer('. $row->id .')">Edit</a>
+                        <a href="javascript:void(0);" class="btn btn-danger btn-sm mb-1" onclick="delete_pallet_transfer('. $row->id .')">Delete</a>
+                    ';
+                }
+
+                $action_button .= '
                     <a href="'. url_to('pallet_transfer_transfer_note',$row->id) .'" class="btn btn-info btn-sm mb-1">Detail</a>
                 ';
                 return $action_button;
@@ -60,7 +71,7 @@ class PalletTransfer extends BaseController
                 $transfer_note_list = $this->TransferNoteModel->where('pallet_transfer_id', $row->id)->findAll();
                 
                 foreach ($transfer_note_list as $key => $transfer_note) {
-                    $transfer_note_pill ='<a href="'. url_to('pallet_transfer_transfer_note_print',$transfer_note->id) .'" class="btn btn-sm bg-info" target="_blank" data-toggle="tooltip" data-placement="top" title="Click to Print">'. $transfer_note->serial_number .'</a>'; 
+                    $transfer_note_pill ='<a href="'. url_to('pallet_transfer_transfer_note_print',$transfer_note->id) .'" class="btn btn-sm bg-info mb-1" target="_blank" data-toggle="tooltip" data-placement="top" title="Click to Print">'. $transfer_note->serial_number .'</a>'; 
                     $transfer_note_result = $transfer_note_result . ' ' . $transfer_note_pill;
                 }
                 
@@ -154,10 +165,7 @@ class PalletTransfer extends BaseController
         
         $btn_transfer_note_class = '';
 
-        if($pallet_transfer->status == 'at Warehouse'){
-            $btn_transfer_note_class = 'disabled';
-        }
-        if($pallet_transfer->status == 'Loaded'){
+        if($pallet_transfer->flag_ready_to_transfer == 'Y'){
             $btn_transfer_note_class = 'disabled';
         }
 
@@ -494,29 +502,86 @@ class PalletTransfer extends BaseController
         $dompdf->stream($filename, ['Attachment' => false]);
     }
 
-    private function getPalletStatus($pallet_data, $pill_mode = false)
+    public function complete_preparation()
+    {
+        $pallet_transfer_id = $this->request->getGet('pallet_transfer_id');
+
+        $transfer_note_list = $this->PalletTransferModel->getTransferNotes($pallet_transfer_id);
+        if(empty($transfer_note_list)) {
+            $data_return = [
+                'status' => 'error',
+                'message' => 'Cannot Update Pallet status',
+                'data' => [
+                    'message_text' => 'Please provide at least 1 Packing Transfer Note'
+                ]
+            ];
+            return $this->response->setJSON($data_return);
+        }
+
+        $pallet_transfer = $this->PalletTransferModel
+            ->join('tblpallet as pallet','pallet.id = tblpallettransfer.pallet_id')
+            ->where('tblpallettransfer.id', $pallet_transfer_id)
+            ->select('tblpallettransfer.*, pallet.serial_number as pallet_serial_number')
+            ->first();
+
+        $this->PalletTransferModel->update($pallet_transfer_id, ['flag_ready_to_transfer' => 'Y', 'ready_to_transfer_at' => date('Y-m-d H:i:s')]);
+
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Successfully update Status Pallet',
+            'data' => $pallet_transfer
+        ];
+        return $this->response->setJSON($data_return);
+    }
+
+    public function getPalletStatus($pallet_data, $pill_mode = false)
     {
         if($pill_mode){
-            if($pallet_data->flag_transferred == 'N' && $pallet_data->flag_loaded == 'N'){
-                $status = '<span class="badge badge-secondary">Not Transfered Yet</span>';
+            if($pallet_data->flag_ready_to_transfer == 'N'){
+                $status = '<span class="badge badge-warning">Preparation in Progress</span>';
+            } elseif($pallet_data->flag_ready_to_transfer == 'Y' && $pallet_data->flag_transferred == 'N'){
+                $status = '<span class="badge badge-success">Ready to Transfer</span>';
             } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'N'){
-                $status = '<span class="badge badge-info">at Warehouse</span>';
+                $status = '<span class="badge badge-info">Received at Warehouse</span>';
             } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'Y'){
-                $status = '<span class="badge badge-success">Loaded</span>';
+                $status = '<span class="badge bg-navy">Loaded</span>';
             } else {
                 $status = '<span class="badge badge-danger">Unknown Status</span>';
             }
         } else {
-            if($pallet_data->flag_transferred == 'N' && $pallet_data->flag_loaded == 'N'){
-                $status = 'Not Transferred Yet';
+            if($pallet_data->flag_ready_to_transfer == 'N'){
+                $status = 'Preparation in Progress';
+            } elseif($pallet_data->flag_ready_to_transfer == 'Y' && $pallet_data->flag_transferred == 'N'){
+                $status = 'Ready to Transfer';
             } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'N'){
-                $status = 'at Warehouse';
+                $status = 'Received at Warehouse';
             } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'Y'){
                 $status = 'Loaded';
             } else {
                 $status = 'Unknown Status';
             }
         }
+        // if($pill_mode){
+        //     if($pallet_data->flag_transferred == 'N' && $pallet_data->flag_loaded == 'N'){
+        //         $status = '<span class="badge badge-secondary">Not Transferred Yet</span>';
+        //     } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'N'){
+        //         $status = '<span class="badge badge-info">at Warehouse</span>';
+        //     } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'Y'){
+        //         $status = '<span class="badge badge-success">Loaded</span>';
+        //     } else {
+        //         $status = '<span class="badge badge-danger">Unknown Status</span>';
+        //     }
+        // } else {
+        //     if($pallet_data->flag_transferred == 'N' && $pallet_data->flag_loaded == 'N'){
+        //         $status = 'Not Transferred Yet';
+        //     } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'N'){
+        //         $status = 'at Warehouse';
+        //     } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'Y'){
+        //         $status = 'Loaded';
+        //     } else {
+        //         $status = 'Unknown Status';
+        //     }
+        // }
         return $status;
     }
 

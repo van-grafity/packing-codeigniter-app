@@ -100,7 +100,7 @@ class RackInformation extends BaseController
         // ? (perlu dipertimbangkan lagi) : kayaknya di baris ini perlu check apakah pallet transfer ini sudah di load apa belum terlebih dahulu, kalau flag_loaded = 'Y' berarti tidak perlu lagi melanjutkan baris berikutnya. langsung return response aja
 
         $pallet = $this->PalletModel->find($pallet_transfer->pallet_id);
-        $not_loaded_carton = $this->check_not_loaded_carton($pallet_transfer);
+        $not_loaded_carton = $this->check_not_loaded_carton($pallet_transfer->id);
         
         if($not_loaded_carton) {
             $data_return = [
@@ -127,9 +127,9 @@ class RackInformation extends BaseController
 
     }
 
-    private function check_not_loaded_carton($pallet_transfer)
+    private function check_not_loaded_carton($pallet_transfer_id)
     {
-        $transfer_note_list = $this->PalletTransferModel->getTransferNotes($pallet_transfer->id);
+        $transfer_note_list = $this->PalletTransferModel->getTransferNotes($pallet_transfer_id);
         foreach ($transfer_note_list as $key => $transfer_note) {
             $not_loaded_carton = $this->TransferNoteModel->getCartonLoadStatusByTransfernote($transfer_note->id,'N');
             if($not_loaded_carton){

@@ -196,13 +196,17 @@ $routes->group('pallet-transfer', static function ($routes) {
     $routes->get('(:num)/transfer-note', 'PalletTransfer::transfer_note/$1',['as' => 'pallet_transfer_transfer_note']);
     $routes->get('transfer-note-detail', 'PalletTransfer::transfer_note_detail',['as' => 'pallet_transfer_transfer_note_detail']);
     $routes->get('check-pallet-availablity', 'PalletTransfer::check_pallet_availablity',['as' => 'pallet_transfer_check_pallet_availablity']);
+    
     $routes->post('', 'PalletTransfer::store', ['as' => 'pallet_transfer_store']);
     $routes->post('update', 'PalletTransfer::update',['as' => 'pallet_transfer_update']);
     $routes->post('delete', 'PalletTransfer::delete',['as' => 'pallet_transfer_delete']);
+    
     $routes->post('transfer-note-store', 'PalletTransfer::transfer_note_store',['as' => 'pallet_transfer_transfer_note_store']);
     $routes->post('transfer-note-update', 'PalletTransfer::transfer_note_update',['as' => 'pallet_transfer_transfer_note_update']);
     $routes->post('transfer-note-delete', 'PalletTransfer::transfer_note_delete',['as' => 'pallet_transfer_transfer_note_delete']);
     $routes->get('(:num)/transfer-note-print', 'PalletTransfer::transfer_note_print/$1',['as' => 'pallet_transfer_transfer_note_print']);
+
+    $routes->get('complate-preparation', 'PalletTransfer::complete_preparation',['as' => 'pallet_transfer_complete_preparation']);
 });
 
 $routes->group('pallet-receive', static function ($routes) {

@@ -46,6 +46,7 @@
                     <div class="col-sm-12">
                         <h4 class="title">Transfer Notes</h4>
                         <button type="button" class="btn btn-success mb-2 <?= $btn_transfer_note_class ?>" id="btn_modal_create_transfer_note" onclick="create_transfer_note(this)">New Transfer Note</button>
+                        <button type="button" class="btn btn-info mb-2 <?= $btn_transfer_note_class ?>" id="btn_modal_complete_preparation" onclick="complete_preparation(this)">Completing Preparation</button>
                         <table class="table table-bordered table-hover text-center" id="transfer_note_table">
                             <thead>
                                 <tr class="table-primary text-center">
@@ -256,6 +257,7 @@ const carton_detail_url = '<?= url_to('pallet_transfer_carton_detail')?>';
 const transfer_note_store_url = '<?= url_to('pallet_transfer_transfer_note_store')?>';
 const transfer_note_update_url = '<?= url_to('pallet_transfer_transfer_note_update')?>';
 const transfer_note_detail_url = '<?= url_to('pallet_transfer_transfer_note_detail')?>';
+const complete_preparation_url = '<?= url_to('pallet_transfer_complete_preparation')?>';
 
 
 async function get_carton_detail(carton_barcode){
@@ -283,6 +285,33 @@ function create_transfer_note(element){
         form_action_url: transfer_note_store_url,
     });
     $('#modal_transfer_note').modal('show');
+}
+
+async function complete_preparation(element){
+    if($(element).hasClass('disabled')){ return false };
+
+    let data = {
+        title: 'Are preparations complete?',
+        text: 'After compliting preparation, you cannot change any data on this pallet',
+        confirm_button: 'Yes Complete',
+    }
+    let confirm_action = await swal_confirm(data);
+    if(!confirm_action) { return false; };
+
+    let params_data = { 
+        pallet_transfer_id : '<?= $pallet_transfer->id ?>', 
+    };
+    result = await using_fetch(complete_preparation_url, params_data, "GET");
+
+    if(result.status == "success"){
+        swal_info({
+            title : result.message,
+            reload_option : true,
+        });
+        $(element).addClass('disabled');
+    } else {
+        swal_failed({ title: result.message, text:result.data.message_text });
+    }
 }
 
 function clear_transfer_note_form(){

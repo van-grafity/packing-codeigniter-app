@@ -9,6 +9,8 @@ use App\Models\RackModel;
 use App\Models\RackPalletModel;
 use App\Models\PalletTransferModel;
 
+use App\Controllers\PalletTransfer;
+
 use \Hermawan\DataTables\DataTable;
 use CodeIgniter\I18n\Time;
 
@@ -19,6 +21,7 @@ class PalletReceive extends BaseController
     protected $RackModel;
     protected $RackPalletModel;
     protected $PalletTransferModel;
+    protected $PalletTransferController;
 
     public function __construct()
     {
@@ -28,6 +31,8 @@ class PalletReceive extends BaseController
         $this->RackModel = new RackModel();
         $this->RackPalletModel = new RackPalletModel();
         $this->PalletTransferModel = new PalletTransferModel();
+        
+        $this->PalletTransferController = new PalletTransfer();
     }
 
     public function index()
@@ -48,7 +53,13 @@ class PalletReceive extends BaseController
             ->addNumbering('DT_RowIndex')
             ->add('action', function($row){
 
-                if($row->flag_transferred == 'Y') {
+                if($row->flag_ready_to_transfer == 'N') {
+                    $action_button = '
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Preparation still in progress">
+                            <a class="btn btn-primary btn-sm mb-1 disabled" style="pointer-events: none;" type="button" disabled>Receive</a>
+                        </span>
+                    ';
+                } else if($row->flag_transferred == 'Y') {
                     $action_button = '
                         <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Already Received">
                             <a class="btn btn-primary btn-sm mb-1 disabled" style="pointer-events: none;" type="button" disabled>Receive</a>
@@ -74,14 +85,14 @@ class PalletReceive extends BaseController
                 $transfer_note_list = $this->TransferNoteModel->where('pallet_transfer_id', $row->id)->findAll();
                 
                 foreach ($transfer_note_list as $key => $transfer_note) {
-                    $transfer_note_pill ='<a href="'. url_to('pallet_transfer_transfer_note_print',$transfer_note->id) .'" class="btn btn-sm bg-info" target="_blank" data-toggle="tooltip" data-placement="top" title="Click to Print">'. $transfer_note->serial_number .'</a>'; 
+                    $transfer_note_pill ='<a href="'. url_to('pallet_transfer_transfer_note_print',$transfer_note->id) .'" class="btn btn-sm bg-info mb-1" target="_blank" data-toggle="tooltip" data-placement="top" title="Click to Print">'. $transfer_note->serial_number .'</a>'; 
                     $transfer_note_result = $transfer_note_result . ' ' . $transfer_note_pill;
                 }
                 
                 return $transfer_note_result;
             })->add('status', function($row){
                 
-                $status = $this->getPalletStatus($row, true);
+                $status = $this->PalletTransferController->getPalletStatus($row, true);
                 return $status;
 
             })->add('rack', function($row){
@@ -145,30 +156,31 @@ class PalletReceive extends BaseController
         return redirect()->to('pallet-receive')->with('success', "Successfully added Pallet to Rack");
     }
 
-    private function getPalletStatus($pallet_data, $pill_mode = false)
-    {
-        if($pill_mode){
-            if($pallet_data->flag_transferred == 'N' && $pallet_data->flag_loaded == 'N'){
-                $status = '<span class="badge badge-secondary">Not Transfered Yet</span>';
-            } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'N'){
-                $status = '<span class="badge badge-info">at Warehouse</span>';
-            } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'Y'){
-                $status = '<span class="badge badge-success">Loaded</span>';
-            } else {
-                $status = '<span class="badge badge-danger">Unknown Status</span>';
-            }
-        } else {
-            if($pallet_data->flag_transferred == 'N' && $pallet_data->flag_loaded == 'N'){
-                $status = 'Not Transferred Yet';
-            } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'N'){
-                $status = 'at Warehouse';
-            } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'Y'){
-                $status = 'Loaded';
-            } else {
-                $status = 'Unknown Status';
-            }
-        }
-        return $status;
-    }
+    // !! ini bisa di hapus karena bisa pakai function dari pallet transfer controller
+    // private function getPalletStatus($pallet_data, $pill_mode = false)
+    // {
+    //     if($pill_mode){
+    //         if($pallet_data->flag_transferred == 'N' && $pallet_data->flag_loaded == 'N'){
+    //             $status = '<span class="badge badge-secondary">Not Transfered Yet</span>';
+    //         } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'N'){
+    //             $status = '<span class="badge badge-info">at Warehouse</span>';
+    //         } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'Y'){
+    //             $status = '<span class="badge badge-success">Loaded</span>';
+    //         } else {
+    //             $status = '<span class="badge badge-danger">Unknown Status</span>';
+    //         }
+    //     } else {
+    //         if($pallet_data->flag_transferred == 'N' && $pallet_data->flag_loaded == 'N'){
+    //             $status = 'Not Transferred Yet';
+    //         } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'N'){
+    //             $status = 'at Warehouse';
+    //         } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'Y'){
+    //             $status = 'Loaded';
+    //         } else {
+    //             $status = 'Unknown Status';
+    //         }
+    //     }
+    //     return $status;
+    // }
 
 }
