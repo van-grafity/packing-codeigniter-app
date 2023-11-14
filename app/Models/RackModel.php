@@ -82,7 +82,10 @@ class RackModel extends Model
                 
                 $carton_information = $this->getCartonInformation($pallet_transfer->id);
                 $rack->total_carton = $carton_information->total_carton; 
-                $rack->total_pcs = $carton_information->total_pcs; 
+                $rack->total_pcs = $carton_information->total_pcs;
+
+                $rack->transfer_note = $this->getTransferNoteList($pallet_transfer->id);
+
                 
                 $rack->pallet_serial_number = $pallet_transfer->serial_number; 
             } else {
@@ -93,6 +96,7 @@ class RackModel extends Model
                 $rack->total_carton = '-'; 
                 $rack->total_pcs = '-'; 
                 $rack->pallet_serial_number = '-'; 
+                $rack->transfer_note = '-';
             }
         }
         $result = [
@@ -126,12 +130,19 @@ class RackModel extends Model
         $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.id = carton_barcode.packinglist_carton_id');
         $builder->join('tblpackinglist as pl', 'pl.id = pl_carton.packinglist_id');
         $builder->join('tblpurchaseorder as po', 'po.id = pl.packinglist_po_id');
-        $builder->join('tblgl_po as gl_po', 'gl_po.po_id = po.id');
-        $builder->join('tblgl as gl', 'gl.id = gl_po.gl_id');
-        $builder->join('tblbuyer as buyer', 'buyer.id = gl.buyer_id');
+        $builder->join('tblsyncpurchaseorder as sync_po', 'sync_po.purchase_order_id = po.id');
+        
+        
+        // !! peralihan dari gl_po ke sync_po. kedepannya query yang ini tolong di hapus
+        // $builder->join('tblgl_po as gl_po', 'gl_po.po_id = po.id');
+        // $builder->join('tblgl as gl', 'gl.id = gl_po.gl_id');
+        // $builder->join('tblbuyer as buyer', 'buyer.id = gl.buyer_id');
+        
         $builder->where('pallet_transfer.id', $pallet_transfer_id);
-        $builder->groupBy('gl.id, po.po_no');
-        $builder->select('gl.gl_number, buyer.buyer_name, po.po_no');
+        
+        // $builder->groupBy('gl.id, po.po_no');
+        $builder->groupBy('sync_po.id');
+        $builder->select('sync_po.gl_number, sync_po.buyer_name, po.po_no');
         $gl_list = $builder->get()->getResult();
 
         $gl_number_list = array_map(function ($gl) { return $gl->gl_number; }, $gl_list);
@@ -217,6 +228,17 @@ class RackModel extends Model
     //     return $result;
     // }
 
+    public function getTransferNoteList($pallet_transfer_id)
+    {
+        $PalletTransferModel = model('PalletTransferModel');
+        $transfer_note_list = $PalletTransferModel->getTransferNotes($pallet_transfer_id);
+
+        $transfer_note_number_list = array_map(function ($transfer_note) { return $transfer_note->serial_number; }, $transfer_note_list);
+        $transfer_note_number_list = array_unique($transfer_note_number_list);
+        $transfer_note_number = implode(', ', $transfer_note_number_list);
+
+        return $transfer_note_number;
+    }
     public function updateLastRackPallet($rack_id, $data_update)
     {
         $builder = $this->db->table('tblrack as rack');

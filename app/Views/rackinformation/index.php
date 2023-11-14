@@ -25,6 +25,7 @@
                             <th width="20px">QTY PCS</th>
                             <th width="20px">Level</th>
                             <th width="100px">Pallet</th>
+                            <th width="100px">Transfer Note</th>
                             <th width="110px">Action</th>
                         </tr>
                     </thead>
@@ -81,17 +82,32 @@ $(document).ready(function() {
             }
         },
         order: [],
+        // columns: [
+        //     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+        //     { data: 'serial_number', name: 'rack.serial_number'},
+        //     { data: 'gl_number'},
+        //     { data: 'po_no'},
+        //     { data: 'colour', orderable: false, searchable: false},
+        //     { data: 'buyer_name'},
+        //     { data: 'total_carton', orderable: false, searchable: false},
+        //     { data: 'total_pcs', orderable: false, searchable: false},
+        //     { data: 'level', name: 'rack.level', orderable: false, searchable: false},
+        //     { data: 'pallet_serial_number', name: 'pallet.serial_number'},
+        //     { data: 'transfer_note', name: 'transfer_note', orderable: false, searchable: false},
+        //     { data: 'action', name: 'action', orderable: false, searchable: false},
+        // ],
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'serial_number', name: 'rack.serial_number'},
             { data: 'gl_number'},
             { data: 'po_no'},
-            { data: 'colour', orderable: false, searchable: false},
+            { data: 'colour'},
             { data: 'buyer_name'},
             { data: 'total_carton', orderable: false, searchable: false},
             { data: 'total_pcs', orderable: false, searchable: false},
             { data: 'level', name: 'rack.level', orderable: false, searchable: false},
             { data: 'pallet_serial_number', name: 'pallet.serial_number'},
+            { data: 'transfer_note', name: 'transfer_note'},
             { data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         columnDefs: [
@@ -103,6 +119,29 @@ $(document).ready(function() {
         searching: true,
         autoWidth: false,
         orderCellsTop: true,
+        dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>" +
+            "<'row'<'col-md-12'tr>>" +
+            "<'row'<'col-md-5'i><'col-md-7'p>>",
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+                }
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+                }
+            },
+        ]
     });
 
     $('#rack_status').change(function(event) {
