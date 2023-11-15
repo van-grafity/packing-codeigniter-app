@@ -179,7 +179,7 @@ class PalletTransferModel extends Model
         
         //## delete transfer note detail
         foreach ($transfer_notes as $key => $transfer_note) {
-            $this->delteTransferNoteDetail($transfer_note->id);
+            $this->deleteTransferNoteDetail($transfer_note->id);
         }
         
         //## delete transfer note
@@ -214,7 +214,23 @@ class PalletTransferModel extends Model
         return $is_transferred;
     }
 
-    private function delteTransferNoteDetail($transfer_note_id)
+    public function getCartonInPalletTransfer($pallet_transfer_id)
+    {
+        $TransferNoteModel = model('TransferNoteModel');
+        $carton_in_pallet_transfer = [];
+        $transfer_note_list = $this->getTransferNotes($pallet_transfer_id);
+        foreach ($transfer_note_list as $key => $transfer_note) {
+            $carton_in_transfer_note = $TransferNoteModel->getCartonInTransferNote($transfer_note->id);
+            foreach ($carton_in_transfer_note as $key_carton => $carton) {
+                $carton_in_pallet_transfer[] = $carton;
+            }
+        }
+
+        return $carton_in_pallet_transfer;
+    }
+
+
+    private function deleteTransferNoteDetail($transfer_note_id)
     {
         $builder = $this->db->table('tbltransfernotedetail');
         $builder->where('transfer_note_id', $transfer_note_id);

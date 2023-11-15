@@ -6,6 +6,11 @@ use App\Controllers\BaseController;
 use App\Models\CartonLoadingModel;
 use App\Models\CartonBarcodeModel;
 use App\Models\GlModel;
+use App\Models\RackModel;
+use App\Models\PalletModel;
+use App\Models\PalletTransferModel;
+
+use App\Controllers\PalletTransfer;
 
 use \Hermawan\DataTables\DataTable;
 use CodeIgniter\I18n\Time;
@@ -15,6 +20,10 @@ class CartonLoading extends BaseController
     protected $CartonLoadingModel;
     protected $CartonBarcodeModel;
     protected $GlModel;
+    protected $RackModel;
+    protected $PalletModel;
+    protected $PalletTransferModel;
+    protected $PalletTransferController;
 
     public function __construct()
     {
@@ -22,6 +31,10 @@ class CartonLoading extends BaseController
         $this->CartonLoadingModel = new CartonLoadingModel();
         $this->CartonBarcodeModel = new CartonBarcodeModel();
         $this->GlModel = new GlModel();
+        $this->RackModel = new RackModel();
+        $this->PalletModel = new PalletModel();
+        $this->PalletTransferModel = new PalletTransferModel();
+        $this->PalletTransferController = new PalletTransfer();
     }
 
     public function index()
@@ -94,6 +107,53 @@ class CartonLoading extends BaseController
             'data' => $carton,
         ];
         return $this->response->setJSON($data_return);
+    }
+
+    public function create()
+    {
+        $rack_list = $this->RackModel->where('flag_empty','Y')->findAll();
+
+        $data = [
+            'title' => 'Load Cartons',
+            'rack_list' => $rack_list,
+        ];
+        return view('cartonloading/create', $data);
+    }
+
+    public function search_carton_by_pallet()
+    {
+        $data_input = $this->request->getGet();
+        $pallet = $this->PalletModel->where('serial_number', $data_input['pallet_barcode'])->first();
+        if(!$pallet){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'Pallet Not Found',
+            ];
+            return $this->response->setJSON($data_return);
+        }
+
+        $pallet_transfer = $this->RackModel->searchPalletTransferInRack($pallet->id);
+        if(!$pallet_transfer->pallet_transfer_id){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'The pallet was not found in the rack',
+            ];
+            return $this->response->setJSON($data_return);
+        }
+
+        $pallet_transfer->status = $this->PalletTransferController->getPalletStatus($pallet_transfer);
+        $pallet_transfer_detail = $this->PalletTransferModel->getCartonInPalletTransfer($pallet_transfer->pallet_transfer_id);
+        
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Successfully get pallet information',
+            'data' => [
+                'pallet_transfer' => $pallet_transfer,
+                'pallet_transfer_detail' => $pallet_transfer_detail,
+            ],
+        ];
+        return $this->response->setJSON($data_return);
+        
     }
 
 }

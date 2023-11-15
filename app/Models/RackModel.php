@@ -367,4 +367,38 @@ class RackModel extends Model
         return $result;
     }
 
+    public function searchPalletTransferInRack($pallet_id)
+    {
+        $builder = $this->db->table('tblrack as rack');
+        $builder->join('tblrackpallet as rack_pallet','rack_pallet.rack_id = rack.id');
+        $builder->join('tblpallettransfer as pallet_transfer','pallet_transfer.id = rack_pallet.pallet_transfer_id');
+        $builder->join('tbllocation as location_from','location_from.id = pallet_transfer.location_from_id');
+        $builder->join('tbllocation as location_to','location_to.id = pallet_transfer.location_to_id');
+        $builder->join('tblpallet as pallet','pallet.id = pallet_transfer.pallet_id');
+        $builder->join('tbltransfernote as transfer_note','transfer_note.pallet_transfer_id = pallet_transfer.id');
+        $builder->join('tbltransfernotedetail as transfer_note_detail','transfer_note_detail.transfer_note_id = transfer_note.id');
+
+        $builder->where('pallet.id',$pallet_id);
+        $builder->where('rack_pallet.out_date', null);
+        $builder->orderBy('rack_pallet.created_at', 'DESC');
+        
+        $builder->select([
+            'pallet.id', 
+            'pallet.id as pallet_id', 
+            'pallet.serial_number as pallet_number', 
+            'pallet.flag_empty', 
+            'rack.serial_number as rack_serial_number', 
+            'location_from.location_name as location_from', 
+            'location_to.location_name as location_to', 
+            'pallet_transfer.id as pallet_transfer_id', 
+            'pallet_transfer.flag_ready_to_transfer', 
+            'pallet_transfer.flag_transferred', 
+            'pallet_transfer.flag_loaded', 
+            'COUNT(CASE WHEN transfer_note_detail.deleted_at IS NULL THEN transfer_note_detail.id END) as total_carton',
+        ]);
+        $pallet_transfer = $builder->get()->getRow();
+
+        return $pallet_transfer;
+    }
+
 }

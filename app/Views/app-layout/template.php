@@ -318,6 +318,12 @@
                                             <p>Carton List</p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('carton-loading/create') ?>" class="nav-link">
+                                            <i class="fas fa-list-ul nav-icon"></i>
+                                            <p>Load the Carton</p>
+                                        </a>
+                                    </li>
                                     <?php endif ?>
                                 </ul>
                             </li>
