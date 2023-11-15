@@ -193,6 +193,45 @@ class RackInformation extends BaseController
 
     }
 
+    public function location_sheet()
+    {
+        $rack_area_list = $this->RackModel->groupBy('tblrack.area')->findAll();
+        $rack_level_list = $this->RackModel->groupBy('tblrack.level')->findAll();
+        
+        $data = [
+            'title' => 'Rack Location Sheet',
+            'action_field_class' => '',
+            'rack_area_list' => $rack_area_list,
+            'rack_level_list' => $rack_level_list,
+        ];
+        return view('rackinformation/location_sheet', $data);
+    }
+
+    public function location_sheet_list()
+    {
+        $request_params = $this->request->getVar();
+        
+        $filter_rack_area = array_key_exists('filter_rack_area', $request_params) ? $request_params['filter_rack_area'] : null;
+        $filter_rack_level = array_key_exists('filter_rack_level', $request_params) ? $request_params['filter_rack_level'] : null;
+        
+        $start = array_key_exists('start', $request_params) ? $request_params['start'] : 0;
+        $length = array_key_exists('length', $request_params) ? $request_params['length'] : 100;
+        $page =  $start + 1;
+        $draw = array_key_exists('draw', $request_params) ? $request_params['draw'] : 1;
+
+        $params = [
+            'length' => $length,
+            'start' => $start,
+            'page' => $page,
+            'filter_rack_area' => $filter_rack_area,
+            'filter_rack_level' => $filter_rack_level,
+        ];
+
+        $rack_list = $this->RackModel->getRackLocationSheet_array($params);
+        $dt_format = $this->reformat_to_dt_structure($rack_list, $draw);
+        return $this->response->setJSON($dt_format);
+    }
+
     private function check_not_loaded_carton($pallet_transfer_id)
     {
         $transfer_note_list = $this->PalletTransferModel->getTransferNotes($pallet_transfer_id);
