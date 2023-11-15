@@ -86,14 +86,15 @@ class PalletTransfer extends BaseController
             })->toJson(true);
     }
 
-    public function create()
-    {
-        $data = [
-            'title' => 'New Pallet Transfer',
-        ];
-        // return view('pallettransfer/create', $data);
+    // !! fungsi ini kayaknya ga kepake, berikut view pallettransfer/create.php nya
+    // public function create()
+    // {
+    //     $data = [
+    //         'title' => 'New Pallet Transfer',
+    //     ];
+    //     // return view('pallettransfer/create', $data);
         
-    }
+    // }
 
     public function store()
     {
@@ -169,7 +170,7 @@ class PalletTransfer extends BaseController
             $btn_transfer_note_class = 'disabled';
         }
 
-        $transfer_note_list = $this->PalletTransferModel->getTransferNotesInPallet($pallet_transfer->pallet_id);
+        $transfer_note_list = $this->PalletTransferModel->getTransferNotesByPalletTransfer($pallet_transfer->id);
         $data = [
             'title' => 'Packing Transfer Note',
             'pallet_transfer' => $pallet_transfer,
@@ -179,46 +180,47 @@ class PalletTransfer extends BaseController
         return view('pallettransfer/detail', $data);
     }
 
-    public function pallet_detail()
-    {
-        $pallet_serial_number = $this->request->getGet('pallet_serial_number');
+    // !! ini juga kayaknya ga di pakai
+    // public function pallet_detail()
+    // {
+    //     $pallet_serial_number = $this->request->getGet('pallet_serial_number');
         
-        $pallet = $this->PalletModel->where('serial_number', $pallet_serial_number)->first();
-        if(!$pallet){
-            $data_return = [
-                'status' => 'error',
-                'message' => 'Pallet Not Found',
-            ];
-            return $this->response->setJSON($data_return);
-        }
+    //     $pallet = $this->PalletModel->where('serial_number', $pallet_serial_number)->first();
+    //     if(!$pallet){
+    //         $data_return = [
+    //             'status' => 'error',
+    //             'message' => 'Pallet Not Found',
+    //         ];
+    //         return $this->response->setJSON($data_return);
+    //     }
         
-        $get_pallet_transfer = $this->PalletTransferModel->getDetailPalletBySerialNumber($pallet_serial_number);
+    //     $get_pallet_transfer = $this->PalletTransferModel->getDetailPalletBySerialNumber($pallet_serial_number);
         
-        $pallet_data = [
-            'pallet_number' => $get_pallet_transfer->pallet_number,
-            'location_from' => $get_pallet_transfer->location_from ? $get_pallet_transfer->location_from : '-',
-            'location_to' => $get_pallet_transfer->location_to ? $get_pallet_transfer->location_to : '-',
-        ];
-        $transfer_note_list = [];
+    //     $pallet_data = [
+    //         'pallet_number' => $get_pallet_transfer->pallet_number,
+    //         'location_from' => $get_pallet_transfer->location_from ? $get_pallet_transfer->location_from : '-',
+    //         'location_to' => $get_pallet_transfer->location_to ? $get_pallet_transfer->location_to : '-',
+    //     ];
+    //     $transfer_note_list = [];
         
-        if($get_pallet_transfer->flag_empty == 'Y'){
-            $pallet_data['status'] = 'Empty';
-        } else {
-            $pallet_data['status'] = $this->getPalletStatus($get_pallet_transfer);
-            $transfer_note_list = $this->PalletTransferModel->getTransferNotesInPallet($get_pallet_transfer->pallet_id);
-        }
+    //     if($get_pallet_transfer->flag_empty == 'Y'){
+    //         $pallet_data['status'] = 'Empty';
+    //     } else {
+    //         $pallet_data['status'] = $this->getPalletStatus($get_pallet_transfer);
+    //         $transfer_note_list = $this->PalletTransferModel->getTransferNotesByPalletTransfer($get_pallet_transfer->id);
+    //     }
 
-        $data_return = [
-            'status' => 'success',
-            'message' => 'Pallet Found',
-            'data' => [
-                'pallet_info' => $pallet_data,
-                'transfer_note_list' => $transfer_note_list,
-            ],
-        ];
-        return $this->response->setJSON($data_return);
+    //     $data_return = [
+    //         'status' => 'success',
+    //         'message' => 'Pallet Found',
+    //         'data' => [
+    //             'pallet_info' => $pallet_data,
+    //             'transfer_note_list' => $transfer_note_list,
+    //         ],
+    //     ];
+    //     return $this->response->setJSON($data_return);
 
-    }
+    // }
 
     public function transfer_note_store()
     {

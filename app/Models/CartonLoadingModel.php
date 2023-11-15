@@ -44,7 +44,7 @@ class CartonLoadingModel extends Model
         $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.id = transfer_note.pallet_transfer_id');
         $builder->where('tblcartonbarcode.flag_packed', 'Y');
         $builder->where('pallet_transfer.flag_transferred', 'Y');
-        
+        $builder->where('transfer_note_detail.deleted_at', null);
 
         // ## Memilih kolom dengan alias
         $builder->select([
