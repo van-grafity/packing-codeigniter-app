@@ -484,16 +484,17 @@ class PackingList extends BaseController
         $dompdf->stream($filename, ['Attachment' => false]);
     }
 
-    public function htmlToPDF(){
-        $dompdf = new \Dompdf\Dompdf(); 
-        $dompdf->loadHtml(view('pdf_view'));
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->set_option('defaultMediaType', 'all');
-        $dompdf->set_option('isFontSubsettingEnabled', true);
-        $dompdf->set_option('isPhpEnabled', true);
-        $dompdf->render();
-        $dompdf->stream();
-    }
+    // !! ini kayaknya ga di pakai . tandai dulu. besok di hapus
+    // public function htmlToPDF(){
+    //     $dompdf = new \Dompdf\Dompdf(); 
+    //     $dompdf->loadHtml(view('pdf_view'));
+    //     $dompdf->setPaper('A4', 'landscape');
+    //     $dompdf->set_option('defaultMediaType', 'all');
+    //     $dompdf->set_option('isFontSubsettingEnabled', true);
+    //     $dompdf->set_option('isPhpEnabled', true);
+    //     $dompdf->render();
+    //     $dompdf->stream();
+    // }
 
     // !! =>> Delete This
     // private function searchInArrayByProductID(String $product_id, Array $array_po) : Array

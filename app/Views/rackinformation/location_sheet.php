@@ -54,7 +54,7 @@
                 </div>
                 <div class="row mb-2">
                     <div class="col-sm-12">
-                        <a href="javascript:void(0)" type="button" class="btn btn-info mb-2" id="btn_print_location_sheet" onclick="add_new_rack()">Print Location Sheet</a>
+                        <a href="javascript:void(0)" type="button" class="btn btn-info mb-2" onclick="print_location_sheet()">Print Location Sheet</a>
                     </div>
                 </div>
                 <div class="row">
@@ -92,6 +92,7 @@
 <script type="text/javascript">
     const index_rack_location_list_url = '<?= url_to('rack_information_location_sheet_list')?>';
     const remove_pallet_from_rack_url = '<?= url_to('remove_pallet_from_rack')?>';
+    const location_sheet_print_url = '<?= url_to('rack_information_location_sheet_print')?>';
 
     const remove_pallet = async (rack_id) => {
         params_data = { id : rack_id };
@@ -108,6 +109,29 @@
             }
             swal_warning(swal_data);
         }
+    }
+
+    const print_location_sheet = () => {
+        filter_rack_area = $('#filter_rack_area').val();
+        filter_rack_level = $('#filter_rack_level').val();
+
+
+        if(!filter_rack_area){
+            data_alert = {
+                title: 'Please select the Area first'
+            }
+            swal_warning(data_alert);
+            return false;
+        }
+
+        let filter = {
+            area : filter_rack_area,
+            level : filter_rack_level,
+        }
+
+        filter_query_string = new URLSearchParams(filter).toString();
+        url_with_params = `${location_sheet_print_url}?${filter_query_string}`;
+        window.open(url_with_params, "_blank");
     }
 
 </script>

@@ -8,6 +8,7 @@ use App\Models\PalletModel;
 use App\Models\PalletTransferModel;
 use App\Models\TransferNoteModel;
 
+use CodeIgniter\I18n\Time;
 use \Hermawan\DataTables\DataTable;
 
 class RackInformation extends BaseController
@@ -230,6 +231,46 @@ class RackInformation extends BaseController
         $rack_list = $this->RackModel->getRackLocationSheet_array($params);
         $dt_format = $this->reformat_to_dt_structure($rack_list, $draw);
         return $this->response->setJSON($dt_format);
+    }
+
+
+    public function location_sheet_print()
+    {
+        $request_params = $this->request->getVar();
+        
+        $filter_rack_area = array_key_exists('area', $request_params) ? $request_params['area'] : null;
+        $filter_rack_level = array_key_exists('level', $request_params) ? $request_params['level'] : null;
+
+        $start = array_key_exists('start', $request_params) ? $request_params['start'] : 0;
+        $length = array_key_exists('length', $request_params) ? $request_params['length'] : 100;
+        $page =  $start + 1;
+        $draw = array_key_exists('draw', $request_params) ? $request_params['draw'] : 1;
+
+        $params = [
+            'filter_rack_area' => $filter_rack_area,
+            'filter_rack_level' => $filter_rack_level,
+        ];
+        
+        $rack_list = $this->RackModel->getRackLocationSheet_pdf($params);
+        
+
+        $filename = 'Rack Location Sheet Area '. $filter_rack_area;
+        $date_printed = new Time('now');
+        $date_printed = $date_printed->toLocalizedString('eeee, dd MMMM yyyy HH:mm');
+
+        $data = [
+            'title'         => $filename,
+            'rack_list'   => $rack_list,
+            'date_printed' => $date_printed,
+        ];
+
+        // return view('rackinformation/location_sheet_pdf', $data);
+
+        $dompdf = new \Dompdf\Dompdf(); 
+        $dompdf->loadHtml(view('rackinformation/location_sheet_pdf', $data));
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $dompdf->stream($filename, ['Attachment' => false]);
     }
 
     private function check_not_loaded_carton($pallet_transfer_id)

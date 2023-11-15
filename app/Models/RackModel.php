@@ -122,7 +122,6 @@ class RackModel extends Model
             $builder->where('tblrack.level',$filter_rack_level);
         }
 
-
         $builder->select('tblrack.id, tblrack.serial_number, tblrack.level, tblrack.flag_empty');
         $rack_list = $builder->paginate($params['length'], 'default',$params['start']);
 
@@ -164,6 +163,61 @@ class RackModel extends Model
             'pager' => $pager,
         ];
         return $result;
+    }
+
+    public function getRackLocationSheet_pdf($params)
+    {
+        $filter_rack_area = $params['filter_rack_area'];
+        $filter_rack_level = $params['filter_rack_level'];
+        
+        $builder = $this;
+        if($filter_rack_area){
+            $builder->where('tblrack.area',$filter_rack_area);
+        } else {
+            $builder->where('tblrack.area',null);
+        }
+
+        if($filter_rack_level){
+            $builder->where('tblrack.level',$filter_rack_level);
+        }
+
+        $builder->select('tblrack.id, tblrack.serial_number, tblrack.level, tblrack.flag_empty');
+        $rack_list = $builder->get()->getResult();
+        
+        
+        foreach ($rack_list as $key_rack => $rack) {
+            $pallet_transfer = $this->getPalletTransferInRack($rack->id);
+            
+            if($pallet_transfer){
+                $gl_information = $this->getGlInformation($pallet_transfer->id);
+                $rack->gl_number = $gl_information->gl_number; 
+                $rack->buyer_name = $gl_information->buyer_name; 
+                $rack->po_no = $gl_information->po_no; 
+                
+                $product_information = $this->getProductInformation($pallet_transfer->id);
+                $rack->colour = $product_information->colour; 
+                
+                $carton_information = $this->getCartonInformation($pallet_transfer->id);
+                $rack->total_carton = $carton_information->total_carton; 
+                $rack->total_pcs = $carton_information->total_pcs;
+
+                $rack->transfer_note = $this->getTransferNoteList($pallet_transfer->id);
+
+                
+                $rack->pallet_serial_number = $pallet_transfer->serial_number; 
+            } else {
+                $rack->gl_number = '-'; 
+                $rack->buyer_name = '-'; 
+                $rack->po_no = '-'; 
+                $rack->colour = '-'; 
+                $rack->total_carton = '-'; 
+                $rack->total_pcs = '-'; 
+                $rack->pallet_serial_number = '-'; 
+                $rack->transfer_note = '-';
+            }
+        }
+
+        return $rack_list;
     }
 
     public function getPalletTransferInRack($rack_id)

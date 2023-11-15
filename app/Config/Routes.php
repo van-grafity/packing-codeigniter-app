@@ -223,6 +223,8 @@ $routes->group('rack-information', static function ($routes) {
     $routes->get('remove-pallet', 'RackInformation::remove_pallet', ['as' => 'remove_pallet_from_rack']);
     $routes->get('location-sheet', 'RackInformation::location_sheet', ['as' => 'rack_information_location_sheet']);
     $routes->get('location-sheet-list', 'RackInformation::location_sheet_list', ['as' => 'rack_information_location_sheet_list']);
+
+    $routes->get('location-sheet-print', 'RackInformation::location_sheet_print',['as' => 'rack_information_location_sheet_print']);
 });
 
 $routes->group('carton-loading', static function ($routes) {
@@ -241,7 +243,7 @@ $routes->get('rptpackinglist', "RptPackingList::index");
 $routes->get('report/packinglist/(:num)', "PackingList::report/$1");
 
 
-// Route for Manipulate Data
+// Route for Manipulate Database
 $routes->group('update-database', static function ($routes) {
     $routes->get('', 'UpdateDatabase::index', ['as' => 'update_database']);
     $routes->get('aero-international-upc', 'UpdateDatabase::aero_international_upc', ['as' => 'update_aero_international_upc']);
