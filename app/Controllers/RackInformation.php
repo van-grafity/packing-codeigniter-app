@@ -162,7 +162,7 @@ class RackInformation extends BaseController
          */
 
         $rack_id = $this->request->getGet('id');
-        $pallet_transfer = $this->PalletTransferModel->getLastPalletTransferByRackID($rack_id);
+        $pallet_transfer = $this->PalletTransferModel->getLastActivePalletTransferByRackID($rack_id);
         
         // ? (perlu dipertimbangkan lagi) : kayaknya di baris ini perlu check apakah pallet transfer ini sudah di load apa belum terlebih dahulu, kalau flag_loaded = 'Y' berarti tidak perlu lagi melanjutkan baris berikutnya. langsung return response aja
 
@@ -180,7 +180,7 @@ class RackInformation extends BaseController
 
         $this->RackModel->update($rack_id, ['flag_empty' => 'Y']);
         $update_last_rack_pallet = $this->RackModel->updateLastRackPallet($rack_id, ['out_date' => date('Y-m-d H:i:s')]);
-        $update_pallet_transfer = $this->PalletTransferModel->update($pallet_transfer->id, ['flag_loaded' => 'Y']);
+        $update_pallet_transfer = $this->PalletTransferModel->update($pallet_transfer->id, ['flag_loaded' => 'Y', 'loaded_at' => date('Y-m-d H:i:s')]);
         $update_pallet = $this->PalletModel->update($pallet->id, ['flag_empty' => 'Y']);
 
         if($update_last_rack_pallet) {

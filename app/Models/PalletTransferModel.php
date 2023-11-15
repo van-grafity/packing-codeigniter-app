@@ -160,12 +160,13 @@ class PalletTransferModel extends Model
         return $result;
     }
 
-    public function getLastPalletTransferByRackID($rack_id)
+    public function getLastActivePalletTransferByRackID($rack_id)
     {
         $builder = $this->db->table('tblrackpallet as rack_pallet');
         $builder->join('tblpallettransfer as pallet_transfer','pallet_transfer.id = rack_pallet.pallet_transfer_id');
         $builder->where('rack_pallet.rack_id', $rack_id);
         $builder->where('pallet_transfer.deleted_at',null);
+        $builder->where('pallet_transfer.flag_loaded','N');
         $builder->orderBy('pallet_transfer.created_at','desc');
         $builder->select('pallet_transfer.*');
         $result = $builder->get()->getRow();

@@ -143,6 +143,12 @@ $(document).ready(function() {
     let session = <?= json_encode(session()->getFlashdata()) ?>;
     show_flash_message(session);
     
+
+    $('#filter_rack_area, #filter_rack_level').select2();
+    $('select.select2').on('select2:open', function (e) {
+        document.querySelector('.select2-search__field').focus();
+    });
+
     let rack_table = $('#rack_table').DataTable({
         processing: true,
         // serverSide: true,
