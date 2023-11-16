@@ -220,7 +220,14 @@ class PalletTransferModel extends Model
         $carton_in_pallet_transfer = [];
         $transfer_note_list = $this->getTransferNotes($pallet_transfer_id);
         foreach ($transfer_note_list as $key => $transfer_note) {
-            $carton_in_transfer_note = $TransferNoteModel->getCartonInTransferNote($transfer_note->id);
+
+            // ## only need carton that not loaded
+            $where_options = [
+                'flag_loaded' => 'N'
+            ];
+            $carton_in_transfer_note = $TransferNoteModel->getCartonInTransferNote($transfer_note->id, $where_options);
+            if(!$carton_in_transfer_note) continue;
+
             foreach ($carton_in_transfer_note as $key_carton => $carton) {
                 $carton_in_pallet_transfer[] = $carton;
             }

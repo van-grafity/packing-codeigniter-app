@@ -233,6 +233,7 @@ $routes->group('carton-loading', static function ($routes) {
     $routes->get('load-carton', 'CartonLoading::load_carton', ['as' => 'carton_loading_load_carton']);
     $routes->get('create', 'CartonLoading::create', ['as' => 'carton_loading_create']);
     $routes->get('search-carton-by-pallet', 'CartonLoading::search_carton_by_pallet', ['as' => 'carton_loading_search_carton_by_pallet']);
+    $routes->post('store', 'CartonLoading::store', ['as' => 'carton_loading_store']);
 });
 
 

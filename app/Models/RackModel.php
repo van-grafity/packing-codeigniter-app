@@ -377,6 +377,7 @@ class RackModel extends Model
         $builder->join('tblpallet as pallet','pallet.id = pallet_transfer.pallet_id');
         $builder->join('tbltransfernote as transfer_note','transfer_note.pallet_transfer_id = pallet_transfer.id');
         $builder->join('tbltransfernotedetail as transfer_note_detail','transfer_note_detail.transfer_note_id = transfer_note.id');
+        $builder->join('tblcartonbarcode as carton_barcode','carton_barcode.id = transfer_note_detail.carton_barcode_id');
 
         $builder->where('pallet.id',$pallet_id);
         $builder->where('rack_pallet.out_date', null);
@@ -394,7 +395,7 @@ class RackModel extends Model
             'pallet_transfer.flag_ready_to_transfer', 
             'pallet_transfer.flag_transferred', 
             'pallet_transfer.flag_loaded', 
-            'COUNT(CASE WHEN transfer_note_detail.deleted_at IS NULL THEN transfer_note_detail.id END) as total_carton',
+            'COUNT(CASE WHEN transfer_note_detail.deleted_at IS NULL AND carton_barcode.flag_loaded = "N" THEN transfer_note_detail.id END) as total_carton',
         ]);
         $pallet_transfer = $builder->get()->getRow();
 

@@ -120,6 +120,21 @@ class CartonLoading extends BaseController
         return view('cartonloading/create', $data);
     }
 
+    public function store()
+    {
+        $data_input = $this->request->getPost();
+        $carton_barcode_id_list = $data_input['carton_barcode_id'];
+        foreach ($carton_barcode_id_list as $key => $carton_barcode_id) {
+            $date_update = [
+                'flag_loaded' => 'Y',
+                'loaded_at' => date('Y-m-d H:i:s'),
+            ];
+            $this->CartonBarcodeModel->update($carton_barcode_id, $date_update);
+        }
+        $total_carton = count($carton_barcode_id_list);
+        return redirect()->to('carton-loading/create')->with('success', "Successfully Load ". $total_carton . " Cartons");
+    }
+
     public function search_carton_by_pallet()
     {
         $data_input = $this->request->getGet();
@@ -153,7 +168,6 @@ class CartonLoading extends BaseController
             ],
         ];
         return $this->response->setJSON($data_return);
-        
     }
 
 }
