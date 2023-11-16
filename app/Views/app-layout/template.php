@@ -303,7 +303,7 @@
                                 </ul>
                             </li>
                         <?php endif ?>
-                        <?php if (in_array(session()->get('role'), ['superadmin','admin'])) : ?>
+                        <?php if (in_array(session()->get('role'), ['superadmin','admin','fg_warehouse'])) : ?>
                             <li class="nav-item has-treeview">
                                 <a href="" class="nav-link">
                                     <i class="nav-icon fas fa-truck-loading"></i>
@@ -311,7 +311,6 @@
                                 </a>
                                 <ul class="nav nav-treeview pl-3">
             
-                                    <?php if (in_array(session()->get('role'), ['superadmin','admin', 'packing'])) : ?>
                                     <li class="nav-item">
                                         <a href="<?= base_url('carton-loading') ?>" class="nav-link">
                                             <i class="fas fa-list-ul nav-icon"></i>
@@ -324,7 +323,6 @@
                                             <p>Load the Carton</p>
                                         </a>
                                     </li>
-                                    <?php endif ?>
                                 </ul>
                             </li>
                         <?php endif ?>
