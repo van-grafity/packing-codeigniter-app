@@ -284,7 +284,7 @@
                         <?php if (in_array(session()->get('role'), ['superadmin','admin','fg_warehouse'])) : ?>
                             <li class="nav-item has-treeview">
                                 <a href="" class="nav-link">
-                                    <i class="nav-icon fas fa-dolly-flatbed"></i>
+                                    <i class="nav-icon fas fa-columns"></i>
                                     <p>Rack on Warehouse <i class="fas fa-angle-left right"></i></p>
                                 </a>
                                 <ul class="nav nav-treeview pl-3">
@@ -296,7 +296,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a href="<?= base_url('rack-information/location-sheet') ?>" class="nav-link">
-                                            <i class="fas fa-list-ul nav-icon"></i>
+                                            <i class="far fa-list-alt nav-icon"></i>
                                             <p>Rack Location Sheet</p>
                                         </a>
                                     </li>
@@ -306,7 +306,7 @@
                         <?php if (in_array(session()->get('role'), ['superadmin','admin','fg_warehouse'])) : ?>
                             <li class="nav-item has-treeview">
                                 <a href="" class="nav-link">
-                                    <i class="nav-icon fas fa-truck-loading"></i>
+                                    <i class="nav-icon fas fa-truck-moving"></i>
                                     <p>Carton Loading <i class="fas fa-angle-left right"></i></p>
                                 </a>
                                 <ul class="nav nav-treeview pl-3">
@@ -319,7 +319,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a href="<?= base_url('carton-loading/create') ?>" class="nav-link">
-                                            <i class="fas fa-list-ul nav-icon"></i>
+                                            <i class="nav-icon fas fa-truck-loading"></i>
                                             <p>Load the Carton</p>
                                         </a>
                                     </li>
