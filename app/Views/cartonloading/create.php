@@ -359,6 +359,7 @@ $(document).ready(function() {
         let carton_data = get_carton_in_pallet(scan_carton_barcode)
         if(!carton_data){ 
             toastr.error('Invalid Product Code!');
+            $('#scan_carton_barcode').val('');
             return false;
         }
         

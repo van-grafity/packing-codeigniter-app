@@ -267,7 +267,7 @@ async function get_carton_detail(carton_barcode){
     result = await using_fetch(carton_detail_url, params_data, "GET");
 
     if (result.status == 'error') {
-        show_flash_message({ error: result.message} )
+        toastr.error(result.message);
         return false;
     }
     
@@ -285,6 +285,10 @@ function create_transfer_note(element){
         form_action_url: transfer_note_store_url,
     });
     $('#modal_transfer_note').modal('show');
+
+    $('body').on('shown.bs.modal', '#modal_transfer_note', function () {
+        $('input:visible:enabled:first', this).focus();
+    })
 }
 
 async function complete_preparation(element){
@@ -472,11 +476,11 @@ $(document).ready(function() {
         let carton_barcode = $('#carton_barcode').val();
 
         if (!carton_barcode) {
-            show_flash_message({ error: "Please input Carton Barcode!" });
+            toastr.error("Please input Carton Barcode!");
             return false;
         };
         if (is_already_inputed(carton_barcode)) {
-            show_flash_message({ error: "This Carton has been inputed!" });
+            toastr.error("This Carton has been inputed!");
             return false;
         };
 

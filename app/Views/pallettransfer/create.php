@@ -1,6 +1,8 @@
 <?= $this->extend('app-layout/template'); ?>
 
 <?= $this->Section('content'); ?>
+
+// !! Katanya ini halaman mau di hapus
 <style>
     #transfer_note_detail tfoot::before
     {

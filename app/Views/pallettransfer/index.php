@@ -140,7 +140,8 @@ async function get_pallet_detail(pallet_serial_number) {
 
     if (result.status == 'error') {
         is_pallet_available = false;
-        show_flash_message({ error: result.message} )
+        toastr.error(result.message);
+        $('#pallet_serial_number').val('');
         return false;
     }
     return result.data;
@@ -170,6 +171,8 @@ async function search_pallet(e){
         $('#pallet_serial_number_message').text(pallet_detail.feedback_title);
 
         enable_pallet_transfer_form();
+        
+        $('#location_from').focus();
     }
 
     if(pallet_detail.pallet_status == false){
