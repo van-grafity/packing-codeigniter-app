@@ -39,4 +39,31 @@ class UpdateDatabaseModel extends Model
         $builder->update(['product_code'=> $product_code]);
         return $builder->get()->getRow();
     }
+    
+    public function get_packed_carton()
+    {
+        $builder = $this->db->table('tblcartonbarcode');
+        $builder->where('flag_packed', 'Y');
+        $builder->where('packed_at', null);
+        $builder->select('id, barcode, carton_number_by_system, flag_packed, packed_at, updated_at');
+        $result = $builder->get()->getResult();
+        return $result;
+    }
+
+    public function update_carton_batch($data_batch_carton)
+    {
+        if(!$data_batch_carton) return [];
+        $carton_id_list = array_column($data_batch_carton, 'id');
+        
+        $builder = $this->db->table('tblcartonbarcode');
+        $update_carton = $builder->updateBatch($data_batch_carton, ['id']);
+        if($update_carton){
+            $builder_carton_updated = $this->db->table('tblcartonbarcode');
+            $builder_carton_updated->whereIn('id', $carton_id_list);
+            $carton_updated = $builder_carton_updated->get()->getResult();
+            return $carton_updated; 
+        }
+
+        return [];
+    }
 }

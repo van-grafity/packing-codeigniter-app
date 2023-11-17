@@ -63,6 +63,30 @@ class UpdateDatabase extends BaseController
         return $this->response->setJSON($result);
     }
 
+    public function carton_packed_at()
+    {
+        $CartonBarcodeModel = model('CartonBarcodeModel');
+        $packed_carton = $this->UpdateDatabaseModel->get_packed_carton();
+        $data_batch_carton = [];
+        
+        foreach ($packed_carton as $key => $carton) {
+            $data_carton = [
+                'id' => $carton->id,
+                'packed_at' => $carton->updated_at,
+            ];
+            $data_batch_carton[] = $data_carton;
+        }
+
+        $updated_carton = $this->UpdateDatabaseModel->update_carton_batch($data_batch_carton);
+        
+        $result = [
+            'status' => 'success',
+            'message' => 'Success update '.count($updated_carton).' Carton',
+            'data' => $updated_carton, 
+        ];
+        return $this->response->setJSON($result);
+    }
+
     private function adjust_with_pattern($product_code)
     {
         $pattern = '/^00/';
