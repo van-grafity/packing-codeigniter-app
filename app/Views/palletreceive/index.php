@@ -15,7 +15,7 @@
                     <thead>
                         <tr class="table-primary">
                             <th width="30">No</th>
-                            <th width="100">Pallet SN</th>
+                            <th width="100">Pallet No.</th>
                             <th width="">Transfer Note</th>
                             <th width="70">Total Ctn</th>
                             <th width="">From</th>

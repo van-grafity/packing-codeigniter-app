@@ -16,7 +16,8 @@
                     <thead>
                         <tr class="table-primary">
                             <th width="30">No</th>
-                            <th width="100">Pallet SN</th>
+                            <th width="120">Transaction No.</th>
+                            <th width="100">Pallet No.</th>
                             <th width="">Transfer Note</th>
                             <th width="70">Total Ctn</th>
                             <th width="">From</th>
@@ -274,6 +275,7 @@ $('#pallet_transfer_table').DataTable({
     order: [],
     columns: [
         { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+        { data: 'transaction_number', name: 'tblpallettransfer.transaction_number'},
         { data: 'pallet_serial_number', name: 'pallet.serial_number'},
         { data: 'transfer_note', name: 'transfer_note.serial_number', orderable: false, searchable: false},
         { data: 'total_carton', name: 'total_carton', orderable: false, searchable: false },

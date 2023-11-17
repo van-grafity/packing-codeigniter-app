@@ -66,6 +66,10 @@ class PalletTransfer extends BaseController
                     <a href="'. url_to('pallet_transfer_transfer_note',$row->id) .'" class="btn btn-info btn-sm mb-1">Detail</a>
                 ';
                 return $action_button;
+            })->edit('transaction_number', function($row){
+                $transaction_number = '<a href="'. base_url('pallet-transfer/').$row->id.'/transfer-note">'.$row->transaction_number .'</a>';
+                return $transaction_number;
+
             })->add('transfer_note', function($row){
                 $transfer_note_result = '';
                 $transfer_note_list = $this->TransferNoteModel->where('pallet_transfer_id', $row->id)->findAll();
@@ -101,8 +105,11 @@ class PalletTransfer extends BaseController
         $data_input = $this->request->getPost();
         $pallet = $this->PalletModel->where('serial_number', $data_input['pallet_serial_number'])->first();
         
+        $pallet_transfer_this_month = $this->PalletTransferModel->countPalletTransferThisMonth();
+        $next_number = $pallet_transfer_this_month + 1;
         
         $data = array(
+            'transaction_number' => $this->generate_transaction_number($next_number),
             'location_from_id' => $data_input['location_from'],
             'location_to_id' => $data_input['location_to'],
             'pallet_id' => $pallet->id,
@@ -173,11 +180,11 @@ class PalletTransfer extends BaseController
         $transfer_note_list = $this->PalletTransferModel->getTransferNotesByPalletTransfer($pallet_transfer->id);
 
         array_walk($transfer_note_list, function (&$item, $key) {
-
-            $received_datetime = new Time($item->received_at);
-            $received_datetime = $received_datetime->toLocalizedString('dd MMMM yyyy, HH:mm');
-
-            $item->received_at = $received_datetime;
+            if($item->received_at){
+                $received_datetime = new Time($item->received_at);
+                $received_datetime = $received_datetime->toLocalizedString('dd MMMM yyyy, HH:mm');
+                $item->received_at = $received_datetime;
+            }
         });
         
         $data = [
@@ -595,7 +602,15 @@ class PalletTransfer extends BaseController
 
     private function generate_serial_number($number)
     {
+        // ## Packing Transfer Note Serial Number
         $serial_number = 'PTN-' . date('ym') . '-' . str_pad($number, 3, '0', STR_PAD_LEFT);
+        return $serial_number;
+    }
+    
+    private function generate_transaction_number($number)
+    {
+        // ## Pallet Transfer Transaction Number
+        $serial_number = 'PTRF-' . date('ym') . '-' . str_pad($number, 3, '0', STR_PAD_LEFT);
         return $serial_number;
     }
 }

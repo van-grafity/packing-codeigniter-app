@@ -12,6 +12,7 @@ class PalletTransferModel extends Model
     protected $useTimestamps = true;
     protected $useSoftDeletes   = true;
     protected $allowedFields = [
+        'transaction_number',
         'pallet_id',
         'location_from_id',
         'location_to_id',
@@ -64,6 +65,7 @@ class PalletTransferModel extends Model
         // ## Memilih kolom dengan alias
         $builder->select([
             'tblpallettransfer.id',
+            'tblpallettransfer.transaction_number',
             'pallet.serial_number as pallet_serial_number',
             'location_from.location_name as location_from',
             'location_to.location_name as location_to',
@@ -236,6 +238,18 @@ class PalletTransferModel extends Model
         return $carton_in_pallet_transfer;
     }
 
+    public function countPalletTransferThisMonth($year_filter = null, $month_filter = null)
+    {
+        $month_filter = $month_filter ? $month_filter : date('m');
+        $year_filter = $year_filter ? $year_filter : date('Y');
+
+        $builder = $this->db->table($this->table);
+        $builder->select('count(id) as total_pallet_transfer');
+        $builder->where("MONTH(created_at)", $month_filter);
+        $builder->where("YEAR(created_at)", $year_filter);
+        $result = $builder->get()->getRow();
+        return $result->total_pallet_transfer;
+    }
 
     private function deleteTransferNoteDetail($transfer_note_id)
     {
