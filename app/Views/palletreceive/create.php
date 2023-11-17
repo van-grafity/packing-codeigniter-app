@@ -63,7 +63,7 @@
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card mb-5">
                     <div class="card-header">
                         <h3 class="card-title">Carton List</h3>
                     </div>
@@ -95,14 +95,21 @@
                             </tfoot>
                         </table>
                     </div>
-
                 </div>
 
                 <form action="<?= url_to('pallet_receive_store') ?>" method="post" id="pallet_receive_form">
                     <?= csrf_field(); ?>
                     <input type="hidden" id="pallet_transfer_id" name="pallet_transfer_id">
                     <div class="row">
-                        <div class="col-lg-6 col-md-8 col-sm-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label for="received_by" class="col-form-label mr-2">Received By :</label>
+                                    <input type="text" class="form-control" id="received_by" name="received_by">
+                                </div>
+                            </div>    
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <div class="input-group">
                                     <label for="rack" class="col-form-label mr-2">Rack :</label>
@@ -112,9 +119,13 @@
                                             <option value="<?= $rack->id; ?>"><?= $rack->serial_number; ?></option>
                                         <?php endforeach; ?>
                                     </select>
-                                    <button type="submit" class="btn btn-primary ml-2" id="btn_pallet_to_rack" disabled="disabled">Send Pallet to Rack</button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-sm-12 text-right">
+                            <button type="submit" class="btn btn-primary ml-2" id="btn_pallet_to_rack" disabled="disabled">Send Pallet to Rack</button>
                         </div>
                     </div>
                 </form>

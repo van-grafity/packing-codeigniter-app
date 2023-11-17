@@ -144,13 +144,29 @@ class PalletReceive extends BaseController
     public function store()
     {
         $data_input = $this->request->getPost();
-        $data = array(
+
+        // ## Update Tiap Transfernote di Pallet Transfer
+        $transfer_note_list = $this->PalletTransferModel->getTransferNotes($data_input['pallet_transfer_id']);
+        foreach ($transfer_note_list as $key => $transfer_note) {
+            $data_transfer_note = [
+                'received_by' => $data_input['received_by'],
+                'received_at' => date('Y-m-d H:i:s'),
+            ];
+            $this->TransferNoteModel->update($transfer_note->id, $data_transfer_note);
+        }
+
+        // ## Buat Tambahin data di Rack Pallet
+        $data_rack_pallet = array(
             'rack_id' => $data_input['rack'],
             'pallet_transfer_id' => $data_input['pallet_transfer_id'],
             'entry_date' => date('Y-m-d H:i:s'),
         );
-        $this->RackPalletModel->save($data);
+        $this->RackPalletModel->save($data_rack_pallet);
+        
+        // ## Update Pallet Transfer Status
         $this->PalletTransferModel->update($data_input['pallet_transfer_id'],['flag_transferred' => 'Y','transferred_at' => date('Y-m-d H:i:s')]);
+        
+        // ## Update Rack Status
         $this->RackModel->update($data_input['rack'],['flag_empty' => 'N']);
         
         return redirect()->to('pallet-receive')->with('success', "Successfully added Pallet to Rack");
