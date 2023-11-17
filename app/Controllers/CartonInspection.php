@@ -155,14 +155,11 @@ class CartonInspection extends BaseController
         $carton_inspection = $this->CartonInspectionModel->getCartonInspection($inspection_id);
         $carton_inspection_detail = $this->CartonInspectionModel->getCartonInspectionDetail($inspection_id);
 
-        $date_printed = new Time('now');
-        $date_printed = $date_printed->toLocalizedString('eeee, dd MMMM yyyy, HH:mm');
-
         $filename = 'Inspection Transfer Note - () - PO#' . '1804QWE';
 
         $data = [
             'title'         => $filename,
-            'date_printed'  => $date_printed,
+            'date_printed'  => datetime_indo(),
             'carton_inspection' => $carton_inspection,
             'carton_inspection_detail' => $carton_inspection_detail,
         ];

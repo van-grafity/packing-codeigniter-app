@@ -490,14 +490,11 @@ class PalletTransfer extends BaseController
         $transfer_note->total_all_carton = $total_all_carton;
         $transfer_note->total_all_pcs = $total_all_pcs;
         
-        $date_printed = new Time('now');
-        $date_printed = $date_printed->toLocalizedString('eeee, dd MMMM yyyy, HH:mm');
-
         $filename = 'Packing Transfer Note - ' . $transfer_note->transfer_note_number;
 
         $data = [
             'title'         => $filename,
-            'date_printed'  => $date_printed,
+            'date_printed'  => datetime_indo(),
             'transfer_note' => $transfer_note,
             'transfer_note_detail' => $transfer_note_detail,
         ];

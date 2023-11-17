@@ -255,13 +255,11 @@ class RackInformation extends BaseController
         
 
         $filename = 'Rack Location Sheet Area '. $filter_rack_area;
-        $date_printed = new Time('now');
-        $date_printed = $date_printed->toLocalizedString('eeee, dd MMMM yyyy, HH:mm');
 
         $data = [
             'title'         => $filename,
             'rack_list'   => $rack_list,
-            'date_printed' => $date_printed,
+            'date_printed' => datetime_indo(),
         ];
 
         // return view('rackinformation/location_sheet_pdf', $data);

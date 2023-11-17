@@ -449,9 +449,6 @@ class PackingList extends BaseController
         }
 
 
-        $date_printed = new Time('now');
-        $date_printed = $date_printed->toLocalizedString('eeee, dd MMMM yyyy, HH:mm');
-        
         $asin_style = 'display: none';
         $buyer = $this->PackingListModel->getBuyerByPackinglistId($id);
         if($buyer->buyer_name == 'AMAZON') {
@@ -471,7 +468,7 @@ class PackingList extends BaseController
             'shipment_percentage_each_upc_part2'   => $shipment_percentage_each_upc_part2,
             'size_colspan'   => count($packinglist_size_list),
             'size_rowspan'   => count($packinglist_size_list) ?  1 : 2,
-            'date_printed' => $date_printed,
+            'date_printed' => datetime_indo(),
             'asin_style' => $asin_style,
         ];
 
