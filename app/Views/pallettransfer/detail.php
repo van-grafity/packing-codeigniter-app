@@ -296,7 +296,7 @@ async function complete_preparation(element){
 
     let data = {
         title: 'Are preparations complete?',
-        text: 'After compliting preparation, you cannot change any data on this pallet',
+        text: 'After completing preparation, you cannot change any data on this pallet',
         confirm_button: 'Yes Complete',
     }
     let confirm_action = await swal_confirm(data);
