@@ -152,3 +152,12 @@
 </div>
 <!-- /.content-wrapper -->
 <?= $this->endSection('content'); ?>
+
+
+<?= $this->Section('page_script'); ?>
+<script type="text/javascript">
+    // ## Show Flash Message
+    let session = <?= json_encode(session()->getFlashdata()) ?>;
+    show_flash_message(session);
+</script>
+<?= $this->endSection('page_script'); ?>

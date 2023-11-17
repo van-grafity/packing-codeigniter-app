@@ -247,7 +247,7 @@ $routes->get('report/packinglist/(:num)', "PackingList::report/$1");
 
 
 // Route for Manipulate Database
-$routes->group('update-database', static function ($routes) {
+$routes->group('update-database', ['filter' => 'onlySuperadmin'], static function ($routes) {
     $routes->get('', 'UpdateDatabase::index', ['as' => 'update_database']);
     $routes->get('aero-international-upc', 'UpdateDatabase::aero_international_upc', ['as' => 'update_aero_international_upc']);
     $routes->get('carton-packed-at', 'UpdateDatabase::carton_packed_at', ['as' => 'update_carton_packed_at']);
