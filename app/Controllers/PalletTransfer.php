@@ -171,6 +171,15 @@ class PalletTransfer extends BaseController
         }
 
         $transfer_note_list = $this->PalletTransferModel->getTransferNotesByPalletTransfer($pallet_transfer->id);
+
+        array_walk($transfer_note_list, function (&$item, $key) {
+
+            $received_datetime = new Time($item->received_at);
+            $received_datetime = $received_datetime->toLocalizedString('dd MMMM yyyy, HH:mm');
+
+            $item->received_at = $received_datetime;
+        });
+        
         $data = [
             'title' => 'Packing Transfer Note',
             'pallet_transfer' => $pallet_transfer,
@@ -482,7 +491,7 @@ class PalletTransfer extends BaseController
         $transfer_note->total_all_pcs = $total_all_pcs;
         
         $date_printed = new Time('now');
-        $date_printed = $date_printed->toLocalizedString('eeee, dd-MMMM-yyyy HH:mm');
+        $date_printed = $date_printed->toLocalizedString('eeee, dd MMMM yyyy, HH:mm');
 
         $filename = 'Packing Transfer Note - ' . $transfer_note->transfer_note_number;
 

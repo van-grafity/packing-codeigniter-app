@@ -450,7 +450,7 @@ class PackingList extends BaseController
 
 
         $date_printed = new Time('now');
-        $date_printed = $date_printed->toLocalizedString('eeee, dd-MMMM-yyyy HH:mm');
+        $date_printed = $date_printed->toLocalizedString('eeee, dd MMMM yyyy, HH:mm');
         
         $asin_style = 'display: none';
         $buyer = $this->PackingListModel->getBuyerByPackinglistId($id);

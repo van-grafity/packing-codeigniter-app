@@ -256,7 +256,7 @@ class RackInformation extends BaseController
 
         $filename = 'Rack Location Sheet Area '. $filter_rack_area;
         $date_printed = new Time('now');
-        $date_printed = $date_printed->toLocalizedString('eeee, dd MMMM yyyy HH:mm');
+        $date_printed = $date_printed->toLocalizedString('eeee, dd MMMM yyyy, HH:mm');
 
         $data = [
             'title'         => $filename,

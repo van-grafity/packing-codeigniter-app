@@ -47,6 +47,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="received_by" class="col-form-label mr-2">Received By :</label>
+                        <input type="text" class="form-control" id="received_by" name="received_by">
+                    </div> 
+                    <div class="form-group">
                         <label for="rack" class="col-form-label">Rack :</label>
                         <select id="rack" name="rack" class="form-control select2" required>
                             <option value=""> Select Rack </option>
