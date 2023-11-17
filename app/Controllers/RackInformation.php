@@ -196,8 +196,8 @@ class RackInformation extends BaseController
 
     public function location_sheet()
     {
-        $rack_area_list = $this->RackModel->groupBy('tblrack.area')->findAll();
-        $rack_level_list = $this->RackModel->groupBy('tblrack.level')->findAll();
+        $rack_area_list = $this->RackModel->groupBy('tblrack.area')->select('area')->findAll();
+        $rack_level_list = $this->RackModel->groupBy('tblrack.level')->select('level')->findAll();
         
         $data = [
             'title' => 'Rack Location Sheet',
