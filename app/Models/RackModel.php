@@ -405,7 +405,7 @@ class RackModel extends Model
             $builder_total_carton->where('transfer_note_detail.deleted_at',null);
             $builder_total_carton->where('carton_barcode.flag_loaded','N');
             
-            $builder_total_carton->groupBy('transfer_note.id');
+            $builder_total_carton->groupBy('pallet_transfer.id');
             $builder_total_carton->select('count(transfer_note_detail.id) as total_carton');
             $total_carton = $builder_total_carton->get()->getRow();
 
