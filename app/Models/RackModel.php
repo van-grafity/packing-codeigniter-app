@@ -375,9 +375,6 @@ class RackModel extends Model
         $builder->join('tbllocation as location_from','location_from.id = pallet_transfer.location_from_id');
         $builder->join('tbllocation as location_to','location_to.id = pallet_transfer.location_to_id');
         $builder->join('tblpallet as pallet','pallet.id = pallet_transfer.pallet_id');
-        $builder->join('tbltransfernote as transfer_note','transfer_note.pallet_transfer_id = pallet_transfer.id');
-        $builder->join('tbltransfernotedetail as transfer_note_detail','transfer_note_detail.transfer_note_id = transfer_note.id');
-        $builder->join('tblcartonbarcode as carton_barcode','carton_barcode.id = transfer_note_detail.carton_barcode_id');
 
         $builder->where('pallet.id',$pallet_id);
         $builder->where('rack_pallet.out_date', null);
@@ -395,10 +392,25 @@ class RackModel extends Model
             'pallet_transfer.flag_ready_to_transfer', 
             'pallet_transfer.flag_transferred', 
             'pallet_transfer.flag_loaded', 
-            'COUNT(CASE WHEN transfer_note_detail.deleted_at IS NULL AND carton_barcode.flag_loaded = "N" THEN transfer_note_detail.id END) as total_carton',
         ]);
         $pallet_transfer = $builder->get()->getRow();
+        
+        
+        if($pallet_transfer){
+            $builder_total_carton = $this->db->table('tblpallettransfer as pallet_transfer');
+            $builder_total_carton->join('tbltransfernote as transfer_note','transfer_note.pallet_transfer_id = pallet_transfer.id');
+            $builder_total_carton->join('tbltransfernotedetail as transfer_note_detail','transfer_note_detail.transfer_note_id = transfer_note.id');
+            $builder_total_carton->join('tblcartonbarcode as carton_barcode','carton_barcode.id = transfer_note_detail.carton_barcode_id');
+            $builder_total_carton->where('pallet_transfer.id',$pallet_transfer->pallet_transfer_id);
+            $builder_total_carton->where('transfer_note_detail.deleted_at',null);
+            $builder_total_carton->where('carton_barcode.flag_loaded','N');
+            
+            $builder_total_carton->groupBy('transfer_note.id');
+            $builder_total_carton->select('count(transfer_note_detail.id) as total_carton');
+            $total_carton = $builder_total_carton->get()->getRow();
 
+            $pallet_transfer->total_carton = $total_carton->total_carton;
+        }
         return $pallet_transfer;
     }
 

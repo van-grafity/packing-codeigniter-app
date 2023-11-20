@@ -148,7 +148,7 @@ class CartonLoading extends BaseController
         }
 
         $pallet_transfer = $this->RackModel->searchPalletTransferInRack($pallet->id);
-        if(!$pallet_transfer->pallet_transfer_id){
+        if(!$pallet_transfer || !$pallet_transfer->pallet_transfer_id){
             $data_return = [
                 'status' => 'error',
                 'message' => 'The pallet was not found in the rack',
