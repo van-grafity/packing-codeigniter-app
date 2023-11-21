@@ -2,25 +2,14 @@
 
 <?= $this->Section('content'); ?>
 <style>
-#carton_inspection_table tbody td {
-    vertical-align: middle
-}
 
-.product_qty,
-.scanned_count,
-.total_product_qty,
-.total_scanned_count,
-.title_total {
-    font-weight: bold;
-    font-size: 20px;
-}
 </style>
 
 <div class="content-wrapper">
     <section class="content mb-4">
         <div class="card card-primary mt-2">
             <div class="card-header">
-                <div class="card-title">Receive Pallet</div>
+                <div class="card-title"><?= $title ?></div>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -48,7 +37,7 @@
                             <dt class="col-md-5 col-sm-12">Status</dt>
                             <dd class="col-md-7 col-sm-12" id="pallet_status">:  </dd>
 
-                            <dt class="col-md-5 col-sm-12">Total Carton</dt>
+                            <dt class="col-md-5 col-sm-12">Total All Carton</dt>
                             <dd class="col-md-7 col-sm-12" id="pallet_total_carton">:  </dd>
                         </dl>
                     </div>
@@ -63,38 +52,8 @@
                     </div>
                 </div>
 
-                <div class="card mb-5">
-                    <div class="card-header">
-                        <h3 class="card-title">Carton List</h3>
-                    </div>
-
-                    <div class="card-body table-responsive p-0" style="max-height: 500px;">
-                        <table id="pallet_transfer_detail" class="table table-sm table-bordered text-center table-head-fixed table-foot-fixed text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th>Buyer</th>
-                                    <th>PO</th>
-                                    <th width="150">GL</th>
-                                    <th width="100">Carton No.</th>
-                                    <th width="300">Content</th>
-                                    <th>Pcs</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="8"> There's No Carton </td>
-                                </tr>
-                            </tbody>
-                            <tfoot class="bg-dark">
-                                <tr>
-                                    <td colspan="3">Total Carton</td>
-                                    <td colspan="1" id="pallet_transfer_detail_total_carton"> - </td>
-                                    <td colspan="1">Total Pcs</td>
-                                    <td colspan="1" id="pallet_transfer_detail_total_pcs"> - </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                <div id="transfer_note_list_area" class="mb-5">
+                    <h4 class="title mb-3">Transfer Note List : </h4>
                 </div>
 
                 <form action="<?= url_to('pallet_receive_store') ?>" method="post" id="pallet_receive_form">
@@ -159,7 +118,7 @@ $(document).ready(function() {
         $('#pallet_barcode').val('');
 
         clear_pallet_transfer_info();
-        clear_carton_list();
+        clear_transfer_note_list();
 
         if(!data) return false;
 
@@ -171,8 +130,8 @@ $(document).ready(function() {
         }
 
         set_pallet_transfer_info(data.pallet_transfer);
-        if(data.pallet_transfer_detail) {
-            set_transfer_note_carton_list(data.pallet_transfer_detail);
+        if(data.transfer_note_list) {
+            set_transfer_note_list(data.transfer_note_list);
         }
     });
 
@@ -208,51 +167,6 @@ function set_pallet_transfer_info(pallet_transfer_info) {
     $('#pallet_transfer_id').val(pallet_transfer_info.pallet_transfer_id);
 }
 
-function set_transfer_note_carton_list(pallet_transfer_detail){
-    if(pallet_transfer_detail.length <= 0) return false;
-
-    pallet_transfer_detail.forEach(carton_data => {
-        insert_carton_to_table(carton_data);
-    });
-}
-
-function insert_carton_to_table(carton_data){
-    let pallet_transfer_detail_first_row = $('#pallet_transfer_detail tbody').find('td').length;
-    if(pallet_transfer_detail_first_row <= 1) {
-        $('#pallet_transfer_detail tbody').html('');
-    };
-
-    let row = `
-        <tr class="text-center count-carton">
-            <td class="d-none">
-                <input type="text" id="carton_barcode_id" name="carton_barcode_id[]" value="${carton_data.carton_id}">
-            </td>
-            <td class="d-none carton-barcode">${carton_data.carton_barcode}</td>
-            <td>${carton_data.buyer_name}</td>
-            <td>${carton_data.po_number}</td>
-            <td>${carton_data.gl_number}</td>
-            <td>${carton_data.carton_number}</td>
-            <td>${carton_data.content}</td>
-            <td class="total-pcs-in-carton">${carton_data.total_pcs}</td>
-        </tr>
-    `;
-    $('#pallet_transfer_detail tbody').append(row);
-
-    update_total_in_transfernote_detail();
-}
-
-function update_total_in_transfernote_detail() {
-    let total_carton = $(`#pallet_transfer_detail tbody tr.count-carton`).length;
-    $('#pallet_transfer_detail_total_carton').text(parseInt(total_carton));
-
-    let array_total_pcs = $(`#pallet_transfer_detail tbody tr td.total-pcs-in-carton`).map(function() {
-        return parseInt($(this).text());
-    }).get();
-    
-    let sum_total_pcs = array_total_pcs.reduce((tempSum, next_arr) => tempSum + parseInt(next_arr), 0);
-    $('#pallet_transfer_detail_total_pcs').text(sum_total_pcs);
-}
-
 function clear_pallet_transfer_info() {
     $('#pallet_number').text(': - ');
     $('#pallet_status').text(': - ');
@@ -265,14 +179,69 @@ function clear_pallet_transfer_info() {
     $('#rack').prop('disabled', true);
 }
 
-function clear_carton_list(){
-    let empty_row = `
-        <tr>
-            <td colspan="8"> There's No Carton </td>
-        </tr>`;
-    $('#pallet_transfer_detail tbody').html(empty_row);
-    $('#pallet_transfer_detail_total_carton').text(' - ');
-    $('#pallet_transfer_detail_total_pcs').text(' - ');
+const clear_transfer_note_list = () => {
+    $('#transfer_note_list_area').children(':not(.title.mb-3)').remove();
+};
+
+const set_transfer_note_list = (transfer_note_data_list) => {
+    let transfer_note_list_area = $('#transfer_note_list_area');
+
+    transfer_note_data_list.forEach(transfer_note_data => {
+
+        let cartons_list = transfer_note_data.carton_in_transfer_note.map(carton => `
+            <tr>
+                <td>${carton.buyer_name}</td>
+                <td>${carton.po_number}</td>
+                <td>${carton.gl_number}</td>
+                <td>${carton.carton_number}</td>
+                <td>${carton.content}</td>
+                <td>${carton.total_pcs}</td>
+            </tr>`
+        ).join('');
+
+        let total_cartons = transfer_note_data.carton_in_transfer_note.length;
+        let total_pcs = transfer_note_data.carton_in_transfer_note.reduce((total, carton) => {
+            return total + carton.total_pcs;
+        }, 0);
+
+        let card_element = `
+            <div class="card mb-5">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h5 class="">Transfer Note : ${transfer_note_data.serial_number}</h5>
+                    </div>
+                </div>
+
+                <div class="card-body table-responsive p-0" style="max-height: 500px;">
+                    <table class="table table-sm table-bordered text-center table-head-fixed table-foot-fixed text-nowrap">
+                        <thead>
+                            <tr>
+                                <th>Buyer</th>
+                                <th>PO</th>
+                                <th width="150">GL</th>
+                                <th width="100">Carton No.</th>
+                                <th width="300">Content</th>
+                                <th>Pcs</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${cartons_list}
+                        </tbody>
+                        <tfoot class="bg-dark">
+                            <tr>
+                                <td colspan="3">Total Carton</td>
+                                <td colspan="1"> ${total_cartons} </td>
+                                <td colspan="1">Total Pcs</td>
+                                <td colspan="1"> ${total_pcs} </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        `;
+
+        transfer_note_list_area.append(card_element);
+    });
 }
 
 </script>

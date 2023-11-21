@@ -98,28 +98,4 @@ class PalletReceiveModel extends Model
         
         return $result;
     }
-
-    public function getPalletTransferDetail($pallet_transfer_id)
-    {
-        $TransferNoteModel = model('TransferNoteModel');
-
-        $builder = $this->db->table('tblpallet as pallet');
-        $builder->join('tblpallettransfer as pallet_transfer', 'pallet_transfer.pallet_id = pallet.id');
-        $builder->join('tbltransfernote as transfer_note', 'transfer_note.pallet_transfer_id = pallet_transfer.id');
-        $builder->where('pallet_transfer.id', $pallet_transfer_id);
-        $builder->select('transfer_note.id as transfer_note_id');
-        $transfer_notes = $builder->get()->getResult();
-
-        $carton_list = [];
-        foreach ($transfer_notes as $key => $transfer_note) {
-            $carton_in_transfer_note = $TransferNoteModel->getCartonInTransferNote($transfer_note->transfer_note_id);
-            if(!$carton_in_transfer_note) { continue; }
-            foreach ($carton_in_transfer_note as $key => $carton) {
-                $carton_list[] = $carton;
-            }
-        }
-
-        return $carton_list;
-    }
-
 }

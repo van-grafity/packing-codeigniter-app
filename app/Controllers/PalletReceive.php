@@ -128,14 +128,17 @@ class PalletReceive extends BaseController
         }
         
         $pallet_transfer->status = $this->PalletTransferController->getPalletStatus($pallet_transfer);
-        $pallet_transfer_detail = $this->PalletReceiveModel->getPalletTransferDetail($pallet_transfer->pallet_transfer_id);
+        $transfer_note_list = $this->PalletTransferModel->getTransferNotes($pallet_transfer->pallet_transfer_id);
+        foreach ($transfer_note_list as $key => $transfer_note) {
+            $transfer_note->carton_in_transfer_note = $this->TransferNoteModel->getCartonInTransferNote($transfer_note->id);
+        }
  
         $data_return = [
             'status' => 'success',
             'message' => 'Successfully get pallet information',
             'data' => [
                 'pallet_transfer' => $pallet_transfer,
-                'pallet_transfer_detail' => $pallet_transfer_detail,
+                'transfer_note_list' => $transfer_note_list,
             ],
         ];
         return $this->response->setJSON($data_return);
