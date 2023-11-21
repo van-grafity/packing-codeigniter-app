@@ -8,6 +8,7 @@ use App\Models\CartonBarcodeModel;
 use App\Models\GlModel;
 use App\Models\RackModel;
 use App\Models\PalletModel;
+use App\Models\TransferNoteModel;
 use App\Models\PalletTransferModel;
 
 use App\Controllers\PalletTransfer;
@@ -22,6 +23,7 @@ class CartonLoading extends BaseController
     protected $GlModel;
     protected $RackModel;
     protected $PalletModel;
+    protected $TransferNoteModel;
     protected $PalletTransferModel;
     protected $PalletTransferController;
 
@@ -33,6 +35,7 @@ class CartonLoading extends BaseController
         $this->GlModel = new GlModel();
         $this->RackModel = new RackModel();
         $this->PalletModel = new PalletModel();
+        $this->TransferNoteModel = new TransferNoteModel();
         $this->PalletTransferModel = new PalletTransferModel();
         $this->PalletTransferController = new PalletTransfer();
     }
@@ -157,14 +160,22 @@ class CartonLoading extends BaseController
         }
 
         $pallet_transfer->status = $this->PalletTransferController->getPalletStatus($pallet_transfer);
+
+        // !! kalau pakai yang versi 2 $pallet_transfer_detail tidak di perlukan lagi. silahkan hapus semua yang berhubungan dengan ini
         $pallet_transfer_detail = $this->PalletTransferModel->getCartonInPalletTransfer($pallet_transfer->pallet_transfer_id);
-        
+
+        $transfer_note_list = $this->PalletTransferModel->getTransferNotes($pallet_transfer->pallet_transfer_id);
+        foreach ($transfer_note_list as $key => $transfer_note) {
+            $transfer_note->carton_in_transfer_note = $this->TransferNoteModel->getCartonInTransferNote($transfer_note->id);
+        }
+
         $data_return = [
             'status' => 'success',
             'message' => 'Successfully get pallet information',
             'data' => [
                 'pallet_transfer' => $pallet_transfer,
                 'pallet_transfer_detail' => $pallet_transfer_detail,
+                'transfer_note_list' => $transfer_note_list,
             ],
         ];
         return $this->response->setJSON($data_return);

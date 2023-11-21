@@ -53,8 +53,39 @@
                     </div>
                 </div>
 
-                <div id="transfer_note_list_area" class="mb-5">
-                    <h4 class="title mb-3">Transfer Note List : </h4>
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h3 class="card-title text-bold">Cartons in This Pallet :</h3>
+                    </div>
+
+                    <div class="card-body table-responsive p-0" style="max-height: 500px;">
+                        <table id="pallet_transfer_detail" class="table table-sm table-bordered text-center table-head-fixed table-foot-fixed text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Barcode</th>
+                                    <th>Buyer</th>
+                                    <th>PO</th>
+                                    <th width="150">GL</th>
+                                    <th width="100">Carton No.</th>
+                                    <th width="300">Content</th>
+                                    <th>Pcs</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="9"> There's No Carton </td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="bg-dark">
+                                <tr>
+                                    <td colspan="4">Total Carton</td>
+                                    <td colspan="1" id="pallet_transfer_detail_total_carton"> - </td>
+                                    <td colspan="1">Total Pcs</td>
+                                    <td colspan="1" id="pallet_transfer_detail_total_pcs"> - </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
 
                 <div class="progress progress-xxs mb-5">
@@ -62,7 +93,7 @@
                         <span class="sr-only">20% Complete</span>
                     </div>
                 </div>
-                <h3 class="mb-3">Carton List for Loading : </h3>
+                <h3 class="text-center mb-3">Carton List for Loading</h3>
                 <div class="row">
                     <div class="col-lg-6 col-md-8 col-sm-12">
                         <form action="" id="scan_carton_barcode_form">
@@ -163,6 +194,55 @@ function set_pallet_transfer_info(pallet_transfer_info) {
     $('#pallet_transfer_id').val(pallet_transfer_info.pallet_transfer_id);
 }
 
+function set_transfer_note_carton_list(pallet_transfer_detail){
+    if(pallet_transfer_detail.length <= 0) return false;
+
+    pallet_transfer_detail.forEach(carton_data => {
+        insert_carton_to_table(carton_data);
+    });
+    update_total_in_transfernote_detail();
+}
+
+function insert_carton_to_table(carton_data){
+    let pallet_transfer_detail_first_row = $('#pallet_transfer_detail tbody').find('td').length;
+    if(pallet_transfer_detail_first_row <= 1) {
+        $('#pallet_transfer_detail tbody').html('');
+    };
+
+    let row = `
+        <tr class="text-center count-carton">
+            <td class="d-none">
+                <input type="text" name="carton_barcode_id[]" value="${carton_data.carton_id}">
+            </td>
+            <td class="carton-barcode">${carton_data.carton_barcode}</td>
+            <td>${carton_data.buyer_name}</td>
+            <td>${carton_data.po_number}</td>
+            <td>${carton_data.gl_number}</td>
+            <td>${carton_data.carton_number}</td>
+            <td>${carton_data.content}</td>
+            <td class="total-pcs-in-carton">${carton_data.total_pcs}</td>
+        </tr>
+    `;
+    $('#pallet_transfer_detail tbody').append(row);
+}
+
+function update_total_in_transfernote_detail() {
+    let total_carton = $(`#pallet_transfer_detail tbody tr.count-carton`).length;
+    $('#pallet_transfer_detail_total_carton').text(parseInt(total_carton));
+
+    let array_total_pcs = $(`#pallet_transfer_detail tbody tr td.total-pcs-in-carton`).map(function() {
+        return parseInt($(this).text());
+    }).get();
+    
+    let sum_total_pcs = array_total_pcs.reduce((tempSum, next_arr) => tempSum + parseInt(next_arr), 0);
+    $('#pallet_transfer_detail_total_pcs').text(sum_total_pcs);
+
+    let pallet_transfer_detail_row = $('#pallet_transfer_detail tbody').find('tr').length;
+    if(pallet_transfer_detail_row <= 0) {
+        clear_carton_list()
+    } 
+}
+
 function clear_pallet_transfer_info() {
     $('#pallet_number').text(': - ');
     $('#pallet_status').text(': - ');
@@ -174,8 +254,18 @@ function clear_pallet_transfer_info() {
     $('#pallet_transfer_id').val('');
 }
 
+function clear_carton_list(){
+    let empty_row = `
+        <tr>
+            <td colspan="8"> There's No Carton </td>
+        </tr>`;
+    $('#pallet_transfer_detail tbody').html(empty_row);
+    $('#pallet_transfer_detail_total_carton').text(' - ');
+    $('#pallet_transfer_detail_total_pcs').text(' - ');
+}
+
 const get_carton_in_pallet = (carton_barcode) => {
-    let product_row = $("#transfer_note_list_area table tbody .carton-barcode").filter(function() {
+    let product_row = $("#pallet_transfer_detail tbody .carton-barcode").filter(function() {
         return $(this).text() == carton_barcode;
     }).closest("tr");
 
@@ -183,18 +273,6 @@ const get_carton_in_pallet = (carton_barcode) => {
         return false;
     } else {
         return product_row;
-    }
-}
-
-const get_transfer_note_table = (carton_barcode) => {
-    let transfer_note_table = $("#transfer_note_list_area table tbody .carton-barcode").filter(function() {
-        return $(this).text() == carton_barcode;
-    }).closest("table");
-
-    if(transfer_note_table.length <= 0) {
-        return false;
-    } else {
-        return transfer_note_table;
     }
 }
 
@@ -236,110 +314,6 @@ const clear_scanned_carton = () => {
     $('#btn_load_carton').attr('disabled', true);
 }
 
-
-const clear_transfer_note_list = () => {
-    $('#transfer_note_list_area').children(':not(.title.mb-3)').remove();
-};
-
-const set_transfer_note_list = (transfer_note_data_list) => {
-    let transfer_note_list_area = $('#transfer_note_list_area');
-
-    transfer_note_data_list.forEach(transfer_note_data => {
-
-        let cartons_list = transfer_note_data.carton_in_transfer_note.map(carton => `
-            <tr class="text-center count-carton">
-                <td class="d-none">
-                    <input type="text" name="carton_barcode_id[]" value="${carton.carton_id}">
-                </td>
-                <td class="carton-barcode">${carton.carton_barcode}</td>
-                <td>${carton.buyer_name}</td>
-                <td>${carton.po_number}</td>
-                <td>${carton.gl_number}</td>
-                <td>${carton.carton_number}</td>
-                <td>${carton.content}</td>
-                <td class="total-pcs-in-carton">${carton.total_pcs}</td>
-            </tr>`
-        ).join('');
-
-        let total_cartons = transfer_note_data.carton_in_transfer_note.length;
-        let total_pcs = transfer_note_data.carton_in_transfer_note.reduce((total, carton) => {
-            return total + carton.total_pcs;
-        }, 0);
-
-        let card_element = `
-            <div class="card mb-5">
-                <div class="card-header">
-                    <div class="card-title">
-                        <h5 class="">Transfer Note : ${transfer_note_data.serial_number}</h5>
-                    </div>
-                </div>
-
-                <div class="card-body table-responsive p-0" style="max-height: 500px;">
-                    <table class="table table-sm table-bordered text-center table-head-fixed table-foot-fixed text-nowrap">
-                        <thead>
-                            <tr>
-                                <th>Barcode</th>
-                                <th>Buyer</th>
-                                <th>PO</th>
-                                <th width="150">GL</th>
-                                <th width="100">Carton No.</th>
-                                <th width="300">Content</th>
-                                <th>Pcs</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${cartons_list}
-                        </tbody>
-                        <tfoot class="bg-dark">
-                            <tr>
-                                <td colspan="4">Total Carton</td>
-                                <td colspan="1"> ${total_cartons} </td>
-                                <td colspan="1">Total Pcs</td>
-                                <td colspan="1"> ${total_pcs} </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        `;
-
-        transfer_note_list_area.append(card_element);
-    });
-}
-
-
-// ## function for update total carton and pcs in transfer note table
-const update_total_each_transfernote = (table) => {
-    table = $(table);
-    let tbody = table.find('tbody');
-    let tfoot = table.find('tfoot');
-    let total_row = tbody.children('tr').length;
-
-    // ## Update total carton at footer depand on tbody row length
-    tfoot.find('tr td:eq(1)').text(`${total_row}`);
-    
-
-    let array_total_pcs = table.find(`tbody tr td.total-pcs-in-carton`).map(function() {
-        return parseInt($(this).text());
-    }).get();
-    
-    // ## update total pcs at footer, get sum from column with .total-pcs-in-carton class
-    let total_pcs = array_total_pcs.reduce((tempSum, next_arr) => tempSum + parseInt(next_arr), 0);
-    tfoot.find('tr td:eq(3)').text(`${total_pcs}`);
-    
-
-    // ## show default tbody if no carton
-    let transfernote_table_first_row = table.find('tbody td').length;
-    if(transfernote_table_first_row <= 1) {
-        let empty_row = `
-            <tr>
-                <td colspan="7"> There's No Carton </td>
-            </tr>
-        `;
-        table.find('tbody').html(empty_row);
-    };
-};
-
 </script>
 
 
@@ -350,8 +324,8 @@ $(document).ready(function() {
     let session = <?= json_encode(session()->getFlashdata()) ?>;
     show_flash_message(session);
 
+    clear_scanned_carton();
 
-    // ## Scan Pallet for search carton on the pallet
     $('#pallet_barcode_form').on('submit', async function(e) {
         e.preventDefault();
         let pallet_barcode = $('#pallet_barcode').val();
@@ -362,21 +336,19 @@ $(document).ready(function() {
         $('#pallet_barcode').val('');
 
         clear_pallet_transfer_info();
-        clear_transfer_note_list();
+        clear_carton_list();
         clear_scanned_carton();
 
         if(!data) return false;
 
         set_pallet_transfer_info(data.pallet_transfer);
-        
-        if(data.transfer_note_list) {
-            set_transfer_note_list(data.transfer_note_list);
+        if(data.pallet_transfer_detail) {
+            set_transfer_note_carton_list(data.pallet_transfer_detail);
         }
 
         $('#scan_carton_barcode').focus();
     });
 
-    // ## Scan Carton Barcode for Loading
     $('#scan_carton_barcode_form').on('submit', function(e) {
         e.preventDefault();
         let scan_carton_barcode = $('#scan_carton_barcode').val();
@@ -386,20 +358,19 @@ $(document).ready(function() {
 
         let carton_data = get_carton_in_pallet(scan_carton_barcode)
         if(!carton_data){ 
-            toastr.error('Invalid Carton Barcode!');
+            toastr.error('Invalid Product Code!');
             $('#scan_carton_barcode').val('');
             return false;
         }
-        let transfer_note_table = get_transfer_note_table(scan_carton_barcode);
         
         insert_carton_to_scanned_table(carton_data[0]);
-        update_total_each_transfernote(transfer_note_table[0]);
-        
         $('#scan_carton_barcode').val('');
         $('#scan_carton_barcode').focus();
+        
+        update_total_in_transfernote_detail();
+
     });
 
-    // ## load all selection carton
     $('#scanned_carton_form').on('submit', async function(e) {
         e.preventDefault();
         let total_carton = parseInt($('#scanned_carton_total_carton').text());
