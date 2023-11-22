@@ -80,10 +80,11 @@
                     </div>
                     <div class="col-lg-6 col-md-4 col-sm-12">
                         <div class="ml-2">
-                            <button type="button" class="btn bg-navy" id="btn_select_all_carton" onclick="select_all_carton()" >Select All Carton</button>
+                            <button type="button" class="btn bg-navy btn-select-carton" onclick="select_all_carton()" >Select All Carton</button>
                         </div>
                     </div>
                 </div>
+
                 <div class="card mb-5">
                     <form action="<?= url_to('carton_loading_store') ?>" id="scanned_carton_form" method="POST">
                         <?= csrf_field(); ?>
@@ -251,6 +252,9 @@ const set_transfer_note_list = (transfer_note_data_list) => {
 
     transfer_note_data_list.forEach(transfer_note_data => {
 
+        // ## skip iterations if no carton in transfer note
+        if(!transfer_note_data.carton_in_transfer_note) { return; }
+
         let cartons_list = transfer_note_data.carton_in_transfer_note.map(carton => `
             <tr class="text-center count-carton">
                 <td class="d-none">
@@ -271,11 +275,21 @@ const set_transfer_note_list = (transfer_note_data_list) => {
             return total + carton.total_pcs;
         }, 0);
 
+
+        // todo : ini ada sedikit keraguan. apakah perlu untuk menampilkan tabel dari transfer note yang sudah kosong? karena kalau tidak di tampilkan makan tidak perlu menambahkan attr disabled di sini
+
+        // ## set btn for select carton to disabled if no carton in transfer note
+        let disabled_attr = (total_cartons <= 0) ? 'disabled="disabled"' : '';
+
         let card_element = `
+            
             <div class="card mb-5">
                 <div class="card-header">
                     <div class="card-title">
                         <h5 class="">Transfer Note : ${transfer_note_data.serial_number}</h5>
+                    </div>
+                    <div class="float-right">
+                        <button type="button" class="btn bg-navy btn-select-carton" onclick="select_carton_in_transfer_note(this)" ${disabled_attr} >Select Transfer Note</button>
                     </div>
                 </div>
 
@@ -350,13 +364,75 @@ const update_total_each_transfernote = (table) => {
 const select_all_carton = () => {
     let all_carton_in_pallet = $("#transfer_note_list_area table tbody tr");
     all_carton_in_pallet.each((index, carton_tr) => {
-        insert_carton_to_scanned_table(carton_tr)
+        // ## avoid insert empty data row
+        if($(carton_tr).find('td').length > 1){
+            insert_carton_to_scanned_table(carton_tr)
+        }
     });
     
+    // ## select all table transfer note and update total on footer
     let transfer_note_table_list = $("#transfer_note_list_area table");
     transfer_note_table_list.each((index, transfer_note_table) => {
         update_total_each_transfernote(transfer_note_table)
     });
+
+    disabled_select_carton_button();
+}
+
+const select_carton_in_transfer_note = (element) => {
+    let card_element = $(element).parents()[2];
+    let all_carton_in_transfer_note = $(card_element).find('table tbody tr');
+    all_carton_in_transfer_note.each((index, carton_tr) => {
+        insert_carton_to_scanned_table(carton_tr)
+    });
+
+    let transfer_note_table = $(card_element).find('table');
+    transfer_note_table.each((index, table) => {
+        update_total_each_transfernote(table)
+    });
+
+    disabled_select_carton_button(element);
+    
+    check_all_transfer_note_table();
+}
+
+
+const disabled_select_carton_button = (btn_element = false) => {
+    // ## disables the select carton button. this function has optional parameters, if no options/params are entered, all buttons will be disabled
+    if(!btn_element) {
+        $('.btn-select-carton').attr('disabled', true);
+    }
+    $(btn_element).attr('disabled', true);
+}
+
+const enabled_select_carton_button = (btn_element = false) => {
+    if(!btn_element) {
+        $('.btn-select-carton').attr('disabled', false);
+    }
+    $(btn_element).attr('disabled', false);
+}
+
+const is_table_empty = (table) => {
+    // ## check the table are empty or not. the method is just count td element. if only 1 or less it means no data in the table
+    let count_td = $(table).find('tbody td').length;
+    if (count_td <= 1) {
+        return true;
+    }
+    return false;
+}
+
+const check_all_transfer_note_table = () => {
+    let flag_empty = true;
+    let transfer_note_table_list = $("#transfer_note_list_area table");
+    transfer_note_table_list.each((index, transfer_note_table) => {
+        if(!is_table_empty(transfer_note_table)){
+            flag_empty = false;
+        }
+    });
+
+    if(flag_empty){
+        disabled_select_carton_button()
+    }
 }
 
 </script>
@@ -369,6 +445,8 @@ $(document).ready(function() {
     let session = <?= json_encode(session()->getFlashdata()) ?>;
     show_flash_message(session);
 
+    // ## Default Page Condition
+    disabled_select_carton_button();
 
     // ## Scan Pallet for search carton on the pallet
     $('#pallet_barcode_form').on('submit', async function(e) {
@@ -393,6 +471,8 @@ $(document).ready(function() {
         }
 
         $('#scan_carton_barcode').focus();
+
+        enabled_select_carton_button()
     });
 
     // ## Scan Carton Barcode for Loading
@@ -416,6 +496,8 @@ $(document).ready(function() {
         
         $('#scan_carton_barcode').val('');
         $('#scan_carton_barcode').focus();
+
+        check_all_transfer_note_table();
     });
 
     // ## load all selection carton
