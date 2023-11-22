@@ -247,7 +247,7 @@
                                 </ul>
                             </li>
                         <?php endif ?>
-                        <?php if (in_array(session()->get('role'), ['superadmin','admin','packing','fg_warehouse'])) : ?>
+                        <?php if (in_array(session()->get('role'), ['superadmin','admin','fg_warehouse'])) : ?>
                             <li class="nav-item has-treeview">
                                 <a href="" class="nav-link">
                                     <i class="nav-icon fas fa-dolly-flatbed"></i>
@@ -255,7 +255,7 @@
                                 </a>
                                 <ul class="nav nav-treeview pl-3">
             
-                                    <?php if (in_array(session()->get('role'), ['superadmin','admin', 'packing'])) : ?>
+                                    <?php if (in_array(session()->get('role'), ['superadmin','admin','fg_warehouse'])) : ?>
                                     <li class="nav-item">
                                         <a href="<?= base_url('pallet-transfer') ?>" class="nav-link">
                                             <i class="fas fa-list-ul nav-icon"></i>

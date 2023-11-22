@@ -78,6 +78,11 @@
                             </div>
                         </form>
                     </div>
+                    <div class="col-lg-6 col-md-4 col-sm-12">
+                        <div class="ml-2">
+                            <button type="button" class="btn bg-navy" id="btn_select_all_carton" onclick="select_all_carton()" >Select All Carton</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="card mb-5">
                     <form action="<?= url_to('carton_loading_store') ?>" id="scanned_carton_form" method="POST">
@@ -339,6 +344,20 @@ const update_total_each_transfernote = (table) => {
         table.find('tbody').html(empty_row);
     };
 };
+
+
+// ## Select all carton on the pallet and move to scanned carton list
+const select_all_carton = () => {
+    let all_carton_in_pallet = $("#transfer_note_list_area table tbody tr");
+    all_carton_in_pallet.each((index, carton_tr) => {
+        insert_carton_to_scanned_table(carton_tr)
+    });
+    
+    let transfer_note_table_list = $("#transfer_note_list_area table");
+    transfer_note_table_list.each((index, transfer_note_table) => {
+        update_total_each_transfernote(transfer_note_table)
+    });
+}
 
 </script>
 
