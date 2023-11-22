@@ -166,7 +166,11 @@ class CartonLoading extends BaseController
 
         $transfer_note_list = $this->PalletTransferModel->getTransferNotes($pallet_transfer->pallet_transfer_id);
         foreach ($transfer_note_list as $key => $transfer_note) {
-            $transfer_note->carton_in_transfer_note = $this->TransferNoteModel->getCartonInTransferNote($transfer_note->id);
+            // ## only need carton that not loaded
+            $where_options = [
+                'flag_loaded' => 'N'
+            ];
+            $transfer_note->carton_in_transfer_note = $this->TransferNoteModel->getCartonInTransferNote($transfer_note->id, $where_options);
         }
 
         $data_return = [

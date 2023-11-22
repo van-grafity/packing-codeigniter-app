@@ -409,7 +409,12 @@ class RackModel extends Model
             $builder_total_carton->select('count(transfer_note_detail.id) as total_carton');
             $total_carton = $builder_total_carton->get()->getRow();
 
-            $pallet_transfer->total_carton = $total_carton->total_carton;
+            if($total_carton){
+                $pallet_transfer->total_carton = $total_carton->total_carton;
+            } else {
+                $pallet_transfer->total_carton = 0;
+            }
+            
         }
         return $pallet_transfer;
     }
