@@ -441,20 +441,6 @@ class PalletTransfer extends BaseController
             return $this->response->setJSON($data_return);
         }
 
-        // !! Jangan lupa delete ini besok
-        // // ## Pallet sudah pernah digunakan dan sudah bisa digunakan kembali => True
-        // if($get_last_pallet_transfer->flag_transferred == 'Y' && $get_last_pallet_transfer->flag_loaded == 'Y'){
-        //     $data_return = [
-        //         'status' => 'success',
-        //         'message' => 'Pallet Found',
-        //         'data' => [
-        //             'pallet_status' => true,
-        //             'feedback_title' => 'Pallet is Available',
-        //         ]
-        //     ];
-        //     return $this->response->setJSON($data_return);
-        // }
-        
         // ## Pallet sudah digunakan namun masih belum selesai sampai loading (belum bisa di gunakan kembali) => False
         if($get_last_pallet_transfer->flag_transferred == 'N' && $get_last_pallet_transfer->flag_loaded == 'N'){
             $data_return = [

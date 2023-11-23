@@ -34,24 +34,6 @@ class PalletTransferModel extends Model
 
     public function getDatatable()
     {
-        // !! dont forget to delete this in the future
-        // $builder = $this->db->table('tblpallettransfer');
-        // $builder->join('tblpallet as pallet', 'pallet.id = tblpallettransfer.pallet_id');
-        // $builder->join('tbltransfernote as transfer_note', 'transfer_note.pallet_transfer_id = tblpallettransfer.id','left');
-        // $builder->join('tbltransfernotedetail as transfer_note_detail', 'transfer_note_detail.transfer_note_id = transfer_note.id','left');
-        // $builder->join('tbllocation as location_from','location_from.id = tblpallettransfer.location_from_id');
-        // $builder->join('tbllocation as location_to','location_to.id = tblpallettransfer.location_to_id');
-        // // $builder->where('transfer_note.deleted_at', null);
-        // $builder->groupBy('tblpallettransfer.id');
-        // $builder->select('tblpallettransfer.id, pallet.serial_number as pallet_serial_number, location_from.location_name as location_from, location_to.location_name as location_to, 
-        //     (SELECT count(tbltransfernotedetail.id) FROM `tbltransfernotedetail` 
-        //     JOIN tbltransfernote on tbltransfernote.id = tbltransfernotedetail.transfer_note_id 
-        //     JOIN tblpallettransfer as pallet_transfer_sub on pallet_transfer_sub.id = tbltransfernote.pallet_transfer_id 
-        //     WHERE pallet_transfer_sub.id = tblpallettransfer.id
-        //     AND tbltransfernote.deleted_at IS NULL ) as total_carton, 
-        // tblpallettransfer.flag_transferred, tblpallettransfer.flag_loaded');
-        // return $builder;
-
         $builder = $this->db->table('tblpallettransfer');
     
         // ## Join tabel dengan alias

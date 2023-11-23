@@ -318,19 +318,6 @@
             }
         })
 
-        // Show Delete Modal 
-        // !! => this cannot use, because the table using datatable server side. so the function not work
-        // $('.btn-delete').on('click', function() {
-        //     let id = $(this).data('id');
-        //     let po_number = $(this).data('po-number');
-
-        //     $('#po_id').val(id);
-        //     if (po_number) {
-        //         $('#delete_message').text(`Are you sure want to delete this Purchase Order (${po_number}) ?`);
-        //     }
-
-        //     $('#delete_modal').modal('show');
-        // });
     });
 </script>
 
