@@ -128,13 +128,6 @@ class PackingList extends BaseController
         return redirect()->to('packinglist')->with('success', 'Successfully updated Packing List');
     }
 
-    public function delete_bc()
-    {
-        $id = $this->request->getPost('packinglist_id');
-        $delete = $this->PackingListModel->delete($id);
-        return redirect()->to('packinglist');
-    }
-
     public function delete()
     {
         try {
