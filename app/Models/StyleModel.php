@@ -68,6 +68,7 @@ class StyleModel extends Model
         $builder->join('tblproduct as product', 'product.id = po_detail.product_id');
         $builder->join('tblstyle as style', 'style.id = product.product_style_id');
         $builder->where(['tblgl.id' => $gl_id]);
+        $builder->where('po.deleted_at',null);
         $builder->groupBy('style.style_no, style.style_description');
         $result = $builder->get()->getResultArray();
         return $result;

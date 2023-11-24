@@ -21,7 +21,7 @@ class GlModel extends Model
         $builder->select('tblgl.*, tblbuyer.buyer_name');
         $builder->join('tblbuyer', 'tblbuyer.id = tblgl.buyer_id');
         if ($gl_id) {
-            $builder->where(['id' => $gl_id])->get();
+            return $builder->where(['tblgl.id' => $gl_id])->get();
         }
         $builder->orderBy('tblgl.gl_number', 'asc');
         return $builder->get();
