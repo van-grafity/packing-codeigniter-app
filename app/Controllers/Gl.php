@@ -28,6 +28,11 @@ class Gl extends BaseController
         foreach ($gl_list as $key => $gl) {
             $style_by_gl = $this->StyleModel->getStyleByGL($gl->id);
             $gl_list[$key]->style_no = implode(' | ', (array_column($style_by_gl, 'style_no')));
+            if($style_by_gl){
+                $gl_list[$key]->action_class = 'd-none"';
+            } else {
+                $gl_list[$key]->action_class = '';
+            }
         }
         $data = [
             'title'     => 'List of GL',
@@ -39,14 +44,19 @@ class Gl extends BaseController
 
     public function save()
     {
+        $check_gl_number = $this->GlModel->where('gl_number',$this->request->getVar('number'))->first();
+        if($check_gl_number){
+            return redirect()->to('/gl')->with('error', 'This GL has already been registered!');
+        }
+        
         $data = array(
             'id'            => $this->request->getVar('id'),
             'gl_number'     => $this->request->getVar('number'),
             'buyer_id'      => $this->request->getVar('gl_buyer'),
-            'style_id'      => $this->request->getVar('gl_style'),
             'season'        => $this->request->getVar('season'),
             'size_order'    => $this->request->getVar('size_order'),
         );
+        
         $this->GlModel->save($data);
         return redirect()->to('/gl');
     }
@@ -58,7 +68,6 @@ class Gl extends BaseController
             'gl_number'     => $this->request->getVar('number'),
             'season'        => $this->request->getVar('season'),
             'buyer_id'      => $this->request->getVar('gl_buyer'),
-            'style_id'      => $this->request->getVar('gl_style'),
             'size_order'    => $this->request->getVar('size_order'),
         );
         $this->GlModel->update($id, $data);

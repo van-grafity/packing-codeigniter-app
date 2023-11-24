@@ -12,7 +12,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <button type="button" class="btn btn-secondary mb-2" id="btn-add-gl">Add GL</button>
+                <button type="button" class="btn btn-success mb-2" id="btn-add-gl">Add GL</button>
                 <table id="gl_table" class="table table-bordered table-striped">
                     <thead>
                         <tr class="table-primary">
@@ -37,8 +37,8 @@
                                 <td><?= $g->size_order; ?></td>
                                 <td class="text-center">
                                     <a class="btn btn-success btn-sm mb-1 btn-detail" data-id="<?= $g->id; ?>" data-gl-number="<?= $g->gl_number; ?>" data-buyer_id="<?= $g->buyer_id; ?>" data-season="<?= $g->season; ?>" data-size_order="<?= $g->size_order ?>">Details</a>
-                                    <a class="btn btn-warning btn-sm mb-1 btn-edit" data-id="<?= $g->id; ?>" data-gl-number="<?= $g->gl_number; ?>" data-buyer_id="<?= $g->buyer_id; ?>" data-season="<?= $g->season; ?>" data-size_order="<?= $g->size_order ?>">Edit</a>
-                                    <a class="btn btn-danger btn-sm mb-1 btn-delete" data-id="<?= $g->id; ?>" data-gl-number="<?= $g->gl_number; ?>">Delete</a>
+                                    <a class="btn btn-warning btn-sm mb-1 btn-edit <?= $g->action_class ?>" data-id="<?= $g->id; ?>" data-gl-number="<?= $g->gl_number; ?>" data-buyer_id="<?= $g->buyer_id; ?>" data-season="<?= $g->season; ?>" data-size_order="<?= $g->size_order ?>"  >Edit</a>
+                                    <a class="btn btn-danger btn-sm mb-1 btn-delete <?= $g->action_class ?>" data-id="<?= $g->id; ?>" data-gl-number="<?= $g->gl_number; ?>" >Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -149,6 +149,11 @@
 
 <script>
     $(document).ready(function() {
+
+        // ## Show Flash Message
+        let session = <?= json_encode(session()->getFlashdata()) ?>;
+        show_flash_message(session);
+
         // ## prevent submit form when keyboard press enter
         $('#gl_form input').on('keyup keypress', function(e) {
             var keyCode = e.keyCode || e.which;
