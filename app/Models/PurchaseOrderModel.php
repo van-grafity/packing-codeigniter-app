@@ -77,6 +77,7 @@ class PurchaseOrderModel extends Model
         $builder->join('tblsize', 'tblsize.id = tblproduct.product_size_id');
         $builder->join('tblstyle', 'tblstyle.id = tblproduct.product_style_id');
         $builder->join('tblcategory', 'tblcategory.id = tblproduct.product_category_id');
+        $builder->where('tblpurchaseorderdetail.deleted_at', null);
 
         if ($po_id) {
             $builder->where(['tblpurchaseorder.id' => $po_id]);
@@ -94,6 +95,7 @@ class PurchaseOrderModel extends Model
         $builder->join('tblpurchaseorder as po', 'po.id = pod.order_id');
         $builder->join('tblproduct as product', 'product.id = pod.product_id');
         $builder->where('po.id', $po_id);
+        $builder->where('pod.deleted_at', null);
         $po_details = $builder->get()->getResult();
 
         // ## Calculate
