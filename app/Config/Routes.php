@@ -262,6 +262,12 @@ $routes->group('sync-po', static function ($routes) {
 
 
 
+
+// ## Routes for API
+$routes->resource('api/pallet-transfer', ['controller' => 'API\PalletTransferController','as' => 'api_pallet_transfer','filter' => 'apiUserAuth']);
+
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
