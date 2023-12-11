@@ -60,7 +60,7 @@ class PackingList extends BaseController
                 $action_button = '
                     <a class="btn btn-warning btn-sm mt-1" onclick="edit_packinglist('.$row->packinglist_id.')">Edit</a>
                     <a class="btn btn-danger btn-sm btn-delete mt-1" data-id = "'.$row->packinglist_id.'" data-pl-serial-number = "'.$row->packinglist_serial_number.'" onclick="delete_pl(this)">Delete</a>
-                    <a href="'.base_url('report/packinglist/'.$row->packinglist_id).'" target="_blank" class="btn btn-info btn-sm mt-1" >Print Report</a>
+                    <a href="'.base_url('packinglist/report/'.$row->packinglist_id).'" target="_blank" class="btn btn-info btn-sm mt-1" >Print Report</a>
                 ';
                 return $action_button;
             })->edit('packinglist_serial_number', function($row){

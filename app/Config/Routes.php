@@ -134,6 +134,8 @@ $routes->post('packinglistcarton/delete', 'PackingList::cartondelete');
 $routes->group('packinglist', static function ($routes) {
     $routes->get('list', 'PackingList::index_dt',['as' => 'packinglist_list']);
     $routes->get('edit', 'PackingList::edit',['as' => 'packinglist_edit']);
+    $routes->get('report/(:num)', "PackingList::report/$1");
+
 });
 
 
