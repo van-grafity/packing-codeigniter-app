@@ -138,7 +138,7 @@ class PackingListModel extends Model
         $builder->where('packinglist.id', $packinglist_id);
         $order_qty = $builder->get()->getRow()->packinglist_qty;
         $ship_qty = $this->getShipQty($packinglist_id);
-        $percentage_ship = round($ship_qty / $order_qty * 100) . '%';
+        $percentage_ship = round($ship_qty / $order_qty * 100, 4) . '%';
         return $percentage_ship;
     }
 
