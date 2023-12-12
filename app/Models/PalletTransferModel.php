@@ -34,7 +34,8 @@ class PalletTransferModel extends Model
 
     public function getDatatable()
     {
-        $builder = $this->db->table('tblpallettransfer');
+        // $builder = $this->db->table('tblpallettransfer'); //!! => next kalau ga ada masalah hapus aja
+        $builder = $this;
     
         // ## Join tabel dengan alias
         $builder->join('tblpallet as pallet', 'pallet.id = tblpallettransfer.pallet_id');
@@ -240,4 +241,5 @@ class PalletTransferModel extends Model
         $result = $builder->delete();
         return $result;
     }
+
 }

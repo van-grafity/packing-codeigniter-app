@@ -396,7 +396,7 @@ class PalletTransfer extends BaseController
         return $this->response->setJSON($data_return);
     }
 
-    public function check_pallet_availablity()
+    public function check_pallet_availability()
     {
         $pallet_serial_number = $this->request->getGet('pallet_serial_number');
         $pallet = $this->PalletModel->where('serial_number', $pallet_serial_number)->first();

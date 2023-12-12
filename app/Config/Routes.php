@@ -197,7 +197,7 @@ $routes->group('pallet-transfer', static function ($routes) {
     $routes->get('carton-detail', 'PalletTransfer::carton_detail',['as' => 'pallet_transfer_carton_detail']);
     $routes->get('(:num)/transfer-note', 'PalletTransfer::transfer_note/$1',['as' => 'pallet_transfer_transfer_note']);
     $routes->get('transfer-note-detail', 'PalletTransfer::transfer_note_detail',['as' => 'pallet_transfer_transfer_note_detail']);
-    $routes->get('check-pallet-availablity', 'PalletTransfer::check_pallet_availablity',['as' => 'pallet_transfer_check_pallet_availablity']);
+    $routes->get('check-pallet-availability', 'PalletTransfer::check_pallet_availability',['as' => 'pallet_transfer_check_pallet_availability']);
     
     $routes->post('', 'PalletTransfer::store', ['as' => 'pallet_transfer_store']);
     $routes->post('update', 'PalletTransfer::update',['as' => 'pallet_transfer_update']);
@@ -265,6 +265,11 @@ $routes->group('sync-po', static function ($routes) {
 
 // ## Routes for API
 $routes->resource('api/pallet-transfer', ['controller' => 'API\PalletTransferController','as' => 'api_pallet_transfer','filter' => 'apiUserAuth']);
+
+$routes->group('api/pallet-transfer', ['filter' => 'apiUserAuth'], static function ($routes) {
+    $routes->get('check-pallet-availability', 'API\PalletTransferController::check_pallet_availability');
+});
+
 
 
 

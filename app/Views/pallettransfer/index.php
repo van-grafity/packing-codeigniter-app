@@ -125,7 +125,7 @@
 const index_dt_url = '<?= url_to('pallet_transfer_list')?>';
 const store_url = '<?= url_to('pallet_transfer_store')?>';
 const update_url = '<?= url_to('pallet_transfer_update')?>';
-const pallet_availablity_url = '<?= url_to('pallet_transfer_check_pallet_availablity')?>';
+const pallet_availability_url = '<?= url_to('pallet_transfer_check_pallet_availability')?>';
 const detail_url = '<?= url_to('pallet_transfer_detail')?>';
 
 let is_pallet_available = false;
@@ -137,7 +137,7 @@ async function get_pallet_detail(pallet_serial_number) {
     params_data = {
         pallet_serial_number
     };
-    result = await using_fetch(pallet_availablity_url, params_data, "GET");
+    result = await using_fetch(pallet_availability_url, params_data, "GET");
 
     if (result.status == 'error') {
         is_pallet_available = false;
