@@ -5,7 +5,6 @@ namespace App\Controllers\API;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\PalletTransferModel;
-use App\Libraries\ApiAuth;
 
 class PalletTransferController extends ResourceController
 {
@@ -13,7 +12,7 @@ class PalletTransferController extends ResourceController
 
     public function __construct()
     {
-        $this->ApiAuth = new ApiAuth;
+
     }
     /**
      * Return an array of resource objects, themselves in array format
@@ -22,11 +21,7 @@ class PalletTransferController extends ResourceController
      */
     public function index()
     {
-        $headers = getallheaders();
-        $check_credentials = $this->ApiAuth->checkCredentials($headers);
-        if($check_credentials['status'] != 'success'){
-            return $this->respond($check_credentials, $check_credentials['status_code']);
-        }
+        
     }
 
     /**

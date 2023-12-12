@@ -5,6 +5,8 @@ namespace App\Filters;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Libraries\ApiAuth;
+
 
 class ApiUserAuthFilter implements FilterInterface
 {
@@ -25,8 +27,14 @@ class ApiUserAuthFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        // Mengirim response JSON
-        // return $this->response->setJSON(['status' => 'success']);
+        $ApiAuth = new ApiAuth;
+        $response = service('response');
+
+        $headers = getallheaders();
+        $check_credentials = $ApiAuth->checkCredentials($headers);
+        if($check_credentials['status'] != 'success'){
+            return $response->setStatusCode($check_credentials['status_code'])->setJSON($check_credentials);
+        }
     }
 
     /**
