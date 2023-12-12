@@ -5,18 +5,29 @@ namespace App\Controllers\API;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\PalletTransferModel;
+use App\Models\CartonBarcodeModel;
+use App\Models\TransferNoteModel;
+use App\Models\TransferNoteDetailModel;
 use App\Models\PalletModel;
+
+use CodeIgniter\I18n\Time;
 
 class PalletTransferController extends ResourceController
 {
     use ResponseTrait;
 
     protected $PalletTransferModel;
+    protected $CartonBarcodeModel;
+    protected $TransferNoteModel;
+    protected $TransferNoteDetailModel;
     protected $PalletModel;
 
     public function __construct()
     {
         $this->PalletTransferModel = new PalletTransferModel();
+        $this->CartonBarcodeModel = new CartonBarcodeModel();
+        $this->TransferNoteModel = new TransferNoteModel();
+        $this->TransferNoteDetailModel = new TransferNoteDetailModel();
         $this->PalletModel = new PalletModel();
         
     }
@@ -32,7 +43,7 @@ class PalletTransferController extends ResourceController
             'page' => $this->request->getGet('page') ? $this->request->getGet('page') : 1,
         ];
         $pallet_transfer_dt = $this->PalletTransferModel->getDatatable();
-        $pallet_transfer_list = $pallet_transfer_dt->paginate($params['length'],'default',$params['page']);
+        $pallet_transfer_list = $pallet_transfer_dt->orderBy('tblpallettransfer.created_at', 'DESC')->paginate($params['length'],'default',$params['page']);
 
         foreach ($pallet_transfer_list as $key => $pallet_transfer) {
             $pallet_status = $this->getPalletStatus($pallet_transfer);
@@ -55,19 +66,41 @@ class PalletTransferController extends ResourceController
      *
      * @return mixed
      */
-    public function show($id = null)
+    public function show($pallet_transfer_id = null)
     {
-        $pallet_serial_number = $this->request->getGet('pallet_serial_number');
-    }
+        $pallet_transfer = $this->PalletTransferModel->getData($pallet_transfer_id);
+        $pallet_status = $this->getPalletStatus($pallet_transfer);
+        $pallet_transfer->status = $pallet_status['status'];
+        $pallet_transfer->color_hex = $pallet_status['color_hex'];
 
-    /**
-     * Return a new resource object, with default properties
-     *
-     * @return mixed
-     */
-    public function new()
-    {
-        //
+        $transfer_note_list = $this->PalletTransferModel->getTransferNotesByPalletTransfer($pallet_transfer->id);
+        array_walk($transfer_note_list, function (&$item, $key) {
+            if($item->received_at){
+                $received_datetime = new Time($item->received_at);
+                $received_datetime = $received_datetime->toLocalizedString('dd MMMM yyyy, HH:mm');
+                $item->received_at = $received_datetime;
+            }
+            if($item->created_at){
+                $created_datetime = new Time($item->created_at);
+                $created_datetime = $created_datetime->toLocalizedString('dd MMMM yyyy, HH:mm');
+                $item->created_at = $created_datetime;
+            }
+        });
+        
+        $data = [
+            'pallet_transfer' => $pallet_transfer,
+            'transfer_note_list' => $transfer_note_list,
+        ];
+
+        $data_response = [
+            'status' => 'success',
+            'message' => 'Berhasil Mendapatkan Data Pallet Transfer Detail',
+            'data' => [
+                'data' => $data
+            ]
+        ];
+        
+        return $this->respond($data_response);
     }
 
     /**
@@ -77,7 +110,229 @@ class PalletTransferController extends ResourceController
      */
     public function create()
     {
-        //
+        $data_input = $this->request->getPost();
+        
+        // ## parameters validation
+        $params_to_check = ['pallet_serial_number','location_from','location_to'];
+        $missingAttributes = array_has_attributes($data_input, $params_to_check);
+        if (!empty($missingAttributes)) {
+            $data_response = [
+                'status' => 'error',
+                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+            ];
+            return $this->respond($data_response);
+        }
+
+        $pallet = $this->PalletModel->where('serial_number', $data_input['pallet_serial_number'])->first();
+
+        $pallet_transfer_this_month = $this->PalletTransferModel->countPalletTransferThisMonth();
+        $next_number = $pallet_transfer_this_month + 1;
+
+        $data = array (
+            'transaction_number' => $this->PalletTransferModel->generate_transaction_number($next_number),
+            'location_from_id' => $data_input['location_from'],
+            'location_to_id' => $data_input['location_to'],
+            'pallet_id' => $pallet->id,
+            'flag_transferred' => 'N',
+            'flag_loaded' => 'N',
+        );
+        
+        $this->PalletTransferModel->save($data);
+
+        $data_response = [
+            'status' => 'success',
+            'message' => 'Berhasil Menambahkan Data Pallet Transfer',
+            'data' => [
+                'pallet_transfer' => $data
+            ]
+        ];
+        
+        return $this->respond($data_response);
+    }
+
+    public function search_carton()
+    {
+        $data_input = $this->request->getGet();
+
+        // ## parameters validation
+        $params_to_check = ['carton_barcode'];
+        $missingAttributes = array_has_attributes($data_input, $params_to_check);
+        if (!empty($missingAttributes)) {
+            $data_response = [
+                'status' => 'error',
+                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+            ];
+            return $this->respond($data_response);
+        }
+
+        $carton_barcode = $this->request->getGet('carton_barcode');
+        $is_carton_available = $this->TransferNoteModel->isCartonAvailable($carton_barcode);
+        
+        if(!$is_carton_available){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'This Carton Has Already in Other Transfer Note',
+            ];
+            return $this->respond($data_return);
+        }
+
+        $carton_info = $this->CartonBarcodeModel->getCartonInfoByBarcode_v2($carton_barcode);
+        
+        if(!$carton_info){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'Carton Not Found!',
+            ];
+            return $this->respond($data_return);
+        }
+
+        if($carton_info->flag_packed == "N"){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'This Carton Has not Packing Yet',
+            ];
+            return $this->respond($data_return);
+        }
+
+        $size_list_in_carton = $this->CartonBarcodeModel->getCartonContent($carton_info->carton_id);
+        $carton_info->content = $this->CartonBarcodeModel->serialize_size_list($size_list_in_carton);
+        $carton_info->total_pcs = array_sum(array_column($size_list_in_carton,'qty'));
+        
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Carton Found',
+            'data' => $carton_info,
+        ];
+        return $this->respond($data_return);
+    }
+
+    public function transfer_note_store()
+    {
+        $data_input = $this->request->getPost();
+
+        // ## parameters validation
+        $params_to_check = ['pallet_transfer_id','carton_barcode_id'];
+        $missingAttributes = array_has_attributes($data_input, $params_to_check);
+        if (!empty($missingAttributes)) {
+            $data_response = [
+                'status' => 'error',
+                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+            ];
+            return $this->respond($data_response);
+        }
+        
+        $transfer_note_this_month = $this->TransferNoteModel->countTransferNoteThisMonth();
+        $next_number = $transfer_note_this_month + 1;
+        
+        $transfer_note_data = [
+            'pallet_transfer_id' => $data_input['pallet_transfer_id'],
+            'serial_number' => $this->PalletTransferModel->generate_serial_number($next_number),
+        ];
+
+        $this->TransferNoteModel->transException(true)->transStart();
+        $transfer_note_id = $this->TransferNoteModel->insert($transfer_note_data);
+        
+        if(array_key_exists("carton_barcode_id",$data_input)){
+            $this->TransferNoteDetailModel->transException(true)->transStart();
+            foreach($data_input['carton_barcode_id'] as $key => $carton_barcode_id){
+                $this->TransferNoteDetailModel->insert(['transfer_note_id' => $transfer_note_id, 'carton_barcode_id' => $carton_barcode_id ]);
+            }
+            $this->TransferNoteDetailModel->transComplete();
+        }
+
+        $this->TransferNoteModel->transComplete();
+
+        // ## update status pallet
+        $pallet_transfer = $this->PalletTransferModel->find($data_input['pallet_transfer_id']);
+        $this->PalletModel->update($pallet_transfer->pallet_id, ['flag_empty' => 'N']);
+
+        $transfer_note = $this->TransferNoteModel->getPackingTransferNote($transfer_note_id);
+
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Berhasil Menambahkan Transfer Note',
+            'data' => [
+                'transfer_note' => $transfer_note,
+                'pallet_transfer_id' => $data_input['pallet_transfer_id']
+            ],
+        ];
+        return $this->respond($data_return);
+        return redirect()->to("pallet-transfer/" . $data_input['pallet_transfer_id'] . "/transfer-note")->with('success', "Successfully added Transfer Note");
+    }
+
+    public function transfer_note_edit($transfer_note_id = null)
+    {
+        $transfer_note = $this->TransferNoteModel->getPackingTransferNote($transfer_note_id);
+        $created_datetime = new Time($transfer_note->created_at);
+        $transfer_note->created_at = $created_datetime->toLocalizedString('dd MMMM yyyy, HH:mm');
+        
+        if(!$transfer_note){
+            $data_return = [
+                'status' => 'error',
+                'message' => 'Transfer Note Not Found',
+            ];
+            return $this->respond($data_return);
+        }
+
+        $transfer_note_detail = $this->TransferNoteModel->getCartonInTransferNote($transfer_note->transfer_note_id);
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Transfer Note Found',
+            'data' => [
+                'transfer_note' => $transfer_note,
+                'transfer_note_detail' => $transfer_note_detail,
+            ],
+        ];
+        return $this->respond($data_return);
+
+    }
+
+    public function transfer_note_update()
+    {
+        $data_input = $this->request->getRawInput();
+        
+        $transfer_note_id = $data_input['transfer_note_id'];
+        // $transfer_note_data = [
+        //     'issued_by' => $data_input['transfer_note_issued_by'],
+        //     'authorized_by' => $data_input['transfer_note_authorized_by'],
+        // ];
+
+        try {
+            $this->PalletTransferModel->transException(true)->transStart();
+            // $this->TransferNoteModel->update($transfer_note_id, $transfer_note_data);
+            
+            $delete_transfer_note_detail = $this->TransferNoteDetailModel->where('transfer_note_id', $transfer_note_id)->delete();
+            if(array_key_exists("carton_barcode_id",$data_input)){
+                $this->TransferNoteDetailModel->transException(true)->transStart();
+                foreach($data_input['carton_barcode_id'] as $key => $carton_barcode_id){
+                    $this->TransferNoteDetailModel->insert(['transfer_note_id' => $transfer_note_id, 'carton_barcode_id' => $carton_barcode_id ]);
+                }
+                $this->TransferNoteDetailModel->transComplete();
+            }
+    
+            $this->PalletTransferModel->transComplete();
+
+
+            $transfer_note = $this->TransferNoteModel->getPackingTransferNote($transfer_note_id);
+            $transfer_note_detail = $this->TransferNoteModel->getCartonInTransferNote($transfer_note_id);
+            $data_return = [
+                'status' => 'success',
+                'message' => 'Transfer Berhasil diperbaharui',
+                'data' => [
+                    'transfer_note' => $transfer_note,
+                    'transfer_note_detail' => $transfer_note_detail,
+                    'pallet_transfer_id' => $data_input['pallet_transfer_id']
+                ],
+            ];
+            return $this->respond($data_return);
+            
+        } catch (\Throwable $th) {
+            $data_return = [
+                'status' => 'error',
+                'message' => $th->getMessage(),
+            ];
+            return $this->respond($data_return);
+        }
     }
 
     /**
@@ -139,6 +394,20 @@ class PalletTransferController extends ResourceController
 
     public function check_pallet_availability()
     {
+        $data_input = $this->request->getGet();
+
+        // ## parameters validation
+        $params_to_check = ['pallet_serial_number'];
+        $missingAttributes = array_has_attributes($data_input, $params_to_check);
+        
+        if (!empty($missingAttributes)) {
+            $data_response = [
+                'status' => 'error',
+                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+            ];
+            return $this->respond($data_response);
+        }
+
         $pallet_serial_number = $this->request->getGet('pallet_serial_number');
         $pallet = $this->PalletModel->where('serial_number', $pallet_serial_number)->first();
 
@@ -148,21 +417,16 @@ class PalletTransferController extends ResourceController
                 'status' => 'error',
                 'message' => 'Pallet Not Found',
             ];
-            return $this->response->setJSON($data_return);
+            return $this->respond($data_return, 404);
         }
 
         // ## Pallet sudah berisi => False
         if($pallet->flag_empty == 'N') {
             $data_return = [
-                'status' => 'success',
-                'message' => 'Pallet Found',
-                'data' => [
-                    'pallet_status' => false,
-                    'feedback_title' => 'Pallet is not Available',
-                    'feedback_message' => 'This Pallet has not empty',
-                ]
+                'status' => 'error',
+                'message' => 'Pallet is not Available. This Pallet has not empty',
             ];
-            return $this->response->setJSON($data_return);
+            return $this->respond($data_return, 400);
         }
 
         $get_last_pallet_transfer = $this->PalletTransferModel->getLastPalletTransferByPalletID($pallet->id);
@@ -173,38 +437,27 @@ class PalletTransferController extends ResourceController
         ){
             $data_return = [
                 'status' => 'success',
-                'message' => 'Pallet Found',
+                'message' => 'Pallet is Available',
                 'data' => [
-                    'pallet_status' => true,
-                    'feedback_title' => 'Pallet is Available',
+                    'pallet_serial_number' => $pallet_serial_number
                 ]
             ];
-            return $this->response->setJSON($data_return);
+            return $this->respond($data_return, 200);
         }
 
         // ## Pallet sudah digunakan namun masih belum selesai sampai loading (belum bisa di gunakan kembali) => False
         if($get_last_pallet_transfer->flag_transferred == 'N' && $get_last_pallet_transfer->flag_loaded == 'N'){
             $data_return = [
-                'status' => 'success',
-                'message' => 'Pallet Found',
-                'data' => [
-                    'pallet_status' => false,
-                    'feedback_title' => 'Pallet is not Available!',
-                    'feedback_message' => 'This Pallet has been used. Please Check on Pallet to Transfer List',
-                ]
+                'status' => 'error',
+                'message' => 'This Pallet has been used. Please Check on Pallet to Transfer List',
             ];
-            return $this->response->setJSON($data_return);
+            return $this->respond($data_return, 400);
         }
         
         $data_return = [
-            'status' => 'success',
-            'message' => 'Uncategorized!!',
-            'data' => [
-                'pallet_status' => false,
-                'feedback_title' => 'Something Wrong!',
-                'feedback_message' => 'Please contact the Developer',
-            ]
+            'status' => 'error',
+            'message' => 'Something Wrong. Please contact the Developer!',
         ];
-        return $this->response->setJSON($data_return);
+        return $this->respond($data_return, 400);
     }
 }

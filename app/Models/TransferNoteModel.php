@@ -108,7 +108,17 @@ class TransferNoteModel extends Model
         $builder->join('tbllocation as location_to', 'location_to.id = pallet_transfer.location_to_id');
         $builder->join('tblpallet as pallet', 'pallet.id = pallet_transfer.pallet_id');
         $builder->where('transfer_note.id', $transfer_note_id);
-        $builder->select('transfer_note.id as transfer_note_id, transfer_note.serial_number as transfer_note_number, DATE(transfer_note.created_at) as issued_date, transfer_note.issued_by, transfer_note.authorized_by, location_from.location_name as location_from, location_to.location_name as location_to, pallet.serial_number as pallet_number');
+        $builder->select([
+            'transfer_note.id as transfer_note_id', 
+            'transfer_note.serial_number as transfer_note_number', 
+            'DATE(transfer_note.created_at) as issued_date', 
+            'transfer_note.issued_by', 
+            'transfer_note.authorized_by', 
+            'location_from.location_name as location_from', 
+            'location_to.location_name as location_to', 
+            'pallet.serial_number as pallet_number',
+            'transfer_note.created_at', 
+        ]);
         $result = $builder->get()->getRow();
         return $result;
     }

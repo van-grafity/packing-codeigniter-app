@@ -9,3 +9,17 @@ if (!function_exists('datetime_indo')) {
         return $datetime_indo;
     }
 }
+
+if (!function_exists('array_has_attributes')) {
+    function array_has_attributes(array $array, array $attributes): array
+    {
+        $missingAttributes = [];
+        foreach ($attributes as $attribute) {
+            if (!isset($array[$attribute])) {
+                $missingAttributes[] = $attribute;
+            }
+        }
+        return $missingAttributes;
+    }
+}
+
