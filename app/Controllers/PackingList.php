@@ -420,7 +420,7 @@ class PackingList extends BaseController
             $product_id = $product->product_id;
             $po_qty = $this->getPoQtyInArrayByProductID($product_id, $contract_qty_each_product);
             $shipment_percentage_each_upc[$key]->po_qty = $po_qty;
-            $shipment_percentage_each_upc[$key]->percentage = round($product->shipment_qty / $po_qty * 100) . '%';
+            $shipment_percentage_each_upc[$key]->percentage = round($product->shipment_qty / $po_qty * 100, 4) . '%';
         }
 
 
