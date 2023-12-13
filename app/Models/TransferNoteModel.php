@@ -89,7 +89,9 @@ class TransferNoteModel extends Model
     {
         $builder = $this->db->table('tblcartonbarcode as carton_barcode');
         $builder->join('tbltransfernotedetail as transfer_note_detail', 'transfer_note_detail.carton_barcode_id = carton_barcode.id');
+        $builder->join('tbltransfernote as transfer_note', 'transfer_note.id = transfer_note_detail.transfer_note_id');
         $builder->where('transfer_note_detail.deleted_at', null);
+        $builder->where('transfer_note.deleted_at', null);
         $builder->where('carton_barcode.barcode', $carton_barcode);
         $result = $builder->get()->getResult();
         
