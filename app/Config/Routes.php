@@ -273,8 +273,15 @@ $routes->group('api', ['filter' => 'apiUserAuth'], static function ($routes) {
         $routes->post('transfer-note-store', 'API\PalletTransferController::transfer_note_store');
         $routes->get('transfer-note-edit/(:any)', 'API\PalletTransferController::transfer_note_edit/$1');
         $routes->put('transfer-note-update', 'API\PalletTransferController::transfer_note_update');
+        $routes->post('complete-preparation', 'API\PalletTransferController::complete_preparation');
     });
     $routes->resource('pallet-transfer', ['controller' => 'API\PalletTransferController']);
+
+    $routes->group('pallet-receive', static function ($routes) {
+        $routes->get('', 'API\PalletReceiveController::index');
+        $routes->post('', 'API\PalletReceiveController::create');
+        $routes->get('search-pallet', 'API\PalletReceiveController::search_pallet');
+    });
 });
 
 

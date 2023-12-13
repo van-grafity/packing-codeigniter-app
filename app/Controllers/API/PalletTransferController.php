@@ -148,7 +148,6 @@ class PalletTransferController extends ResourceController
         $this->PalletTransferModel->transComplete();
         
         $pallet_transfer_id = $this->PalletTransferModel->getInsertID();
-        
         $pallet_transfer = $this->PalletTransferModel->getPalletTransfer($pallet_transfer_id);
 
         $data_response = [
@@ -361,6 +360,8 @@ class PalletTransferController extends ResourceController
         }
     }
 
+
+    // !! bisa di hapus untuk function yang tidak di perlukan
     /**
      * Return the editable properties of a resource object
      *
@@ -392,7 +393,7 @@ class PalletTransferController extends ResourceController
     }
 
 
-    private function getPalletStatus($pallet_data, $pill_mode = false)
+    public function getPalletStatus($pallet_data, $pill_mode = false)
     {
         
         if($pallet_data->flag_ready_to_transfer == 'N'){
@@ -519,5 +520,51 @@ class PalletTransferController extends ResourceController
             'status_code' => 400,
         ];
         return $response;
+    }
+
+
+    public function complete_preparation()
+    {
+        $data_input = $this->request->getPost();
+
+        // ## parameters validation
+        $params_to_check = ['pallet_transfer_id'];
+        $missingAttributes = array_has_attributes($data_input, $params_to_check);
+        
+        if (!empty($missingAttributes)) {
+            $data_response = [
+                'status' => 'error',
+                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+            ];
+            return $this->respond($data_response);
+        }
+        $pallet_transfer_id = $data_input['pallet_transfer_id'];
+
+        $transfer_note_list = $this->PalletTransferModel->getTransferNotes($pallet_transfer_id);
+        if(empty($transfer_note_list)) {
+            $data_return = [
+                'status' => 'error',
+                'message' => 'Cannot Update Pallet status',
+                'data' => [
+                    'message_text' => 'Please provide at least 1 Packing Transfer Note'
+                ]
+            ];
+            return $this->respond($data_return, 400);
+        }
+
+        $pallet_transfer = $this->PalletTransferModel
+            ->join('tblpallet as pallet','pallet.id = tblpallettransfer.pallet_id')
+            ->where('tblpallettransfer.id', $pallet_transfer_id)
+            ->select('tblpallettransfer.*, pallet.serial_number as pallet_serial_number')
+            ->first();
+
+        $this->PalletTransferModel->update($pallet_transfer_id, ['flag_ready_to_transfer' => 'Y', 'ready_to_transfer_at' => date('Y-m-d H:i:s')]);
+
+        $data_return = [
+            'status' => 'success',
+            'message' => 'Successfully update Status Pallet',
+            'data' => $pallet_transfer
+        ];
+        return $this->respond($data_return, 200);
     }
 }

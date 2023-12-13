@@ -22,7 +22,7 @@ class PalletReceiveModel extends Model
 
     public function getDatatable()
     {
-        $builder = $this->db->table($this->table);
+        $builder = $this;
         
         // ## Join tabel dengan alias
         $builder->join('tblpallet as pallet', 'pallet.id = tblpallettransfer.pallet_id');
@@ -36,17 +36,18 @@ class PalletReceiveModel extends Model
 
         // ## Memilih kolom dengan alias
         $builder->select([
-            'tblpallettransfer.id', 
+            'tblpallettransfer.id',
+            'tblpallettransfer.transaction_number',
             'pallet.serial_number as pallet_serial_number', 
             'location_from.location_name as location_from', 
             'location_to.location_name as location_to', 
-            'SUM(CASE WHEN transfer_note_detail.deleted_at IS NULL THEN 1 ELSE 0 END) as total_carton', 
+            'SUM(CASE WHEN transfer_note_detail.id IS NOT NULL AND transfer_note_detail.deleted_at IS NULL THEN 1 ELSE 0 END) as total_carton', 
             'tblpallettransfer.flag_ready_to_transfer', 
             'tblpallettransfer.flag_transferred', 
             'tblpallettransfer.flag_loaded',
             'rack.serial_number as rack_serial_number'
         ]);
-        
+
         // ## Mengelompokkan berdasarkan pallet transfer id dan rack. harus dua dua nya biar karena type sql nya full group
         $builder->groupBy('tblpallettransfer.id, rack.serial_number');
         
@@ -89,6 +90,7 @@ class PalletReceiveModel extends Model
             location_from.location_name as location_from, 
             location_to.location_name as location_to, 
             pallet_transfer.id as pallet_transfer_id, 
+            pallet_transfer.transaction_number, 
             pallet_transfer.flag_ready_to_transfer, 
             pallet_transfer.flag_transferred, 
             pallet_transfer.flag_loaded, 
