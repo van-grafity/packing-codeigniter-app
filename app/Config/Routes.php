@@ -282,6 +282,11 @@ $routes->group('api', ['filter' => 'apiUserAuth'], static function ($routes) {
         $routes->post('', 'API\PalletReceiveController::create');
         $routes->get('search-pallet', 'API\PalletReceiveController::search_pallet');
     });
+    
+    $routes->group('pallet-loading', static function ($routes) {
+        $routes->post('', 'API\PalletLoadingController::create');
+        $routes->get('search-pallet', 'API\PalletLoadingController::search_pallet');
+    });
 });
 
 
