@@ -258,6 +258,7 @@ $routes->group('update-database', ['filter' => 'onlySuperadmin'], static functio
 
 $routes->group('sync-po', static function ($routes) {
     $routes->get('', 'SyncPurchaseOrder::index', ['as' => 'sync_po']);
+    $routes->get('detail', 'SyncPurchaseOrder::sync_po_detail', ['as' => 'sync_po_detail']);
 });
 
 
