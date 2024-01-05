@@ -54,7 +54,7 @@ class PalletTransferController extends ResourceController
             'status' => 'success',
             'message' => 'Berhasil Mendapatkan Data Pallet Transfer',
             'data' => [
-                'pallet_transfer_list' => $pallet_transfer_list
+                'pallet_transfers' => $pallet_transfer_list
             ]
         ];
         
