@@ -74,8 +74,8 @@ class PalletTransferController extends ResourceController
         $pallet_transfer->status = $pallet_status['status'];
         $pallet_transfer->color_hex = $pallet_status['color_hex'];
 
-        $transfer_note_list = $this->PalletTransferModel->getTransferNotesByPalletTransfer($pallet_transfer->id);
-        array_walk($transfer_note_list, function (&$item, $key) {
+        $transfer_notes = $this->PalletTransferModel->getTransferNotesByPalletTransfer($pallet_transfer->id);
+        array_walk($transfer_notes, function (&$item, $key) {
             if($item->received_at){
                 $received_datetime = new Time($item->received_at);
                 $received_datetime = $received_datetime->toLocalizedString('dd MMMM yyyy, HH:mm');
@@ -88,16 +88,20 @@ class PalletTransferController extends ResourceController
             }
         });
         
-        $data = [
-            'pallet_transfer' => $pallet_transfer,
-            'transfer_note_list' => $transfer_note_list,
-        ];
+        // $data = [
+        //     'pallet_transfer' => $pallet_transfer,
+        //     'transfer_note_list' => $transfer_notes,
+        // ];
+
+        $data = $pallet_transfer;
+        $data->transfer_notes = $transfer_notes;
+
 
         $data_response = [
             'status' => 'success',
             'message' => 'Berhasil Mendapatkan Data Pallet Transfer Detail',
             'data' => [
-                'data' => $data
+                'pallet_transfer' => $data
             ]
         ];
         
@@ -285,12 +289,14 @@ class PalletTransferController extends ResourceController
         }
 
         $transfer_note_detail = $this->TransferNoteModel->getCartonInTransferNote($transfer_note->transfer_note_id);
+        $data = $transfer_note;
+        $data->transfer_note_detail = $transfer_note_detail;
+
         $data_return = [
             'status' => 'success',
             'message' => 'Transfer Note Found',
             'data' => [
-                'transfer_note' => $transfer_note,
-                'transfer_note_detail' => $transfer_note_detail,
+                'transfer_note' => $data,
             ],
         ];
         return $this->respond($data_return);
@@ -503,7 +509,7 @@ class PalletTransferController extends ResourceController
         if($get_last_pallet_transfer->flag_transferred == 'N' && $get_last_pallet_transfer->flag_loaded == 'N'){
             $response = [
                 'data_return' => [
-                    'status' => 'error',
+                    'status' => 400,
                     'message' => 'This Pallet has been used. Please Check on Pallet to Transfer List',
                 ],
                 'status_code' => 400,
