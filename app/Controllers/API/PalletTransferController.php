@@ -290,7 +290,7 @@ class PalletTransferController extends ResourceController
 
         $transfer_note_detail = $this->TransferNoteModel->getCartonInTransferNote($transfer_note->transfer_note_id);
         $data = $transfer_note;
-        $data->transfer_note_detail = $transfer_note_detail;
+        $data->cartons = $transfer_note_detail;
 
         $data_return = [
             'status' => 'success',
