@@ -291,6 +291,9 @@ $routes->group('api', ['filter' => 'apiUserAuth'], static function ($routes) {
     $routes->group('location', static function ($routes) {
         $routes->get('', 'API\LocationController::index');
     });
+    $routes->group('rack', static function ($routes) {
+        $routes->get('', 'API\RackController::index');
+    });
 });
 
 
