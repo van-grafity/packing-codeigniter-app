@@ -287,6 +287,10 @@ $routes->group('api', ['filter' => 'apiUserAuth'], static function ($routes) {
         $routes->post('', 'API\PalletLoadingController::create');
         $routes->get('search-pallet', 'API\PalletLoadingController::search_pallet');
     });
+
+    $routes->group('location', static function ($routes) {
+        $routes->get('', 'API\LocationController::index');
+    });
 });
 
 
