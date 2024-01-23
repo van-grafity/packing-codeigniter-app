@@ -296,6 +296,8 @@ $routes->group('api', ['filter' => 'apiUserAuth'], static function ($routes) {
     });
 });
 
+$routes->post('api/login', 'API\LoginController::login');
+
 
 /*
  * --------------------------------------------------------------------
