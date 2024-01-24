@@ -175,31 +175,5 @@ class PalletReceive extends BaseController
         return redirect()->to('pallet-receive')->with('success', "Successfully added Pallet to Rack");
     }
 
-    // !! ini bisa di hapus karena bisa pakai function dari pallet transfer controller
-    // private function getPalletStatus($pallet_data, $pill_mode = false)
-    // {
-    //     if($pill_mode){
-    //         if($pallet_data->flag_transferred == 'N' && $pallet_data->flag_loaded == 'N'){
-    //             $status = '<span class="badge badge-secondary">Not Transfered Yet</span>';
-    //         } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'N'){
-    //             $status = '<span class="badge badge-info">at Warehouse</span>';
-    //         } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'Y'){
-    //             $status = '<span class="badge badge-success">Loaded</span>';
-    //         } else {
-    //             $status = '<span class="badge badge-danger">Unknown Status</span>';
-    //         }
-    //     } else {
-    //         if($pallet_data->flag_transferred == 'N' && $pallet_data->flag_loaded == 'N'){
-    //             $status = 'Not Transferred Yet';
-    //         } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'N'){
-    //             $status = 'at Warehouse';
-    //         } elseif($pallet_data->flag_transferred == 'Y' && $pallet_data->flag_loaded == 'Y'){
-    //             $status = 'Loaded';
-    //         } else {
-    //             $status = 'Unknown Status';
-    //         }
-    //     }
-    //     return $status;
-    // }
 
 }

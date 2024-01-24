@@ -161,9 +161,6 @@ class CartonLoading extends BaseController
 
         $pallet_transfer->status = $this->PalletTransferController->getPalletStatus($pallet_transfer);
 
-        // !! kalau pakai yang versi 2 $pallet_transfer_detail tidak di perlukan lagi. silahkan hapus semua yang berhubungan dengan ini
-        $pallet_transfer_detail = $this->PalletTransferModel->getCartonInPalletTransfer($pallet_transfer->pallet_transfer_id);
-
         $transfer_note_list = $this->PalletTransferModel->getTransferNotes($pallet_transfer->pallet_transfer_id);
         foreach ($transfer_note_list as $key => $transfer_note) {
             // ## only need carton that not loaded
@@ -178,7 +175,6 @@ class CartonLoading extends BaseController
             'message' => 'Successfully get pallet information',
             'data' => [
                 'pallet_transfer' => $pallet_transfer,
-                'pallet_transfer_detail' => $pallet_transfer_detail,
                 'transfer_note_list' => $transfer_note_list,
             ],
         ];
