@@ -243,12 +243,6 @@ $routes->group('carton-loading', static function ($routes) {
 // Log Viewer
 $routes->get('logs', "LogViewerController::index");
 
-// !! delete next
-// Reports Menu
-// $routes->get('rptpackinglist', "RptPackingList::index");
-// $routes->get('report/packinglist/(:num)', "PackingList::report/$1");
-
-
 // Route for Manipulate Database
 $routes->group('update-database', ['filter' => 'onlySuperadmin'], static function ($routes) {
     $routes->get('', 'UpdateDatabase::index', ['as' => 'update_database']);
