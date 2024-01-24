@@ -22,7 +22,12 @@ class UpdateDatabase extends BaseController
                 'title' => 'Update UPC product for AERO Intenational',
                 'description' => 'Angka 00 yang ada di depan di hilangkan. lalu di akhir ditambahkan angka 124',
                 'url' => base_url('update-database/aero-international-upc')
-            ]
+            ],
+            [
+                'title' => 'Update Data packed_at di database',
+                'description' => 'Angka 00 yang ada di depan di hilangkan. lalu di akhir ditambahkan angka 124',
+                'url' => base_url('update-database/carton-packed-at')
+            ],
         ];
         return $this->response->setJSON($data_return);
     }
