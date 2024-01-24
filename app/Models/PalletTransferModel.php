@@ -34,7 +34,8 @@ class PalletTransferModel extends Model
 
     public function getDatatable()
     {
-        $builder = $this->db->table('tblpallettransfer');
+        // $builder = $this->db->table('tblpallettransfer'); //!! => next kalau ga ada masalah hapus aja
+        $builder = $this;
     
         // ## Join tabel dengan alias
         $builder->join('tblpallet as pallet', 'pallet.id = tblpallettransfer.pallet_id');
@@ -107,7 +108,8 @@ class PalletTransferModel extends Model
             'transfer_note.authorized_by', 
             'SUM(CASE WHEN transfer_note_detail.deleted_at IS NULL THEN 1 ELSE 0 END) as total_carton', 
             'transfer_note.received_by', 
-            'transfer_note.received_at'
+            'transfer_note.received_at',
+            'transfer_note.created_at'
         ]);
         
         $result = $builder->get()->getResult();
@@ -220,4 +222,19 @@ class PalletTransferModel extends Model
         $result = $builder->delete();
         return $result;
     }
+
+    public function generate_transaction_number($number)
+    {
+        // ## Pallet Transfer Transaction Number
+        $serial_number = 'PTRF-' . date('ym') . '-' . str_pad($number, 3, '0', STR_PAD_LEFT);
+        return $serial_number;
+    }
+
+    public function generate_serial_number($number)
+    {
+        // ## Packing Transfer Note Serial Number
+        $serial_number = 'PTN-' . date('ym') . '-' . str_pad($number, 3, '0', STR_PAD_LEFT);
+        return $serial_number;
+    }
+
 }

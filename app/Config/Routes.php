@@ -197,7 +197,7 @@ $routes->group('pallet-transfer', static function ($routes) {
     $routes->get('carton-detail', 'PalletTransfer::carton_detail',['as' => 'pallet_transfer_carton_detail']);
     $routes->get('(:num)/transfer-note', 'PalletTransfer::transfer_note/$1',['as' => 'pallet_transfer_transfer_note']);
     $routes->get('transfer-note-detail', 'PalletTransfer::transfer_note_detail',['as' => 'pallet_transfer_transfer_note_detail']);
-    $routes->get('check-pallet-availablity', 'PalletTransfer::check_pallet_availablity',['as' => 'pallet_transfer_check_pallet_availablity']);
+    $routes->get('check-pallet-availability', 'PalletTransfer::check_pallet_availability',['as' => 'pallet_transfer_check_pallet_availability']);
     
     $routes->post('', 'PalletTransfer::store', ['as' => 'pallet_transfer_store']);
     $routes->post('update', 'PalletTransfer::update',['as' => 'pallet_transfer_update']);
@@ -255,6 +255,43 @@ $routes->group('sync-po', static function ($routes) {
     $routes->get('detail', 'SyncPurchaseOrder::sync_po_detail', ['as' => 'sync_po_detail']);
 });
 
+
+
+
+// ## Routes for API
+// $routes->resource('api/pallet-transfer', ['controller' => 'API\PalletTransferController','as' => 'api_pallet_transfer','filter' => 'apiUserAuth']);
+
+$routes->group('api', ['filter' => 'apiUserAuth'], static function ($routes) {
+    $routes->group('pallet-transfer', static function ($routes) {
+        $routes->get('check-pallet-availability', 'API\PalletTransferController::check_pallet_availability');
+        $routes->get('search-carton', 'API\PalletTransferController::search_carton');
+        $routes->post('transfer-note-store', 'API\PalletTransferController::transfer_note_store');
+        $routes->get('transfer-note-edit/(:any)', 'API\PalletTransferController::transfer_note_edit/$1');
+        $routes->put('transfer-note-update', 'API\PalletTransferController::transfer_note_update');
+        $routes->post('complete-preparation', 'API\PalletTransferController::complete_preparation');
+    });
+    $routes->resource('pallet-transfer', ['controller' => 'API\PalletTransferController']);
+
+    $routes->group('pallet-receive', static function ($routes) {
+        $routes->get('', 'API\PalletReceiveController::index');
+        $routes->post('', 'API\PalletReceiveController::create');
+        $routes->get('search-pallet', 'API\PalletReceiveController::search_pallet');
+    });
+    
+    $routes->group('pallet-loading', static function ($routes) {
+        $routes->post('', 'API\PalletLoadingController::create');
+        $routes->get('search-pallet', 'API\PalletLoadingController::search_pallet');
+    });
+
+    $routes->group('location', static function ($routes) {
+        $routes->get('', 'API\LocationController::index');
+    });
+    $routes->group('rack', static function ($routes) {
+        $routes->get('', 'API\RackController::index');
+    });
+});
+
+$routes->post('api/login', 'API\LoginController::login');
 
 
 /*

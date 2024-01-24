@@ -10,6 +10,7 @@ use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\UserAuthFilter;
 use App\Filters\OnlySuperadminFilter;
+use App\Filters\ApiUserAuthFilter;
 
 class Filters extends BaseConfig
 {
@@ -25,6 +26,7 @@ class Filters extends BaseConfig
         'secureheaders'     => SecureHeaders::class,
         'userAuth'          => UserAuthFilter::class,
         'onlySuperadmin'    => OnlySuperadminFilter::class,
+        'apiUserAuth'       => ApiUserAuthFilter::class,
     ];
 
     /**
@@ -36,7 +38,7 @@ class Filters extends BaseConfig
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
-            'userAuth' => ['except' => ['login*', 'register', 'auth/a/*','/']],
+            'userAuth' => ['except' => ['login*', 'register', 'auth/a/*','/','api/*']],
         ],
         'after' => [
             'toolbar',

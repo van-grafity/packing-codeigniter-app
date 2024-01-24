@@ -283,7 +283,7 @@ class PalletTransfer extends BaseController
         if(!$transfer_note){
             $data_return = [
                 'status' => 'error',
-                'message' => 'Carton Not Found',
+                'message' => 'Transfer Note Not Found',
             ];
             return $this->response->setJSON($data_return);
         }
@@ -291,7 +291,7 @@ class PalletTransfer extends BaseController
         $transfer_note_detail = $this->TransferNoteModel->getCartonInTransferNote($transfer_note->id);
         $data_return = [
             'status' => 'success',
-            'message' => 'Carton Found',
+            'message' => 'Transfer Note Found',
             'data' => [
                 'transfer_note' => $transfer_note,
                 'transfer_note_detail' => $transfer_note_detail,
@@ -344,7 +344,7 @@ class PalletTransfer extends BaseController
         return $this->response->setJSON($data_return);
     }
 
-    public function check_pallet_availablity()
+    public function check_pallet_availability()
     {
         $pallet_serial_number = $this->request->getGet('pallet_serial_number');
         $pallet = $this->PalletModel->where('serial_number', $pallet_serial_number)->first();
