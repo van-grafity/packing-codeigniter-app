@@ -89,26 +89,6 @@ class PalletTransferModel extends Model
         return $result;
     }
 
-    // !! karena di controller pallet transfer sudah tidak make fungsi ini lagi. hapus
-    // public function getTransferNotesInPallet($pallet_id)
-    // {
-    //     $builder = $this->db->table('tblpallet as pallet');
-    //     $builder->join('tblpallettransfer as pallet_transfer','pallet_transfer.pallet_id = pallet.id');
-    //     $builder->join('tbltransfernote as transfer_note','transfer_note.pallet_transfer_id = pallet_transfer.id');
-    //     $builder->join('tbltransfernotedetail as transfer_note_detail','transfer_note_detail.transfer_note_id = transfer_note.id','left');
-        
-    //     $builder->where(['pallet.id' => $pallet_id]);
-    //     $builder->where('transfer_note.deleted_at', null);
-    //     $builder->groupBy('transfer_note.id');
-        
-    //     $builder->select('transfer_note.id, transfer_note.serial_number, transfer_note.issued_by, transfer_note.authorized_by, 
-    //     SUM(CASE WHEN transfer_note_detail.deleted_at IS NULL THEN 1 ELSE 0 END) as total_carton, 
-    //     transfer_note.received_by, transfer_note.received_at');
-        
-    //     $result = $builder->get()->getResult();
-    //     return $result;
-    // }
-
     public function getTransferNotesByPalletTransfer($pallet_transfer_id)
     {
         $builder = $this->db->table('tblpallettransfer as pallet_transfer');
