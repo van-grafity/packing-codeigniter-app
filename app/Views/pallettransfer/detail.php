@@ -497,7 +497,6 @@ $(document).ready(function() {
             swal_warning({ title: 'Please input at Least 1 Carton' });
             return false;
         }
-        return false;
     })
 
 })
