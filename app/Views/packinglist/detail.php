@@ -107,7 +107,7 @@
                         <button type="button" class="btn btn-secondary mb-2" id="btn_modal_create">Add New</button>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="<?= base_url('report/packinglist/'.$packinglist->id) ?>" target="_blank" class="btn btn-info mb-2" >Print Report</a>
+                        <a href="<?= base_url('packinglist/report/'.$packinglist->id) ?>" target="_blank" class="btn btn-info mb-2" >Print Report</a>
                     </div>
                 </div>
                 <table class="table table-bordered" id="packinglist_carton_table">

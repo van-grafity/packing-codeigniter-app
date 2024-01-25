@@ -238,7 +238,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" class="text-bold">Total Pieces:</td>
-                        <td> <?= esc($packinglist->packinglist_qty); ?> </td>
+                        <td> <?= esc($packinglist->packinglist_cutting_qty); ?> </td>
                         <td colspan="2" class="text-bold">Contract Qty:</td>
                         <td><?= esc($packinglist->contract_qty); ?></td>
                     </tr>

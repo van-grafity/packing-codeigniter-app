@@ -420,7 +420,7 @@ class PackingList extends BaseController
             $product_id = $product->product_id;
             $po_qty = $this->getPoQtyInArrayByProductID($product_id, $contract_qty_each_product);
             $shipment_percentage_each_upc[$key]->po_qty = $po_qty;
-            $shipment_percentage_each_upc[$key]->percentage = round($product->shipment_qty / $po_qty * 100) . '%';
+            $shipment_percentage_each_upc[$key]->percentage = ($po_qty == 0) ? '0%' : round($product->shipment_qty / $po_qty * 100, 4) . '%';
         }
 
 
@@ -473,18 +473,6 @@ class PackingList extends BaseController
         $dompdf->render();
         $dompdf->stream($filename, ['Attachment' => false]);
     }
-
-    // !! ini kayaknya ga di pakai . tandai dulu. besok di hapus
-    // public function htmlToPDF(){
-    //     $dompdf = new \Dompdf\Dompdf(); 
-    //     $dompdf->loadHtml(view('pdf_view'));
-    //     $dompdf->setPaper('A4', 'landscape');
-    //     $dompdf->set_option('defaultMediaType', 'all');
-    //     $dompdf->set_option('isFontSubsettingEnabled', true);
-    //     $dompdf->set_option('isPhpEnabled', true);
-    //     $dompdf->render();
-    //     $dompdf->stream();
-    // }
 
     private function getPoQtyInArrayByProductID(String $product_id, Array $array_po) : int
     {

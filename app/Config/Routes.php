@@ -243,12 +243,6 @@ $routes->group('carton-loading', static function ($routes) {
 // Log Viewer
 $routes->get('logs', "LogViewerController::index");
 
-// !! delete next
-// Reports Menu
-// $routes->get('rptpackinglist', "RptPackingList::index");
-// $routes->get('report/packinglist/(:num)', "PackingList::report/$1");
-
-
 // Route for Manipulate Database
 $routes->group('update-database', ['filter' => 'onlySuperadmin'], static function ($routes) {
     $routes->get('', 'UpdateDatabase::index', ['as' => 'update_database']);
@@ -258,6 +252,7 @@ $routes->group('update-database', ['filter' => 'onlySuperadmin'], static functio
 
 $routes->group('sync-po', static function ($routes) {
     $routes->get('', 'SyncPurchaseOrder::index', ['as' => 'sync_po']);
+    $routes->get('detail', 'SyncPurchaseOrder::sync_po_detail', ['as' => 'sync_po_detail']);
 });
 
 
@@ -287,7 +282,16 @@ $routes->group('api', ['filter' => 'apiUserAuth'], static function ($routes) {
         $routes->post('', 'API\PalletLoadingController::create');
         $routes->get('search-pallet', 'API\PalletLoadingController::search_pallet');
     });
+
+    $routes->group('location', static function ($routes) {
+        $routes->get('', 'API\LocationController::index');
+    });
+    $routes->group('rack', static function ($routes) {
+        $routes->get('', 'API\RackController::index');
+    });
 });
+
+$routes->post('api/login', 'API\LoginController::login');
 
 
 /*

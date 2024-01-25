@@ -110,4 +110,20 @@ class SyncPurchaseOrder extends BaseController
         ];
         return ($result);
     }
+
+    public function sync_po_detail()
+    {
+        $purchase_order_list = $this->PurchaseOrderModel->findAll();
+        
+        foreach ($purchase_order_list as $key => $purchase_order) {
+            $synchronized_po_details[] = $this->PurchaseOrderModel->syncPurchaseOrderDetails($purchase_order['id']);
+        }
+
+        $result = [
+            'status' => 'success',
+            'message' => 'Success syncronized detail '.count($synchronized_po_details).' Purchase Order',
+            'data' => $synchronized_po_details, 
+        ];
+        return $this->response->setJSON($result);
+    }
 }

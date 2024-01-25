@@ -246,12 +246,6 @@ class RackModel extends Model
         $builder->join('tblpurchaseorder as po', 'po.id = pl.packinglist_po_id');
         $builder->join('tblsyncpurchaseorder as sync_po', 'sync_po.purchase_order_id = po.id');
         
-        
-        // !! peralihan dari gl_po ke sync_po. kedepannya query yang ini tolong di hapus
-        // $builder->join('tblgl_po as gl_po', 'gl_po.po_id = po.id');
-        // $builder->join('tblgl as gl', 'gl.id = gl_po.gl_id');
-        // $builder->join('tblbuyer as buyer', 'buyer.id = gl.buyer_id');
-        
         $builder->where('pallet_transfer.id', $pallet_transfer_id);
         
         // $builder->groupBy('gl.id, po.po_no');
@@ -327,20 +321,6 @@ class RackModel extends Model
         
         return $result;
     }
-
-    // !! fungsi ini tidak jadi di pakai. hapus nanti
-    // public function getPalletByRackID($rack_id)
-    // {
-    //     $builder = $this->db->table('tblrack as rack');
-    //     $builder->join('tblrackpallet as rack_pallet','rack_pallet.rack_id = rack.id');
-    //     $builder->join('tblpallettransfer as pallet_transfer','pallet_transfer.id = rack_pallet.pallet_transfer_id');
-    //     $builder->join('tblpallet as pallet','pallet.id = pallet_transfer.pallet_id');
-    //     $builder->where('rack.id', $rack_id);
-    //     $builder->orderBy('rack_pallet.created_at', 'DESC');
-    //     $builder->select('pallet.*');
-    //     $result = $builder->get()->getRow();
-    //     return $result;
-    // }
 
     public function getTransferNoteList($pallet_transfer_id)
     {

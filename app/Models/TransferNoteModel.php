@@ -161,6 +161,7 @@ class TransferNoteModel extends Model
         $builder->join('tblcartonbarcode as carton_barcode','carton_barcode.id = transfer_note_detail.carton_barcode_id');
         $builder->where('transfer_note.id', $transfer_note_id);
         $builder->where('carton_barcode.deleted_at', null);
+        $builder->where('transfer_note_detail.deleted_at', null);
         if($load_status) {
             $builder->where('carton_barcode.flag_loaded', $load_status);
         }
