@@ -490,6 +490,14 @@ $(document).ready(function() {
         }
 
         $('#carton_barcode').val('');
+    });
+
+    $('#transfer_note_form').on('submit', function(e){
+        if(is_table_empty()){
+            swal_warning({ title: 'Please input at Least 1 Carton' });
+            return false;
+        }
+        return false;
     })
 
 })
