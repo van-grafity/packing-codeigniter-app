@@ -212,11 +212,15 @@ class PalletTransferController extends ResourceController
         $size_list_in_carton = $this->CartonBarcodeModel->getCartonContent($carton_info->carton_id);
         $carton_info->content = $this->CartonBarcodeModel->serialize_size_list($size_list_in_carton);
         $carton_info->total_pcs = array_sum(array_column($size_list_in_carton,'qty'));
+
+        $data = [
+            'carton' => $carton_info,
+        ];
         
         $data_return = [
             'status' => 'success',
             'message' => 'Carton Found',
-            'data' => $carton_info,
+            'data' => $data,
         ];
         return $this->respond($data_return);
     }

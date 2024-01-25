@@ -120,13 +120,13 @@ class PalletReceiveController extends ResourceController
                 $item->created_at = $created_datetime;
             }
         });
- 
+        $pallet_transfer->pallet_serial_number = $pallet_transfer->pallet_number;
+        $pallet_transfer->transfer_notes = $transfer_note_list;
         $data_return = [
             'status' => 'success',
             'message' => 'Berhasil mendapat data pallet',
             'data' => [
-                'pallet_transfer' => $pallet_transfer,
-                'transfer_note_list' => $transfer_note_list,
+                'pallet_transfer' => $pallet_transfer
             ],
         ];
         return $this->respond($data_return);
@@ -158,10 +158,12 @@ class PalletReceiveController extends ResourceController
         
         if($pallet_transfer->flag_transferred == 'Y'){
             $data_return = [
-                'status' => 'error',
+                'status' => 'success',
                 'message' => 'Pallet are Already in the warehouse',
+                'data' => [
+                ],
             ];
-            return $this->respond($data_return, 400);
+            return $this->respond($data_return);
         }
 
 
