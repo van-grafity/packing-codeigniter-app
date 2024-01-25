@@ -38,12 +38,19 @@ class PalletTransferController extends ResourceController
      */
     public function index()
     {
+
         $params = [
             'length' => $this->request->getGet('limit') ? $this->request->getGet('limit') : 10,
             'page' => $this->request->getGet('page') ? $this->request->getGet('page') : 1,
         ];
+        $search = $this->request->getGet('search') ? $this->request->getGet('search') : null;
+        
         $pallet_transfer_dt = $this->PalletTransferModel->getDatatable();
-        $pallet_transfer_list = $pallet_transfer_dt->orderBy('tblpallettransfer.created_at', 'DESC')->paginate($params['length'],'default',$params['page']);
+        $pallet_transfer_list = $pallet_transfer_dt
+            ->when($search, static function ($query, $search) {
+                $query->like('transaction_number', '%'.$search.'%')
+                      ->orLike('pallet.serial_number', '%'.$search.'%');
+            })->orderBy('tblpallettransfer.created_at', 'DESC')->paginate($params['length'],'default',$params['page']);
 
         foreach ($pallet_transfer_list as $key => $pallet_transfer) {
             $pallet_status = $this->getPalletStatus($pallet_transfer);

@@ -55,8 +55,14 @@ class PalletReceiveController extends ResourceController
             'length' => $this->request->getGet('limit') ? $this->request->getGet('limit') : 10,
             'page' => $this->request->getGet('page') ? $this->request->getGet('page') : 1,
         ];
+        $search = $this->request->getGet('search') ? $this->request->getGet('search') : null;
+
         $pallet_receive_dt = $this->PalletReceiveModel->getDatatable();
-        $pallet_receive_list = $pallet_receive_dt->orderBy('tblpallettransfer.created_at', 'DESC')->paginate($params['length'],'default',$params['page']);
+        $pallet_receive_list = $pallet_receive_dt
+            ->when($search, static function ($query, $search) {
+                $query->like('transaction_number', '%'.$search.'%')
+                      ->orLike('pallet.serial_number', '%'.$search.'%');
+            })->orderBy('tblpallettransfer.created_at', 'DESC')->paginate($params['length'],'default',$params['page']);
 
         foreach ($pallet_receive_list as $key => $pallet_receive) {
             $pallet_status = $this->PalletTransferController->getPalletStatus($pallet_receive);
