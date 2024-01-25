@@ -494,7 +494,7 @@ $(document).ready(function() {
 
     $('#transfer_note_form').on('submit', function(e){
         if(is_table_empty()){
-            swal_warning({ title: 'Please input at Least 1 Carton' });
+            swal_failed({ title: 'Cannot Save Transfer Note', text: 'Please input at Least 1 Carton' });
             return false;
         }
     })
