@@ -50,21 +50,33 @@ class PalletTransferController extends ResourceController
             ->when($search, static function ($query, $search) {
                 $query->like('transaction_number', '%'.$search.'%')
                       ->orLike('pallet.serial_number', '%'.$search.'%');
-            })->orderBy('tblpallettransfer.created_at', 'DESC')->paginate($params['length'],'default',$params['page']);
+            })->orderBy('tblpallettransfer.created_at', 'DESC')
+            ->paginate($params['length'],'default',$params['page']);
 
         foreach ($pallet_transfer_list as $key => $pallet_transfer) {
             $pallet_status = $this->getPalletStatus($pallet_transfer);
             $pallet_transfer_list[$key]->status = $pallet_status['status'];
             $pallet_transfer_list[$key]->color_hex = $pallet_status['color_hex'];
         }
+
+        $current_page = $pallet_transfer_dt->pager->getCurrentPage();
+        if($params['page'] > $pallet_transfer_dt->pager->getLastPage()) {
+            $pallet_transfer_list = [];
+            $current_page = $params['page'];
+        }
+
         $data_response = [
             'status' => 'success',
             'message' => 'Berhasil Mendapatkan Data Pallet Transfer',
             'data' => [
-                'pallet_transfers' => $pallet_transfer_list
+                'pallet_transfer_list' => $pallet_transfer_list,
+                'current_page' => $current_page,
+                'last_page' => $pallet_transfer_dt->pager->getLastPage(),
+                'prev_page_url' => $pallet_transfer_dt->pager->getPreviousPageURI(),
+                'next_page_url' => $pallet_transfer_dt->pager->getNextPageURI(),
+                'total' => $pallet_transfer_dt->pager->getTotal(),
             ]
         ];
-        
         return $this->respond($data_response);
     }
 
