@@ -532,7 +532,7 @@ class PalletTransferController extends ResourceController
         if($get_last_pallet_transfer->flag_transferred == 'N' && $get_last_pallet_transfer->flag_loaded == 'N'){
             $response = [
                 'data_return' => [
-                    'status' => 400,
+                    'status' => 'error',
                     'message' => 'This Pallet has been used. Please Check on Pallet to Transfer List',
                 ],
                 'status_code' => 400,
