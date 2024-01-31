@@ -467,7 +467,7 @@ class PalletTransferController extends ResourceController
         $pallet_serial_number = $this->request->getGet('pallet_serial_number');
 
         $response = $this->pallet_availability($pallet_serial_number);
-        return $this->respond($response['data_return'], $response['status_code']);
+        return $this->respond($response['data_return']);
     }
 
     public function pallet_availability($pallet_serial_number = null)
@@ -578,7 +578,7 @@ class PalletTransferController extends ResourceController
                     'message_text' => 'Please provide at least 1 Packing Transfer Note'
                 ]
             ];
-            return $this->respond($data_return, 400);
+            return $this->respond($data_return);
         }
 
         $pallet_transfer = $this->PalletTransferModel

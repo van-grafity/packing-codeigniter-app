@@ -105,7 +105,7 @@ class PalletReceiveController extends ResourceController
                 'status' => 'error',
                 'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
             ];
-            return $this->respond($data_response, 404);
+            return $this->respond($data_response);
         }
 
         $pallet_transfer = $this->PalletReceiveModel->getPalletTransferByPalletNumber($data_input['pallet_barcode']);
@@ -114,7 +114,7 @@ class PalletReceiveController extends ResourceController
                 'status' => 'error',
                 'message' => 'Pallet Not Found',
             ];
-            return $this->respond($data_return, 404);
+            return $this->respond($data_return);
         }
 
         if($pallet_transfer->flag_transferred == 'Y'){
@@ -122,7 +122,7 @@ class PalletReceiveController extends ResourceController
                 'status' => 'error',
                 'message' => 'Pallet are Already in the warehouse',
             ];
-            return $this->respond($data_return, 400);
+            return $this->respond($data_return);
         }
 
 
@@ -163,7 +163,7 @@ class PalletReceiveController extends ResourceController
                 'status' => 'error',
                 'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
             ];
-            return $this->respond($data_return, 404);
+            return $this->respond($data_return);
         }
 
         $pallet_transfer = $this->PalletReceiveModel->getPalletTransferByPalletNumber($data_input['pallet_barcode']);
@@ -172,7 +172,7 @@ class PalletReceiveController extends ResourceController
                 'status' => 'error',
                 'message' => 'Pallet Not Found',
             ];
-            return $this->respond($data_return, 404);
+            return $this->respond($data_return);
         }
         
         if($pallet_transfer->flag_transferred == 'Y'){
