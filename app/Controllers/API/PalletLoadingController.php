@@ -51,7 +51,7 @@ class PalletLoadingController extends ResourceController
                 'status' => 'error',
                 'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
             ];
-            return $this->respond($data_return, 404);
+            return $this->respond($data_return);
         }
 
 
@@ -61,7 +61,7 @@ class PalletLoadingController extends ResourceController
                 'status' => 'error',
                 'message' => 'Pallet Not Found',
             ];
-            return $this->respond($data_return, 404);
+            return $this->respond($data_return);
         }
 
         $pallet_transfer = $this->RackModel->searchPalletTransferInRack($pallet->id);
@@ -70,7 +70,7 @@ class PalletLoadingController extends ResourceController
                 'status' => 'error',
                 'message' => 'The pallet was not found in the rack',
             ];
-            return $this->respond($data_return, 404);
+            return $this->respond($data_return);
         }
 
         $pallet_status = $this->PalletTransferController->getPalletStatus($pallet_transfer);
@@ -86,18 +86,21 @@ class PalletLoadingController extends ResourceController
             $where_options = [
                 'flag_loaded' => 'N'
             ];
-            $transfer_note->carton_in_transfer_note = $this->TransferNoteModel->getCartonInTransferNote($transfer_note->id, $where_options);
+            $transfer_note->cartons = $this->TransferNoteModel->getCartonInTransferNote($transfer_note->id, $where_options);
         }
+
+        // $pallet_transfer->pallet_transfer_detail = $pallet_transfer_detail;
+        $pallet_transfer->pallet_serial_number = $pallet_transfer->pallet_number;
+        $pallet_transfer->transfer_notes = $transfer_note_list;
 
         $data_return = [
             'status' => 'success',
             'message' => 'Successfully get pallet information',
             'data' => [
                 'pallet_transfer' => $pallet_transfer,
-                'pallet_transfer_detail' => $pallet_transfer_detail,
-                'transfer_note_list' => $transfer_note_list,
             ],
         ];
+
         return $this->respond($data_return);
     }
 
@@ -113,7 +116,7 @@ class PalletLoadingController extends ResourceController
                 'status' => 'error',
                 'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
             ];
-            return $this->respond($data_return, 404);
+            return $this->respond($data_return);
         }
 
         $transfer_note_id_list = $data_input['transfer_note_id'];
@@ -141,7 +144,7 @@ class PalletLoadingController extends ResourceController
                 'status' => 'error',
                 'message' => 'No Carton Loaded',
             ];
-            return $this->respond($data_return, 400);
+            return $this->respond($data_return);
         } else {
             $data_return = [
                 'status' => 'success',
