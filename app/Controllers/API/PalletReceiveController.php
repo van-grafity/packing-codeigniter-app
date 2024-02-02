@@ -62,18 +62,31 @@ class PalletReceiveController extends ResourceController
             ->when($search, static function ($query, $search) {
                 $query->like('transaction_number', '%'.$search.'%')
                       ->orLike('pallet.serial_number', '%'.$search.'%');
-            })->orderBy('tblpallettransfer.created_at', 'DESC')->paginate($params['length'],'default',$params['page']);
+            })->orderBy('tblpallettransfer.created_at', 'DESC')
+            ->paginate($params['length'],'default',$params['page']);
 
         foreach ($pallet_receive_list as $key => $pallet_receive) {
             $pallet_status = $this->PalletTransferController->getPalletStatus($pallet_receive);
             $pallet_receive_list[$key]->status = $pallet_status['status'];
             $pallet_receive_list[$key]->color_hex = $pallet_status['color_hex'];
         }
+
+        $current_page = $pallet_receive_dt->pager->getCurrentPage();
+        if($params['page'] > $pallet_receive_dt->pager->getLastPage()) {
+            $pallet_receive_list = [];
+            $current_page = $params['page'];
+        }
+
         $data_response = [
             'status' => 'success',
             'message' => 'Berhasil Mendapatkan Data Pallet Receive',
             'data' => [
-                'pallet_receive_list' => $pallet_receive_list
+                'pallet_receive_list' => $pallet_receive_list,
+                'current_page' => $current_page,
+                'last_page' => $pallet_receive_dt->pager->getLastPage(),
+                'prev_page_url' => $pallet_receive_dt->pager->getPreviousPageURI(),
+                'next_page_url' => $pallet_receive_dt->pager->getNextPageURI(),
+                'total' => $pallet_receive_dt->pager->getTotal(),
             ]
         ];
         
@@ -92,7 +105,7 @@ class PalletReceiveController extends ResourceController
                 'status' => 'error',
                 'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
             ];
-            return $this->respond($data_response, 404);
+            return $this->respond($data_response);
         }
 
         $pallet_transfer = $this->PalletReceiveModel->getPalletTransferByPalletNumber($data_input['pallet_barcode']);
@@ -101,7 +114,7 @@ class PalletReceiveController extends ResourceController
                 'status' => 'error',
                 'message' => 'Pallet Not Found',
             ];
-            return $this->respond($data_return, 404);
+            return $this->respond($data_return);
         }
 
         if($pallet_transfer->flag_transferred == 'Y'){
@@ -109,7 +122,7 @@ class PalletReceiveController extends ResourceController
                 'status' => 'error',
                 'message' => 'Pallet are Already in the warehouse',
             ];
-            return $this->respond($data_return, 400);
+            return $this->respond($data_return);
         }
 
 
@@ -126,13 +139,13 @@ class PalletReceiveController extends ResourceController
                 $item->created_at = $created_datetime;
             }
         });
- 
+        $pallet_transfer->pallet_serial_number = $pallet_transfer->pallet_number;
+        $pallet_transfer->transfer_notes = $transfer_note_list;
         $data_return = [
             'status' => 'success',
             'message' => 'Berhasil mendapat data pallet',
             'data' => [
-                'pallet_transfer' => $pallet_transfer,
-                'transfer_note_list' => $transfer_note_list,
+                'pallet_transfer' => $pallet_transfer
             ],
         ];
         return $this->respond($data_return);
@@ -150,7 +163,7 @@ class PalletReceiveController extends ResourceController
                 'status' => 'error',
                 'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
             ];
-            return $this->respond($data_return, 404);
+            return $this->respond($data_return);
         }
 
         $pallet_transfer = $this->PalletReceiveModel->getPalletTransferByPalletNumber($data_input['pallet_barcode']);
@@ -159,15 +172,17 @@ class PalletReceiveController extends ResourceController
                 'status' => 'error',
                 'message' => 'Pallet Not Found',
             ];
-            return $this->respond($data_return, 404);
+            return $this->respond($data_return);
         }
         
         if($pallet_transfer->flag_transferred == 'Y'){
             $data_return = [
-                'status' => 'error',
+                'status' => 'success',
                 'message' => 'Pallet are Already in the warehouse',
+                'data' => [
+                ],
             ];
-            return $this->respond($data_return, 400);
+            return $this->respond($data_return);
         }
 
 

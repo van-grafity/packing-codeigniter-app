@@ -35,14 +35,26 @@ class RackController extends ResourceController
         $racks = $this->RackModel
             ->when($serial_number, static function ($query, $serial_number) {
                 $query->like('serial_number', '%'.$serial_number.'%');
-            })
-            ->paginate($params['length'],'default',$params['page']);     
+            });     
+
+        $rack_list = $racks->paginate($params['length'],'default',$params['page']);
+
+        $current_page = $racks->pager->getCurrentPage();
+        if($params['page'] > $racks->pager->getLastPage()) {
+            $rack_list = [];
+            $current_page = $params['page'];
+        }
 
         $data_return = [
             'status' => 'success',
             'message' => 'Successfully get rack',
             'data' => [
-                'racks' => $racks,
+                'racks' => $rack_list,
+                'current_page' => $current_page,
+                'last_page' => $racks->pager->getLastPage(),
+                'prev_page_url' => $racks->pager->getPreviousPageURI(),
+                'next_page_url' => $racks->pager->getNextPageURI(),
+                'total' => $racks->pager->getTotal(),
             ],
         ];
         return $this->respond($data_return);

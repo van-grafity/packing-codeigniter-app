@@ -50,21 +50,33 @@ class PalletTransferController extends ResourceController
             ->when($search, static function ($query, $search) {
                 $query->like('transaction_number', '%'.$search.'%')
                       ->orLike('pallet.serial_number', '%'.$search.'%');
-            })->orderBy('tblpallettransfer.created_at', 'DESC')->paginate($params['length'],'default',$params['page']);
+            })->orderBy('tblpallettransfer.created_at', 'DESC')
+            ->paginate($params['length'],'default',$params['page']);
 
         foreach ($pallet_transfer_list as $key => $pallet_transfer) {
             $pallet_status = $this->getPalletStatus($pallet_transfer);
             $pallet_transfer_list[$key]->status = $pallet_status['status'];
             $pallet_transfer_list[$key]->color_hex = $pallet_status['color_hex'];
         }
+
+        $current_page = $pallet_transfer_dt->pager->getCurrentPage();
+        if($params['page'] > $pallet_transfer_dt->pager->getLastPage()) {
+            $pallet_transfer_list = [];
+            $current_page = $params['page'];
+        }
+
         $data_response = [
             'status' => 'success',
             'message' => 'Berhasil Mendapatkan Data Pallet Transfer',
             'data' => [
-                'pallet_transfer_list' => $pallet_transfer_list
+                'pallet_transfer_list' => $pallet_transfer_list,
+                'current_page' => $current_page,
+                'last_page' => $pallet_transfer_dt->pager->getLastPage(),
+                'prev_page_url' => $pallet_transfer_dt->pager->getPreviousPageURI(),
+                'next_page_url' => $pallet_transfer_dt->pager->getNextPageURI(),
+                'total' => $pallet_transfer_dt->pager->getTotal(),
             ]
         ];
-        
         return $this->respond($data_response);
     }
 
@@ -81,8 +93,8 @@ class PalletTransferController extends ResourceController
         $pallet_transfer->status = $pallet_status['status'];
         $pallet_transfer->color_hex = $pallet_status['color_hex'];
 
-        $transfer_note_list = $this->PalletTransferModel->getTransferNotesByPalletTransfer($pallet_transfer->id);
-        array_walk($transfer_note_list, function (&$item, $key) {
+        $transfer_notes = $this->PalletTransferModel->getTransferNotesByPalletTransfer($pallet_transfer->id);
+        array_walk($transfer_notes, function (&$item, $key) {
             if($item->received_at){
                 $received_datetime = new Time($item->received_at);
                 $received_datetime = $received_datetime->toLocalizedString('dd MMMM yyyy, HH:mm');
@@ -95,16 +107,20 @@ class PalletTransferController extends ResourceController
             }
         });
         
-        $data = [
-            'pallet_transfer' => $pallet_transfer,
-            'transfer_note_list' => $transfer_note_list,
-        ];
+        // $data = [
+        //     'pallet_transfer' => $pallet_transfer,
+        //     'transfer_note_list' => $transfer_notes,
+        // ];
+
+        $data = $pallet_transfer;
+        $data->transfer_notes = $transfer_notes;
+
 
         $data_response = [
             'status' => 'success',
             'message' => 'Berhasil Mendapatkan Data Pallet Transfer Detail',
             'data' => [
-                'data' => $data
+                'pallet_transfer' => $data
             ]
         ];
         
@@ -215,11 +231,15 @@ class PalletTransferController extends ResourceController
         $size_list_in_carton = $this->CartonBarcodeModel->getCartonContent($carton_info->carton_id);
         $carton_info->content = $this->CartonBarcodeModel->serialize_size_list($size_list_in_carton);
         $carton_info->total_pcs = array_sum(array_column($size_list_in_carton,'qty'));
+
+        $data = [
+            'carton' => $carton_info,
+        ];
         
         $data_return = [
             'status' => 'success',
             'message' => 'Carton Found',
-            'data' => $carton_info,
+            'data' => $data,
         ];
         return $this->respond($data_return);
     }
@@ -292,12 +312,14 @@ class PalletTransferController extends ResourceController
         }
 
         $transfer_note_detail = $this->TransferNoteModel->getCartonInTransferNote($transfer_note->transfer_note_id);
+        $data = $transfer_note;
+        $data->cartons = $transfer_note_detail;
+
         $data_return = [
             'status' => 'success',
             'message' => 'Transfer Note Found',
             'data' => [
-                'transfer_note' => $transfer_note,
-                'transfer_note_detail' => $transfer_note_detail,
+                'transfer_note' => $data,
             ],
         ];
         return $this->respond($data_return);
@@ -445,7 +467,7 @@ class PalletTransferController extends ResourceController
         $pallet_serial_number = $this->request->getGet('pallet_serial_number');
 
         $response = $this->pallet_availability($pallet_serial_number);
-        return $this->respond($response['data_return'], $response['status_code']);
+        return $this->respond($response['data_return']);
     }
 
     public function pallet_availability($pallet_serial_number = null)
@@ -556,7 +578,7 @@ class PalletTransferController extends ResourceController
                     'message_text' => 'Please provide at least 1 Packing Transfer Note'
                 ]
             ];
-            return $this->respond($data_return, 400);
+            return $this->respond($data_return);
         }
 
         $pallet_transfer = $this->PalletTransferModel
