@@ -31,8 +31,12 @@ class RackController extends ResourceController
             'page' => $this->request->getGet('page') ? $this->request->getGet('page') : 1,
         ];
         $serial_number = $this->request->getGet('serial_number') ? $this->request->getGet('serial_number') : null;
+        $flag_empty = $this->request->getGet('flag_empty') ? $this->request->getGet('flag_empty') : null;
         
         $racks = $this->RackModel
+            ->when($flag_empty, static function ($query, $flag_empty) {
+                $query->where('flag_empty', $flag_empty);
+            })
             ->when($serial_number, static function ($query, $serial_number) {
                 $query->like('serial_number', '%'.$serial_number.'%');
             });     
