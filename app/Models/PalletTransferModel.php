@@ -120,7 +120,11 @@ class PalletTransferModel extends Model
 
         foreach ($result as $key => $transfer_note) {
             $carton_in_transfer_note = $TransferNoteModel->getCartonInTransferNote($transfer_note->id, $where_options);
-            $total_pcs = array_sum(array_column($carton_in_transfer_note, 'total_pcs'));
+            if($carton_in_transfer_note) {
+                $total_pcs = array_sum(array_column($carton_in_transfer_note, 'total_pcs'));
+            } else {
+                $total_pcs = 0;
+            }
             $result[$key]->total_pcs = $total_pcs;
         }
 

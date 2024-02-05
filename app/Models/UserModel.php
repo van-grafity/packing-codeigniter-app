@@ -102,7 +102,7 @@ class UserModel extends Model
     {
         $builder = $this;
         $builder->join('tblrole as role', 'role.id = tblusers.role_id','LEFT');
-        $builder->select('tblusers.name, tblusers.email, tblusers.firstname, tblusers.lastname, role.role');
+        $builder->select('tblusers.id, tblusers.name, tblusers.email, tblusers.firstname, tblusers.lastname, role.role');
         $result = $builder->first();
         return $result;
     }

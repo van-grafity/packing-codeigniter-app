@@ -250,7 +250,7 @@ class PalletTransferController extends ResourceController
         $data_input = $this->request->getPost();
 
         // ## parameters validation
-        $params_to_check = ['pallet_transfer_id','carton_barcode_id'];
+        $params_to_check = ['pallet_transfer_id','carton_barcode_id','created_by','issued_by'];
         $missingAttributes = array_has_attributes($data_input, $params_to_check);
         if (!empty($missingAttributes)) {
             $data_response = [
@@ -265,6 +265,8 @@ class PalletTransferController extends ResourceController
         
         $transfer_note_data = [
             'pallet_transfer_id' => $data_input['pallet_transfer_id'],
+            'created_by' => $data_input['created_by'],
+            'issued_by' => $data_input['issued_by'],
             'serial_number' => $this->PalletTransferModel->generate_serial_number($next_number),
         ];
 
@@ -332,7 +334,7 @@ class PalletTransferController extends ResourceController
         $data_input = $this->request->getRawInput();
         
         // ## parameters validation
-        $params_to_check = ['pallet_transfer_id','transfer_note_id'];
+        $params_to_check = ['pallet_transfer_id','transfer_note_id','updated_by'];
         $missingAttributes = array_has_attributes($data_input, $params_to_check);
         if (!empty($missingAttributes)) {
             $data_response = [
@@ -344,15 +346,13 @@ class PalletTransferController extends ResourceController
         
         $transfer_note_id = $data_input['transfer_note_id'];
         
-        // !! next nya delete jika tidak digunakan
-        // $transfer_note_data = [
-        //     'issued_by' => $data_input['transfer_note_issued_by'],
-        //     'authorized_by' => $data_input['transfer_note_authorized_by'],
-        // ];
+        $transfer_note_data = [
+            'updated_by' => $data_input['updated_by'],
+        ];
 
         try {
             $this->PalletTransferModel->transException(true)->transStart();
-            // $this->TransferNoteModel->update($transfer_note_id, $transfer_note_data);
+            $this->TransferNoteModel->update($transfer_note_id, $transfer_note_data);
             
             $delete_transfer_note_detail = $this->TransferNoteDetailModel->where('transfer_note_id', $transfer_note_id)->delete();
             if(array_key_exists("carton_barcode_id",$data_input)){

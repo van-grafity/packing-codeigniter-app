@@ -11,7 +11,7 @@ class TransferNoteModel extends Model
     protected $returnType    = 'object';
     protected $useTimestamps = true;
     protected $useSoftDeletes   = true;
-    protected $allowedFields = ['pallet_transfer_id','serial_number','issued_by','authorized_by','received_by','received_at'];
+    protected $allowedFields = ['pallet_transfer_id','serial_number','issued_by','authorized_by','received_by','received_at','created_by','updated_by'];
 
     public function getTransferNote($transfer_note_id = null)
     {

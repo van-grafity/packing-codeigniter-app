@@ -40,6 +40,6 @@ class AddTransferredAtToPalletTransfer extends Migration
 
     public function down()
     {
-        $this->forge->dropColumn($this->table, ['transferred_at','loaded_at']);
+        $this->forge->dropColumn($this->table, ['flag_ready_to_transfer','ready_to_transfer_at','transferred_at','loaded_at']);
     }
 }
