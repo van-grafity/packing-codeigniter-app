@@ -34,7 +34,6 @@ class PalletTransferModel extends Model
 
     public function getDatatable()
     {
-        // $builder = $this->db->table('tblpallettransfer'); //!! => next kalau ga ada masalah hapus aja
         $builder = $this;
     
         // ## Join tabel dengan alias
@@ -113,6 +112,18 @@ class PalletTransferModel extends Model
         ]);
         
         $result = $builder->get()->getResult();
+        
+        $TransferNoteModel = model('TransferNoteModel');
+        $where_options = [
+            'flag_loaded' => 'N'
+        ];
+
+        foreach ($result as $key => $transfer_note) {
+            $carton_in_transfer_note = $TransferNoteModel->getCartonInTransferNote($transfer_note->id, $where_options);
+            $total_pcs = array_sum(array_column($carton_in_transfer_note, 'total_pcs'));
+            $result[$key]->total_pcs = $total_pcs;
+        }
+
         return $result;
     }
 
