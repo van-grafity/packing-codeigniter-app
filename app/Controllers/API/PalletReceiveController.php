@@ -79,7 +79,7 @@ class PalletReceiveController extends ResourceController
 
         $data_response = [
             'status' => 'success',
-            'message' => 'Berhasil Mendapatkan Data Pallet Receive',
+            'message' => 'Pallet Receive Successfully retrieved',
             'data' => [
                 'pallet_receive_list' => $pallet_receive_list,
                 'current_page' => $current_page,
@@ -103,7 +103,7 @@ class PalletReceiveController extends ResourceController
         if (!empty($missingAttributes)) {
             $data_response = [
                 'status' => 'error',
-                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+                'message' => 'Atribute ' . implode(', ', $missingAttributes) . ' not found!',
             ];
             return $this->respond($data_response);
         }
@@ -143,7 +143,7 @@ class PalletReceiveController extends ResourceController
         $pallet_transfer->transfer_notes = $transfer_note_list;
         $data_return = [
             'status' => 'success',
-            'message' => 'Berhasil mendapat data pallet',
+            'message' => 'Pallet Successfully retrieved',
             'data' => [
                 'pallet_transfer' => $pallet_transfer
             ],
@@ -161,7 +161,7 @@ class PalletReceiveController extends ResourceController
         if (!empty($missingAttributes)) {
             $data_return = [
                 'status' => 'error',
-                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+                'message' => 'Atribute ' . implode(', ', $missingAttributes) . ' not found!',
             ];
             return $this->respond($data_return);
         }
@@ -214,7 +214,7 @@ class PalletReceiveController extends ResourceController
         
         $data_return = [
             'status' => 'success',
-            'message' => 'Berhasil menerima dan mengirim pallet ke rack',
+            'message' => 'Successfully received and sent pallets to the rack',
             'data' => [
                 'pallet_transfer' => $pallet_transfer,
                 'transfer_note_list' => $transfer_note_list,

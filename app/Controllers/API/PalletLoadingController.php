@@ -49,7 +49,7 @@ class PalletLoadingController extends ResourceController
         if (!empty($missingAttributes)) {
             $data_return = [
                 'status' => 'error',
-                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+                'message' => 'Atribute ' . implode(', ', $missingAttributes) . ' not found!',
             ];
             return $this->respond($data_return);
         }
@@ -114,7 +114,7 @@ class PalletLoadingController extends ResourceController
         if (!empty($missingAttributes)) {
             $data_return = [
                 'status' => 'error',
-                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+                'message' => 'Atribute ' . implode(', ', $missingAttributes) . ' not found!',
             ];
             return $this->respond($data_return);
         }

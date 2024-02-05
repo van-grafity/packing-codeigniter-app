@@ -67,7 +67,7 @@ class PalletTransferController extends ResourceController
 
         $data_response = [
             'status' => 'success',
-            'message' => 'Berhasil Mendapatkan Data Pallet Transfer',
+            'message' => 'Pallet Transfer Successfully retrieved',
             'data' => [
                 'pallet_transfer_list' => $pallet_transfer_list,
                 'current_page' => $current_page,
@@ -107,6 +107,7 @@ class PalletTransferController extends ResourceController
             }
         });
         
+        // !! bisa di hapus kalau tidak digunakan lagi
         // $data = [
         //     'pallet_transfer' => $pallet_transfer,
         //     'transfer_note_list' => $transfer_notes,
@@ -118,7 +119,7 @@ class PalletTransferController extends ResourceController
 
         $data_response = [
             'status' => 'success',
-            'message' => 'Berhasil Mendapatkan Data Pallet Transfer Detail',
+            'message' => 'Pallet Transfer Detail Successfully retrieved',
             'data' => [
                 'pallet_transfer' => $data
             ]
@@ -142,7 +143,7 @@ class PalletTransferController extends ResourceController
         if (!empty($missingAttributes)) {
             $data_return = [
                 'status' => 'error',
-                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+                'message' => 'Atribute ' . implode(', ', $missingAttributes) . ' not found!',
             ];
             return $this->respond($data_return, 404);
         }
@@ -175,7 +176,7 @@ class PalletTransferController extends ResourceController
 
         $data_response = [
             'status' => 'success',
-            'message' => 'Berhasil Menambahkan Data Pallet Transfer',
+            'message' => 'New Pallet Transfer Successfully Inserted',
             'data' => [
                 'pallet_transfer' => $pallet_transfer
             ]
@@ -194,7 +195,7 @@ class PalletTransferController extends ResourceController
         if (!empty($missingAttributes)) {
             $data_response = [
                 'status' => 'error',
-                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+                'message' => 'Atribute ' . implode(', ', $missingAttributes) . ' not found!',
             ];
             return $this->respond($data_response);
         }
@@ -254,7 +255,7 @@ class PalletTransferController extends ResourceController
         if (!empty($missingAttributes)) {
             $data_response = [
                 'status' => 'error',
-                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+                'message' => 'Atribute ' . implode(', ', $missingAttributes) . ' not found!',
             ];
             return $this->respond($data_response);
         }
@@ -288,7 +289,7 @@ class PalletTransferController extends ResourceController
 
         $data_return = [
             'status' => 'success',
-            'message' => 'Berhasil Menambahkan Transfer Note',
+            'message' => 'New Transfer Note Successfully Inserted',
             'data' => [
                 'transfer_note' => $transfer_note,
                 'pallet_transfer_id' => $data_input['pallet_transfer_id']
@@ -336,12 +337,14 @@ class PalletTransferController extends ResourceController
         if (!empty($missingAttributes)) {
             $data_response = [
                 'status' => 'error',
-                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+                'message' => 'Atribute ' . implode(', ', $missingAttributes) . ' not found!',
             ];
             return $this->respond($data_response, 404);
         }
         
         $transfer_note_id = $data_input['transfer_note_id'];
+        
+        // !! next nya delete jika tidak digunakan
         // $transfer_note_data = [
         //     'issued_by' => $data_input['transfer_note_issued_by'],
         //     'authorized_by' => $data_input['transfer_note_authorized_by'],
@@ -371,7 +374,7 @@ class PalletTransferController extends ResourceController
     
             $data_return = [
                 'status' => 'success',
-                'message' => 'Transfer Berhasil diperbaharui',
+                'message' => 'Transfer Note Successfully Updated',
                 'data' => [
                     'transfer_note' => $transfer_note,
                     'transfer_note_detail' => $transfer_note_detail,
@@ -459,7 +462,7 @@ class PalletTransferController extends ResourceController
         if (!empty($missingAttributes)) {
             $data_response = [
                 'status' => 'error',
-                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+                'message' => 'Atribute ' . implode(', ', $missingAttributes) . ' not found!',
             ];
             return $this->respond($data_response);
         }
@@ -563,7 +566,7 @@ class PalletTransferController extends ResourceController
         if (!empty($missingAttributes)) {
             $data_response = [
                 'status' => 'error',
-                'message' => 'Atribut ' . implode(', ', $missingAttributes) . ' tidak ditemukan!',
+                'message' => 'Atribute ' . implode(', ', $missingAttributes) . ' not found!',
             ];
             return $this->respond($data_response);
         }
