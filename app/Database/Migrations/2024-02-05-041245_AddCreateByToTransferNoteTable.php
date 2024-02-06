@@ -14,10 +14,12 @@ class AddCreateByToTransferNoteTable extends Migration
             'created_by' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
+                'after' => 'received_at',
             ],
             'updated_by' => [
                 'type' => 'BIGINT',
                 'unsigned' => true,
+                'after' => 'created_by',
                 'null' => true,
             ],
         ];

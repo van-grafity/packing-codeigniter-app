@@ -156,7 +156,7 @@ class PalletReceiveController extends ResourceController
         $data_input = $this->request->getPost();
         
         // ## parameters validation
-        $params_to_check = ['pallet_transfer_id','pallet_barcode','rack','received_by'];
+        $params_to_check = ['pallet_transfer_id','pallet_barcode','rack','received_by','updated_by'];
         $missingAttributes = array_has_attributes($data_input, $params_to_check);
         if (!empty($missingAttributes)) {
             $data_return = [
@@ -191,6 +191,7 @@ class PalletReceiveController extends ResourceController
         foreach ($transfer_note_list as $key => $transfer_note) {
             $data_transfer_note = [
                 'received_by' => $data_input['received_by'],
+                'updated_by' => $data_input['updated_by'],
                 'received_at' => date('Y-m-d H:i:s'),
             ];
             $this->TransferNoteModel->update($transfer_note->id, $data_transfer_note);
