@@ -154,6 +154,7 @@ class PalletReceive extends BaseController
             $data_transfer_note = [
                 'received_by' => $data_input['received_by'],
                 'received_at' => date('Y-m-d H:i:s'),
+                'updated_by' => session()->get()['userData']['id'],
             ];
             $this->TransferNoteModel->update($transfer_note->id, $data_transfer_note);
         }

@@ -41,6 +41,12 @@ class RoleSeeder extends Seeder
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ],
+            [
+                'id' => 6,
+                'role' => "fg_warehouse",
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
         ];
         $this->db->table($this->table)->insertBatch($data);
     }

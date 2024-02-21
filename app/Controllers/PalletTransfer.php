@@ -198,6 +198,7 @@ class PalletTransfer extends BaseController
             'serial_number' => $this->generate_serial_number($next_number),
             'issued_by' => $data_input['transfer_note_issued_by'],
             'authorized_by' => $data_input['transfer_note_authorized_by'],
+            'created_by' => session()->get()['userData']['id'],
         ];
         $this->TransferNoteModel->transException(true)->transStart();
         $transfer_note_id = $this->TransferNoteModel->insert($transfer_note_data);
