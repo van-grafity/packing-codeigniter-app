@@ -79,8 +79,13 @@
 
 
 <script type="text/javascript">
+    
+    const column_visible = '<?= $can_manage; ?>';
+
+
     const index_dt_url = '<?= url_to('pallet_receive_list')?>';
     const store_url = '<?= url_to('pallet_receive_store')?>';
+    
 
     function receive_pallet(pallet_transfer_id){
         $('#pallet_transfer_id').val(pallet_transfer_id);
@@ -117,7 +122,7 @@ $('#pallet_receive_table').DataTable({
         { data: 'location_from', name: 'location_from.location_name' },
         { data: 'status', name: 'status', orderable: false, searchable: false},
         { data: 'rack', name: 'rack.serial_number' },
-        { data: 'action', name: 'action', orderable: false, searchable: false},
+        { data: 'action', name: 'action', orderable: false, searchable: false, visible: column_visible },
     ],
     columnDefs: [
         { targets: [0,-1], orderable: false, searchable: false },

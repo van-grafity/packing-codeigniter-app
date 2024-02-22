@@ -42,6 +42,7 @@ class PalletReceive extends BaseController
         $data = [
             'title' => 'Pallet List to Receive',
             'racks' => $racks,
+            'can_manage' => (in_array(session()->get('role'), ['superadmin']) ? true : false),
         ];
         return view('palletreceive/index', $data);
     }

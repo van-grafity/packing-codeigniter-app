@@ -45,8 +45,10 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h4 class="title">Transfer Notes</h4>
-                        <button type="button" class="btn btn-success mb-2 <?= $btn_transfer_note_class ?>" id="btn_modal_create_transfer_note" onclick="create_transfer_note(this)">New Transfer Note</button>
-                        <button type="button" class="btn btn-info mb-2 <?= $btn_transfer_note_class ?>" id="btn_modal_complete_preparation" onclick="complete_preparation(this)">Completing Preparation</button>
+                        <?php if($can_manage) : ?>
+                            <button type="button" class="btn btn-success mb-2 <?= $btn_transfer_note_class ?>" id="btn_modal_create_transfer_note" onclick="create_transfer_note(this)">New Transfer Note</button>
+                            <button type="button" class="btn btn-info mb-2 <?= $btn_transfer_note_class ?>" id="btn_modal_complete_preparation" onclick="complete_preparation(this)">Completing Preparation</button>
+                        <?php endif ?>
                         <table class="table table-bordered table-hover text-center" id="transfer_note_table">
                             <thead>
                                 <tr class="table-primary text-center">
@@ -74,16 +76,18 @@
                                         <td><?= $transfer_note->received_by ?></td>
                                         <td><?= $transfer_note->received_at ?></td>
                                         <td>
-                                            <button type="button" 
-                                                class="btn btn-sm btn-primary <?= $btn_transfer_note_class ? 'd-none' : '' ?>" 
-                                                onclick="edit_transfer_note(<?= $transfer_note->id ?>)">
-                                                Edit
-                                            </button>
-                                            <button type="button" 
-                                                class="btn btn-sm btn-danger <?= $btn_transfer_note_class ? 'd-none' : '' ?>" 
-                                                onclick="delete_transfer_note(<?= $transfer_note->id ?>)">
-                                                Delete
-                                            </button>
+                                            <?php if($can_manage) : ?>
+                                                <button type="button" 
+                                                    class="btn btn-sm btn-primary <?= $btn_transfer_note_class ? 'd-none' : '' ?>" 
+                                                    onclick="edit_transfer_note(<?= $transfer_note->id ?>)">
+                                                    Edit
+                                                </button>
+                                                <button type="button" 
+                                                    class="btn btn-sm btn-danger <?= $btn_transfer_note_class ? 'd-none' : '' ?>" 
+                                                    onclick="delete_transfer_note(<?= $transfer_note->id ?>)">
+                                                    Delete
+                                                </button>
+                                            <?php endif ?>
                                             <a type="button" href="<?= url_to('pallet_transfer_transfer_note_print',$transfer_note->id)?>" class="btn btn-sm btn-info" target="_blank">Print</a>
                                         </td>
                                     </tr>
@@ -252,6 +256,8 @@
 
 <?= $this->Section('page_script'); ?>
 <script type="text/javascript">
+
+const column_visible = '<?= $can_manage; ?>';
 
 const carton_detail_url = '<?= url_to('pallet_transfer_carton_detail')?>';
 const transfer_note_store_url = '<?= url_to('pallet_transfer_transfer_note_store')?>';

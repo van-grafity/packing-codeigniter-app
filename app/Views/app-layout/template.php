@@ -271,12 +271,14 @@
                                             <p>Pallet Receive List</p>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="<?= base_url('pallet-receive/create') ?>" class="nav-link">
-                                            <i class="fas fa-dolly nav-icon"></i>
-                                            <p>Pallet Receive</p>
-                                        </a>
-                                    </li>
+                                        <?php if (in_array(session()->get('role'), ['superadmin'])) : ?>
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('pallet-receive/create') ?>" class="nav-link">
+                                                <i class="fas fa-dolly nav-icon"></i>
+                                                <p>Pallet Receive</p>
+                                            </a>
+                                        </li>
+                                        <?php endif ?>
                                     <?php endif ?>
                                 </ul>
                             </li>
@@ -303,7 +305,7 @@
                                 </ul>
                             </li>
                         <?php endif ?>
-                        <?php if (in_array(session()->get('role'), ['superadmin','admin','fg_warehouse'])) : ?>
+                        <?php if (in_array(session()->get('role'), ['superadmin','admin'])) : ?>
                             <li class="nav-item has-treeview">
                                 <a href="" class="nav-link">
                                     <i class="nav-icon fas fa-truck-moving"></i>

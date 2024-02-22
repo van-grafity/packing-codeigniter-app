@@ -38,7 +38,8 @@ class PalletTransfer extends BaseController
         $location = $this->LocationModel->findAll();
         $data = [
             'title' => 'Pallet to Transfer List',
-            'location' => $location
+            'location' => $location,
+            'can_manage' => (in_array(session()->get('role'), ['superadmin']) ? true : false),
         ];
         return view('pallettransfer/index', $data);
     }
@@ -182,6 +183,7 @@ class PalletTransfer extends BaseController
             'pallet_transfer' => $pallet_transfer,
             'btn_transfer_note_class' => $btn_transfer_note_class,
             'transfer_note_list' => $transfer_note_list,
+            'can_manage' => (in_array(session()->get('role'), ['superadmin']) ? true : false),
         ];
         return view('pallettransfer/detail', $data);
     }

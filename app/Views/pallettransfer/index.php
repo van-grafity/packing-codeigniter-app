@@ -11,7 +11,9 @@
                 <h3 class="card-title"><?= $title ?></h3>
             </div>
             <div class="card-body">
-                <a href="javascript:void(0)" type="button" class="btn btn-success mb-2" id="btn_new_pallet_transfer">New Pallet Transfer</a>
+                <?php if ($can_manage) : ?>
+                    <a href="javascript:void(0)" type="button" class="btn btn-success mb-2" id="btn_new_pallet_transfer">New Pallet Transfer</a>
+                <?php endif ?>
                 <table id="pallet_transfer_table" class="table table-bordered table-hover text-center">
                     <thead>
                         <tr class="table-primary">
@@ -121,6 +123,9 @@
 <?= $this->Section('page_script'); ?>
 
 <script type="text/javascript">
+
+const column_visible = '<?= $can_manage; ?>';
+
 
 const index_dt_url = '<?= url_to('pallet_transfer_list')?>';
 const store_url = '<?= url_to('pallet_transfer_store')?>';
@@ -282,7 +287,7 @@ $('#pallet_transfer_table').DataTable({
         { data: 'location_from', name: 'location_from.location_name' },
         { data: 'location_to', name: 'location_to.location_name' },
         { data: 'status', name: 'status', orderable: false, searchable: false},
-        { data: 'action', name: 'action', orderable: false, searchable: false},
+        { data: 'action', name: 'action', orderable: false, searchable: false, visible: column_visible},
     ],
     columnDefs: [
         { targets: [0,-1], orderable: false, searchable: false },
