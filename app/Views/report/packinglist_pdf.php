@@ -280,7 +280,7 @@
 
                     <?php $is_first_page = true;?>
                     <?php $max_tr_first_page = 16;?>
-                    <?php $max_tr_first_page = ($size_colspan <= 5) ? 10 : 12;?>
+                    <?php $max_tr_first_page = ($size_colspan <= 5) ? 16 : 12;?>
                     <?php $max_tr_next_page = 28;?>
                     <?php $max_tr_page = $max_tr_first_page;?>
                     <?php foreach ($packinglist_carton as $key => $carton) { ?>
@@ -291,7 +291,7 @@
                             <?php if ($key_product == 0) { ?>
                                 <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
                                 <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
-                                <td> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
+                                <td style="font-size:7pt;"> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
                                 <?php foreach ($product->ratio_by_size_list as $key_size => $size) : ?>
                                     <td> <?= $size->size_qty ?> </td>
                                 <?php endforeach ?>
@@ -304,7 +304,7 @@
                         <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight_lbs ?> </td>
                         <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight ?> </td>
                         <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight ?> </td>
-                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->measurement_ctn ?> </td>
+                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>" style="font-size:7pt;"> <?= $carton->measurement_ctn ?> </td>
                     </tr>
                     <?php $count_tr_page++;?>
 
@@ -315,7 +315,7 @@
                                 <tr class="text-center">
                                     <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
                                     <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
-                                    <td> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
+                                    <td style="font-size:7pt;"> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
                                     <?php foreach ($product->ratio_by_size_list as $key_size => $size) { ?>
                                         <td> <?= $size->size_qty ?> </td>
                                     <?php } ?>
