@@ -146,6 +146,7 @@ class CartonBarcodeModel extends Model
         $builder->join('tblproduct as product','product.id = carton_detail.product_id');
         $builder->join('tblsize as size','size.id = product.product_size_id');
         $builder->where('carton_barcode.id', $carton_barcode_id);
+        $builder->where('carton_detail.deleted_at', null);
         $builder->select('product.product_name, size.size, carton_detail.product_qty as qty');
         $result = $builder->get()->getResult();
         
