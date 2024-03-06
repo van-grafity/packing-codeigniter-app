@@ -62,10 +62,6 @@ class PalletTransfer extends BaseController
                         <a href="javascript:void(0);" class="btn btn-danger btn-sm mb-1" onclick="delete_pallet_transfer('. $row->id .')">Delete</a>
                     ';
                 }
-
-                $action_button .= '
-                    <a href="'. url_to('pallet_transfer_transfer_note',$row->id) .'" class="btn btn-info btn-sm mb-1">Detail</a>
-                ';
                 return $action_button;
             })->edit('transaction_number', function($row){
                 $transaction_number = '<a href="'. base_url('pallet-transfer/').$row->id.'/transfer-note">'.$row->transaction_number .'</a>';

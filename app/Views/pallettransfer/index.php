@@ -23,7 +23,6 @@
                             <th width="">Transfer Note</th>
                             <th width="70">Total Ctn</th>
                             <th width="">From</th>
-                            <th width="">To</th>
                             <th width="100">Status</th>
                             <th width="170">Action</th>
                         </tr>
@@ -66,18 +65,14 @@
                         <label for="location_from" class="col-form-label">From :</label>
                         <select id="location_from" name="location_from" class="form-control" required disabled>
                             <option value="">Select Location From </option>
-                            <?php foreach ($location as $location_from) : ?>
-                                <option value="<?= $location_from->id; ?>"><?= $location_from->location_name; ?></option>
-                            <?php endforeach; ?>
+                            <option value="<?= $location[0]->id; ?>"><?= $location[0]->location_name; ?></option>
+                            <option value="<?= $location[1]->id; ?>"><?= $location[1]->location_name; ?></option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="location_to" class="col-form-label">To :</label>
-                        <select id="location_to" name="location_to" class="form-control" required disabled>
-                            <option value="">Select Location To </option>
-                            <?php foreach ($location as $location_to) : ?>
-                                <option value="<?= $location_to->id; ?>"><?= $location_to->location_name; ?></option>
-                            <?php endforeach; ?>
+                        <select id="location_to" name="location_to" class="form-control" required readonly>
+                            <option value="<?= $location[2]->id; ?>"><?= $location[2]->location_name; ?></option>
                         </select>
                     </div>
                 </div>
@@ -230,14 +225,12 @@ function search_pallet_input(e) {
 //## Toggling Form
 function enable_pallet_transfer_form() {
     $('#location_from').attr('disabled', false);
-    $('#location_to').attr('disabled', false);
     $('#btn_submit').attr('disabled', false);
     $('#btn_submit').removeClass('disabled');
 }
 
 function disable_pallet_transfer_form() {
     $('#location_from').attr('disabled', true);
-    $('#location_to').attr('disabled', true);
     $('#btn_submit').attr('disabled', true);
     $('#btn_submit').addClass('disabled');
 }
@@ -256,12 +249,15 @@ function disable_search_pallet() {
 
 function is_location_valid() {
     let location_from = $('#location_from').val();
-    let location_to = $('#location_to').val();
 
     if(location_from == location_to) {
         return false;
     }
     return true;
+}
+
+function set_default_value() {
+    $('#location_to').val(3); // default value for Location => FG Warehouse
 }
 
 
@@ -285,7 +281,6 @@ $('#pallet_transfer_table').DataTable({
         { data: 'transfer_note', name: 'transfer_note.serial_number', orderable: false, searchable: false},
         { data: 'total_carton', name: 'total_carton', orderable: false, searchable: false },
         { data: 'location_from', name: 'location_from.location_name' },
-        { data: 'location_to', name: 'location_to.location_name' },
         { data: 'status', name: 'status', orderable: false, searchable: false},
         { data: 'action', name: 'action', orderable: false, searchable: false, visible: column_visible},
     ],
@@ -325,6 +320,7 @@ $('#btn_new_pallet_transfer').on('click', function (){
         modal_btn_submit: "Save",
         form_action_url: store_url,
     });
+    set_default_value();
     $('#modal_pallet_transfer').modal('show');
     
     is_pallet_available = false;

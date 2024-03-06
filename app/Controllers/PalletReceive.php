@@ -174,7 +174,7 @@ class PalletReceive extends BaseController
         // ## Update Rack Status
         $this->RackModel->update($data_input['rack'],['flag_empty' => 'N']);
         
-        return redirect()->to('pallet-receive')->with('success', "Successfully added Pallet to Rack");
+        return redirect()->to('pallet-receive/create')->with('success', "Successfully added Pallet to Rack");
     }
 
 
