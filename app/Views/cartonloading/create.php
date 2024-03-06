@@ -88,7 +88,7 @@
                 <div class="card mb-5">
                     <form action="<?= url_to('carton_loading_store') ?>" id="scanned_carton_form" method="POST">
                         <?= csrf_field(); ?>
-
+                        <input type="hidden" id="rack_id" name="rack_id">
                         <div class="card-header">
                             <h3 class="card-title text-bold">Scanned Carton :</h3>
                         </div>
@@ -167,6 +167,8 @@ function set_pallet_transfer_info(pallet_transfer_info) {
     $('#rack_serial_number').text(': ' + pallet_transfer_info.rack_serial_number);
 
     $('#pallet_transfer_id').val(pallet_transfer_info.pallet_transfer_id);
+
+    $('#rack_id').val(pallet_transfer_info.rack_id);
 }
 
 function clear_pallet_transfer_info() {

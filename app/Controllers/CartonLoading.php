@@ -12,6 +12,7 @@ use App\Models\TransferNoteModel;
 use App\Models\PalletTransferModel;
 
 use App\Controllers\PalletTransfer;
+use App\Controllers\RackInformation;
 
 use \Hermawan\DataTables\DataTable;
 use CodeIgniter\I18n\Time;
@@ -26,6 +27,7 @@ class CartonLoading extends BaseController
     protected $TransferNoteModel;
     protected $PalletTransferModel;
     protected $PalletTransferController;
+    protected $RackInformationcontroller;
 
     public function __construct()
     {
@@ -38,6 +40,7 @@ class CartonLoading extends BaseController
         $this->TransferNoteModel = new TransferNoteModel();
         $this->PalletTransferModel = new PalletTransferModel();
         $this->PalletTransferController = new PalletTransfer();
+        $this->RackInformationcontroller = new RackInformation();
     }
 
     public function index()
@@ -126,7 +129,9 @@ class CartonLoading extends BaseController
     public function store()
     {
         $data_input = $this->request->getPost();
+        
         $carton_barcode_id_list = $data_input['carton_barcode_id'];
+        $rack_id = $data_input['rack_id'];
         foreach ($carton_barcode_id_list as $key => $carton_barcode_id) {
             $date_update = [
                 'flag_loaded' => 'Y',
@@ -135,7 +140,29 @@ class CartonLoading extends BaseController
             $this->CartonBarcodeModel->update($carton_barcode_id, $date_update);
         }
         $total_carton = count($carton_barcode_id_list);
+
+        if($this->is_rack_empty($rack_id)) {
+            
+            $pallet_transfer = $this->PalletTransferModel->getLastActivePalletTransferByRackID($rack_id);
+            $pallet = $this->PalletModel->find($pallet_transfer->pallet_id);
+
+            $this->RackModel->update($rack_id, ['flag_empty' => 'Y']);
+            $update_last_rack_pallet = $this->RackModel->updateLastRackPallet($rack_id, ['out_date' => date('Y-m-d H:i:s')]);
+            $update_pallet_transfer = $this->PalletTransferModel->update($pallet_transfer->id, ['flag_loaded' => 'Y', 'loaded_at' => date('Y-m-d H:i:s')]);
+            $update_pallet = $this->PalletModel->update($pallet->id, ['flag_empty' => 'Y']);
+        }
         return redirect()->to('carton-loading/create')->with('success', "Successfully Load ". $total_carton . " Cartons");
+    }
+
+    public function is_rack_empty($rack_id)
+    {
+        $pallet_transfer = $this->PalletTransferModel->getLastActivePalletTransferByRackID($rack_id);
+        $not_loaded_carton = $this->RackInformationcontroller->check_not_loaded_carton($pallet_transfer->id);
+        
+        if($not_loaded_carton) {
+            return false;
+        }
+        return true;
     }
 
     public function search_carton_by_pallet()

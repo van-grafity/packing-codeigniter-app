@@ -271,7 +271,7 @@ class RackInformation extends BaseController
         $dompdf->stream($filename, ['Attachment' => false]);
     }
 
-    private function check_not_loaded_carton($pallet_transfer_id)
+    public function check_not_loaded_carton($pallet_transfer_id)
     {
         $transfer_note_list = $this->PalletTransferModel->getTransferNotes($pallet_transfer_id);
         foreach ($transfer_note_list as $key => $transfer_note) {

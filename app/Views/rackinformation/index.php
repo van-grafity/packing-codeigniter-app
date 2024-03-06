@@ -26,7 +26,6 @@
                             <th width="20px">Level</th>
                             <th width="100px">Pallet</th>
                             <th width="100px">Transfer Note</th>
-                            <th width="110px">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,20 +81,6 @@ $(document).ready(function() {
             }
         },
         order: [],
-        // columns: [
-        //     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-        //     { data: 'serial_number', name: 'rack.serial_number'},
-        //     { data: 'gl_number'},
-        //     { data: 'po_no'},
-        //     { data: 'colour', orderable: false, searchable: false},
-        //     { data: 'buyer_name'},
-        //     { data: 'total_carton', orderable: false, searchable: false},
-        //     { data: 'total_pcs', orderable: false, searchable: false},
-        //     { data: 'level', name: 'rack.level', orderable: false, searchable: false},
-        //     { data: 'pallet_serial_number', name: 'pallet.serial_number'},
-        //     { data: 'transfer_note', name: 'transfer_note', orderable: false, searchable: false},
-        //     { data: 'action', name: 'action', orderable: false, searchable: false},
-        // ],
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'serial_number', name: 'rack.serial_number'},
@@ -108,7 +93,6 @@ $(document).ready(function() {
             { data: 'level', name: 'rack.level', orderable: false, searchable: false},
             { data: 'pallet_serial_number', name: 'pallet.serial_number'},
             { data: 'transfer_note', name: 'transfer_note'},
-            { data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         columnDefs: [
             { targets: [0], orderable: false, searchable: false },

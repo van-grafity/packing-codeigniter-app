@@ -365,6 +365,7 @@ class RackModel extends Model
             'pallet.id as pallet_id', 
             'pallet.serial_number as pallet_number', 
             'pallet.flag_empty', 
+            'rack.id as rack_id', 
             'rack.serial_number as rack_serial_number', 
             'location_from.location_name as location_from', 
             'location_to.location_name as location_to', 
