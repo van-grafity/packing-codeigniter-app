@@ -41,7 +41,7 @@ class RackSeeder extends Seeder
                 
                 for ($i=0; $i < $total_rack; $i++) {
                     $serial_code = 'RCK-'.$code_rack;
-                    $rack_id = str_pad($i+1, 3, '0', STR_PAD_LEFT);
+                    $rack_id = str_pad($i+1, 2, '0', STR_PAD_LEFT);
                     $rack_id = $serial_code . $rack_id;
 
                     if($counter_rack_per_level <= $max_qty_this_level){
