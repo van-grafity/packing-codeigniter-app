@@ -203,6 +203,7 @@ class PackingListModel extends Model
         $builder->join('tblpurchaseorderdetail as po_detail', 'po_detail.order_id = po.id');
         $builder->join('tblproduct as product', 'product.id = po_detail.product_id');
         $builder->where('packinglist.id', $packinglist_id);
+        $builder->where('po_detail.deleted_at', null);
         $result = $builder->get()->getResult();
         return $result;
     }
