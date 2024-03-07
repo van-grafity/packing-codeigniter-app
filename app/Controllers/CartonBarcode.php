@@ -61,8 +61,7 @@ class CartonBarcode extends BaseController
         if (!$this->session->isLoggedIn) {
             return redirect()->to('login');
         }
-        // return view('cartonbarcode/index', $data);
-        return view('cartonbarcode/index_dt', $data);
+        return view('cartonbarcode/index', $data);
     }
 
     public function index_dt()

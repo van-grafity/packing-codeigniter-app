@@ -15,7 +15,7 @@
             </div>
             <div class="card-body">
                 <h3 class="mb-4">Packing List</h3>
-                <table id="packinglist_table" class="table table-bordered table-hover">
+                <table id="packinglist_table" class="table table-bordered table-striped table-hover text-center">
                     <thead>
                         <tr class="table-primary text-center">
                             <th width="5%">No</th>
@@ -27,25 +27,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $i = 1; ?>
-                        <?php foreach ($packinglist as $pl) : ?>
-                        <tr class="text-center">
-                            <td><?= $i++; ?></td>
-                            <td><?= $pl->packinglist_serial_number; ?></td>
-                            <td><?= $pl->buyer_name; ?></td>
-                            <td><?= $pl->po_no; ?></td>
-                            <td><?= $pl->gl_number; ?></td>
-                            <td class="text-center align-middle">
-                                <a class="btn btn-primary btn-sm mb-1 mr-2 <?= $pl->btn_generate_class?>"
-                                    data-id="<?= $pl->id ?>"
-                                    data-packinglist-number="<?= $pl->packinglist_serial_number?>"
-                                    onclick="generate_carton(this)"
-                                    >Generate Carton</a>
-                                <a href="<?= base_url('cartonbarcode/'.$pl->id)?>"
-                                    class="btn btn-info btn-sm mb-1 mr-2 <?= $pl->btn_detail_class?> ">Detail</a>
-                            </td>
-                        </tr>
-                        <?php endforeach;  ?>
                     </tbody>
                 </table>
             </div>
@@ -87,6 +68,8 @@
 <?= $this->Section('page_script'); ?>
 <script type="text/javascript">
     const generate_carton_url = '<?= base_url('cartonbarcode/generatecarton')?>';
+    const index_dt_url = '<?= url_to('cartonbarcode_list')?>';
+    
 
     // ## Show Flash Message
     let session = <?= json_encode(session()->getFlashdata()) ?>;
@@ -112,18 +95,50 @@
 <script type="text/javascript">
     $(function() {
         $('#packinglist_table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: index_dt_url,
+            order: [],
             columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                    { data: 'packinglist_number', name: 'packinglist_number'},
-                    { data: 'buyer_name', name: 'buyer_name' },
-                    { data: 'po_number', name: 'po_number' },
-                    { data: 'gl_number', name: 'gl_number' },
-                    { data: 'action', name: 'action', orderable: false, searchable: false },
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                { data: 'packinglist_serial_number', name: 'pl.packinglist_serial_number'},
+                { data: 'buyer_name', name: 'sync_po.buyer_name' },
+                { data: 'po_no', name: 'po.po_no' },
+                { data: 'gl_number', name: 'sync_po.gl_number' },
+                { data: 'action', name: 'action', orderable: false, searchable: false },
+            ],
+            columnDefs: [
+                { targets: [0,-1], orderable: false, searchable: false },
             ],
             paging: true,
+            responsive: true,
             lengthChange: true,
             searching: true,
             autoWidth: false,
+            orderCellsTop: true,
+            dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>>" +
+                "<'row'<'col-md-12'tr>>" +
+                "<'row'<'col-md-5'i><'col-md-7'p>>",
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4 ]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4 ]
+                    }
+                },
+                {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4 ]
+                    }
+                },
+            ]
         });
 
     });
