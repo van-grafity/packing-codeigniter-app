@@ -39,6 +39,26 @@
         border: .1px solid #858a8f;
     }
 
+    .border-bold {
+        border: 2px solid #1c1d1f;
+    }
+
+    .border-top-bold {
+        border-top: 2px solid #1c1d1f;
+    }
+    
+    .border-bottom-bold {
+        border-bottom: 2px solid #1c1d1f;
+    }
+
+    .border-left-bold {
+        border-left: 2px solid #1c1d1f;
+    }
+
+    .border-right-bold {
+        border-right: 2px solid #1c1d1f;
+    }
+
     .text-left {
         text-align: left;
     }
@@ -252,25 +272,25 @@
             <table class="packinglist-carton-section" id="packinglist_carton_table">
                 <thead>
                     <tr class="text-center">
-                        <th rowspan="1" colspan="2">Carton Number</th>
-                        <th rowspan="2" colspan="1" style="<?= $asin_style ?>">ASIN</th>
-                        <th rowspan="2" colspan="1">PID/UPC</th>
-                        <th rowspan="2" colspan="1">Colour Code/Name</th>
-                        <th rowspan="<?= $size_rowspan ?>" colspan="<?= $size_colspan; ?>">Size</th>
-                        <th rowspan="2" colspan="1">Total (Pcs)</th>
-                        <th rowspan="2" colspan="1">Total CTN</th>
-                        <th rowspan="2" colspan="1">Ship Qty</th>
-                        <th rowspan="2" colspan="1">G.W. (LBS)</th>
-                        <th rowspan="2" colspan="1">N.W. (LBS)</th>
-                        <th rowspan="2" colspan="1">G.W. (KG)</th>
-                        <th rowspan="2" colspan="1">N.W. (KG)</th>
-                        <th rowspan="2" colspan="1">Measurement CTN</th>
+                        <th class="border-top-bold border-left-bold" rowspan="1" colspan="2">Carton Number</th>
+                        <th class="border-top-bold" rowspan="2" colspan="1" style="<?= $asin_style ?>">ASIN</th>
+                        <th class="border-top-bold border-bottom-bold" rowspan="2" colspan="1">PID/UPC</th>
+                        <th class="border-top-bold border-bottom-bold" rowspan="2" colspan="1">Colour Code/Name</th>
+                        <th class="border-top-bold" rowspan="<?= $size_rowspan ?>" colspan="<?= $size_colspan; ?>">Size</th>
+                        <th class="border-top-bold border-bottom-bold" rowspan="2" colspan="1">Total (Pcs)</th>
+                        <th class="border-top-bold border-bottom-bold" rowspan="2" colspan="1">Total CTN</th>
+                        <th class="border-top-bold border-bottom-bold" rowspan="2" colspan="1">Ship Qty</th>
+                        <th class="border-top-bold border-bottom-bold" rowspan="2" colspan="1">G.W. (LBS)</th>
+                        <th class="border-top-bold border-bottom-bold" rowspan="2" colspan="1">N.W. (LBS)</th>
+                        <th class="border-top-bold border-bottom-bold" rowspan="2" colspan="1">G.W. (KG)</th>
+                        <th class="border-top-bold border-bottom-bold" rowspan="2" colspan="1">N.W. (KG)</th>
+                        <th class="border-top-bold border-bottom-bold border-right-bold" rowspan="2" colspan="1">Measurement CTN</th>
                     </tr>
                     <tr class="text-center">
-                        <th>From</th>
-                        <th>To</th>
+                        <th class="border-bottom-bold border-left-bold">From</th>
+                        <th class="border-bottom-bold">To</th>
                         <?php foreach ($packinglist_size_list as $key => $size) { ?>
-                            <th style="width:30px;"><?= $size->size ?></th>
+                            <th class="border-bottom-bold" style="width:30px;"><?= $size->size ?></th>
                         <?php } ?>
                     </tr>
                 </thead>
@@ -285,43 +305,69 @@
                     <?php $max_tr_page = $max_tr_first_page;?>
                     <?php foreach ($packinglist_carton as $key => $carton) { ?>
                     <tr class="text-center">
-                        <td class="" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_from ?></td>
-                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_to ?> </td>
+                        <td class="border-bottom-bold border-left-bold" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_from ?></td>
+                        <td class="border-bottom-bold" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_number_to ?> </td>
                         <?php foreach ($carton->products_in_carton as $key_product => $product) { ?>
                             <?php if ($key_product == 0) { ?>
-                                <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
-                                <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
-                                <td style="font-size:7pt;"> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
-                                <?php foreach ($product->ratio_by_size_list as $key_size => $size) : ?>
-                                    <td> <?= $size->size_qty ?> </td>
-                                <?php endforeach ?>
+
+                                <?php if ($key_product < $carton->number_of_product_per_carton - 1) : ?>
+                                    <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
+                                    <td class=""> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
+                                    <td class="" style="font-size:7pt;"> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
+                                    <?php foreach ($product->ratio_by_size_list as $key_size => $size) : ?>
+                                        <td class="" > <?= $size->size_qty ?> </td>
+                                    <?php endforeach ?>
+                                
+                                <?php else : ?>
+                                    <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
+                                    <td class="border-bottom-bold"> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
+                                    <td class="border-bottom-bold" style="font-size:7pt;"> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
+                                    <?php foreach ($product->ratio_by_size_list as $key_size => $size) : ?>
+                                        <td class="border-bottom-bold" > <?= $size->size_qty ?> </td>
+                                    <?php endforeach ?>
+                                
+                                <?php endif ?>
+
                             <?php } ?>
                         <?php } ?>
-                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->pcs_per_carton ?> </td>
-                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_qty ?> </td>
-                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->ship_qty ?> </td>
-                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight_lbs ?> </td>
-                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight_lbs ?> </td>
-                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight ?> </td>
-                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight ?> </td>
-                        <td rowspan="<?= $carton->number_of_product_per_carton; ?>" style="font-size:7pt;"> <?= $carton->measurement_ctn ?> </td>
+                        <td class="border-bottom-bold" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->pcs_per_carton ?> </td>
+                        <td class="border-bottom-bold" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->carton_qty ?> </td>
+                        <td class="border-bottom-bold" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->ship_qty ?> </td>
+                        <td class="border-bottom-bold" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight_lbs ?> </td>
+                        <td class="border-bottom-bold" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight_lbs ?> </td>
+                        <td class="border-bottom-bold" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->gross_weight ?> </td>
+                        <td class="border-bottom-bold" rowspan="<?= $carton->number_of_product_per_carton; ?>"> <?= $carton->net_weight ?> </td>
+                        <td class="border-bottom-bold border-right-bold" rowspan="<?= $carton->number_of_product_per_carton; ?>" style="font-size:7pt;"> <?= $carton->measurement_ctn ?> </td>
                     </tr>
                     <?php $count_tr_page++;?>
 
                     <?php if ($carton->number_of_product_per_carton > 1) :  ?>
                         <?php foreach ($carton->products_in_carton as $key_product => $product) : ?>
                             <?php if ($key_product > 0) : ?>
+                                <?php if ($key_product < $carton->number_of_product_per_carton - 1) : ?>
 
-                                <tr class="text-center">
-                                    <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
-                                    <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
-                                    <td style="font-size:7pt;"> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
-                                    <?php foreach ($product->ratio_by_size_list as $key_size => $size) { ?>
-                                        <td> <?= $size->size_qty ?> </td>
-                                    <?php } ?>
-                                </tr>
-                                <?php $count_tr_page++;?>
-
+                                    <tr class="text-center">
+                                        <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
+                                        <td> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
+                                        <td style="font-size:7pt;"> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
+                                        <?php foreach ($product->ratio_by_size_list as $key_size => $size) { ?>
+                                            <td> <?= $size->size_qty ?> </td>
+                                        <?php } ?>
+                                    </tr>
+                                    <?php $count_tr_page++;?>
+                                
+                                <?php else : ?>
+                                    <tr class="text-center">
+                                        <td style="<?= $asin_style ?>"> <?= $carton->products_in_carton[$key_product]->product_asin_id ?> </td>
+                                        <td class="border-bottom-bold"> <?= $carton->products_in_carton[$key_product]->product_code ?> </td>
+                                        <td class="border-bottom-bold" style="font-size:7pt;"> <?= $carton->products_in_carton[$key_product]->colour ?> </td>
+                                        <?php foreach ($product->ratio_by_size_list as $key_size => $size) { ?>
+                                            <td class="border-bottom-bold"> <?= $size->size_qty ?> </td>
+                                        <?php } ?>
+                                    </tr>
+                                    <?php $count_tr_page++;?>
+                                
+                                <?php endif ?>
                             <?php endif ?>
                         <?php endforeach ?>
                     <?php endif ?>
@@ -344,10 +390,10 @@
                 </tbody>
                 <tfoot class="footer">
                     <tr class="text-center">
-                        <th colspan="<?= 4 + $size_colspan + 1; ?>" class="text-right">Total : </th>
-                        <th colspan=""><?= $packinglist_carton_total->total_carton ?></th>
-                        <th colspan=""><?= $packinglist_carton_total->total_ship ?></th>
-                        <th colspan="6"></th>
+                        <th class="border-bottom-bold border-left-bold text-right" colspan="<?= 4 + $size_colspan + 1; ?>">Total : </th>
+                        <th class="border-bottom-bold" colspan=""><?= $packinglist_carton_total->total_carton ?></th>
+                        <th class="border-bottom-bold" colspan=""><?= $packinglist_carton_total->total_ship ?></th>
+                        <th class="border-bottom-bold border-right-bold" colspan="6"></th>
                     </tr>
                 </tfoot>
             </table>
