@@ -475,6 +475,7 @@
                 <tr>
                     <td>Prepared By </td>
                     <td>Packing Supervisor</td>
+                    <td>Sewing Supervisor</td>
                     <td>Asst Manager</td>
                     <td>Prod Manager</td>
                     <td>Asst GM (Production)</td>
