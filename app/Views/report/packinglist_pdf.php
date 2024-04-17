@@ -168,19 +168,20 @@
         font-size: 11px;
     }
 
-    /* .assignment-section {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 2.5rem;
-        } */
-
     .assignment-section {
         font-family : sans-serif;
-        margin-top: 30px;
-        margin-bottom: 3rem;
-        font-weight: bold;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 2.5rem;
     }
+
+    /* .assignment-section {
+        font-family : sans-serif;
+        margin-top: 20px;
+        margin-bottom: 0;
+        font-weight: bold;
+    } */
 
     .assignment-section td {
         border: 0px;
