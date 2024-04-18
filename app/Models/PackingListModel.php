@@ -231,6 +231,7 @@ class PackingListModel extends Model
         $builder->join('tblpackinglistcarton as pl_carton', 'pl_carton.packinglist_id = packinglist.id');
         $builder->join('tblcartonbarcode as carton_barcode', 'carton_barcode.packinglist_carton_id = pl_carton.id');
         $builder->where('packinglist.id',$packinglist_id);
+        $builder->where('pl_carton.deleted_at', null);
         $result = $builder->get()->getResult();
 
         if(count($result) > 0) {
