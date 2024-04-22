@@ -132,6 +132,7 @@
     .shipment-detail-row {
         width: 100%;
         border: 0;
+        margin-bottom: 10px;
     }
 
     .shipment-detail-column {
