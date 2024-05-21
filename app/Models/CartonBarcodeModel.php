@@ -53,6 +53,7 @@ class CartonBarcodeModel extends Model
         $builder = $this->db->table('tblcartonbarcode as carton_barcode');
         $builder->select('carton_barcode.carton_number_by_system as carton_number');
         $builder->where('carton_barcode.packinglist_id', $packinglist_id);
+        $builder->where('carton_barcode.deleted_at', null);
         $builder->orderBy('carton_number_by_system', 'desc');
         $result = $builder->get()->getRow();
         return $result ? $result->carton_number : 0;

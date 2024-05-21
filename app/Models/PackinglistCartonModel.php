@@ -49,6 +49,7 @@ class PackinglistCartonModel extends Model
             $builder->where(['pl_carton.packinglist_id' => $packinglist_id]);
         }
         $builder->where(['pl_carton.flag_generate_carton' => 'N']);
+        $builder->where('pl_carton.deleted_at', null);
         $result = $builder->get()->getResult();
 
         return $result;
