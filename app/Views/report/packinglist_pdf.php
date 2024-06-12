@@ -302,7 +302,7 @@
 
                     <?php $is_first_page = true;?>
                     <?php $max_tr_first_page = ($size_colspan <= 5) ? 16 : 12;?>
-                    <?php $max_tr_next_page = 280;?>
+                    <?php $max_tr_next_page = ($size_colspan <= 5) ? 280 : 30;?>
                     <?php $max_tr_page = $max_tr_first_page;?>
                     <?php foreach ($packinglist_carton as $key => $carton) { ?>
                     <tr class="text-center">
