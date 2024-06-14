@@ -25,8 +25,13 @@ class UpdateDatabase extends BaseController
             ],
             [
                 'title' => 'Update Data packed_at di database',
-                'description' => 'Angka 00 yang ada di depan di hilangkan. lalu di akhir ditambahkan angka 124',
+                'description' => 'update data di kolom packed_at, sesuai carton yang sudah di pack',
                 'url' => base_url('update-database/carton-packed-at')
+            ],
+            [
+                'title' => 'Update Data flag_packed cartonbarcode di database',
+                'description' => 'Carton padahal udah di scan and packed. tapi karena di packinglist carton yang sudah di packed tersebut malah di hapus. maka dari itu, dia menjadi dibacanya not packed yet di bagian set carton barcode',
+                'url' => base_url('update-database/flag-packed-carton')
             ],
         ];
         return $this->response->setJSON($data_return);
@@ -88,6 +93,44 @@ class UpdateDatabase extends BaseController
             'status' => 'success',
             'message' => 'Success update '.count($updated_carton).' Carton',
             'data' => $updated_carton, 
+        ];
+        return $this->response->setJSON($result);
+    }
+
+    public function flag_packed_carton()
+    {
+        $packinglist_id = $this->request->getGet('packinglist_id');
+        $CartonBarcodeModel = model('CartonBarcodeModel');
+        $deleted_packed_carton = $this->UpdateDatabaseModel->get_deleted_packed_carton($packinglist_id);
+
+        $updated_carton = [];
+
+        try {
+            $CartonBarcodeModel->transStart();
+
+            foreach ($deleted_packed_carton as $key => $carton) {
+                $data_update = [
+                    'flag_packed' => 'Y',
+                    'updated_at'    => now(),
+                ];
+                $updated_carton[] = $CartonBarcodeModel
+                    ->where('barcode', $carton->barcode)
+                    ->where('flag_packed', 'N')
+                    ->where('deleted_at', null)
+                    ->set($data_update)
+                    ->update();
+            }
+
+            $CartonBarcodeModel->transComplete();
+        } catch (\Throwable $th) {
+            $CartonBarcodeModel->transRollback();
+            throw $th;
+        }
+
+        $result = [
+            'status' => 'success',
+            'message' => 'Success update '.count($updated_carton).' Carton',
+            'data' => $deleted_packed_carton, 
         ];
         return $this->response->setJSON($result);
     }

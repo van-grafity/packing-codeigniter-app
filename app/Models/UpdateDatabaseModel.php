@@ -66,4 +66,14 @@ class UpdateDatabaseModel extends Model
 
         return [];
     }
+
+    public function get_deleted_packed_carton($packinglist_id)
+    {
+        $builder = $this->db->table('tblcartonbarcode');
+        $builder->where('packinglist_id', $packinglist_id);
+        $builder->where('flag_packed', 'Y');
+        $builder->where('deleted_at !=', null);
+        $result = $builder->get()->getResult();
+        return $result;
+    }
 }

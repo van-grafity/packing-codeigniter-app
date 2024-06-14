@@ -116,6 +116,8 @@ class CartonBarcodeModel extends Model
         $builder->join('tblbuyer as buyer', 'buyer.id = gl.buyer_id');
 
         $builder->where('carton_barcode.barcode', $carton_barcode);
+        $builder->where('carton_barcode.deleted_at', null);
+
         $result = $builder->get()->getRow();
         return $result;
     }
