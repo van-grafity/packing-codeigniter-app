@@ -584,8 +584,6 @@
 
                 product_detail_preview = {};                
             }
-
-            console.log(product_detail_preview);
         });
 
         $('#btn_add_product').on('click', function() {
@@ -631,6 +629,15 @@
         $('#carton_qty').on('input', function() {
             update_ship_qty();
         });
+
+        $('#btn_submit').on('click', function () {
+            if($('#table_carton_contents tbody tr:first td').length <= 1){
+                swal_warning({
+                    title: 'please select at least 1 product'
+                });
+                return false;
+            }
+        })
 
     })
 </script>
