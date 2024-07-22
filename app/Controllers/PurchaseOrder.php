@@ -296,6 +296,9 @@ class PurchaseOrder extends BaseController
             $cleaned_data = $this->removeEmptyData($data_to_update, $required_column);
             $cleaned_data = $this->removeWhitespace($cleaned_data);
 
+            // dd($cleaned_data);
+            
+
             $gl_available = $this->isGlNumberAvailable($cleaned_data);
             
             if(!$gl_available) { 
@@ -303,6 +306,8 @@ class PurchaseOrder extends BaseController
             }
             
             $adjusted_array_product = $this->adjustArrayProductToInsert($cleaned_data);
+            // dd($adjusted_array_product);
+            
             
             $this->db->transException(true)->transStart();
             
@@ -569,7 +574,7 @@ class PurchaseOrder extends BaseController
         $result = array();
         $inserted_products = array();
         $po_id_list = array();
-
+        
         try {
             $this->db->transException(true)->transStart();
 
@@ -579,6 +584,7 @@ class PurchaseOrder extends BaseController
                     'gl_id' => $this->GlModel->where('gl_number',$product['gl_number'])->first()['id'],
                     'shipdate' => $product['shipdate'],
                 ];
+                
                 $po_id = $this->PurchaseOrderModel->getOrCreateDataByName($data_po);
                 $po_id_list[] = $po_id;
                 

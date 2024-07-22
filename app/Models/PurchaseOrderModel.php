@@ -130,10 +130,29 @@ class PurchaseOrderModel extends Model
             $data_gl_po = [
                 'gl_id' => $data_po['gl_id'],
                 'po_id' => $po_id,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ];
             $builder = $this->db->table('tblgl_po');
             $builder->insert($data_gl_po);
         } else {
+            $gl_po = $this->db->table('tblgl_po')
+                ->where('po_id',$get_po['id'])
+                ->where('gl_id',$data_po['gl_id'])
+                ->get()->getRow();
+                
+            if(!$gl_po) {
+                $data_gl_po = [
+                    'gl_id' => $data_po['gl_id'],
+                    'po_id' => $get_po['id'],
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ];
+
+                $builder = $this->db->table('tblgl_po');
+                $builder->insert($data_gl_po);
+            }
+
             $po_id = $get_po['id'];
         }
         return $po_id;
