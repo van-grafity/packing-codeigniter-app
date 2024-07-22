@@ -85,14 +85,14 @@ class SyncPurchaseOrder extends BaseController
         foreach ($purchase_order_list as $key => $purchase_order) {
             $buyer_list = $this->SyncPurchaseOrderModel->getBuyerByPurchaseOrder($purchase_order['id']);
             $buyer_list = array_map(function ($buyer) { return $buyer->buyer_name; }, $buyer_list);
-            $buyer_name = implode(', ', $buyer_list);
+            $buyer_name = implode(', ', array_unique($buyer_list));
             
             $gl_list = $this->SyncPurchaseOrderModel->getGlByPurchaseOrder($purchase_order['id']);
             
             $gl_number_list = array_map(function ($gl) { return $gl->gl_number; }, $gl_list);
-            $gl_number = implode(', ', $gl_number_list);
+            $gl_number = implode(', ', array_unique($gl_number_list));
             $season_list = array_map(function ($gl) { return $gl->season; }, $gl_list);
-            $season = implode(', ', $season_list);
+            $season = implode(', ', array_unique($season_list));
 
             $data_po_insert = [
                 'purchase_order_id' => $purchase_order['id'],
