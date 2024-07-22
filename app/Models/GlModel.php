@@ -57,13 +57,13 @@ class GlModel extends Model
         }
 
         $gl_number_list = array_map(function ($gl) { return $gl->gl_number; }, $gl_list);
-        $gl_number = implode(', ', $gl_number_list);
+        $gl_number = implode(', ', array_unique($gl_number_list));
 
-        $gl_number_list = array_map(function ($gl) { return $gl->buyer_name; }, $gl_list);
-        $buyer_name = implode(', ', $gl_number_list);
+        $buyer_list_list = array_map(function ($gl) { return $gl->buyer_name; }, $gl_list);
+        $buyer_name = implode(', ', array_unique($buyer_list_list));
 
-        $gl_number_list = array_map(function ($gl) { return $gl->season; }, $gl_list);
-        $season = implode(', ', $gl_number_list);
+        $season_list = array_map(function ($gl) { return $gl->season; }, $gl_list);
+        $season = implode(', ', array_unique($season_list));
         
         $result = (object)[
             'gl_number' => $gl_number,
