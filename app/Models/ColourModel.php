@@ -14,7 +14,7 @@ class ColourModel extends Model
     public function getColour($code = false)
     {
         if ($code == false) {
-            return $this->db->table('tblcolour')->get();
+            return $this->db->table('tblcolour')->orderBy('colour_name')->get();
         }
         return $this->where(['id' => $code])->first();
     }
